@@ -1,0 +1,18 @@
+.userList {
+  display: flex;
+  flex-direction: row;
+  padding: 1%;
+  flex-wrap: wrap;
+}
+
+.userListFolders {
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding-left: 3%;
+  max-height: 200px;
+  flex-basis: 100px;
+}
+
+/* .userListUserId {
+  padding-right: 5%;
+} */

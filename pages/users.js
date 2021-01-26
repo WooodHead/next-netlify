@@ -3,7 +3,7 @@ import { API } from 'aws-amplify'
 import config from '../config'
 import { useRouter } from 'next/router'
 import '../configureAmplify'
-
+import styles from '../css/users.module.css'
 const Users = ({ allUsers }) => {
   const router = useRouter()
 
