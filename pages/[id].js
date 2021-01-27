@@ -1,17 +1,18 @@
-import { useRouter } from 'next/router'
+
 import config from '../config'
 import { API } from 'aws-amplify'
 import '../configureAmplify'
-
+import Link from 'next/link'
 
 export default function User({ user }) {
 
-  console.log(user)
-
   return (
     <div>
+      <Link href="/users">
+        <a>Back to users</a>
+      </Link>
       <h3>{user.Username}</h3>
-      <h5>{user.folders.map((folder) => <div>{folder}</div>)}</h5>
+      <h5>{user.folders.map((folder) => <div key={folder}>{folder}</div>)}</h5>
       <div>{user.publicString}</div>
     </div>
   )
@@ -30,7 +31,6 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let user
-  console.log(params.id)
   const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {

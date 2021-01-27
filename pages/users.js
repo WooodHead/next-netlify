@@ -21,7 +21,10 @@ const Users = ({ allUsers }) => {
         {allUsers.map((user) => {
           return (
             <div className={styles.userList} key={user.Username} onClick={() => userClickFn(user.Username)}>
-              <div>{user.Username}</div>
+              <Link href={"/" + user.Username}>
+                <a>{user.Username}</a>
+              </Link>
+              
               <div className={styles.userListFolders}>
                 {user.folders.map((folder) => {
                   return (
