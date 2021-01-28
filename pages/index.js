@@ -21,6 +21,9 @@ export default function Home() {
         <Link href="/users">
           <a >all users</a>
         </Link>
+        <Link href="/signIn">
+          <a >sign in</a>
+        </Link>
         
       </main>
 
