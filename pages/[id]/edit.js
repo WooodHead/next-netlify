@@ -4,6 +4,7 @@ import Amplify, { API, Auth } from 'aws-amplify'
 import '../../configureAmplify'
 import dynamic from "next/dynamic"
 import "../../node_modules/react-quill/dist/quill.snow.css"
+import Link from 'next/link'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -11,21 +12,31 @@ export default function Edit({ user }) {
   const [quillState, setQuillState] = useState(user.publicString)
 
   const savePublicString = async () => {
-    const userSession = await Auth.currentSession()
-    const stringInit = {
-      headers: { Authorization: userSession.idToken.jwtToken },
-      body: {
-        publicString: "" + quillState
+    try {
+      const userSession = await Auth.currentSession()
+      const stringInit = {
+        headers: { Authorization: "" + userSession.idToken.jwtToken },
+        body: {
+          publicString: "" + quillState
+        }
       }
+      await API.post(config.apiGateway.NAME, '/savePublicString', stringInit )
+      consol
+    } catch (err) {
+      console.log(err)
     }
-    await API.post(config.apiGateway.NAME, '/savePublicString', stringInit )
+    
   }
 
     return (
       <div>
         <ReactQuill theme={"snow"} value={quillState} onChange={(e) => setQuillState(e)}/>
         <button onClick={savePublicString}>save</button>
+        <Link href={"/" + user.Username}>
+        <a>Back to user</a>
+      </Link>
       </div>
+      
     )
 }
 

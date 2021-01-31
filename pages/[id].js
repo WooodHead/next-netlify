@@ -7,6 +7,18 @@ import Head from 'next/head'
 
 export default function User({ user }) {
 
+  const openCallPhone = () => {
+    const devSite = `/${user.Username}/call`
+    const prodSite = `https://talktree.me/${user.Username}/call`
+    /* PROBLEM NO GOING PROD */
+    const currentSite = process.env.REACT_APP_STAGE === 'prod' ? prodSite : devSite
+    window.open(
+      currentSite,
+      "MsgWindow",
+      "width=500,height=700"
+    )
+  }
+
   return (
     <div>
       <Head>
@@ -17,9 +29,13 @@ export default function User({ user }) {
       <Link href="/users">
         <a>Back to users</a>
       </Link>
+      <button onClick={openCallPhone}>open phone</button>
       <h3>{user.Username}</h3>
       {user.folders.map((folder) => <h5 key={folder}>{folder}</h5>)}
-      <div>{user.publicString}</div>
+      <div dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
+      <Link href={user.Username + '/edit'}>
+        <a>edit</a>
+      </Link>
     </div>
   )
 }
