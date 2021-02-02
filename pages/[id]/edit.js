@@ -21,7 +21,6 @@ export default function Edit({ user }) {
         }
       }
       await API.post(config.apiGateway.NAME, '/savePublicString', stringInit )
-      consol
     } catch (err) {
       console.log(err)
     }

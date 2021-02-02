@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import OT from '@opentok/client'
+import dynamic from "next/dynamic"
+const OT = dynamic(() => import('@opentok/client'), { ssr: false })
 
 const VideoComponent = props => {
 

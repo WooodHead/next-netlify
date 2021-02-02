@@ -1,27 +1,21 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import { API, Auth } from 'aws-amplify'
-import { Link, useParams } from "react-router-dom";
-import OT from "@opentok/client"
+import Link from 'next/link'
 import CallComponent from '../../components/call/callComponent'
 import config from '../../config'
+import '../../configureAmplify'
+import Head from 'next/head';
 
-const Call = () => {
-  const { id } = useParams();
-  const tav = (id[7] ? id.slice(7, 8) : 'a')
-  const folder = id[8] ? id.slice(8, id.length) : 'none'
-  const receiver = id.slice(0, 7)
+const Call = ({ user }) => {
+
+  const id = user.Username
+
   const receiverRef = useRef()
   const callerRef = useRef('anonymous')
 
-  let defaultInput
-  switch (tav) {
-    case 't': defaultInput = 'text'; break
-    case 'v': defaultInput = 'video'; break
-    case 's': defaultInput = 'screen'; break
-    default: defaultInput = 'audio'
-  }
-  receiverRef.current = id.slice(0, 7)
+  let defaultInput = 'audio'
 
+  receiverRef.current = id
   const [deviceInputState, setDeviceInputState] = useState(defaultInput);
   const [ppmState, setPPMstate] = useState(0)
   const [mobileState, setMobileState] = useState(false)
@@ -45,12 +39,6 @@ const Call = () => {
     audio: false,
     video: false,
     screen: false
-  });
-
-  OT.checkScreenSharingCapability(function (response) {
-    if (!response.supported || response.extensionRegistered === false) {
-      console.log('this browser doesnt support screen sharing')
-    }
   });
 
   const CustomRadioButton = (CRprops) => {
@@ -79,8 +67,8 @@ const Call = () => {
     );
   }
 
-  const ppmx04 = ppmState * 0.04 
-  const firstMinFee = (0.02 + ppmState) * 0.04 
+  const ppmx04 = ppmState * 0.04
+  const firstMinFee = (0.02 + ppmState) * 0.04
   const firstMin = (0.32 + firstMinFee + ppmState >= 0.5) ? 0.32 + firstMinFee + ppmState : 0.50
   const rounded = Math.round(firstMin * 100)
   const firstMinPrice = financial(rounded / 100)
@@ -128,19 +116,23 @@ const Call = () => {
 
   if (phoneState) {
     return (
-      <CallComponent
-        targetUser={receiver}
-        folder={folder}
-        deviceInput={deviceInputState}
-        // timer={converstationTime}
-        allowedDevices={allowedDevices}
-      />
+      <div>
+        <Head>
+          <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+        </Head>
+        <CallComponent
+          targetUser={id}
+          folder={null}
+          deviceInput={deviceInputState}
+          // timer={converstationTime}
+          allowedDevices={allowedDevices}
+        />
+      </div>
     )
   } else {
     return (
       <div className="container">
-        <div className="mt-1">Receiver: {receiver}</div>
-        <div className="mt-1">Topic: {folder}</div>
+        <div className="mt-1">Receiver: {id}</div>
         {ppmState === 0 &&
           <div className="mt-1 mb-3">Price: free</div>
         }
@@ -180,8 +172,8 @@ export default Call;
 
 export async function getStaticPaths() {
   const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
-  const paths = getAllUsersRes.body.Items.map(user => { 
-    return { params: { id: user.Username.S }}
+  const paths = getAllUsersRes.body.Items.map(user => {
+    return { params: { id: user.Username.S } }
   })
   return {
     paths,
@@ -190,7 +182,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  let user  
+  let user
   const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
@@ -205,5 +197,5 @@ export async function getStaticProps({ params }) {
       }
     }
   })
-  return {props: { user: user } }
+  return { props: { user: user } }
 }

@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { API, Auth } from 'aws-amplify';
 import config from '../../config'
-import { OpenTokSDK } from 'opentok-accelerator-core';
 import OTcommponent from './otComponent'
-import 'opentok-solutions-css';
-// const TextChatAccPack = require('opentok-text-chat');
 
+const CallComponent = (props) => {
 
-const WebphoneHC = (props) => {
   const [tokenDataState, setTokenData] = useState();
   const [connectedState, setConnectedState] = useState(false)
   const currentUser = props.targetUser
   const folder = props.folder
   const deviceInput = props.deviceInput
-
+  
   if (!tokenDataState) {
     (async () => {
       let accessToken
@@ -37,27 +34,22 @@ const WebphoneHC = (props) => {
           sessionId: createSessionRes.body.SessionId,
           token: createSessionRes.body.token
         }
-        setTokenData(OTcreds)
+        setTokenData({
+          OTcreds: OTcreds
+        })
       }).catch((err) => console.log("omg err", err))
     })()
   }
 
 
   if (tokenDataState) {
-    const otSDK = new OpenTokSDK(tokenDataState)
-    otSDK.connect()
-      .then(() => { setConnectedState(true) 
-    })
-      .catch((err) => console.log('connection error', err))
-    if (connectedState) {
+    const otSession = OT.initSession(tokenDataState.OTcreds)
+    console.log(otSession)
       return (
         <div>
-        <div><OTcommponent {...props} otSDK={otSDK} /></div>
+        <div><OTcommponent {...props} otSession={otSession} /></div>
         </div>
       )
-    } else {
-      return <div>connecting...</div>
-    }
   } else {
     return (
       <div>establishing call</div>
@@ -65,4 +57,4 @@ const WebphoneHC = (props) => {
   }
 }
 
-export default WebphoneHC;
+export default CallComponent;
