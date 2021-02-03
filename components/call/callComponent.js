@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { API, Auth } from 'aws-amplify';
 import config from '../../config'
+import { OpenTokSDK } from 'opentok-accelerator-core';
 import OTcommponent from './otComponent'
 
 const CallComponent = (props) => {
-
-  const [tokenDataState, setTokenData] = useState();
-  const [connectedState, setConnectedState] = useState(false)
+  const [tokenDataState, setTokenData] = useState()
+  const [connectedState, setConnectedState] = useState()
   const currentUser = props.targetUser
-  const folder = props.folder
   const deviceInput = props.deviceInput
-  
+
   if (!tokenDataState) {
     (async () => {
       let accessToken
+      let OTcreds
       try {
         const userSession = await Auth.currentSession()
         accessToken = userSession.accessToken.jwtToken
@@ -23,33 +23,35 @@ const CallComponent = (props) => {
       let myInit = {
         body: {
           name: currentUser,
-          folder: folder,
+          folder: null,
           deviceInput: deviceInput,
           accessToken: accessToken
         }
       }
-      API.post(config.apiGateway.NAME, '/tokbox', myInit).then((createSessionRes) => {
-        const OTcreds = {
+      const createSessionRes = await API.post(config.apiGateway.NAME, '/tokbox', myInit)
+        OTcreds = {
           apiKey: createSessionRes.body.apikey,
           sessionId: createSessionRes.body.SessionId,
           token: createSessionRes.body.token
         }
-        setTokenData({
-          OTcreds: OTcreds
-        })
-      }).catch((err) => console.log("omg err", err))
+      setTokenData({ OTcreds: OTcreds} )
     })()
   }
 
-
   if (tokenDataState) {
-    const otSession = OT.initSession(tokenDataState.OTcreds)
-    console.log(otSession)
+    const otSDK = new OpenTokSDK(tokenDataState.OTcreds)
+    otSDK.connect()
+    .then(() => { setConnectedState(true)})
+    .catch((err) => { console.log('ot connection err', err)})
+    if (connectedState) {
       return (
         <div>
-        <div><OTcommponent {...props} otSession={otSession} /></div>
+        <div><OTcommponent {...props} otSDK={otSDK} /></div>
         </div>
       )
+    } else {
+      return <div>calling</div>
+    }
   } else {
     return (
       <div>establishing call</div>

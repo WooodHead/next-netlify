@@ -20,16 +20,14 @@ const OTcomponent = (props) => {
   const [textState, dispatchTextState] = useReducer(reducer, initialState)
 
   const currentUser = props.targetUser
-  const folder = props.folder
   const deviceInput = props.deviceInput
   const allowedDevices = props.allowedDevices
   const audioOn = allowedDevices.audio
-  const otSession = props.otSession
-  const sessionId = otSession.sessionId
+  const otSDK = props.otSDK
+  const sessionId = otSDK.credentials.sessionId
 
   let ringTimer = useRef()
-  const router = useRouter()
-
+  console.log(otSDK)
   const disconnectWithAPI = async () => {
     try {
       navigator.sendBeacon(
@@ -41,14 +39,14 @@ const OTcomponent = (props) => {
     } catch (err) {
       console.log(err)
     }
-    otSession.disconnect()
-    
+    otSDK.disconnect()
+    const router = useRouter()
     router.push(`/${currentUser}/review`)
   }
 
   const onSignalSend = signalInputRefProp => {
     let txtMessage = signalInputRefProp;
-    otSession.signal(
+    otSDK.session.signal(
       { type: "signal", data: "" + txtMessage },
       function signalCallback(err) {
         if (err) {
@@ -74,7 +72,7 @@ const OTcomponent = (props) => {
           "&sessionId=" + sessionId
         )
         clearTimeout(ringTimer.current)
-        otSession.disconnect()
+        otSDK.disconnect()
         setMarkedInactive(true)
     } catch (err) {
       console.log(err)
@@ -93,10 +91,9 @@ const OTcomponent = (props) => {
   }
 
 
-  useEffect(() => {   
-    console.log(otSession) 
-    otSession.on('connectionCreated', (connectionEvent) => {
-      console.log('connection created bro')      
+  useEffect(() => {
+    const session = otSDK.session
+    session.on('connectionCreated', (connectionEvent) => {    
       const connectionId = connectionEvent.connection.id
       const myConnectionId = session.connection.id
       /* another person has joined, send Start time to API */
@@ -115,11 +112,12 @@ const OTcomponent = (props) => {
         setOtherConnection(true)
       }
     })
-    otSession.on('connectionDestroyed', () => {
-      otSession.disconnect()
-      router.push(`/${currentUser}/review`)
+    session.on('connectionDestroyed', () => {
+      console.log(':(')
+      otSDK.disconnect()
+      history.push(`/${currentUser}/review`)
     })
-    otSession.on('signal', (event) => {
+    session.on('signal', (event) => {
       const myConnectionId = session.connection.id
       if (event.data === '%t%yping') {
         if (event.from.connectionId !== myConnectionId) {
@@ -137,38 +135,38 @@ const OTcomponent = (props) => {
         textArea.scrollTop = textArea.scrollHeight
       }
     })
-  }, [otSession, currentUser, router])
+  }, [otSDK, currentUser, history])
 
   if (!markedInactive) {
     
-    // if (otherConnection) {
+    if (otherConnection) {
 
       clearTimeout(ringTimer.current)
       return (
         <div>
         <div>Connected with {currentUser}</div>
         {{
-          "audio": <AudioComponent otSDK={otSession}/>,
-          "video": <VideoComponent audioOn={audioOn} otSDK={otSession}/>,
-          "screen": <ScreenComponent audioOn={audioOn} otSDK={otSession}/>
+          "audio": <AudioComponent otSDK={otSDK}/>,
+          "video": <VideoComponent audioOn={audioOn} otSDK={otSDK}/>,
+          "screen": <ScreenComponent audioOn={audioOn} otSDK={otSDK}/>
         }[deviceInput]}
   
-        {allowedDevices.text && <TextComponent
+        {allowedDevices.text && otSDK && <TextComponent
           selectedDevice={deviceInput}
           textState={textState}
           onSignalSend={onSignalSend}
-          otSDK={otSession}
+          otSDK={otSDK}
         />}
         {otherUserTyping ? <div>other user is typing</div> : <br />}
         <button className="mt-5" id="disconnect" onClick={() => disconnectWithAPI()}>Disconnect</button>
         </div>
       )
-    // } else {
-    //   ringTimer.current = setTimeout(() => disconnectionTimer(), 60000)
-    //   return (
-    //     <div>calling</div>
-    //   )
-    // }
+    } else {
+      ringTimer.current = setTimeout(() => disconnectionTimer(), 60000)
+      return (
+        <div>calling</div>
+      )
+    }
   } else {
     return (
       <div>

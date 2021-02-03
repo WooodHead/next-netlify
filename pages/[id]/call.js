@@ -1,10 +1,15 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import { API, Auth } from 'aws-amplify'
 import Link from 'next/link'
-import CallComponent from '../../components/call/callComponent'
+// import CallComponent from '../../components/call/callComponent'
 import config from '../../config'
 import '../../configureAmplify'
 import Head from 'next/head';
+import dynamic from 'next/dynamic'
+const DynamicCallComponent = dynamic(
+  () => import('../../components/call/callComponent'),
+  { ssr: false }
+)
 
 const Call = ({ user }) => {
 
@@ -76,6 +81,8 @@ const Call = ({ user }) => {
 
   useEffect(() => {
     (async () => {
+      
+      // setOtSDKState(otSDK)
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         setMobileState(true)
       }
@@ -115,12 +122,13 @@ const Call = ({ user }) => {
   }, [])
 
   if (phoneState) {
+    
     return (
       <div>
         <Head>
-          <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+        <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
         </Head>
-        <CallComponent
+        <DynamicCallComponent
           targetUser={id}
           folder={null}
           deviceInput={deviceInputState}
