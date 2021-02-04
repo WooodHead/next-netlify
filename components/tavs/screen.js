@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import dynamic from "next/dynamic"
-const OT = dynamic(() => import('@opentok/client'), { ssr: false })
+import OT from '@opentok/client'
 
 const ScreenComponent = props => {  
   const [hidePublisher, setHidePublisher] = useState(true)

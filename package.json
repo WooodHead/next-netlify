@@ -11,6 +11,8 @@
   "dependencies": {
     "@aws-amplify/ui-react": "^0.2.34",
     "@opentok/client": "^2.19.0",
+    "@stripe/react-stripe-js": "^1.2.2",
+    "@stripe/stripe-js": "^1.11.0",
     "aws-amplify": "^3.3.14",
     "next": "10.0.4",
     "opentok-accelerator-core": "^2.0.17",
