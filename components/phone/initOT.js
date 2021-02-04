@@ -8,15 +8,16 @@ const InitOT = props => {
     const tokenDataProps = props.tokenData
 
     const OTcreds = {
-        apiKey: tokenDataProps.apikey.S,
-        sessionId: tokenDataProps.sessionId.S,
-        token: tokenDataProps.token.S
+        apiKey: tokenDataProps.apikey,
+        sessionId: tokenDataProps.sessionId,
+        token: tokenDataProps.token
     }
 
     const otSDK = new OpenTokSDK(OTcreds)
     otSDK.connect()
     .then(() => { setConnectedState(true) })
     .catch((err) => console.log('connection error', err))
+
     if (connectedState) {
         return (
             <TAVSparent {...props} otSDK={otSDK} />

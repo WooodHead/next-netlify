@@ -7,7 +7,6 @@ import TextComponent from '../tavs/text'
 const TAVSparent = props => {
   const initialState = ''
   const [otherUserTyping, setOtherUserTyping] = useState(false)
-  const [OTsessionState, setOTsessionState] = useState()
   const reducer = (curState, action) => {
     return curState + action.data + "\n"
   }
@@ -61,15 +60,15 @@ const TAVSparent = props => {
 
     return (
       <div  className="container-fluid" id="sessionStatus">
-        Connected with {tokenDataProps.caller.S}
+        Connected with {tokenDataProps.caller}
           {{
             "audio": <AudioComponent otSDK={otSDK} webphoneC={false} />,
             "video": <VideoComponent audioOn={audioOn} otSDK={otSDK} webphoneC={false}/>,
             "screen": <ScreenComponent audioOn={audioOn} otSDK={otSDK} webphoneC={false}/>
-          }[tokenDataProps.deviceInput.S]}
+          }[tokenDataProps.deviceInput]}
         <div id="publisher" ></div>
         {allowedDevices.text && otSDK && <TextComponent
-          selectedDevice={tokenDataProps.deviceInput.S}
+          selectedDevice={tokenDataProps.deviceInput}
           textState={textState}
           onSignalSend={onSignalSend}
           otSDK={otSDK}

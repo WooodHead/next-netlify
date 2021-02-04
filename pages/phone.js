@@ -1,48 +1,64 @@
 import React, { useEffect, useState } from 'react'
-import InitOT from '../components/phone/initOT'
+import { API, Auth } from 'aws-amplify'
+import config from '../config'
+import '../configureAmplify'
+import dynamic from "next/dynamic"
+const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false })
 
 const Phone = () => {
-  const [state, setState] = useState();
-
-  getSessionAsync = async () => {
-    const userSession = await Auth.currentSession()
-    const authHeader = {
-      headers: { Authorization: userSession.idToken.jwtToken }
+  const [state, setState] = useState()
+  const [errState, setErrState] = useState()
+  console.log(state)
+  const getSessionAsync = async () => {
+    try {
+      const userSession = await Auth.currentSession()
+      const authHeader = {
+        headers: { Authorization: userSession.idToken.jwtToken }
+      }
+      const getSelfTavs = API.get(config.apiGateway.NAME, "/users/folders", authHeader )
+      const getSessionRes = API.get(config.apiGateway.NAME, "/tokbox", authHeader )
+      const ownUser = await getSelfTavs
+      const getOTsession = await getSessionRes
+      setState({
+        TAVS: {
+          audio: ownUser.Item.deviceInput.M.audio.BOOL,
+          screen: ownUser.Item.deviceInput.M.screen.BOOL,
+          text: ownUser.Item.deviceInput.M.text.BOOL,
+          video: ownUser.Item.deviceInput.M.video.BOOL
+        },
+        otToken: {
+          Receiver: getOTsession.Item.Receiver.S,
+          apikey: getOTsession.Item.apiKey.S,
+          caller: getOTsession.Item.caller.S,
+          deviceInput: getOTsession.Item.deviceInput.S,
+          // folder: getOTsession.Item.folder.S,
+          sessionId: getOTsession.Item.sessionId.S,
+          token: getOTsession.Item.token.S
+        },
+        userSession: userSession,
+      })
+    } catch (err) {
+      setErrState(true)
     }
-    const getSelfTavs = API.get(config.apiGateway.NAME, "/users/folders", authHeader )
-    const getSessionRes = API.get(config.apiGateway.NAME, "/tokbox", authHeader )
-    const ownUser = await getSelfTavs
-    const getOTsession = await getSessionRes
-
-    setState({
-      TAVS: {
-        audio: ownUser.Item.deviceInput.M.audio.BOOL,
-        screen: ownUser.Item.deviceInput.M.screen.BOOL,
-        text: ownUser.Item.deviceInput.M.text.BOOL,
-        video: ownUser.Item.deviceInput.M.video.BOOL
-      },
-      userSession: userSession,
-      otToken: getOTsession.Item
-    })
   }
 
   useEffect(() => {
     getSessionAsync()
   }, [])
 
-  if (otTokenState) {
     return (
       <div>
-        <InitOT
-          tokenData={state.otToken}
-          cognitoData={state.userSession}
-          allowedDevices={state.TAVS}
-        />
+        {state?.otToken.sessionId && <div>
+          <InitOT
+            tokenData={state.otToken}
+            cognitoData={state.userSession}
+            allowedDevices={state.TAVS}
+          />
+        </div>}
+        {errState && <div>caller disconnected</div>}
+        {!state && !errState && <div>retrieving data</div>}
       </div>
     )
-  } else {
-    <div>retrieving data</div>
   }
-}
 
 export default Phone
