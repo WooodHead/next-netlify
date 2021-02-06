@@ -10,30 +10,52 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function Edit({ user }) {
   const [quillState, setQuillState] = useState(user.publicString)
+  const [savedState, setSavedState] = useState()
 
+  console.log((quillState))
+  function byteCount(s) {
+    return encodeURI(s).split(/%..|./).length - 1;
+}
+  const typingFn = (e) => {
+
+
+    setQuillState(e)
+    setSavedState(false)
+  }
   const savePublicString = async () => {
     try {
       const userSession = await Auth.currentSession()
       const stringInit = {
-        headers: { Authorization: "" + userSession.idToken.jwtToken },
+        headers: { Authorization: userSession.idToken.jwtToken },
         body: {
-          publicString: "" + quillState
+          publicString: `` + quillState
         }
       }
       await API.post(config.apiGateway.NAME, '/savePublicString', stringInit )
+      setSavedState(true)
     } catch (err) {
       console.log(err)
     }
-    
   }
-
     return (
       <div>
-        <ReactQuill theme={"snow"} value={quillState} onChange={(e) => setQuillState(e)}/>
+        <ReactQuill theme={"snow"} 
+            modules={{ /*this fixes the additional spacing issue??? */
+              clipboard: {
+                  matchVisual: false
+              }
+          }} 
+          value={quillState} onChange={(e) => typingFn(e) }/>
         <button onClick={savePublicString}>save</button>
-        <Link href={"/" + user.Username}>
-        <a>Back to user</a>
-      </Link>
+        { savedState && <> saved</> }
+        <div>
+          <Link href={"/" + user.Username}>
+            <a>Back to user</a>
+          </Link>
+        </div>
+        
+
+      
       </div>
       
     )

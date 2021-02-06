@@ -8,7 +8,7 @@ const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false 
 const Phone = () => {
   const [state, setState] = useState()
   const [errState, setErrState] = useState()
-  console.log(state)
+
   const getSessionAsync = async () => {
     try {
       const userSession = await Auth.currentSession()
@@ -31,7 +31,6 @@ const Phone = () => {
           apikey: getOTsession.Item.apiKey.S,
           caller: getOTsession.Item.caller.S,
           deviceInput: getOTsession.Item.deviceInput.S,
-          // folder: getOTsession.Item.folder.S,
           sessionId: getOTsession.Item.sessionId.S,
           token: getOTsession.Item.token.S
         },
