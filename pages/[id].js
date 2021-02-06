@@ -33,7 +33,7 @@ export default function User({ user }) {
       <h3>{user.Username}</h3>
       {user.folders.map((folder) => <h5 key={folder}>{folder}</h5>)}
       <div dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
-      <Link href={user.Username + '/edit'}>
+      <Link href={ "/" + user.Username + '/edit'}>
         <a>edit</a>
       </Link>
     </div>

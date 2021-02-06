@@ -19,10 +19,11 @@ const CallComponent = (props) => {
         }
       }
       const createSessionRes = await API.post(config.apiGateway.NAME, '/createSession2', myInit)
+      console.log(createSessionRes)
       const OTcreds = {
-        apiKey: createSessionRes.body.apikey,
-        sessionId: createSessionRes.body.SessionId,
-        token: createSessionRes.body.token
+        apiKey: createSessionRes.apikey,
+        sessionId: createSessionRes.SessionId,
+        token: createSessionRes.token
       }
       setTokenData({ OTcreds: OTcreds })
     })()

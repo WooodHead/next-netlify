@@ -53,11 +53,7 @@ export default function Edit({ user }) {
             <a>Back to user</a>
           </Link>
         </div>
-        
-
-      
       </div>
-      
     )
 }
 
