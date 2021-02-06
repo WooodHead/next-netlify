@@ -19,6 +19,7 @@ const Phone = () => {
       const getSessionRes = API.get(config.apiGateway.NAME, "/tokbox", authHeader )
       const ownUser = await getSelfTavs
       const getOTsession = await getSessionRes
+      console.log(getOTsession.Item.apiKey)
       setState({
         TAVS: {
           audio: ownUser.Item.deviceInput.M.audio.BOOL,
@@ -28,7 +29,7 @@ const Phone = () => {
         },
         otToken: {
           Receiver: getOTsession.Item.Receiver.S,
-          apikey: getOTsession.Item.apiKey.S,
+          apikey: getOTsession.Item.apikey.S,
           caller: getOTsession.Item.caller.S,
           deviceInput: getOTsession.Item.deviceInput.S,
           sessionId: getOTsession.Item.sessionId.S,
@@ -37,6 +38,7 @@ const Phone = () => {
         userSession: userSession,
       })
     } catch (err) {
+      console.log(err)
       setErrState(true)
     }
   }

@@ -162,7 +162,7 @@ const OTcomponent = (props) => {
         </div>
       )
     } else {
-      ringTimer.current = setTimeout(() => disconnectionTimer(), 60000)
+      ringTimer.current = setTimeout(() => disconnectionTimer(), 120000)
       return (
         <div>calling</div>
       )

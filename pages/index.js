@@ -24,6 +24,9 @@ export default function Home() {
         <Link href="/signIn">
           <a >sign in</a>
         </Link>
+        <Link href="/phone">
+          <a >receive call</a>
+        </Link>
         
       </main>
 

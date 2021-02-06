@@ -14,19 +14,12 @@ const DynamicCallComponent = dynamic(
 const Call = ({ user }) => {
 
   const id = user.Username
-
-  const receiverRef = useRef()
   const callerRef = useRef('anonymous')
 
-  let defaultInput = 'audio'
-
-  receiverRef.current = id
-  const [deviceInputState, setDeviceInputState] = useState(defaultInput);
-  const [ppmState, setPPMstate] = useState(0)
+  const [deviceInputState, setDeviceInputState] = useState('audio');
   const [mobileState, setMobileState] = useState(false)
-  const [callerHasCardState, setCallerHasCardState] = useState(false)
   const [errorState, setErrorState] = useState('init')
-  const [phoneState, setPhoneState] = useState(false)
+  const [callingState, setCallingState] = useState(false)
   const [deviceBadState, setDeviceBadState] = useState(false)
 
   function financial(x) {
@@ -55,9 +48,7 @@ const Call = ({ user }) => {
           if (allowedDevices[CRprops.TAVS]) {
             setDeviceBadState(false)
             setDeviceInputState(CRprops.TAVS)
-          }
-        }
-        }
+          } } }
       >
         <input className="mr-1"
           style={{ cursor: "pointer" }}
@@ -72,37 +63,16 @@ const Call = ({ user }) => {
     );
   }
 
-  const ppmx04 = ppmState * 0.04
-  const firstMinFee = (0.02 + ppmState) * 0.04
-  const firstMin = (0.32 + firstMinFee + ppmState >= 0.5) ? 0.32 + firstMinFee + ppmState : 0.50
-  const rounded = Math.round(firstMin * 100)
-  const firstMinPrice = financial(rounded / 100)
-  const subsequentPayment = financial(ppmx04 + ppmState)
-
   useEffect(() => {
     (async () => {
-      
-      // setOtSDKState(otSDK)
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         setMobileState(true)
       }
       try {
-        const authUser = await Auth.currentAuthenticatedUser()
-        callerRef.current = authUser.attributes.preferred_username
-      } catch { }
-
-      try {
-        /* this authorization isn't context, its header.params */
-        const receiverGet = API.get(config.apiGateway.NAME, "/users", { headers: { Authorization: "" + receiverRef.current } })
-        if (callerRef.current !== 'anonymous') {
-          const callerGet = await API.get(config.apiGateway.NAME, "/users", { headers: { Authorization: "" + callerRef.current } })
-          setCallerHasCardState(callerGet.Item.customer.BOOL)
-        }
-        const receiverGot = await receiverGet
+        /* this authorization isn't context, its header.params; I'm stupidly using it to send data */
+        const receiverGot = await API.get(config.apiGateway.NAME,"/users",{headers: {Authorization: id}})
         if (receiverGot.hasOwnProperty('Item')) {
-          if (receiverGot.Item.active.BOOL === false) { setErrorState('offline') }
-          if (receiverGot.Item.busy.BOOL === true) { setErrorState('busy') }
-          setPPMstate(Number(receiverGot.Item.ppm.N))
+          /* if receiver exists */
           const rawDevices = receiverGot.Item.deviceInput.M
           for (const [device, bool] of Object.entries(rawDevices)) {
             if (bool.BOOL === true) {
@@ -111,18 +81,12 @@ const Call = ({ user }) => {
               setDeviceBadState(true)
             }
           }
-          if ((receiverGot.Item.active.BOOL === true) && (receiverGot.Item.busy.BOOL === false)) {
-            setErrorState('good')
-          }
         } else { setErrorState('nonexist') }
-      } catch (err) {
-        console.log(err)
-      }
+      } catch (err) { console.log(err) }
     })()
   }, [])
 
-  if (phoneState) {
-    
+  if (callingState) {
     return (
       <div>
         <Head>
@@ -132,7 +96,6 @@ const Call = ({ user }) => {
           targetUser={id}
           folder={null}
           deviceInput={deviceInputState}
-          // timer={converstationTime}
           allowedDevices={allowedDevices}
         />
       </div>
@@ -141,42 +104,19 @@ const Call = ({ user }) => {
     return (
       <div className="container">
         <div className="mt-1">Receiver: {id}</div>
-        {ppmState === 0 &&
-          <div className="mt-1 mb-3">Price: free</div>
-        }
-        {ppmState > 0 &&
-          <div>
-            <div className="mt-1">Price after fees: ${firstMinPrice} first minute</div>
-            <div className="ml-3 mb-3">${subsequentPayment} each subsequent minute</div>
-          </div>
-        }
+        <div className="mt-1 mb-3">Price: free</div>
         < CustomRadioButton TAVS="text" />
         < CustomRadioButton TAVS="audio" />
         < CustomRadioButton TAVS="video" />
         < CustomRadioButton TAVS="screen" />
-        {
-          ((ppmState > 0 && callerHasCardState) && (errorState === 'good')) &&
-          <button onClick={() => setPhoneState(true)} className="mt-3 mb-3">call</button>
-        }
-        {
-          ((ppmState === 0 && (errorState === 'good')) && (!deviceBadState)) &&
-          <button onClick={() => setPhoneState(true)} className="mt-3 mb-3">call</button>
-        }
-        {/* {authState && <div>calls are limited to 25 minutes</div>} */}
-        {((ppmState > 0 && callerHasCardState) && (errorState === 'good')) &&
-          <div>a call time of 1 minute 1 second is billed for 2 minutes</div>
-        }
+        <button onClick={() => setCallingState(true)} className="mt-3 mb-3">call</button>
         {deviceBadState && <div>Choose an available device</div>}
         {mobileState && (deviceInputState === 'screen') && <div style={{ color: 'red' }}>mobile devices do not currently support screen publishing</div>}
-        {(ppmState > 0 && !callerHasCardState) && <div><Link to='/i/billing'>You don't have a credit or debit card on file</Link></div>}
-        {(callerRef.current === 'anonymous') && (errorState === 'good') &&
-          <div>By pressing call, you agree to the <Link to="/i/policies">Privacy Policy and Terms of Service</Link></div>}
       </div>
     )
   }
 }
 export default Call;
-
 
 export async function getStaticPaths() {
   const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
