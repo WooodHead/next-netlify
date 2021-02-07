@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
+// import Header from '@components/Header'
+// import Footer from '@components/Footer'
 import { useRouter } from 'next/router'
 import  Link from 'next/link'
 
@@ -9,12 +9,12 @@ export default function Home() {
   return (
     <div className="container">
       <Head>
-        <title>Next.js Starter!</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Talktree</title>
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
       <main>
-        <Header title="hello" />
+        {/* <Header title="hello" /> */}
         {/* <p className="description" onClick={goToUsers}>
           See all users here
         </p> */}
@@ -30,7 +30,7 @@ export default function Home() {
         
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

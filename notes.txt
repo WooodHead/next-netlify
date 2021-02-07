@@ -4,3 +4,10 @@ they are both using the same dynamodb entry... I think it has to do with getStat
 a live dev update, it updated
 Google search console says site crawled 2/2, I guess maybe I didn't have that next question there
 users indexing error?
+Where the fuck is the app.manifest and other stuff in this next-netlify build. Do I need to escape this package?
+saving edit.ts, I have to install @types then I get import Footer from '@components/Footer' error, wtf
+I can find my topic names in google, but I can't find anything else, with quotes
+Submit index requests for homepage, it should index everything that is a link child. Allow up to a week...
+2/7
+Index worked, after manually requesting, 24 hrs later
+I was wondering where the app manifest was, and index.html; each page has a diff index.html!

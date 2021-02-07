@@ -144,7 +144,6 @@ const OTcomponent = (props) => {
       clearTimeout(ringTimer.current)
       return (
         <div>
-        <div>Connected with {currentUser}</div>
         {{
           "audio": <AudioComponent otSDK={otSDK}/>,
           "video": <VideoComponent audioOn={audioOn} otSDK={otSDK}/>,

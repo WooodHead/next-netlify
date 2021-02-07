@@ -10,7 +10,7 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function Edit({ user }) {
   const [quillState, setQuillState] = useState(user.publicString)
-  const [savedState, setSavedState] = useState()
+  const [savedState, setSavedState] = useState(false)
 
   console.log((quillState))
   function byteCount(s) {
@@ -58,7 +58,8 @@ export default function Edit({ user }) {
 }
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
+  const init = null
+  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers", init)
   const paths = getAllUsersRes.body.Items.map(user => { 
     return { params: { id: user.Username.S }}
   })
