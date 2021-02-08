@@ -12,19 +12,15 @@ export default function Edit({ user }) {
   const [quillState, setQuillState] = useState(user.publicString)
   const [savedState, setSavedState] = useState(false)
 
-  console.log((quillState))
-  function byteCount(s) {
-    return encodeURI(s).split(/%..|./).length - 1;
-}
   const typingFn = (e) => {
-
-
     setQuillState(e)
     setSavedState(false)
   }
   const savePublicString = async () => {
     try {
       const userSession = await Auth.currentSession()
+      const authToken = userSession
+      console.log(userSession.getIdToken().jwtToken)
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
@@ -58,8 +54,7 @@ export default function Edit({ user }) {
 }
 
 export async function getStaticPaths() {
-  const init = null
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers", init)
+  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers", null)
   const paths = getAllUsersRes.body.Items.map(user => { 
     return { params: { id: user.Username.S }}
   })
@@ -70,8 +65,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  let user  
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
+  let user
+  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers", null)
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {
