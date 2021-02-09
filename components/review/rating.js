@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { API, Auth } from 'aws-amplify';
 import { CustomSpinner } from '../../components/custom/spinner'
 import { useRouter } from "next/router";
-import config from '../../config'
 
 const Rating = () => {
     
@@ -31,7 +30,7 @@ const Rating = () => {
               recipient: receiver
             }
           }
-          const postReview = await API.post(config.apiGateway.NAME, '/review', myInit)
+          const postReview = await API.post(process.env.apiGateway.NAME, '/review', myInit)
           if (postReview?.errorType === 'ValidationException') {
             setReviewErrorState('User does not exist')
           } else if (postReview.body === 'success') {

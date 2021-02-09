@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
-import config from '../../config'
 import { OpenTokSDK } from 'opentok-accelerator-core';
 import OTcommponent from './otComponent'
 
@@ -18,7 +17,7 @@ const CallComponent = (props) => {
           deviceInput: deviceInput,
         }
       }
-      const createSessionRes = await API.post(config.apiGateway.NAME, '/createSession2', myInit)
+      const createSessionRes = await API.post(process.env.apiGateway.NAME, '/createSession2', myInit)
       console.log(createSessionRes)
       const OTcreds = {
         apiKey: createSessionRes.apikey,

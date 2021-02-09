@@ -1,5 +1,4 @@
 import React, { useState }  from 'react'
-import config from '../../config'
 import Amplify, { API, Auth } from 'aws-amplify'
 import '../../configureAmplify'
 import dynamic from "next/dynamic"
@@ -27,7 +26,7 @@ export default function Edit({ user }) {
           publicString: `` + quillState
         }
       }
-      await API.post(config.apiGateway.NAME, '/savePublicString', stringInit )
+      await API.post(process.env.apiGateway.NAME, '/savePublicString', stringInit )
       setSavedState(true)
     } catch (err) {
       console.log(err)
@@ -54,7 +53,7 @@ export default function Edit({ user }) {
 }
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers", null)
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers", null)
   const paths = getAllUsersRes.body.Items.map(user => { 
     return { params: { id: user.Username.S }}
   })
@@ -66,7 +65,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let user
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers", null)
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers", null)
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {

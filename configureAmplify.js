@@ -1,11 +1,10 @@
 import Amplify from 'aws-amplify'
-import config from './config'
 
 Amplify.configure(  {Auth: {
-  region: config.cognito.REGION,
-  userPoolId: config.cognito.USER_POOL_ID,
-  userPoolWebClientId: config.cognito.APP_CLIENT_ID, 
+  region: process.env.cognito.REGION,
+  userPoolId: process.env.cognito.USER_POOL_ID,
+  userPoolWebClientId: process.env.cognito.APP_CLIENT_ID, 
 },
 API: {
-  endpoints: [ { name: config.apiGateway.NAME, endpoint: config.apiGateway.URL } ]
+  endpoints: [ { name: process.env.apiGateway.NAME, endpoint: process.env.apiGateway.URL } ]
 }})

@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { API } from 'aws-amplify'
-import config from '../config'
 import { useRouter } from 'next/router'
 import '../configureAmplify'
 import styles from '../css/users.module.css'
@@ -42,7 +41,7 @@ const Users = ({ allUsers }) => {
 
 export async function getStaticProps() {
   const newAllUsers = []
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
     const firstSixFolders = userRes.folders?.SS.slice(0, 6) || []
     newAllUsers.push({

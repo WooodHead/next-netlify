@@ -7,8 +7,6 @@ import PaymentNavbar from '../../components/review/paymentNavbar'
 import CardTip from '../../components/review/cardTip'
 // import PRTip from '../../components/review/prTip'
 import { loadStripe } from '@stripe/stripe-js';
-import config from '../../config'
-import dynamic from 'next/dynamic'
 import '../../configureAmplify'
 
 // const DynamicCallComponent = dynamic(
@@ -65,7 +63,7 @@ const ReviewParent = props => {
         // const getUserParams = { headers: { Authorization: receiver } }
         const getReceiverParams = { body: { receiver: receiverRef } } 
         // const getUser = await API.get(config.apiGateway.NAME, '/users', getUserParams)
-        const getUser = await API.post(config.apiGateway.NAME, '/getReceiver', getReceiverParams)
+        const getUser = await API.post(process.env.apiGateway.NAME, '/getReceiver', getReceiverParams)
         if (getUser.body.onBoarding !== 'finished') {
           setPaymentState('noReceiver'); amountInputDOM.disabled = true 
         }
@@ -76,7 +74,7 @@ const ReviewParent = props => {
       }
       try {
         /* load stripe */
-        const stripe = await loadStripe(config.STRIPE_KEY, { stripeAccount: stripeAccount })
+        const stripe = await loadStripe(process.env.STRIPE_KEY, { stripeAccount: stripeAccount })
   
         setStripeState(stripe)
         try {
@@ -103,7 +101,7 @@ const ReviewParent = props => {
         const userSession = authUser.signInUserSession
         const getCardParams = { headers: { Authorization: userSession.idToken.jwtToken } }
         try {
-          const getCardOnFile = await API.get(config.apiGateway.NAME, '/cards', getCardParams)
+          const getCardOnFile = await API.get(process.env.apiGateway.NAME, '/cards', getCardParams)
           setCardOnFile(getCardOnFile.body.Item.preferredCard)
         } catch { /* no card on file found */ }  
       } catch { /* user not logged in */ }
@@ -176,7 +174,7 @@ const ReviewParent = props => {
 export default ReviewParent;
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   const paths = getAllUsersRes.body.Items.map(user => {
     return { params: { id: user.Username.S } }
   })
@@ -188,7 +186,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let user
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {

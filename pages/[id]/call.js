@@ -2,7 +2,6 @@ import React, { useEffect, useReducer, useRef, useState } from "react";
 import { API, Auth } from 'aws-amplify'
 import Link from 'next/link'
 // import CallComponent from '../../components/call/callComponent'
-import config from '../../config'
 import '../../configureAmplify'
 import Head from 'next/head';
 import dynamic from 'next/dynamic'
@@ -70,7 +69,7 @@ const Call = ({ user }) => {
       }
       try {
         /* this authorization isn't context, its header.params; I'm stupidly using it to send data */
-        const receiverGot = await API.get(config.apiGateway.NAME,"/users",{headers: {Authorization: id}})
+        const receiverGot = await API.get(process.env.apiGateway.NAME,"/users",{headers: {Authorization: id}})
         if (receiverGot.hasOwnProperty('Item')) {
           /* if receiver exists */
           const rawDevices = receiverGot.Item.deviceInput.M
@@ -119,7 +118,7 @@ const Call = ({ user }) => {
 export default Call;
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   const paths = getAllUsersRes.body.Items.map(user => {
     return { params: { id: user.Username.S } }
   })
@@ -131,7 +130,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let user
-  const getAllUsersRes = await API.get(config.apiGateway.NAME, "/getAllUsers")
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {

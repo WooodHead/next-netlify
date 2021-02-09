@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { API, Auth } from 'aws-amplify'
-import config from '../config'
 import '../configureAmplify'
 import dynamic from "next/dynamic"
 const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false })
@@ -15,8 +14,8 @@ const Phone = () => {
       const authHeader = {
         headers: { Authorization: userSession.idToken.jwtToken }
       }
-      const getSelfTavs = API.get(config.apiGateway.NAME, "/users/folders", authHeader )
-      const getSessionRes = API.get(config.apiGateway.NAME, "/tokbox", authHeader )
+      const getSelfTavs = API.get(process.env.apiGateway.NAME, "/users/folders", authHeader )
+      const getSessionRes = API.get(process.env.apiGateway.NAME, "/tokbox", authHeader )
       const ownUser = await getSelfTavs
       const getOTsession = await getSessionRes
       console.log(getOTsession.Item.apiKey)

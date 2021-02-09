@@ -5,7 +5,7 @@ import AudioComponent from '../tavs/audio'
 import VideoComponent from '../tavs/video'
 import ScreenComponent from '../tavs/screen'
 import TextComponent from '../tavs/text'
-import config from '../../config'
+
 
 const OTcomponent = (props) => {
 
@@ -31,7 +31,7 @@ const OTcomponent = (props) => {
   const disconnectWithAPI = async () => {
     try {
       navigator.sendBeacon(
-        config.apiGateway.URL +
+        process.env.apiGateway.URL +
         "/disconnectCall" +
         "?receiver=" + currentUser +
         "&sessionId=" + sessionId
@@ -64,9 +64,9 @@ const OTcomponent = (props) => {
             sessionId: sessionId
           }
         }
-        await API.post(config.apiGateway.NAME, "/userstatus/forceInactive", init)
+        await API.post(process.env.apiGateway.NAME, "/userstatus/forceInactive", init)
         navigator.sendBeacon(
-          config.apiGateway.URL +
+          process.env.apiGateway.URL +
           "/disconnectCall" +
           "?receiver=" + currentUser +
           "&sessionId=" + sessionId
@@ -83,7 +83,7 @@ const OTcomponent = (props) => {
     event.preventDefault()
     event.returnValue = ""
     navigator.sendBeacon(
-      config.apiGateway.URL +
+      process.env.apiGateway.URL +
       "/disconnectCall" +
       "?receiver=" + currentUser +
       "&sessionId=" + sessionId
@@ -102,7 +102,7 @@ const OTcomponent = (props) => {
           event.preventDefault()
           event.returnValue = ""
           navigator.sendBeacon(
-            config.apiGateway.URL +
+            process.env.apiGateway.URL +
               "/disconnectCall" +
               "?receiver=" + currentUser +
               "&sessionId=" + session.id

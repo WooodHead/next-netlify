@@ -4,9 +4,8 @@ import { API } from 'aws-amplify';
 import { CustomSpinner } from '../../components/custom/spinner'
 import { useRouter } from "next/router";
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
-import config from '../../config'
 // import { loadStripe } from '@stripe/stripe-js';
-// import Config from '../../config'
+
 
 const CardTip = props => {
 
@@ -45,7 +44,7 @@ const CardTip = props => {
           caller: callerNumberState,
           usingCardOnFile: cardOnFile
         } }
-        const clientSecret = await API.post(config.apiGateway.NAME, '/createTipIntent', myInit);
+        const clientSecret = await API.post(process.env.apiGateway.NAME, '/createTipIntent', myInit);
         if (clientSecret.err === "User does not exist") {
           setTipErrorState('User does not exist')
         }
