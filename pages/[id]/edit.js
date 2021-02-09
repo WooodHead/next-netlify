@@ -53,7 +53,7 @@ export default function Edit({ user }) {
 }
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers", null)
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   const paths = getAllUsersRes.body.Items.map(user => { 
     return { params: { id: user.Username.S }}
   })
@@ -65,7 +65,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let user
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers", null)
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {

@@ -25,7 +25,3 @@ module.exports = (phase) => {
 
   return { env }
 }
-
-// module.exports = {
-//   STRIPE_KEY: 'HAHA BITCH'
-// }
