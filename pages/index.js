@@ -1,11 +1,10 @@
 import Head from 'next/head'
-// import Header from '@components/Header'
-// import Footer from '@components/Footer'
 import { useRouter } from 'next/router'
 import  Link from 'next/link'
+import NavbarComp from '../components/nabar/navbar'
 
 export default function Home() {
-  console.log(process.env.STRIPE_KEY)
+
   return (
     <div className="container">
       <Head>
@@ -14,23 +13,12 @@ export default function Home() {
       </Head>
 
       <main>
+        <NavbarComp />
         {/* <Header title="hello" /> */}
         {/* <p className="description" onClick={goToUsers}>
           See all users here
-        </p> */}
-        <Link href="/users">
-          <a >all users</a>
-        </Link>
-        <Link href="/signIn">
-          <a >sign in</a>
-        </Link>
-        <Link href="/phone">
-          <a >receive call</a>
-        </Link>
-        
+        </p> */}       
       </main>
-
-      {/* <Footer /> */}
     </div>
   )
 }

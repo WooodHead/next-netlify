@@ -11,3 +11,5 @@ Submit index requests for homepage, it should index everything that is a link ch
 2/7
 Index worked, after manually requesting, 24 hrs later
 I was wondering where the app manifest was, and index.html; each page has a diff index.html!
+2/8
+2/9

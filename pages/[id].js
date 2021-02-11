@@ -3,14 +3,13 @@ import { API } from 'aws-amplify'
 import '../configureAmplify'
 import Link from 'next/link'
 import Head from 'next/head'
-
+import NavbarComp from '../components/nabar/navbar'
 export default function User({ user }) {
 
   const openCallPhone = () => {
     const devSite = `/${user.Username}/call`
     const prodSite = `https://talktree.me/${user.Username}/call`
-    /* PROBLEM NO GOING PROD */
-    const currentSite = process.env.REACT_APP_STAGE === 'prod' ? prodSite : devSite
+    const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
     window.open(
       currentSite,
       "MsgWindow",
@@ -19,23 +18,32 @@ export default function User({ user }) {
   }
 
   return (
-    <div>
+    <>
       <Head>
         <title>Chat with {user.Username}, who might have solved this</title>
         <meta name="description" content={'userprovidedcontent'} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Link href="/users">
-        <a>Back to users</a>
-      </Link>
-      <button onClick={openCallPhone}>open phone</button>
-      <h3>{user.Username}</h3>
-      {user.folders.map((folder) => <h5 key={folder}>{folder}</h5>)}
-      <div dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
-      <Link href={ "/" + user.Username + '/edit'}>
-        <a>edit</a>
-      </Link>
-    </div>
+      <NavbarComp />
+      <div className="mx-5">
+        
+        <div className="flex flex-row">
+          <div className="flex flex-col mx-5">
+          <h3 className='mx-5 my-5'>{user.Username}</h3>
+          <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
+          </div>
+          
+          <div>{user.folders.map((folder) => <h5 key={folder}>{folder}</h5>)}</div>
+        </div>
+
+
+        <div className="my-5" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
+        <Link href={ "/" + user.Username + '/edit'}>
+          <a className="border-2 hover:border-black">edit</a>
+        </Link>
+      </div>
+
+    </>
   )
 }
 

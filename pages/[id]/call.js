@@ -101,7 +101,7 @@ const Call = ({ user }) => {
     )
   } else {
     return (
-      <div className="container">
+      <div className="mx-5 my-2">
         <div className="mt-1">Receiver: {id}</div>
         <div className="mt-1 mb-3">Price: free</div>
         < CustomRadioButton TAVS="text" />

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { API } from 'aws-amplify'
 import { useRouter } from 'next/router'
 import '../configureAmplify'
-import styles from '../css/users.module.css'
+
 const Users = ({ allUsers }) => {
   const router = useRouter()
 
@@ -13,28 +13,36 @@ const Users = ({ allUsers }) => {
     <>
       <h2>
         <Link href="/">
-          <a>Back to home</a>
+          <a className="mx-5 my-5">Back to home</a>
         </Link>
       </h2>
       <div>
         {allUsers.map((user) => {
           return (
-            <div className={styles.userList} key={user.Username} onClick={() => userClickFn(user.Username)}>
-              <Link href={"/" + user.Username}>
-                <a>{user.Username}</a>
-              </Link>
-              
-              <div className={styles.userListFolders}>
-                {user.folders.map((folder) => {
-                  return (
-                    <div key={user.Username + folder} >{folder}</div>
-                  )
-                })}</div>
+            <div
+              className="flex mx-5 my-5 bg-gray-100 hover:bg-gray-200"
+              key={user.Username}
+              onClick={() => userClickFn(user.Username)}
+            >
+              <div className="mx-5 my-2">
+                <Link 
+                className="" 
+                href={"/" + user.Username}
+                >
+                  <a className="flex flex-row">
+                    {user.Username}
+                    <div className="flex flex-col flex-wrap max-h-20">{user.folders.map((folder) => {
+                    return (
+                      <div className="mx-5 " key={user.Username + folder} >{folder}</div>
+                    )
+                  })}</div></a>
+                </Link>
+              </div>
+                
             </div>
           )
         })}
       </div>
-
     </>
   )
 }
@@ -54,7 +62,7 @@ export async function getStaticProps() {
       publicString: userRes.publicString?.S || null
     })
   })
-  return {props: { allUsers: newAllUsers } }
+  return { props: { allUsers: newAllUsers } }
 }
 
 export default Users
