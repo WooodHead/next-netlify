@@ -3,7 +3,8 @@ import { API } from 'aws-amplify'
 import '../configureAmplify'
 import Link from 'next/link'
 import Head from 'next/head'
-import NavbarComp from '../components/nabar/navbar'
+import NavbarComp from '../components/navbar/navbar'
+
 export default function User({ user }) {
 
   const openCallPhone = () => {
@@ -27,22 +28,25 @@ export default function User({ user }) {
       <NavbarComp />
       <div className="mx-5">
         
-        <div className="flex flex-row">
-          <div className="flex flex-col mx-5">
-          <h3 className='mx-5 my-5'>{user.Username}</h3>
-          <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
+        <div className="flex flex-row bg-gray-100 my-5">
+          <div className="flex flex-col mx-5 my-5">
+            <h3 className='mx-5 my-5'>{user.Username}</h3>
+            <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
           </div>
-          
-          <div>{user.folders.map((folder) => <h5 key={folder}>{folder}</h5>)}</div>
+          <div className="my-3" >
+          <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
+          </div>
         </div>
 
+        <div className="bg-gray-100" >
+          {user.folders.map((folder) => <h5 key={folder}>{folder}</h5>)}
+        </div>
 
-        <div className="my-5" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
+        <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.topicString }} ></div>
         <Link href={ "/" + user.Username + '/edit'}>
           <a className="border-2 hover:border-black">edit</a>
         </Link>
       </div>
-
     </>
   )
 }
@@ -70,7 +74,8 @@ export async function getStaticProps({ params }) {
         folders: userRes.folders?.SS || [],
         ppm: userRes.ppm.N,
         ratingAv: userRes.ratingAv?.S || null,
-        publicString: userRes.publicString?.S || null
+        publicString: userRes.publicString?.S || null,
+        topicString: userRes.topicString?.S || null
       }
     }    
   })
