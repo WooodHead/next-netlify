@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import  Link from 'next/link'
-import NavbarComp from '../components/nabar/navbar'
+import NavbarComp from '../components/navbar/navbar'
 
 export default function Home() {
 

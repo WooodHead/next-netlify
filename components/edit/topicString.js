@@ -5,7 +5,7 @@ import { API, Auth } from 'aws-amplify'
 export default function TopicString(props) {
   const [editState, setEditState] = useState()
   const [savedState, setSavedState] = useState()
-  const [stringState, setStringState] = useState(props.user.topicString)
+  const [stringState, setStringState] = useState(props.stringState)
   /* seperated string and quill because if quill didn't save, it would appear as if it did when edit closed */
   const [quillState, setQuillState] = useState(props.user.topicString)
   
@@ -15,7 +15,7 @@ export default function TopicString(props) {
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
-          stringType: 'topicString',
+          new: false,
           string: `` + quillState
         }
       }
@@ -54,11 +54,13 @@ export default function TopicString(props) {
         </div>}
       </div>
       : <div>
-          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
+          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: props.stringState }} ></div>
           <button onClick={() => setEditState(true)}>
             <div className="border-2 my-3 mx-3 hover:border-black">edit</div>
           </button>
-
+          <button onClick={() => props.deleteTopic(props.topicState)}>
+        <div className="border-2 my-3 mx-3 hover:border-black">delete</div>
+      </button>
       </div>
     }
   </div>

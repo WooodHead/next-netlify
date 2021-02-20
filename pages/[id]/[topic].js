@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 const PublicString = dynamic(() => import('../../components/edit/publicString'),{ ssr: false })
 const Topics = dynamic(() => import('../../components/edit/topics'),{ ssr: false })
 
-export default function Edit( { user } ) {
+export default function Topic( { user } ) {
   const [isUser, setIsUser] = useState(false)
   const [userDataState, setUserDataState] = useState( { user } )
 
@@ -34,13 +34,6 @@ export default function Edit( { user } ) {
   }
 
   useEffect(() => {
-  //   (async () => {try {
-  //     const userAuth = await Auth.currentAuthenticatedUser()
-  //     userAuth.attributes.preferred_username === user.Username && setIsUser(true)
-  //   } catch { 
-  //     return setIsUser(false)
-  //   }
-  // })()
     getUserData()
   }, [])
 
