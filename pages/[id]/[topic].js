@@ -49,7 +49,7 @@ export default function Topic( { user, topic } ) {
           )}
         </div>
             <div>
-            <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic.S }} ></div>
+            <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic }} ></div>
             </div>
       </div>
     </>
@@ -60,9 +60,11 @@ export async function getStaticPaths() {
   const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   const paths = []
   getAllUsersRes.body.Items.map(user => { 
-      Object.keys(user.topics.M).map((topic) => {
-        paths.push({ params: { id: user.Username.S, topic: "" + topic }})
-    }) 
+      if (user.topics) { Object.keys(user.topics.M).map((topic) => {
+        paths.push({ params: { id: user.Username.S, topic: topic }})
+    }) } else {
+      paths.push({ params: { id: user.Username.S, topic: "" }})
+    }
   })
   
   return {
@@ -90,7 +92,7 @@ export async function getStaticProps({ params }) {
 
       for (const key in user.topics) {
         if (key === params.topic) {
-          topic = user.topics[key]
+          topic = user.topics[key].S
         }
     }    
   }})
