@@ -1,59 +1,70 @@
 import React, { useEffect, useState }  from 'react'
 import Amplify, { API, Auth } from 'aws-amplify'
+import Link from 'next/link'
+import Head from 'next/head'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
-import dynamic from 'next/dynamic'
-const PublicString = dynamic(() => import('../../components/edit/publicString'),{ ssr: false })
-const Topics = dynamic(() => import('../../components/edit/topics'),{ ssr: false })
 
-export default function Topic( { user } ) {
-  const [isUser, setIsUser] = useState(false)
-  const [userDataState, setUserDataState] = useState( { user } )
+export default function Topic( { user, topic } ) {
 
-  const getUserData = async () => {
-    const getUserInit = { headers: { Authorization: user.Username
-  } } 
-    try {
-      let user = {}
-      const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-          user = {
-            Username: getAllUsersRes.Item.Username.S,
-            active: getAllUsersRes.Item.active.BOOL,
-            busy: getAllUsersRes.Item.busy.BOOL,
-            folders: getAllUsersRes.Item.folders?.SS || [],
-            ppm: getAllUsersRes.Item.ppm.N,
-            ratingAv: getAllUsersRes.Item.ratingAv?.S || null,
-            publicString: getAllUsersRes.Item.publicString?.S || null,
-            topics: getAllUsersRes.Item.topics?.M || null,
-          }
-      setUserDataState({ user: user })
-    } catch (err) {
-      console.log(err)
-    }
+  console.log('topic prop', topic)
+
+  const openCallPhone = () => {
+    const devSite = `/${user.Username}/call`
+    const prodSite = `https://talktree.me/${user.Username}/call`
+    const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
+    window.open(
+      currentSite,
+      "MsgWindow",
+      "width=500,height=700"
+    )
   }
-
-  useEffect(() => {
-    getUserData()
-  }, [])
 
   return (
     <>
-    <NavbarComp />
-    <div className="mx-5">
-      <PublicString user={user}/>
-      <Topics user={user} />
-    </div>
+      <Head>
+        <title>Chat with {user.Username}, who might have solved this</title>
+        <meta name="description" content={'userprovidedcontent'} />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <NavbarComp />
+      <div className="mx-5">
+        
+        <div className="flex flex-row bg-gray-100 my-5">
+          <div className="flex flex-col mx-5 my-5">
+            <h3 className='mx-5 my-5'>{user.Username}</h3>
+            <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
+          </div>
+          <div className="my-3" >
+          <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
+          </div>
+        </div>
+
+        <div className="bg-gray-100" >
+          {Object.keys(user.topics).map((folder) => 
+            <div>
+              <Link key={folder} href={"/" + user.Username + "/" + folder}><a >{folder}</a></Link>
+            </div>
+          )}
+        </div>
+            <div>
+            <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic.S }} ></div>
+            </div>
+      </div>
     </>
   )
-
 }
 
 export async function getStaticPaths() {
   const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
-  const paths = getAllUsersRes.body.Items.map(user => { 
-    return { params: { id: user.Username.S }}
+  const paths = []
+  getAllUsersRes.body.Items.map(user => { 
+      Object.keys(user.topics.M).map((topic) => {
+        paths.push({ params: { id: user.Username.S, topic: "" + topic }})
+    }) 
   })
+  
   return {
     paths,
     fallback: false
@@ -62,6 +73,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let user
+  let topic
   const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
@@ -75,7 +87,12 @@ export async function getStaticProps({ params }) {
         publicString: userRes.publicString?.S || null,
         topics: userRes.topics?.M || null,
       }
+
+      for (const key in user.topics) {
+        if (key === params.topic) {
+          topic = user.topics[key]
+        }
     }    
-  })
-  return {props: { user: user } }
+  }})
+  return {props: { user: user, topic: topic } }
 }

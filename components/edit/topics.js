@@ -45,7 +45,7 @@ export default function Topics(props) {
         string: null
       }
     }
-    const topicList = await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams )
+    await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams )
     setTopicState(topicState.filter((topicObj) => topicObj.topic !== topicProp))
   }
 

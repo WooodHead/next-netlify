@@ -39,13 +39,17 @@ export default function User({ user }) {
         </div>
 
         <div className="bg-gray-100" >
-          {user.folders.map((folder) => <h5 key={folder}>{folder}</h5>)}
+          {Object.keys(user.topics).map((folder) => 
+            <div>
+              <Link key={folder} href={"/" + user.Username + "/" + folder}><a >{folder}</a></Link>
+            </div>
+          )}
         </div>
 
-        <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.topicString }} ></div>
-        <Link href={ "/" + user.Username + '/edit'}>
+        {/* <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.topicString }} ></div> */}
+        {/* <Link href={ "/" + user.Username + '/edit'}>
           <a className="border-2 hover:border-black">edit</a>
-        </Link>
+        </Link> */}
       </div>
     </>
   )
@@ -75,7 +79,8 @@ export async function getStaticProps({ params }) {
         ppm: userRes.ppm.N,
         ratingAv: userRes.ratingAv?.S || null,
         publicString: userRes.publicString?.S || null,
-        topicString: userRes.topicString?.S || null
+        topicString: userRes.topicString?.S || null,
+        topics: userRes.topics?.M || null
       }
     }    
   })
