@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { API } from 'aws-amplify'
 import { useRouter } from 'next/router'
 import '../configureAmplify'
+import NavbarComp from '../components/navbar/navbar'
 
 const Users = ({ allUsers }) => {
   const router = useRouter()
@@ -12,9 +13,7 @@ const Users = ({ allUsers }) => {
   return (
     <>
       <h2>
-        <Link href="/">
-          <a className="mx-5 my-5">Back to home</a>
-        </Link>
+        <NavbarComp />
       </h2>
       <div>
         {allUsers.map((user) => {

@@ -65,7 +65,7 @@ export default function Topics(props) {
     )}
     <input ref={topicInputRef}  ></input>
     <button onClick={createNewTopic}>create new topic</button>
-    <TopicString {...props} topicState={selectedTopicState.topic} deleteTopic={deleteTopic} stringState={selectedTopicState.string} />
+    <TopicString {...props} topicState={selectedTopicState?.topic} deleteTopic={deleteTopic} stringState={selectedTopicState?.string} />
 
     </div>
   )

@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from 'next/link'
+import '../../configureAmplify'
+import { Auth } from "aws-amplify"
 
 const NavbarComp = props => {
+  const [usernameState, setUsernameState] = useState()
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const userAccount = await Auth.currentAuthenticatedUser()
+        setUsernameState(userAccount.attributes.preferred_username)
+      } catch (err) {
+        console.log(err)
+      }
+
+    })()
+  }, [])
+  const loggedIn = false
     return (
         <nav className="flex flex-row mx-5">
           <div className="mx-5 my-1">
@@ -11,8 +26,8 @@ const NavbarComp = props => {
             </Link>
           </div>
           <div className="mx-5 my-1">
-            <Link href="/">
-              <a>Folders</a>
+            <Link href={ loggedIn ? "/user#" : "/newPage" }>
+              <a>Create a page</a>
             </Link>
           </div>
           <div className="mx-5 my-1">
@@ -24,8 +39,8 @@ const NavbarComp = props => {
             <Link href="/questionmark"><a>?</a></Link>
           </div>
           <div className="mx-5 my-1">
-            {props.userName ? 
-              <Link href="/account"></Link> : 
+            {usernameState ? 
+              <Link href="/account">{usernameState}</Link> : 
               <Link href="/signIn">Login / Sign Up</Link>}
           </div>
         </nav>
