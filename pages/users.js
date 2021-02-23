@@ -29,12 +29,19 @@ const Users = ({ allUsers }) => {
                 href={"/" + user.Username}
                 >
                   <a className="flex flex-row">
+                    <div>
                     {user.Username}
-                    <div className="flex flex-col flex-wrap max-h-20">{user.folders.map((folder) => {
-                    return (
-                      <div className="mx-5 " key={user.Username + folder} >{folder}</div>
+                    <div className="flex flex-col flex-wrap max-h-20">
+                      {Object.keys(user.topics).map((topic) => 
+                      <div className="mx-5 " key={user.Username + topic} >{topic}</div>
                     )
-                  })}</div></a>
+                  }</div>
+                    </div>
+                    
+                  <div dangerouslySetInnerHTML={{ __html: user.publicString }}>
+                  </div>
+                  </a>
+                  
                 </Link>
               </div>
                 
@@ -58,7 +65,8 @@ export async function getStaticProps() {
       folders: firstSixFolders || [],
       ppm: userRes.ppm.N,
       ratingAv: userRes.ratingAv?.S || null,
-      publicString: userRes.publicString?.S || null
+      publicString: userRes.publicString?.S || null,
+      topics: userRes.topics.M
     })
   })
   return { props: { allUsers: newAllUsers } }
