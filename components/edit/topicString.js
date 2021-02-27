@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill'
 import { API, Auth } from 'aws-amplify'
 
 export default function TopicString(props) {
+
   const [editState, setEditState] = useState()
   const [savedState, setSavedState] = useState()
   const [stringState, setStringState] = useState(props.stringState)
@@ -38,7 +39,8 @@ export default function TopicString(props) {
 
   return (
     <div className="my-5 bg-gray-100">
-    {editState
+      <div>{props.topicState}</div>
+    {editState || props.editProps
       ? <div>
         <ReactQuill value={quillState} onChange={typingFn} />
         <button onClick={onCloseEdit} >close</button>
@@ -54,6 +56,7 @@ export default function TopicString(props) {
         </div>}
       </div>
       : <div>
+          
           <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: props.stringState }} ></div>
           <button onClick={() => setEditState(true)}>
             <div className="border-2 my-3 mx-3 hover:border-black">edit</div>

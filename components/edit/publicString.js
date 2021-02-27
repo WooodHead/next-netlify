@@ -3,28 +3,10 @@ import ReactQuill from 'react-quill'
 import { API, Auth } from 'aws-amplify'
 
 export default function PublicString(props) {
+  const savePublicString = () => props.savePublicString()
   const [editState, setEditState] = useState()
   const [savedState, setSavedState] = useState()
   const [quillState, setQuillState] = useState(props.user.publicString)
-  const [stringState, setStringState] = useState(props.user.publicString)
-
-  const saveString = async () => {
-    try {
-      const userSession = await Auth.currentSession()
-      const stringInit = {
-        headers: { Authorization: userSession.idToken.jwtToken },
-        body: {
-          stringType: 'publicString',
-          string: `` + quillState
-        }
-      }
-      const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit )
-      setSavedState(true)
-      setStringState(savedString.body)
-    } catch (err) {
-      console.log(err)
-    }
-  }
    
   const typingFn = (e) => {
     setQuillState(e)
@@ -43,8 +25,8 @@ export default function PublicString(props) {
     {editState 
       ? <div>
           <ReactQuill value={quillState} onChange={typingFn}/>
-          <button onClick={onCloseEdit} >close</button>
-          <button onClick={saveString} >save</button>
+          <button onClick={() => onCloseEdit()} >close</button>
+          <button onClick={() => savePublicString(quillState)} >save</button>
           {savedState && <div className="">
             <div>
               saved
@@ -54,7 +36,7 @@ export default function PublicString(props) {
         
       : <div className="my-3" >
           <div>
-          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
+          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: props.user.publicString }} ></div>
           </div>
           <div>
             <button 

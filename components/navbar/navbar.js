@@ -14,7 +14,6 @@ const NavbarComp = props => {
       } catch (err) {
         console.log(err)
       }
-
     })()
   }, [])
   const loggedIn = false
@@ -26,8 +25,8 @@ const NavbarComp = props => {
             </Link>
           </div>
           <div className="mx-5 my-1">
-            <Link href={ loggedIn ? "/user#" : "/newPage" }>
-              <a>Create a page</a>
+            <Link href={ usernameState ? "/account/edit" : "/newPage" }>
+              <a>{ usernameState ? 'Edit your page' : 'Create a page' }</a>
             </Link>
           </div>
           <div className="mx-5 my-1">

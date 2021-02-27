@@ -5,16 +5,10 @@ import Link from 'next/link'
 
 export default function Topics(props) {
 
-  const topicsArray = []
-  for (const topicKey in props.user.topics) {
-    topicsArray.push({
-      topic: topicKey,
-      string: props.user.topics[topicKey].S
-    })
-  }
-
-  const [topicState, setTopicState] = useState(topicsArray)
-  const [selectedTopicState, setSelectedTopic] = useState(topicsArray[0])
+  console.log(props)
+  const [topicState, setTopicState] = useState(props.user.topics)
+  const [selectedTopicState, setSelectedTopic] = useState(props.user.topics)
+  const [newTopicState, setNewTopicState] = useState(false)
   const topicInputRef = useRef()
 
   const createNewTopic = async () => {
@@ -31,6 +25,7 @@ export default function Topics(props) {
     const newTopic = await API.post(process.env.apiGateway.NAME, '/topics', newTopicParams )
     console.log(newTopic)
     setTopicState([...topicState, newTopic.body])
+    setNewTopicState(true)
   }
 
   const deleteTopic = async (topicProp) => {
@@ -57,15 +52,21 @@ export default function Topics(props) {
   return (
     <div className="bg-gray-100" >
     {topicState.map((topicObj) => 
-      <div>
-        <button onClick={() => selectTopic(topicObj)} key={topicObj.topic} href={ "/" + props.user.Username + '/topic'}>
+      <div key={topicObj.topic} >
+        <button onClick={() => selectTopic(topicObj)} href={ "/" + props.user.Username + '/topic'}>
           <a className="border-2 hover:border-black">{topicObj.topic}</a>
         </button>
       </div>
     )}
     <input ref={topicInputRef}  ></input>
     <button onClick={createNewTopic}>create new topic</button>
-    <TopicString {...props} topicState={selectedTopicState?.topic} deleteTopic={deleteTopic} stringState={selectedTopicState?.string} />
+    <TopicString 
+    {...props} 
+    topicState={selectedTopicState?.topic} 
+    deleteTopic={deleteTopic} 
+    stringState={selectedTopicState?.string} 
+    editProps={newTopicState}
+    />
 
     </div>
   )
