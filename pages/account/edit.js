@@ -4,9 +4,7 @@ import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
 import dynamic from 'next/dynamic'
-// import TopicString from '../../components/edit/topicString'
-const TopicString = dynamic(() => import('../../components/edit/topicString'), { ssr: false })
-// const Topics = dynamic(() => import('../../components/edit/topics'),{ ssr: false })
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function Edit() {
@@ -30,8 +28,6 @@ export default function Edit() {
     quill: '',
     editing: false
   })
-  const [newTopicState, setNewTopicState] = useState(false)
-  // const [editTopicState, setEditTopicState] = useState()
   const [savedTopicState, setSavedTopicState] = useState()
   const topicInputRef = useRef()
 
@@ -64,10 +60,7 @@ export default function Edit() {
 
   const editTopicString = () => {
     setSelectedTopicState({...selectedTopicState, editing: true})
-    console.log('editing')
   }
-
-  console.log(selectedTopicState)
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -123,6 +116,9 @@ export default function Edit() {
   }
 
   const saveTopicString = async () => {
+    const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
+    // const escapedAgain = escapedString.replaceAll("'", "\\'")
+    console.log(escapedString)
     try {
       const userSession = await Auth.currentSession()
       const stringInit = {
@@ -131,13 +127,11 @@ export default function Edit() {
           new: false,
           deleteTopic: false,
           topic: selectedTopicState.topic,
-          string: `` + selectedTopicState.quill
+          string: escapedString
         }
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
       setSavedTopicState(true)
-      console.log(savedString)
-      // setStringState(savedString.body)
     } catch (err) {
       console.log(err)
     }
@@ -155,9 +149,7 @@ export default function Edit() {
       }
     }
     const newTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', newTopicParams)
-    console.log(newTopicRes)
     setTopicState([...userState.topics, newTopicRes.body])
-    setNewTopicState(true)
     setSelectedTopicState({
       topic: newTopicRes.body.topic,
       string: '',
