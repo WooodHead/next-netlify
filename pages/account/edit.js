@@ -4,6 +4,7 @@ import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
 import dynamic from 'next/dynamic'
+import DOMPurify from 'dompurify';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -89,7 +90,8 @@ export default function Edit() {
         topics: topicsArray,
       }
       setUserState(user)
-      setPublicStringState(getAllUsersRes.Item.publicString.S)
+      const sanitizedString = DOMPurify.sanitize(getAllUsersRes.Item.publicString.S)
+      setPublicStringState(sanitizedString)
       setPublicQuillState(getAllUsersRes.Item.publicString.S)
       setTopicState(topicsArray)
     } catch (err) {
