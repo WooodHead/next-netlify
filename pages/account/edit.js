@@ -45,16 +45,25 @@ export default function Edit() {
     getUserData()
   }
   const topicTypingFn = (e) => {
-    setSelectedTopicState({...selectedTopicState}, {quill: '' + e})
+    setSelectedTopicState({...selectedTopicState, quill: '' + e})
     setSavedTopicState(false)
   }
-  const onCloseTopicEdit = () => {
-    setSelectedTopicState({...selectedTopicState}, {editing: false})
+  const onCloseTopicEdit = async () => {
+    try {
+      const userSession = await Auth.currentAuthenticatedUser()
+      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
+      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const userResString = getAllUserRes.Item.topics.M[selectedTopicState.topic].S
+      setSelectedTopicState({...selectedTopicState, string: userResString, editing: false})
+    } catch (err) {
+      setSelectedTopicState({...selectedTopicState, editing: false})
+      console.log(err)
+    }    
     setSavedTopicState(false)
-    getUserData()
   }
+
   const editTopicString = () => {
-    setSelectedTopicState({...selectedTopicState}, {editing: true})
+    setSelectedTopicState({...selectedTopicState, editing: true})
     console.log('editing')
   }
 
@@ -107,7 +116,7 @@ export default function Edit() {
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
       setSavedState(true)
-      setUserState({ ...userState }, { publicString: savedString.body })
+      setUserState({ ...userState, publicString: savedString.body })
     } catch (err) {
       console.log(err)
     }
