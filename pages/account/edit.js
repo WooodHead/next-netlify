@@ -21,12 +21,17 @@ export default function Edit() {
   const [publicStringState, setPublicStringState] = useState()
   const [editPubStringState, setEditPubStringState] = useState()
   const [publicQuillState, setPublicQuillState] = useState()
-  const [topicQuillState, setTopicQuillState] = useState()
   const [savedState, setSavedState] = useState()
+
   const [topicState, setTopicState] = useState([])
-  const [selectedTopicState, setSelectedTopic] = useState({topic: '', string: ''})
+  const [selectedTopicState, setSelectedTopicState] = useState({
+    topic: '', 
+    string: '', 
+    quill: '',
+    editing: false
+  })
   const [newTopicState, setNewTopicState] = useState(false)
-  const [editTopicState, setEditTopicState] = useState()
+  // const [editTopicState, setEditTopicState] = useState()
   const [savedTopicState, setSavedTopicState] = useState()
   const topicInputRef = useRef()
 
@@ -40,13 +45,20 @@ export default function Edit() {
     getUserData()
   }
   const topicTypingFn = (e) => {
-    setTopicQuillState(e)
+    setSelectedTopicState({...selectedTopicState}, {quill: '' + e})
     setSavedTopicState(false)
   }
   const onCloseTopicEdit = () => {
-    setEditTopicState(false)
+    setSelectedTopicState({...selectedTopicState}, {editing: false})
     setSavedTopicState(false)
+    getUserData()
   }
+  const editTopicString = () => {
+    setSelectedTopicState({...selectedTopicState}, {editing: true})
+    console.log('editing')
+  }
+
+  console.log(selectedTopicState)
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -102,7 +114,6 @@ export default function Edit() {
   }
 
   const saveTopicString = async () => {
-    console.log(selectedTopicState.topic, topicQuillState)
     try {
       const userSession = await Auth.currentSession()
       const stringInit = {
@@ -111,7 +122,7 @@ export default function Edit() {
           new: false,
           deleteTopic: false,
           topic: selectedTopicState.topic,
-          string: `` + topicQuillState
+          string: `` + selectedTopicState.quill
         }
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
@@ -138,7 +149,12 @@ export default function Edit() {
     console.log(newTopicRes)
     setTopicState([...userState.topics, newTopicRes.body])
     setNewTopicState(true)
-    setSelectedTopic(newTopicRes.body)
+    setSelectedTopicState({
+      topic: newTopicRes.body.topic,
+      string: '',
+      quill: '',
+      editing: true
+    })
   }
 
   const deleteTopic = async (topicProp) => {
@@ -159,7 +175,12 @@ export default function Edit() {
 
   const selectTopic = (topicProp) => {
     console.log(topicProp)
-    setSelectedTopic(topicProp)
+    setSelectedTopicState({
+      topic: topicProp.topic,
+      string: topicProp.string,
+      quill: topicProp.string,
+      editing: false
+    })
   }
 
   useEffect(() => {
@@ -216,9 +237,9 @@ export default function Edit() {
         <div className="my-5 bg-gray-100">
           <div>{selectedTopicState?.topic}</div>
 
-          {editTopicState || newTopicState
+          {selectedTopicState.editing 
             ? <div>
-              <ReactQuill value={topicQuillState} onChange={topicTypingFn} />
+              <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
               <button onClick={onCloseTopicEdit} >close</button>
               <div className="border-2 my-3 mx-3 hover:border-black">
                 <button onClick={() => saveTopicString(true)}>
@@ -233,7 +254,7 @@ export default function Edit() {
             </div>
             : <div>
               <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState?.string }} ></div>
-              <button onClick={() => setEditTopicState(true)}>
+              <button onClick={editTopicString}>
                 <div className="border-2 my-3 mx-3 hover:border-black">edit</div>
               </button>
               <button onClick={() => deleteTopic(selectedTopicState?.topic)}>

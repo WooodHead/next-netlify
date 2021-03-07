@@ -13,3 +13,6 @@ Index worked, after manually requesting, 24 hrs later
 I was wondering where the app manifest was, and index.html; each page has a diff index.html!
 2/8
 2/9
+3/5
+make sure to git commit before doing any npm audit fixes.
+console.log(process.env) doesn't seem to list apiGateway while console.log(process.env.apiGateway) lists shit...

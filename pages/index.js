@@ -4,7 +4,7 @@ import  Link from 'next/link'
 import NavbarComp from '../components/navbar/navbar'
 
 export default function Home() {
-
+  
   return (
     <div className="container">
       <Head>
