@@ -25,6 +25,7 @@ export default function Edit() {
   })
   const [selectedTopicState, setSelectedTopicState] = useState({
     topic: '',
+    ogTopic: '',
     string: '',
     quill: '',
     editing: false,
@@ -109,7 +110,7 @@ export default function Edit() {
         }
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
-      setPublicStringState({ ...publicStringState, string: savedString.body, saved: true })
+      setPublicStringState({ ...publicStringState, string: savedString.body, saved: true, ogTopic: savedString.ogTopic })
     } catch (err) {
       console.log(err)
     }
@@ -126,6 +127,7 @@ export default function Edit() {
         body: {
           new: false,
           deleteTopic: false,
+          ogTopic: selectedTopicState.ogTopic,
           topic: selectedTopicState.topic,
           string: escapedString
         }
@@ -140,6 +142,7 @@ export default function Edit() {
   const createNewTopic = async () => {
     setSelectedTopicState({
       topic: '',
+      ogTopic: '',
       string: '',
       quill: '',
       editing: true
@@ -165,6 +168,7 @@ export default function Edit() {
   const selectTopic = (topicProp) => {
     console.log(topicProp)
     setSelectedTopicState({
+      ogTopic: topicProp.string,
       topic: topicProp.topic,
       string: topicProp.string,
       quill: topicProp.string,
@@ -244,7 +248,7 @@ export default function Edit() {
               <button onClick={() =>  setSelectedTopicState({ ...selectedTopicState, editing: true })}>
                 <div className="border-2 my-3 mx-3 hover:border-black">edit</div>
               </button>
-              <button onClick={() => deleteTopic(selectedTopicState?.topic)}>
+              <button onClick={() => deleteTopic(selectedTopicState.topic)}>
                 <div className="border-2 my-3 mx-3 hover:border-black">delete</div>
               </button>
             </div>
