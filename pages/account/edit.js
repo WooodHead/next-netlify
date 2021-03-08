@@ -24,13 +24,13 @@ export default function Edit() {
 
   const [topicState, setTopicState] = useState([])
   const [selectedTopicState, setSelectedTopicState] = useState({
-    topic: '', 
-    string: '', 
+    topic: '',
+    string: '',
     quill: '',
     editing: false
   })
   const [savedTopicState, setSavedTopicState] = useState()
-  const topicInputRef = useRef()
+  const topicInputRef = useRef(selectedTopicState.topic)
 
   const typingFn = (e) => {
     setPublicQuillState(e)
@@ -42,7 +42,7 @@ export default function Edit() {
     getUserData()
   }
   const topicTypingFn = (e) => {
-    setSelectedTopicState({...selectedTopicState, quill: '' + e})
+    setSelectedTopicState({ ...selectedTopicState, quill: '' + e })
     setSavedTopicState(false)
   }
   const onCloseTopicEdit = async () => {
@@ -51,16 +51,16 @@ export default function Edit() {
       const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
       const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const userResString = getAllUserRes.Item.topics.M[selectedTopicState.topic].S
-      setSelectedTopicState({...selectedTopicState, string: userResString, editing: false})
+      setSelectedTopicState({ ...selectedTopicState, string: userResString, editing: false })
     } catch (err) {
-      setSelectedTopicState({...selectedTopicState, editing: false})
+      setSelectedTopicState({ ...selectedTopicState, editing: false })
       console.log(err)
-    }    
+    }
     setSavedTopicState(false)
   }
 
   const editTopicString = () => {
-    setSelectedTopicState({...selectedTopicState, editing: true})
+    setSelectedTopicState({ ...selectedTopicState, editing: true })
   }
 
   const getUserData = async () => {
@@ -119,7 +119,7 @@ export default function Edit() {
 
   const saveTopicString = async () => {
     const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
-    // const escapedAgain = escapedString.replaceAll("'", "\\'")
+    // const escapedAgain = escapedString.replaceAll("\\", "\\\\")
     console.log(escapedString)
     try {
       const userSession = await Auth.currentSession()
@@ -140,24 +140,25 @@ export default function Edit() {
   }
 
   const createNewTopic = async () => {
-    const userSession = await Auth.currentSession()
-    const newTopicParams = {
-      headers: { Authorization: userSession.idToken.jwtToken },
-      body: {
-        new: true,
-        deleteTopic: false,
-        topic: topicInputRef.current.value,
-        string: null
-      }
-    }
-    const newTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', newTopicParams)
-    setTopicState([...userState.topics, newTopicRes.body])
-    setSelectedTopicState({
-      topic: newTopicRes.body.topic,
-      string: '',
-      quill: '',
-      editing: true
-    })
+
+    // const userSession = await Auth.currentSession()
+    // const newTopicParams = {
+    //   headers: { Authorization: userSession.idToken.jwtToken },
+    //   body: {
+    //     new: true,
+    //     deleteTopic: false,
+    //     topic: topicInputRef.current.value,
+    //     string: null
+    //   }
+    // }
+    // const newTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', newTopicParams)
+    // setTopicState([...userState.topics, newTopicRes.body])
+    // setSelectedTopicState({
+    //   topic: newTopicRes.body.topic,
+    //   string: '',
+    //   quill: '',
+    //   editing: true
+    // })
   }
 
   const deleteTopic = async (topicProp) => {
@@ -207,7 +208,7 @@ export default function Edit() {
               {savedState && <div className="">
                 <div>
                   saved
-            </div>
+                </div>
               </div>}
             </div>
             : <div className="my-3" >
@@ -224,7 +225,6 @@ export default function Edit() {
               </div>
             </div>
           }
-
         </div>
         <div className="bg-gray-100" >
           {topicState.map((topicObj) =>
@@ -234,14 +234,14 @@ export default function Edit() {
               </button>
             </div>
           )}
-          <input ref={topicInputRef}  ></input>
           <button onClick={createNewTopic}>create new topic</button>
         </div>
         <div className="my-5 bg-gray-100">
-          <div>{selectedTopicState?.topic}</div>
 
-          {selectedTopicState.editing 
+
+          {selectedTopicState.editing
             ? <div>
+              <input type="text" onChange={(e) => setSelectedTopicState({...selectedTopicState, topic: e.target.value})} value={selectedTopicState.topic} />
               <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
               <button onClick={onCloseTopicEdit} >close</button>
               <div className="border-2 my-3 mx-3 hover:border-black">
@@ -256,6 +256,7 @@ export default function Edit() {
               </div>}
             </div>
             : <div>
+              <div>{selectedTopicState?.topic}</div>
               <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState?.string }} ></div>
               <button onClick={editTopicString}>
                 <div className="border-2 my-3 mx-3 hover:border-black">edit</div>
