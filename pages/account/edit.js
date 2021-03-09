@@ -44,7 +44,6 @@ export default function Edit() {
       const userSession = await Auth.currentAuthenticatedUser()
       const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
       const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      console.log(getAllUserRes)
       const userResString = getAllUserRes.Item.publicString.S
       setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
     } catch (err) {
@@ -85,7 +84,7 @@ export default function Edit() {
         Username: getAllUsersRes.Item.Username.S,
         active: getAllUsersRes.Item.active.BOOL,
         busy: getAllUsersRes.Item.busy.BOOL,
-        folders: getAllUsersRes.Item.folders?.SS || [],
+        // folders: getAllUsersRes.Item.folders?.SS || [],
         ppm: getAllUsersRes.Item.ppm.N,
         ratingAv: getAllUsersRes.Item.ratingAv?.S || null,
         publicString: getAllUsersRes.Item.publicString?.S || null,
@@ -110,35 +109,50 @@ export default function Edit() {
         }
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
-      setPublicStringState({ ...publicStringState, string: savedString.body, saved: true, ogTopic: savedString.ogTopic })
+      setPublicStringState({ ...publicStringState, string: savedString.body, saved: true })
     } catch (err) {
       console.log(err)
     }
   }
-
+  
   const saveTopicString = async () => {
     const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
     // const escapedAgain = escapedString.replaceAll("\\", "\\\\")
-    console.log(escapedString)
+    
     try {
       const userSession = await Auth.currentSession()
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
-          new: false,
+          // new: false,
           deleteTopic: false,
           ogTopic: selectedTopicState.ogTopic,
           topic: selectedTopicState.topic,
           string: escapedString
         }
       }
-      const savedString = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
-      setSelectedTopicState({...selectedTopicState, saved: true})
+      const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
+      if (savedTopicRes.status === 200) {
+        setSelectedTopicState({...selectedTopicState, saved: true})
+        const editedTopics = []
+        selectedTopicState.ogTopic !== selectedTopicState.topic &&
+        /* if topicName has been changed, update userState topics */
+          userState.topics.forEach((topicObj) => {
+            topicObj.topic !== selectedTopicState.ogTopic && editedTopics.push(topicObj)
+          })
+          editedTopics.push({topic: selectedTopicState.topic, string: escapedString})
+          setUserState({
+          ...userState, 
+          topics: editedTopics
+        })    
+      } else {
+        console.log('savetopic failed')
+      }
     } catch (err) {
       console.log(err)
     }
   }
-
+  
   const createNewTopic = async () => {
     setSelectedTopicState({
       topic: '',
@@ -150,7 +164,6 @@ export default function Edit() {
   }
 
   const deleteTopic = async (topicProp) => {
-    console.log(topicProp)
     const userSession = await Auth.currentSession()
     const deleteTopicParams = {
       headers: { Authorization: userSession.idToken.jwtToken },
@@ -158,17 +171,19 @@ export default function Edit() {
         new: true,
         deleteTopic: true,
         topic: topicProp,
+        ogTopic: topicProp,
         string: null
       }
     }
-    await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams)
-    setUserState({...userState, topics: userState.topics.filter((topicObj) => topicObj.topic !== topicProp)})
+    const deleteTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams)
+    deleteTopicRes.status === 200 
+      ? setUserState({...userState, topics: userState.topics.filter((topicObj) => topicObj.topic !== topicProp)})
+      : console.log('delete failed')
   }
 
   const selectTopic = (topicProp) => {
-    console.log(topicProp)
     setSelectedTopicState({
-      ogTopic: topicProp.string,
+      ogTopic: topicProp.topic,
       topic: topicProp.topic,
       string: topicProp.string,
       quill: topicProp.string,
@@ -232,7 +247,7 @@ export default function Edit() {
               <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
               <button onClick={onCloseTopicEdit} >close</button>
               <div className="border-2 my-3 mx-3 hover:border-black">
-                <button onClick={() => saveTopicString(true)}>
+                <button onClick={() => saveTopicString()}>
                   save
             </button>
               </div>
@@ -243,7 +258,7 @@ export default function Edit() {
               </div>}
             </div>
             : <div>
-              <div>{selectedTopicState?.topic}</div>
+              <div>{selectedTopicState.topic}</div>
               <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState?.string }} ></div>
               <button onClick={() =>  setSelectedTopicState({ ...selectedTopicState, editing: true })}>
                 <div className="border-2 my-3 mx-3 hover:border-black">edit</div>
