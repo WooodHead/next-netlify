@@ -28,10 +28,10 @@ export default function User({ user }) {
       </Head>
       <NavbarComp />
       <div className="mx-5">
-        
         <div className="flex flex-row bg-gray-100 my-5">
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{user.Username}</h3>
+            <div>{user.TAVS}</div>
             <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
           </div>
           <div className="my-3" >
@@ -42,7 +42,9 @@ export default function User({ user }) {
         <div className="bg-gray-100" >
           {Object.keys(user.topics).map((folder) => 
             <div>
-              <Link key={folder} href={"/" + user.Username + "/" + folder}><a >{folder}</a></Link>
+              <Link key={folder} href={"/" + user.Username + "/" + folder}>
+                <a>{folder}</a>
+                </Link>
             </div>
           )}
         </div>
@@ -71,6 +73,11 @@ export async function getStaticProps({ params }) {
   let user
   const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
+    const TAVS = []
+    userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
+    userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
+    userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
+    userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
     if (userRes.Username.S === params.id) {
       user = {
         Username: userRes.Username.S,
@@ -78,6 +85,7 @@ export async function getStaticProps({ params }) {
         busy: userRes.busy.BOOL,
         folders: userRes.folders?.SS || [],
         ppm: userRes.ppm.N,
+        TAVS: TAVS,
         ratingAv: userRes.ratingAv?.S || null,
         publicString: userRes.publicString?.S || null,
         topicString: userRes.topicString?.S || null,
