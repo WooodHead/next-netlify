@@ -32,7 +32,7 @@ export default function User({ user }) {
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{user.Username}</h3>
             <div>{user.TAVS}</div>
-            <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
+            <button type="button" onClick={openCallPhone}>chat</button>
           </div>
           <div className="my-3" >
           <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>

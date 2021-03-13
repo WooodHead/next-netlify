@@ -5,6 +5,7 @@ import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
 import dynamic from 'next/dynamic'
 import DOMPurify from 'dompurify';
+import PublicString from '../../components/edit/publicString'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -32,25 +33,25 @@ export default function Edit() {
     saved: false
   })
 
-  const publicTypingFn = (e) => {
-    setPublicStringState({...publicStringState, quill: e, saved: false})
-  }
+  // const publicTypingFn = (e) => {
+  //   setPublicStringState({...publicStringState, quill: e, saved: false})
+  // }
   const topicTypingFn = (e) => {
     setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
   }
 
-  const onClosePublicEdit = async () => {
-    try {
-      const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
-      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      const userResString = getAllUserRes.Item.publicString.S
-      setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
-    } catch (err) {
-      setPublicStringState({ ...publicStringState, editing: false, saved: false })
-      console.log(err)
-    }
-  }
+  // const onClosePublicEdit = async () => {
+  //   try {
+  //     const userSession = await Auth.currentAuthenticatedUser()
+  //     const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
+  //     const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+  //     const userResString = getAllUserRes.Item.publicString.S
+  //     setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
+  //   } catch (err) {
+  //     setPublicStringState({ ...publicStringState, editing: false, saved: false })
+  //     console.log(err)
+  //   }
+  // }
   const onCloseTopicEdit = async () => {
     try {
       const userSession = await Auth.currentAuthenticatedUser()
@@ -92,28 +93,34 @@ export default function Edit() {
       }
       setUserState(user)
       const sanitizedString = DOMPurify.sanitize(getAllUsersRes.Item.publicString.S)
-      setPublicStringState({...publicStringState, string: sanitizedString, quill: sanitizedString})
+      const pubString = {
+        ...publicStringState, 
+        string: sanitizedString, 
+        quill: sanitizedString === '' ? 'write something about yourself' : sanitizedString,
+        editing: sanitizedString === '' ? true : false
+      }
+      setPublicStringState(pubString)
     } catch (err) {
       console.log(err)
     }
   }
 
-  const savePublicString = async () => {
-    try {
-      const userSession = await Auth.currentSession()
-      const stringInit = {
-        headers: { Authorization: userSession.idToken.jwtToken },
-        body: {
-          stringType: 'publicString',
-          string: `` + publicStringState.quill
-        }
-      }
-      const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
-      setPublicStringState({ ...publicStringState, string: savedString.body, saved: true })
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // const savePublicString = async () => {
+  //   try {
+  //     const userSession = await Auth.currentSession()
+  //     const stringInit = {
+  //       headers: { Authorization: userSession.idToken.jwtToken },
+  //       body: {
+  //         stringType: 'publicString',
+  //         string: `` + publicStringState.quill
+  //       }
+  //     }
+  //     const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
+  //     setPublicStringState({ ...publicStringState, string: savedString.body, saved: true })
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
   
   const saveTopicString = async () => {
     const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
@@ -197,18 +204,18 @@ export default function Edit() {
 
   return (
     <>
-    
       <NavbarComp />
       <div className="mx-5">
         <div className="flex flex-row bg-gray-100 my-5">
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
           </div>
-
+          <PublicString publicStringState={publicStringState} setPublicStringState={setPublicStringState}/>
+{/* 
           {publicStringState.editing
             ? <div>
               <ReactQuill value={publicStringState.quill} onChange={publicTypingFn} />
-              <button onClick={onClosePublicEdit} >close</button>
+              <button className='btn' onClick={onClosePublicEdit} >close</button>
               <button onClick={savePublicString} >save</button>
 
               {publicStringState.saved && <div className=""><div>saved</div></div>}
@@ -220,20 +227,19 @@ export default function Edit() {
               </div>
               <div>
                 <button
-                  className="border-2 hover:border-black"
                   onClick={() => setPublicStringState({...publicStringState, editing: true})}
                 >
                   edit
             </button>
               </div>
             </div>
-          }
+          } */}
         </div>
         <div className="bg-gray-100" >
           {userState.topics.map((topicObj) =>
             <div key={topicObj.topic} >
               <button onClick={() => selectTopic(topicObj)} href={"/" + userState.Username + '/topic'}>
-                <a className="border-2 hover:border-black">{topicObj.topic}</a>
+                <a>{topicObj.topic}</a>
               </button>
             </div>
           )}
@@ -247,7 +253,7 @@ export default function Edit() {
               <input type="text" onChange={(e) => setSelectedTopicState({...selectedTopicState, topic: e.target.value})} value={selectedTopicState.topic} />
               <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
               <button onClick={onCloseTopicEdit} >close</button>
-              <div className="border-2 my-3 mx-3 hover:border-black">
+              <div >
                 <button onClick={() => saveTopicString()}>
                   save
             </button>
@@ -262,10 +268,10 @@ export default function Edit() {
               <div>{selectedTopicState.topic}</div>
               <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState.string}} ></div>
               <button onClick={() =>  setSelectedTopicState({ ...selectedTopicState, editing: true })}>
-                <div className="border-2 my-3 mx-3 hover:border-black">edit</div>
+                <div>edit</div>
               </button>
               <button onClick={() => deleteTopic(selectedTopicState.topic)}>
-                <div className="border-2 my-3 mx-3 hover:border-black">delete</div>
+                <div>delete</div>
               </button>
             </div>
           }

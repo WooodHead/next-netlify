@@ -16,34 +16,28 @@ const NavbarComp = props => {
       }
     })()
   }, [])
+
+  const pages = [
+    { href: "/users", text: 'Users' },
+    { href: usernameState ? "/account/edit" : "/newPage",
+      text: usernameState ? 'Edit your page' : 'Create a page' },
+    { href: '/phone', text: 'Phone' },
+    // { href: '/questionmark', text: '?' },
+    { href: '/account', text: usernameState },
+    { href: '/signIn', text: 'Login / Sign Up' }
+  ]
+
   const loggedIn = false
-    return (
-        <nav className="flex flex-row mx-5">
-          <div className="mx-5 my-1">
-            <Link href="/users">
-              <a>Users</a>
-            </Link>
-          </div>
-          <div className="mx-5 my-1">
-            <Link href={ usernameState ? "/account/edit" : "/newPage" }>
-              <a>{ usernameState ? 'Edit your page' : 'Create a page' }</a>
-            </Link>
-          </div>
-          <div className="mx-5 my-1">
-            <Link href="/phone">
-              <a>Phone</a>
-            </Link>
-          </div>
-          <div className="mx-5 my-1">
-            <Link href="/questionmark"><a>?</a></Link>
-          </div>
-          <div className="mx-5 my-1">
-            {usernameState ? 
-              <Link href="/account">{usernameState}</Link> : 
-              <Link href="/signIn">Login / Sign Up</Link>}
-          </div>
-        </nav>
-    )
+  return (
+    <nav className="flex flex-row mx-5">
+      {pages.map((page) =>
+        <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200">
+          <Link href={page.href}>
+            <a>{page.text}</a>
+          </Link>
+        </div>)}
+    </nav>
+  )
 }
 
 export default NavbarComp;

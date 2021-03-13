@@ -1,53 +1,70 @@
 import React, { useState } from 'react'
-import ReactQuill from 'react-quill'
+// import ReactQuill from 'react-quill'
 import { API, Auth } from 'aws-amplify'
+import dynamic from 'next/dynamic'
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function PublicString(props) {
-  const savePublicString = () => props.savePublicString()
-  const [editState, setEditState] = useState()
-  const [savedState, setSavedState] = useState()
-  const [quillState, setQuillState] = useState(props.user.publicString)
-   
-  const typingFn = (e) => {
-    setQuillState(e)
-    setSavedState(false)
+  const publicStringState = props.publicStringState
+  const setPublicStringState = (params) => props.setPublicStringState(params)
+
+  const publicTypingFn = (e) => {
+    setPublicStringState({...publicStringState, quill: e, saved: false})
   }
-  const onCloseEdit = () => {
-    setEditState(false)
-    setSavedState(false)
+  const onClosePublicEdit = async () => {
+    try {
+      const userSession = await Auth.currentAuthenticatedUser()
+      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
+      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const userResString = getAllUserRes.Item.publicString.S
+      setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
+    } catch (err) {
+      setPublicStringState({ ...publicStringState, editing: false, saved: false })
+      console.log(err)
+    }
+  }
+  const savePublicString = async () => {
+    try {
+      const userSession = await Auth.currentSession()
+      const stringInit = {
+        headers: { Authorization: userSession.idToken.jwtToken },
+        body: {
+          stringType: 'publicString',
+          string: `` + publicStringState.quill
+        }
+      }
+      const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
+      setPublicStringState({ ...publicStringState, string: savedString.body, saved: true })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
-    <div className="flex flex-row bg-gray-100 my-5">
-    <div className="flex flex-col mx-5 my-5">
-      <h3 className='mx-5 my-5'>{props.user.Username}</h3>
-    </div>
-    {editState 
-      ? <div>
-          <ReactQuill value={quillState} onChange={typingFn}/>
-          <button onClick={() => onCloseEdit()} >close</button>
-          <button onClick={() => savePublicString(quillState)} >save</button>
-          {savedState && <div className="">
-            <div>
-              saved
-            </div>
-        </div>}
+    <div>
+      {publicStringState.editing
+        ? <div>
+          <ReactQuill value={publicStringState.quill} onChange={publicTypingFn} />
+          <button className='btn' onClick={onClosePublicEdit} >close</button>
+          <button onClick={savePublicString} >save</button>
+
+          {publicStringState.saved && <div className=""><div>saved</div></div>}
+
         </div>
-        
-      : <div className="my-3" >
+        : <div className="my-3" >
           <div>
-          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: props.user.publicString }} ></div>
+            <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: publicStringState.string }} ></div>
           </div>
           <div>
-            <button 
-              className="border-2 hover:border-black" 
-              onClick={() => setEditState(true)}
+            <button
+              onClick={() => setPublicStringState({ ...publicStringState, editing: true })}
             >
               edit
-            </button>
+      </button>
           </div>
         </div>
       }
     </div>
+
   )
 }
