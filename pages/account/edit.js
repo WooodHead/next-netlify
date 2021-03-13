@@ -197,6 +197,7 @@ export default function Edit() {
 
   return (
     <>
+    
       <NavbarComp />
       <div className="mx-5">
         <div className="flex flex-row bg-gray-100 my-5">
@@ -259,7 +260,7 @@ export default function Edit() {
             </div>
             : <div>
               <div>{selectedTopicState.topic}</div>
-              <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState?.string }} ></div>
+              <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: "<h1>suh222heading</h1>"}} ></div>
               <button onClick={() =>  setSelectedTopicState({ ...selectedTopicState, editing: true })}>
                 <div className="border-2 my-3 mx-3 hover:border-black">edit</div>
               </button>

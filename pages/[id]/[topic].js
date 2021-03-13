@@ -8,8 +8,6 @@ import NavbarComp from '../../components/navbar/navbar'
 
 export default function Topic( { user, topic } ) {
 
-  console.log('topic prop', topic)
-
   const openCallPhone = () => {
     const devSite = `/${user.Username}/call`
     const prodSite = `https://talktree.me/${user.Username}/call`
