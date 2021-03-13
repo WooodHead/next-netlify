@@ -39,8 +39,9 @@ const SignIn = props => {
   };
 
   return (
-    <div>
+    <>
       <Navbar />
+      <div className="m-5">
       {
         (pageState === 'forgotPass') ? <div>
 
@@ -85,8 +86,8 @@ const SignIn = props => {
               </div>
             </div>
 
-      }
-    </div>
+      }</div>
+    </>
   )
 }
 

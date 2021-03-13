@@ -15,7 +15,6 @@ const Users = ({ allUsers }) => {
         <NavbarComp />
       <div>
         {allUsers.map((user) => {
-          console.log(user.TAVS)
           return (
             <div
               className="flex mx-5 my-5 bg-gray-100 hover:bg-gray-200"
