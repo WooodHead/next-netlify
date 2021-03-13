@@ -12,9 +12,7 @@ const Users = ({ allUsers }) => {
   }
   return (
     <>
-      <h2>
         <NavbarComp />
-      </h2>
       <div>
         {allUsers.map((user) => {
           return (

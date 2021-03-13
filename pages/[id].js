@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 
+
 export default function User({ user }) {
 
   const openCallPhone = () => {
