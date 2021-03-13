@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import '../../configureAmplify'
 
 const ForgotPassword = props => {
-  const setForgotPassState = props.setForgotPassState
+  const setPageState = props.setPageState
 
   const [errState, setErrState] = useState(false)
 
@@ -23,7 +23,7 @@ const ForgotPassword = props => {
   const afterReset = async () => {
     try {
       await Auth.forgotPasswordSubmit(emailInputRef.current.value, codeRef.current.value, passwordRef.current.value )
-      setForgotPassState(false)
+      setPageState('')
     } catch (err) {
       if (err.code === "InvalidParameterException") {
         setErrState("password")
@@ -47,10 +47,7 @@ const ForgotPassword = props => {
       </div>
       <div className="mb-4">
         <button onClick={submitForgotten}>reset password</button>
-        
       </div>
-      
-
       <div className="mb-3">
         new password
         <div>
@@ -69,7 +66,7 @@ const ForgotPassword = props => {
         <button onClick={afterReset}>create new password</button>
       </div>
       <div>
-        <button className="link-button" onClick={() => setForgotPassState(false)}>back to sign in</button>
+        <button className="link-button" onClick={() => setPageState('')}>back to sign in</button>
       </div>
     </div>
   )

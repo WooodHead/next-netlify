@@ -4,10 +4,9 @@ import { API, Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
 import { CustomSpinner } from "../components/custom/spinner"
 import '../configureAmplify'
+import Navbar from '../components/navbar/navbar'
 
 const AccountSettings = props => {
-
-  const signInFn = props.signInFn
 
   const oldPassRef = useRef()
   const newPassRef = useRef()
@@ -17,7 +16,6 @@ const AccountSettings = props => {
   const [newPassState, setNewPassState] = useState(false)
   const [yesDisable, setYesDisable] = useState(false)
   // const [serverMessageState, setServerMessageState] = useState(false)
-
 
   let history = useRouter()
 
@@ -41,7 +39,6 @@ const AccountSettings = props => {
   }
   
   const signOut = () => {
-    signInFn(nullLogin, nullCognito)
     Auth.signOut()
     history.push("/users")
   }
@@ -63,8 +60,8 @@ const AccountSettings = props => {
 
   return (
     <div>
-      
-        <div className="container-fluid">
+      <Navbar />
+        <div className="container-fluid ml-3">
         <div className="row">
         {/* <div className="ml-3 mr-3">
           <Link to="/account/billing">Billing</Link>

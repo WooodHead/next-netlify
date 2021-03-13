@@ -70,7 +70,7 @@ const SignUp = props => {
       );
       const preferredUsername = authSignInRes.attributes.preferred_username
       const cognitoData = authSignInRes.signInUserSession
-      signInFn(preferredUsername, cognitoData)
+      // signInFn(preferredUsername, cognitoData)
     } catch (err) {
       console.log(err)
     }
