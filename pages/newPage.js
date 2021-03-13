@@ -23,8 +23,8 @@ export default function NewPage() {
     <>
     <NavbarComp />
     <div className="mx-5">
-      <PublicString user={user}/>
-      <Topics user={user} />
+      {/* <PublicString user={user}/>
+      <Topics user={user} /> */}
     </div>
     </>
   )
