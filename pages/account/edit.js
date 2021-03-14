@@ -6,7 +6,7 @@ import NavbarComp from '../../components/navbar/navbar'
 import DOMPurify from 'dompurify';
 import PublicString from '../../components/edit/publicString'
 import TopicComponent from '../../components/edit/topic'
-
+import EditTAVScomp from '../../components/edit/tavs'
 export default function Edit(props) {
 
   const users = props?.userState
@@ -31,6 +31,14 @@ export default function Edit(props) {
     quill: '',
     editing: false,
     saved: false
+  })
+  const [tavsState, setTavsState] = useState({
+    ppm: 0,
+    text: true,
+    audio: true,
+    video: false,
+    screen: false,
+    editing: false
   })
 
   const getUserData = async () => {
@@ -103,6 +111,7 @@ export default function Edit(props) {
         <div className="flex flex-row bg-gray-100 my-5">
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
+            <EditTAVScomp tavsState={tavsState} setTavsState={setTavsState}/>
           </div>
           <PublicString 
             publicStringState={publicStringState} 
