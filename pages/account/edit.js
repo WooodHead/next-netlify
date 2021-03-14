@@ -3,11 +3,9 @@ import Amplify, { API, Auth } from 'aws-amplify'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
-import dynamic from 'next/dynamic'
 import DOMPurify from 'dompurify';
 import PublicString from '../../components/edit/publicString'
 import TopicComponent from '../../components/edit/topic'
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function Edit() {
 
@@ -40,6 +38,9 @@ export default function Edit() {
         Authorization: userSession.attributes.preferred_username
       }
     }
+    // if (userState.Username !== 'loading...') {
+    //   return
+    // }
     try {
       const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []

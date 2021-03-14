@@ -31,7 +31,7 @@ const NavbarComp = props => {
   return (
     <nav className="flex flex-row mx-5">
       {pages.map((page) =>
-        <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200">
+        <div key={page.href} className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200">
           <Link href={page.href}>
             <a>{page.text}</a>
           </Link>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { API, Auth } from 'aws-amplify'
 import dynamic from 'next/dynamic'
-import CustomSpinner from "../../components/custom/spinner"
+import CustomSpinner from "../custom/spinner"
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function PublicString(props) {
@@ -59,18 +59,23 @@ export default function PublicString(props) {
       }
       const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
       if (savedTopicRes.status === 200) {
-        setSelectedTopicState({...selectedTopicState, saved: true})
-        const editedTopics = []
+        setSelectedTopicState({...selectedTopicState, saved: "saved"})
+        // userState.topics.forEach(topicObj) => 
+        const editedTopics = {...userState.topics, topic: selectedTopicState.topic, string: escapedString}
+        console.log(editedTopics)
+
         selectedTopicState.ogTopic !== selectedTopicState.topic &&
-        /* if topicName has been changed, update userState topics */
           userState.topics.forEach((topicObj) => {
+            console.log(topicObj)
             topicObj.topic !== selectedTopicState.ogTopic && editedTopics.push(topicObj)
           })
-          editedTopics.push({topic: selectedTopicState.topic, string: escapedString})
-          setUserState({
+          /* if edited topic doesn't already exist*/
+
+        editedTopics.push({topic: selectedTopicState.topic, string: escapedString})
+        setUserState({
           ...userState, 
           topics: editedTopics
-        })    
+        })
       } else {
         console.log('savetopic failed')
       }
@@ -92,12 +97,9 @@ export default function PublicString(props) {
               save
             </button>
           </div>
-          {selectedTopicState.saved && <div className="">
-            {selectedTopicState.saved === "saving" && 
-             <div className="">
-               <CustomSpinner />
-             </div>
-            }
+          
+            {selectedTopicState.saved === "saving" && <CustomSpinner /> }
+            {selectedTopicState.saved === "saved" && <div className="">
             <div>
               saved
             </div>
