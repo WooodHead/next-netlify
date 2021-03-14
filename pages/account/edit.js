@@ -60,10 +60,11 @@ export default function Edit(props) {
         })
       }
       const TAVS = []
-      getAllUsersRes.Item.deviceInput.M.text.BOOL && TAVS.push("📝")
-      getAllUsersRes.Item.deviceInput.M.audio.BOOL && TAVS.push("📞")
-      getAllUsersRes.Item.deviceInput.M.video.BOOL && TAVS.push("📹")
-      getAllUsersRes.Item.deviceInput.M.screen.BOOL && TAVS.push("💻")
+      const deviceInputRes = getAllUsersRes.Item.deviceInput.M
+      deviceInputRes.text.BOOL && TAVS.push("📝")
+      deviceInputRes.audio.BOOL && TAVS.push("📞")
+      deviceInputRes.video.BOOL && TAVS.push("📹")
+      deviceInputRes.screen.BOOL && TAVS.push("💻")
       const user = {
         Username: getAllUsersRes.Item.Username.S,
         active: getAllUsersRes.Item.active.BOOL,
@@ -76,6 +77,13 @@ export default function Edit(props) {
         topics: topicsArray,
       }
       setUserState(user)
+      setTavsState({
+        ...tavsState, 
+        text: deviceInputRes.text.BOOL,
+        audio: deviceInputRes.audio.BOOL,
+        video: deviceInputRes.video.BOOL,
+        screen: deviceInputRes.screen.BOOL
+      })
       const sanitizedString = DOMPurify.sanitize(getAllUsersRes.Item.publicString?.S)
       const pubString = {
         ...publicStringState, 
