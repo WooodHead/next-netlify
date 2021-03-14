@@ -6,7 +6,7 @@ import NavbarComp from '../../components/navbar/navbar'
 import dynamic from 'next/dynamic'
 import DOMPurify from 'dompurify';
 import PublicString from '../../components/edit/publicString'
-
+import TopicComponent from '../../components/edit/topic'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function Edit() {
@@ -32,38 +32,6 @@ export default function Edit() {
     editing: false,
     saved: false
   })
-
-  // const publicTypingFn = (e) => {
-  //   setPublicStringState({...publicStringState, quill: e, saved: false})
-  // }
-  const topicTypingFn = (e) => {
-    setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
-  }
-
-  // const onClosePublicEdit = async () => {
-  //   try {
-  //     const userSession = await Auth.currentAuthenticatedUser()
-  //     const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
-  //     const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-  //     const userResString = getAllUserRes.Item.publicString.S
-  //     setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
-  //   } catch (err) {
-  //     setPublicStringState({ ...publicStringState, editing: false, saved: false })
-  //     console.log(err)
-  //   }
-  // }
-  const onCloseTopicEdit = async () => {
-    try {
-      const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
-      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      const userResString = getAllUserRes.Item.topics.M[selectedTopicState.topic].S
-      setSelectedTopicState({ ...selectedTopicState, string: userResString, editing: false, saved: false })
-    } catch (err) {
-      setSelectedTopicState({ ...selectedTopicState, editing: false, saved: false })
-      console.log(err)
-    }
-  }
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -104,62 +72,6 @@ export default function Edit() {
       console.log(err)
     }
   }
-
-  // const savePublicString = async () => {
-  //   try {
-  //     const userSession = await Auth.currentSession()
-  //     const stringInit = {
-  //       headers: { Authorization: userSession.idToken.jwtToken },
-  //       body: {
-  //         stringType: 'publicString',
-  //         string: `` + publicStringState.quill
-  //       }
-  //     }
-  //     const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
-  //     setPublicStringState({ ...publicStringState, string: savedString.body, saved: true })
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-  
-  const saveTopicString = async () => {
-    const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
-    // const escapedAgain = escapedString.replaceAll("\\", "\\\\")
-    
-    try {
-      const userSession = await Auth.currentSession()
-      const stringInit = {
-        headers: { Authorization: userSession.idToken.jwtToken },
-        body: {
-          // new: false,
-          deleteTopic: false,
-          ogTopic: selectedTopicState.ogTopic,
-          topic: selectedTopicState.topic,
-          string: escapedString
-        }
-      }
-      const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
-      if (savedTopicRes.status === 200) {
-        setSelectedTopicState({...selectedTopicState, saved: true})
-        const editedTopics = []
-        selectedTopicState.ogTopic !== selectedTopicState.topic &&
-        /* if topicName has been changed, update userState topics */
-          userState.topics.forEach((topicObj) => {
-            topicObj.topic !== selectedTopicState.ogTopic && editedTopics.push(topicObj)
-          })
-          editedTopics.push({topic: selectedTopicState.topic, string: escapedString})
-          setUserState({
-          ...userState, 
-          topics: editedTopics
-        })    
-      } else {
-        console.log('savetopic failed')
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  
   const createNewTopic = async () => {
     setSelectedTopicState({
       topic: '',
@@ -169,25 +81,6 @@ export default function Edit() {
       editing: true
     })
   }
-
-  const deleteTopic = async (topicProp) => {
-    const userSession = await Auth.currentSession()
-    const deleteTopicParams = {
-      headers: { Authorization: userSession.idToken.jwtToken },
-      body: {
-        new: true,
-        deleteTopic: true,
-        topic: topicProp,
-        ogTopic: topicProp,
-        string: null
-      }
-    }
-    const deleteTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams)
-    deleteTopicRes.status === 200 
-      ? setUserState({...userState, topics: userState.topics.filter((topicObj) => topicObj.topic !== topicProp)})
-      : console.log('delete failed')
-  }
-
   const selectTopic = (topicProp) => {
     setSelectedTopicState({
       ogTopic: topicProp.topic,
@@ -210,30 +103,9 @@ export default function Edit() {
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
           </div>
-          <PublicString publicStringState={publicStringState} setPublicStringState={setPublicStringState}/>
-{/* 
-          {publicStringState.editing
-            ? <div>
-              <ReactQuill value={publicStringState.quill} onChange={publicTypingFn} />
-              <button className='btn' onClick={onClosePublicEdit} >close</button>
-              <button onClick={savePublicString} >save</button>
-
-              {publicStringState.saved && <div className=""><div>saved</div></div>}
-
-            </div>
-            : <div className="my-3" >
-              <div>
-                <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: publicStringState.string }} ></div>
-              </div>
-              <div>
-                <button
-                  onClick={() => setPublicStringState({...publicStringState, editing: true})}
-                >
-                  edit
-            </button>
-              </div>
-            </div>
-          } */}
+          <PublicString 
+            publicStringState={publicStringState} 
+            setPublicStringState={setPublicStringState}/>
         </div>
         <div className="bg-gray-100" >
           {userState.topics.map((topicObj) =>
@@ -246,36 +118,11 @@ export default function Edit() {
           <button onClick={createNewTopic}>create new topic</button>
         </div>
         <div className="my-5 bg-gray-100">
-
-
-          {selectedTopicState.editing
-            ? <div>
-              <input type="text" onChange={(e) => setSelectedTopicState({...selectedTopicState, topic: e.target.value})} value={selectedTopicState.topic} />
-              <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
-              <button onClick={onCloseTopicEdit} >close</button>
-              <div >
-                <button onClick={() => saveTopicString()}>
-                  save
-            </button>
-              </div>
-              {selectedTopicState.saved && <div className="">
-                <div>
-                  saved
-            </div>
-              </div>}
-            </div>
-            : <div>
-              <div>{selectedTopicState.topic}</div>
-              <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState.string}} ></div>
-              <button onClick={() =>  setSelectedTopicState({ ...selectedTopicState, editing: true })}>
-                <div>edit</div>
-              </button>
-              <button onClick={() => deleteTopic(selectedTopicState.topic)}>
-                <div>delete</div>
-              </button>
-            </div>
-          }
-
+        <TopicComponent 
+          selectedTopicState={selectedTopicState} 
+          setSelectedTopicState={setSelectedTopicState}
+          userState={userState}
+          setUserState={setUserState}/>
         </div>
       </div>
     </>

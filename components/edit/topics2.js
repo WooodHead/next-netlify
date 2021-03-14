@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { API, Auth } from 'aws-amplify'
-import TopicString from './topicString'
+import TopicString from './topic'
 import Link from 'next/link'
 
 export default function Topics(props) {

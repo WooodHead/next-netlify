@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-// import ReactQuill from 'react-quill'
+import React from 'react'
 import { API, Auth } from 'aws-amplify'
 import dynamic from 'next/dynamic'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function PublicString(props) {
   const publicStringState = props.publicStringState
-  const setPublicStringState = (params) => props.setPublicStringState(params)
+  const setPublicStringState = (e) => props.setPublicStringState(e)
 
   const publicTypingFn = (e) => {
     setPublicStringState({...publicStringState, quill: e, saved: false})
@@ -43,26 +42,25 @@ export default function PublicString(props) {
   return (
     <div>
       {publicStringState.editing
+
         ? <div>
           <ReactQuill value={publicStringState.quill} onChange={publicTypingFn} />
           <button className='btn' onClick={onClosePublicEdit} >close</button>
           <button onClick={savePublicString} >save</button>
-
           {publicStringState.saved && <div className=""><div>saved</div></div>}
-
         </div>
+
         : <div className="my-3" >
           <div>
             <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: publicStringState.string }} ></div>
           </div>
           <div>
-            <button
-              onClick={() => setPublicStringState({ ...publicStringState, editing: true })}
-            >
+            <button onClick={() => setPublicStringState({ ...publicStringState, editing: true })} >
               edit
-      </button>
+            </button>
           </div>
         </div>
+
       }
     </div>
 
