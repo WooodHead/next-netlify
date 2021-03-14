@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
-import { CustomSpinner } from '../../components/custom/spinner'
+import CustomSpinner from '../../components/custom/spinner'
 import { useRouter } from "next/router";
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';

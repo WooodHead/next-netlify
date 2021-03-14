@@ -29,24 +29,7 @@ export default function Topic( { user, topic } ) {
       <NavbarComp />
       <UserComp user={user}/>
       <div className="mx-5">
-        
-        {/* <div className="flex flex-row bg-gray-100 my-5">
-          <div className="flex flex-col mx-5 my-5">
-            <h3 className='mx-5 my-5'>{user.Username}</h3>
-            <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
-          </div>
-          <div className="my-3" >
-          <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
-          </div>
-        </div>
-
-        <div className="bg-gray-100" >
-          {Object.keys(user.topics).map((folder) => 
-            <div>
-              <Link key={folder} href={"/" + user.Username + "/" + folder}><a >{folder}</a></Link>
-            </div>
-          )}
-        </div> */}
+      
             <div>
             <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic }} ></div>
             </div>

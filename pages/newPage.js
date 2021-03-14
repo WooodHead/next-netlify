@@ -4,8 +4,8 @@ import '../configureAmplify'
 import "../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../components/navbar/navbar'
 import dynamic from 'next/dynamic'
-const PublicString = dynamic(() => import('../components/edit/publicString'),{ ssr: false })
-const Topics = dynamic(() => import('../components/edit/topics'),{ ssr: false })
+// const PublicString = dynamic(() => import('../components/edit/publicString'),{ ssr: false })
+// const Topics = dynamic(() => import('../components/edit/topics'),{ ssr: false })
 
 export default function NewPage() {
 
