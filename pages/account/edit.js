@@ -7,10 +7,10 @@ import DOMPurify from 'dompurify';
 import PublicString from '../../components/edit/publicString'
 import TopicComponent from '../../components/edit/topic'
 
-export default function Edit() {
-
+export default function Edit(props) {
+  const users = props?.userState
   const [userState, setUserState] = useState({
-    Username: 'loading...',
+    Username: props ? users?.Username : 'loading...',
     ppm: 'loading...',
     ratingAv: 'loading...',
     publicString: 'loading...',

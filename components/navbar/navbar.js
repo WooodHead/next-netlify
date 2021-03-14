@@ -23,8 +23,8 @@ const NavbarComp = props => {
       text: usernameState ? 'Edit your page' : 'Create a page' },
     { href: '/phone', text: 'Phone' },
     // { href: '/questionmark', text: '?' },
-    { href: '/account', text: usernameState },
-    { href: '/signIn', text: 'Login / Sign Up' }
+    { href: usernameState ? '/account': '/signIn',
+      text: usernameState ? usernameState : 'Login / Sign Up'}
   ]
 
   const loggedIn = false

@@ -2,30 +2,69 @@ import React, { useEffect, useState }  from 'react'
 import Amplify, { API, Auth } from 'aws-amplify'
 import '../configureAmplify'
 import "../node_modules/react-quill/dist/quill.snow.css"
-import NavbarComp from '../components/navbar/navbar'
-import dynamic from 'next/dynamic'
-// const PublicString = dynamic(() => import('../components/edit/publicString'),{ ssr: false })
-// const Topics = dynamic(() => import('../components/edit/topics'),{ ssr: false })
+// import NavbarComp from '../components/navbar/navbar'
+// import dynamic from 'next/dynamic'
+// import PublicString from '../components/edit/publicString'
+// import TopicComponent from '../components/edit/topics'
+import EditComponent from './account/edit'
 
 export default function NewPage() {
-
-  const user = {
-    Username: "user number hasn't been assigned",
+  const [userState, setUserState] = useState({
+    Username: "new user",
     active: false,
     busy: false,
     folders: [],
+    TAVS: [],
     ppm: 0,
     ratingAv: null,
-    publicString: null,
-    topics: {},
-  }
+    publicString: '',
+    topics: [],
+  })
+  const [publicStringState, setPublicStringState] = useState({
+    string: '',
+    quill: '',
+    editing: false,
+    saved: false
+  })
+  const [selectedTopicState, setSelectedTopicState] = useState({
+    topic: '',
+    ogTopic: '',
+    string: '',
+    quill: '',
+    editing: false,
+    saved: false
+  })
   return (
     <>
-    <NavbarComp />
+    < EditComponent userState={userState} />
+    {/* <NavbarComp />
     <div className="mx-5">
-      {/* <PublicString user={user}/>
-      <Topics user={user} /> */}
-    </div>
+        <div className="flex flex-row bg-gray-100 my-5">
+          <div className="flex flex-col mx-5 my-5">
+            <h3 className='mx-5 my-5'>{userState.Username}</h3>
+          </div>
+          <PublicString 
+            publicStringState={publicStringState} 
+            setPublicStringState={setPublicStringState}/>
+        </div>
+        <div className="bg-gray-100" >
+          {userState.topics.map((topicObj) =>
+            <div key={topicObj.topic} >
+              <button onClick={() => selectTopic(topicObj)} href={"/" + userState.Username + '/topic'}>
+                <a>{topicObj.topic}</a>
+              </button>
+            </div>
+          )}
+          <button onClick={createNewTopic}>create new topic</button>
+        </div>
+        <div className="my-5 bg-gray-100">
+        <TopicComponent 
+          selectedTopicState={selectedTopicState} 
+          setSelectedTopicState={setSelectedTopicState}
+          userState={userState}
+          setUserState={setUserState}/>
+        </div>
+      </div> */}
     </>
   )
 

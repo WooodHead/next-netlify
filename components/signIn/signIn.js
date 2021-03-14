@@ -26,7 +26,9 @@ const SignIn = props => {
         emailInputRef.current.value,
         passInputRef.current.value
       );
+      console.log(authSignInRes)
       setSubmitting(false)
+      router.push("/account/edit")
     } catch (err) {
       if (err.code === "UserNotFoundException") {
         setErrState("emailErr")
