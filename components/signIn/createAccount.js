@@ -53,7 +53,8 @@ const SignUp = props => {
       await Auth.confirmSignUp(emailInputRef.current.value, securityCode.current.value)
       setSubmitConfirmation("accepted")
       setSubmitConfirmationState(false)
-      await userLoginHandler()
+      await Auth.signIn( emailInputRef.current.value, passInputRef.current.value )
+      router.push('/account/edit')
     } catch(err) {
       console.log(err)
       setSubmitConfirmation("denied")
@@ -61,20 +62,6 @@ const SignUp = props => {
     }
   }
 
-  const userLoginHandler = async () => {
-    try {
-      // await Auth.signOut()
-      const authSignInRes = await Auth.signIn(
-        emailInputRef.current.value,
-        passInputRef.current.value
-      );
-      const preferredUsername = authSignInRes.attributes.preferred_username
-      const cognitoData = authSignInRes.signInUserSession
-      // signInFn(preferredUsername, cognitoData)
-    } catch (err) {
-      console.log(err)
-    }
-  }
   const isLoggedIn = async () => {
     try {
       await Auth.currentSession()

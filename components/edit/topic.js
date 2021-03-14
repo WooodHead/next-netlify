@@ -9,6 +9,7 @@ export default function PublicString(props) {
   const setSelectedTopicState = (e) => props.setSelectedTopicState(e)
   const userState = props.userState
   const setUserState = (e) => props.setUserState(e)
+  const getUserData = () => props.getUserData()
 
   const topicTypingFn = (e) => {
     setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
@@ -60,22 +61,7 @@ export default function PublicString(props) {
       const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
       if (savedTopicRes.status === 200) {
         setSelectedTopicState({...selectedTopicState, saved: "saved"})
-        // userState.topics.forEach(topicObj) => 
-        const editedTopics = {...userState.topics, topic: selectedTopicState.topic, string: escapedString}
-        console.log(editedTopics)
-
-        selectedTopicState.ogTopic !== selectedTopicState.topic &&
-          userState.topics.forEach((topicObj) => {
-            console.log(topicObj)
-            topicObj.topic !== selectedTopicState.ogTopic && editedTopics.push(topicObj)
-          })
-          /* if edited topic doesn't already exist*/
-
-        editedTopics.push({topic: selectedTopicState.topic, string: escapedString})
-        setUserState({
-          ...userState, 
-          topics: editedTopics
-        })
+        getUserData()
       } else {
         console.log('savetopic failed')
       }
@@ -87,23 +73,25 @@ export default function PublicString(props) {
   return (
     <div>
       {selectedTopicState.editing
-
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
           <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
-          <button onClick={onCloseTopicEdit} >close</button>
-          <div >
-            <button onClick={() => saveTopicString()}>
-              save
-            </button>
-          </div>
-          
-            {selectedTopicState.saved === "saving" && <CustomSpinner /> }
-            {selectedTopicState.saved === "saved" && <div className="">
+
+          <div className="flex flex-row">
+            <div className="flex flex-row mr-10" >
+            <button onClick={() => saveTopicString()}>save</button>
+            {selectedTopicState.saved === "saving" && <CustomSpinner />}
+          {selectedTopicState.saved === "saved" && <div className="">
             <div>
               saved
             </div>
           </div>}
+          </div>
+            <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
+            <button className="mr-10" onClick={() => deleteTopic(selectedTopicState.topic)}>delete</button>
+          </div>
+
+
         </div>
 
         : <div>
@@ -112,9 +100,7 @@ export default function PublicString(props) {
           <button onClick={() => setSelectedTopicState({ ...selectedTopicState, editing: true })}>
             <div>edit</div>
           </button>
-          <button onClick={() => deleteTopic(selectedTopicState.topic)}>
-            <div>delete</div>
-          </button>
+
         </div>
 
       }

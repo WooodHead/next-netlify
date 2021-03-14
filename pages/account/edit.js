@@ -8,7 +8,9 @@ import PublicString from '../../components/edit/publicString'
 import TopicComponent from '../../components/edit/topic'
 
 export default function Edit(props) {
+
   const users = props?.userState
+
   const [userState, setUserState] = useState({
     Username: props ? users?.Username : 'loading...',
     ppm: 'loading...',
@@ -38,9 +40,6 @@ export default function Edit(props) {
         Authorization: userSession.attributes.preferred_username
       }
     }
-    // if (userState.Username !== 'loading...') {
-    //   return
-    // }
     try {
       const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []
@@ -55,13 +54,14 @@ export default function Edit(props) {
         active: getAllUsersRes.Item.active.BOOL,
         busy: getAllUsersRes.Item.busy.BOOL,
         // folders: getAllUsersRes.Item.folders?.SS || [],
+        TAVS: getAllUsersRes.Item.deviceInput.M,
         ppm: getAllUsersRes.Item.ppm.N,
         ratingAv: getAllUsersRes.Item.ratingAv?.S || null,
         publicString: getAllUsersRes.Item.publicString?.S || null,
         topics: topicsArray,
       }
       setUserState(user)
-      const sanitizedString = DOMPurify.sanitize(getAllUsersRes.Item.publicString.S)
+      const sanitizedString = DOMPurify.sanitize(getAllUsersRes.Item.publicString?.S)
       const pubString = {
         ...publicStringState, 
         string: sanitizedString, 
@@ -120,6 +120,7 @@ export default function Edit(props) {
         </div>
         <div className="my-5 bg-gray-100">
         <TopicComponent 
+          getUserData={getUserData}
           selectedTopicState={selectedTopicState} 
           setSelectedTopicState={setSelectedTopicState}
           userState={userState}
