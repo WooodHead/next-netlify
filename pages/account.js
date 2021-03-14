@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React, { useRef, useState } from 'react'
 import { API, Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
-import { CustomSpinner } from "../components/custom/spinner"
+import CustomSpinner from "../components/custom/spinner"
 import '../configureAmplify'
 import Navbar from '../components/navbar/navbar'
 

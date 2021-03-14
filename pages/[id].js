@@ -4,7 +4,7 @@ import '../configureAmplify'
 import Link from 'next/link'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
-
+import UserComp from '../components/account/userComp'
 
 export default function User({ user }) {
 
@@ -27,11 +27,12 @@ export default function User({ user }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavbarComp />
-      <div className="mx-5">
+      <UserComp user={user} />
+      {/* <div className="mx-5">
         <div className="flex flex-row bg-gray-100 my-5">
-          <div className="flex flex-col mx-5 my-5">
-            <h3 className='mx-5 my-5'>{user.Username}</h3>
-            <div>{user.TAVS}</div>
+          <div className="flex flex-col mx-5 mb-5">
+            <h3 className='mx-5 mt-5'>{user.Username}</h3>
+            <div className='mx-5 mb-3'>{user.TAVS}</div>
             <button type="button" onClick={openCallPhone}>chat</button>
           </div>
           <div className="my-3" >
@@ -47,13 +48,13 @@ export default function User({ user }) {
                 </Link>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.topicString }} ></div> */}
         {/* <Link href={ "/" + user.Username + '/edit'}>
           <a className="border-2 hover:border-black">edit</a>
         </Link> */}
-      </div>
+      {/* </div> */}
     </>
   )
 }

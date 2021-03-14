@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
-import { CustomSpinner } from '../custom/spinner'
+import CustomSpinner from '../custom/spinner'
 import '../../configureAmplify'
 
 const SignUp = props => {

@@ -3,8 +3,8 @@ import Amplify, { API, Auth } from 'aws-amplify'
 import Link from 'next/link'
 import Head from 'next/head'
 import '../../configureAmplify'
-import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
+import UserComp from '../../components/account/userComp'
 
 export default function Topic( { user, topic } ) {
 
@@ -27,9 +27,10 @@ export default function Topic( { user, topic } ) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavbarComp />
+      <UserComp user={user}/>
       <div className="mx-5">
         
-        <div className="flex flex-row bg-gray-100 my-5">
+        {/* <div className="flex flex-row bg-gray-100 my-5">
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{user.Username}</h3>
             <button type="button" className="border-4 hover:border-black" onClick={openCallPhone}>chat</button>
@@ -45,7 +46,7 @@ export default function Topic( { user, topic } ) {
               <Link key={folder} href={"/" + user.Username + "/" + folder}><a >{folder}</a></Link>
             </div>
           )}
-        </div>
+        </div> */}
             <div>
             <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic }} ></div>
             </div>
@@ -76,12 +77,18 @@ export async function getStaticProps({ params }) {
   let topic
   const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
   getAllUsersRes.body.Items.forEach((userRes) => {
+    const TAVS = []
+    userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
+    userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
+    userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
+    userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
     if (userRes.Username.S === params.id) {
       user = {
         Username: userRes.Username.S,
         active: userRes.active.BOOL,
         busy: userRes.busy.BOOL,
         folders: userRes.folders?.SS || [],
+        TAVS: TAVS,
         ppm: userRes.ppm.N,
         ratingAv: userRes.ratingAv?.S || null,
         publicString: userRes.publicString?.S || null,
