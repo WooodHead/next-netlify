@@ -13,7 +13,7 @@ export default function Edit(props) {
 
   const [userState, setUserState] = useState({
     Username: props ? users?.Username : 'loading...',
-    ppm: 'loading...',
+    ppm: 0,
     ratingAv: 'loading...',
     publicString: 'loading...',
     topics: [],
@@ -34,7 +34,6 @@ export default function Edit(props) {
     saved: false
   })
   const [tavsState, setTavsState] = useState({
-    ppm: 0,
     text: true,
     audio: true,
     video: false,
@@ -51,7 +50,6 @@ export default function Edit(props) {
     }
     try {
       const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      console.log(getAllUsersRes)
       const topicsArray = []
       for (const topicKey in getAllUsersRes.Item.topics.M) {
         topicsArray.push({
@@ -74,6 +72,7 @@ export default function Edit(props) {
         ppm: getAllUsersRes.Item.ppm.N,
         ratingAv: getAllUsersRes.Item.ratingAv?.S || null,
         publicString: getAllUsersRes.Item.publicString?.S || null,
+        receiver: getAllUsersRes.Item.receiver.BOOL,
         topics: topicsArray,
       }
       setUserState(user)
@@ -128,6 +127,7 @@ export default function Edit(props) {
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
             {userState.TAVS}
             <EditTAVScomp 
+              userState={userState}
               tavsState={tavsState} 
               setTavsState={setTavsState}
               getUserData={getUserData}/>

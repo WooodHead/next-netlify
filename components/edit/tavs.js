@@ -1,10 +1,13 @@
 import React from 'react'
 import { API, Auth } from 'aws-amplify'
 import '../../configureAmplify'
+import PPM from './ppm'
 
 export default function TAVS(props) {
   const tavsState = props.tavsState
   const setTavsState = (e) => props.setTavsState(e)
+  const userState = props.userState
+  const getUserData = () => props.getUserData()
 
   const deviceInputs = ['text', 'audio', 'video', 'screen']
 
@@ -48,6 +51,7 @@ export default function TAVS(props) {
       {tavsState.editing 
         && <div>
           {deviceInputs.map((device) => <CustomCheckbox key={device} TAVS={device} />)}
+          < PPM getUserData={getUserData} userState={userState} />
         </div>}
     </div>
     
