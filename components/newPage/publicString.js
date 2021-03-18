@@ -23,7 +23,7 @@ export default function PublicString(props) {
       console.log(err)
     }
   }
-  const savePublicString = async () => {
+  const savePublicStringButton = async () => {
     setCreateAccountState(true)
     // try {
     //   const userSession = await Auth.currentSession()
@@ -48,7 +48,7 @@ export default function PublicString(props) {
         ? <div>
           <ReactQuill value={publicStringState.quill} onChange={publicTypingFn} />
           {/* <button className='btn' onClick={onClosePublicEdit} >close</button> */}
-          <button onClick={savePublicString} >save</button>
+          <button onClick={savePublicStringButton} >save</button>
           {publicStringState.saved && <div className=""><div>saved</div></div>}
         </div>
 

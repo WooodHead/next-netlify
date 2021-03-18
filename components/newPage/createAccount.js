@@ -5,20 +5,20 @@ import CustomSpinner from '../custom/spinner'
 import '../../configureAmplify'
 
 const SignUp = props => {
-  
-    const [submitAccountState, setSubmitAccountState] = useState(false)
-    const [submitConfirmationState, setSubmitConfirmationState] = useState(false)
-    const [submitConfirmation, setSubmitConfirmation] = useState()
-    const [errState, setErrState] = useState(false)
-    const [splashState, setSplashState] = useState(false)
-    const [confirmationState, setConfirmationState] = useState()
 
-  const signInFn = props.signInFn
+  const accountCreatedSaveStrings = () => props.accountCreatedSaveStrings()
+  const [submitAccountState, setSubmitAccountState] = useState(false)
+  const [submitConfirmationState, setSubmitConfirmationState] = useState(false)
+  const [submitConfirmation, setSubmitConfirmation] = useState()
+  const [errState, setErrState] = useState(false)
+  const [splashState, setSplashState] = useState(false)
+  const [confirmationState, setConfirmationState] = useState()
+  const [emailPassInput, setEmailPassInput] = useState({
+    emailInput: '',
+    passInput: '',
+    codeInput: ''
+  })
 
-  const emailInputRef = useRef();
-  const passInputRef = useRef();
-  const securityCode = useRef();
-  
   const router = useRouter()
 
   const submitUserHandler = async e => {
@@ -26,8 +26,8 @@ const SignUp = props => {
     setSubmitAccountState(true)
     try {
       await Auth.signUp({
-        username: "" + emailInputRef.current.value,
-        password: "" + passInputRef.current.value,
+        username: emailPassInput.emailInput,
+        password: emailPassInput.passInput,
         attributes: {
           preferred_username: "toBeReplaced"
         }
@@ -43,20 +43,20 @@ const SignUp = props => {
       if (err.message.includes('password')) {
         setErrState("passBad")
       }
-      setSubmitAccountState(false) 
+      setSubmitAccountState(false)
     }
   };
-  
+
   const userVerifyHandler = async e => {
     e.preventDefault();
     setSubmitConfirmationState(true)
     try {
-      await Auth.confirmSignUp(emailInputRef.current.value, securityCode.current.value)
+      await Auth.confirmSignUp(emailPassInput.emailInput, emailPassInput.codeInput)
       setSubmitConfirmation("accepted")
       setSubmitConfirmationState(false)
-      await Auth.signIn( emailInputRef.current.value, passInputRef.current.value )
-      router.push('/account/edit')
-    } catch(err) {
+      await Auth.signIn(emailPassInput.emailInput, emailPassInput.passInput)
+      accountCreatedSaveStrings()
+    } catch (err) {
       console.log(err)
       setSubmitConfirmation("denied")
       setSubmitConfirmationState(false)
@@ -81,57 +81,61 @@ const SignUp = props => {
         You must go to your settings and log out before you can create a new account
       </div>
     )
-  } else if (confirmationState) {
+  } else if (!confirmationState) {
     return (
-      <div>
-                  <div className="mx-2 my-3">check your email for a confirmation code</div>
-          <div className="mb-3">
-            <input ref={securityCode} placeholder="confirmation code"></input>
-          </div>
-          <div>
-            <button disabled={submitConfirmationState} onClick={userVerifyHandler}>submit</button>
-            {submitConfirmationState && <CustomSpinner />}
-            {(submitConfirmation === "accepted") ? <CustomSpinner /> : (submitConfirmation === "denied") ? ' ❌' : null}
-          </div>
-      </div>
-    ) } else {
-      return (
-    
       <div className="container">
         <div className="column">
           <h4 className="mb-2 mt-3">create an account</h4>
           <div className="mb-3">
-          
             <div>
-              <input ref={emailInputRef} disabled={(errState === "accepted")} placeholder="enter email"></input>
-              {(errState === "emailBad") && ' ❌' }
+              <input
+                onChange={(e) => setEmailPassInput({ ...emailPassInput, emailInput: e.target.value })}
+                disabled={(errState === "accepted")}
+                placeholder="enter email"></input>
+              {(errState === "emailBad") && ' ❌'}
             </div>
           </div>
           <div className="mb-3">
             <div className="container-fluid row">
-              <input 
-              type="password"
-              ref={passInputRef} 
-              disabled={(errState === "accepted")} 
-              placeholder="enter password"
-              ></input>           
-              {(errState === "passBad") && ' ❌' }
-  
+              <input
+                type="password"
+                onChange={(e) => setEmailPassInput({ ...emailPassInput, passInput: e.target.value })}
+                disabled={(errState === "accepted")}
+                placeholder="enter password"
+              ></input>
+              {(errState === "passBad") && ' ❌'}
+
             </div>
             {/* <div>please make it complicated</div> */}
           </div>
           <div className="mb-5">
-            <button disabled={(errState === "accepted")} onClick={submitUserHandler}>submit</button> 
-            {(errState === "accepted") && ' ✔️' }
+            <button disabled={(errState === "accepted")} onClick={submitUserHandler}>submit</button>
+            {(errState === "accepted") && ' ✔️'}
             {submitAccountState && <CustomSpinner />}
           </div>
 
         </div>
       </div>
     )
+  } else {
+    return (
+      <div>
+        <div className="mx-2 my-3">check your email for a confirmation code</div>
+        <div className="mb-3">
+          <input 
+            onChange={(e) => setEmailPassInput({ ...emailPassInput, codeInput: e.target.value })}
+            placeholder="confirmation code"></input>
+        </div>
+        <div>
+          <button disabled={submitConfirmationState} onClick={userVerifyHandler}>submit</button>
+          {submitConfirmationState && <CustomSpinner />}
+          {(submitConfirmation === "accepted") ? <CustomSpinner /> : (submitConfirmation === "denied") ? ' ❌' : null}
+        </div>
+      </div>
+    )
   }
-    
-  
+
+
 }
 
 export default SignUp

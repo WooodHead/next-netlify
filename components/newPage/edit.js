@@ -8,11 +8,12 @@ import PublicString from './publicString'
 import TopicComponent from '../edit/topic'
 import EditTAVScomp from './tavs'
 import CreateAccount from './createAccount'
+import { useRouter } from 'next/router'
 
 export default function EditComponent(props) {
 
   const users = props?.userState
-  
+  const router = useRouter()
   const [createAccountState, setCreateAccountState] = useState()
   const [userState, setUserState] = useState({
     Username: props ? users?.Username : 'loading...',
@@ -117,6 +118,36 @@ export default function EditComponent(props) {
     })
   }
 
+  const accountCreatedSaveStrings = async () => {
+    try {
+      const userSession = await Auth.currentSession()
+      const pubStringInit = {
+        headers: { Authorization: userSession.idToken.jwtToken },
+        body: {
+          stringType: 'publicString',
+          string: `` + publicStringState.quill
+        }
+      }
+      const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
+      const topicStringInit = {
+        headers: { Authorization: userSession.idToken.jwtToken },
+        body: {
+          deleteTopic: false,
+          ogTopic: selectedTopicState.ogTopic,
+          topic: selectedTopicState.topic,
+          string: escapedString
+        }
+      }
+      const savedTopicRes = API.post(process.env.apiGateway.NAME, '/topics', topicStringInit)
+      const savedString = API.post(process.env.apiGateway.NAME, '/saveStrings', pubStringInit)
+      await savedTopicRes
+      await savedString
+      router.push('/account/edit')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     getUserData()
   }, [])
@@ -144,10 +175,11 @@ export default function EditComponent(props) {
                 setPublicStringState={setPublicStringState} />
             </div>
             <div>
-              {createAccountState && <CreateAccount />}
+              {createAccountState 
+              && <CreateAccount 
+              accountCreatedSaveStrings={accountCreatedSaveStrings} />}
             </div>
           </div>
-
         </div>
 
         <div className="bg-gray-100" >
