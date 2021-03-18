@@ -6,7 +6,7 @@ import "../node_modules/react-quill/dist/quill.snow.css"
 // import dynamic from 'next/dynamic'
 // import PublicString from '../components/edit/publicString'
 // import TopicComponent from '../components/edit/topics'
-import EditComponent from './account/edit'
+import EditComponent from '../components/newPage/edit'
 
 export default function NewPage() {
   const [userState, setUserState] = useState({
@@ -20,20 +20,21 @@ export default function NewPage() {
     publicString: '',
     topics: [],
   })
-  const [publicStringState, setPublicStringState] = useState({
-    string: '',
-    quill: '',
-    editing: false,
-    saved: false
-  })
-  const [selectedTopicState, setSelectedTopicState] = useState({
-    topic: '',
-    ogTopic: '',
-    string: '',
-    quill: '',
-    editing: false,
-    saved: false
-  })
+  // const [publicStringState, setPublicStringState] = useState({
+  //   string: '',
+  //   quill: '',
+  //   editing: false,
+  //   saved: false,
+  //   createAccount: false
+  // })
+  // const [selectedTopicState, setSelectedTopicState] = useState({
+  //   topic: '',
+  //   ogTopic: '',
+  //   string: '',
+  //   quill: '',
+  //   editing: false,
+  //   saved: false
+  // })
   return (
     <>
     < EditComponent userState={userState} />

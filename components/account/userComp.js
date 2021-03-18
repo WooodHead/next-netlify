@@ -20,6 +20,7 @@ export default function UserComp(props) {
           <div className="flex flex-col mx-5 mb-5">
             <h3 className='mx-5 mt-5'>{user.Username}</h3>
             <div className='mx-5 mb-3'>{user.TAVS}</div>
+            {/* <div className='mx-5 mb-3'>{'$' + user.ppm}</div> */}
             <button type="button" onClick={openCallPhone}>chat</button>
           </div>
           <div className="my-3" >

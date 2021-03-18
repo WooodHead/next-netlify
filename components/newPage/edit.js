@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Amplify, { API, Auth } from 'aws-amplify'
 import '../../configureAmplify'
-import "../../node_modules/react-quill/dist/quill.snow.css"
-import NavbarComp from '../../components/navbar/navbar'
+// import "../../node_modules/react-quill/dist/quill.snow.css"
+import NavbarComp from '../navbar/navbar'
 import DOMPurify from 'dompurify';
-import PublicString from '../../components/edit/publicString'
-import TopicComponent from '../../components/edit/topic'
-import EditTAVScomp from '../../components/edit/tavs'
+import PublicString from './publicString'
+import TopicComponent from '../edit/topic'
+import EditTAVScomp from './tavs'
+import CreateAccount from './createAccount'
 
-export default function Edit(props) {
+export default function EditComponent(props) {
 
   const users = props?.userState
-
+  
+  const [createAccountState, setCreateAccountState] = useState()
   const [userState, setUserState] = useState({
     Username: props ? users?.Username : 'loading...',
     ppm: 0,
@@ -23,8 +25,8 @@ export default function Edit(props) {
   const [publicStringState, setPublicStringState] = useState({
     string: '',
     quill: '',
-    editing: false,
-    saved: false
+    editing: true,
+    saved: false,
   })
   const [selectedTopicState, setSelectedTopicState] = useState({
     topic: '',
@@ -127,16 +129,27 @@ export default function Edit(props) {
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
             {userState.TAVS}
-            <EditTAVScomp 
+            <EditTAVScomp
               userState={userState}
-              tavsState={tavsState} 
+              tavsState={tavsState}
               setTavsState={setTavsState}
-              getUserData={getUserData}/>
+              getUserData={getUserData} />
           </div>
-          <PublicString 
-            publicStringState={publicStringState} 
-            setPublicStringState={setPublicStringState}/>
+          <div className="flex flex-col">
+            <div>
+              <PublicString
+                setCreateAccountState={setCreateAccountState}
+                createAccountState={createAccountState}
+                publicStringState={publicStringState}
+                setPublicStringState={setPublicStringState} />
+            </div>
+            <div>
+              {createAccountState && <CreateAccount />}
+            </div>
+          </div>
+
         </div>
+
         <div className="bg-gray-100" >
           {userState.topics.map((topicObj) =>
             <div key={topicObj.topic} >
