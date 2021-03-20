@@ -45,6 +45,8 @@ export default function EditComponent(props) {
     editing: false
   })
 
+  const [errorState, setErrorState] = useState('')
+
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
     const getUserInit = {
@@ -164,7 +166,8 @@ export default function EditComponent(props) {
               userState={userState}
               tavsState={tavsState}
               setTavsState={setTavsState}
-              getUserData={getUserData} />
+              getUserData={getUserData} 
+               />
           </div>
           <div className="flex flex-col">
             <div>
@@ -198,8 +201,10 @@ export default function EditComponent(props) {
           selectedTopicState={selectedTopicState} 
           setSelectedTopicState={setSelectedTopicState}
           userState={userState}
-          setUserState={setUserState}/>
+          setUserState={setUserState}
+          setErrorState={setErrorState}/>
         </div>
+        {errorState}
       </div>
     </>
   )

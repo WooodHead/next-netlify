@@ -11,6 +11,14 @@ export default function PublicString(props) {
   const setUserState = (e) => props.setUserState(e)
   const getUserData = () => props.getUserData()
 
+
+  const formats = [
+    'header',
+    'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image'
+  ],
+
   const topicTypingFn = (e) => {
     setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
   }
@@ -63,6 +71,10 @@ export default function PublicString(props) {
         setSelectedTopicState({...selectedTopicState, saved: "saved"})
         getUserData()
       } else {
+        console.log(savedTopicRes.err)
+        if (savedTopicRes.err === "ValidationException: ExpressionAttributeNames contains invalid value: Empty attribute") {
+          console.log('no topic')
+        }
         console.log('savetopic failed')
       }
     } catch (err) {
@@ -75,7 +87,12 @@ export default function PublicString(props) {
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
+          <ReactQuill 
+          theme="snow"
+          formats={formats} 
+          modules={modules} 
+          value={selectedTopicState.quill} 
+          onChange={topicTypingFn} />
 
           <div className="flex flex-row">
             <div className="flex flex-row mr-10" >

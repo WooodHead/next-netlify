@@ -10,6 +10,7 @@ export default function PublicString(props) {
   const userState = props.userState
   const setUserState = (e) => props.setUserState(e)
   const getUserData = () => props.getUserData()
+  const setErrorState = (e) => props.setErrorState(e)
 
   const topicTypingFn = (e) => {
     setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
@@ -63,11 +64,24 @@ export default function PublicString(props) {
         setSelectedTopicState({...selectedTopicState, saved: "saved"})
         getUserData()
       } else {
-        console.log('savetopic failed')
+        if (savedTopicRes.err.message === "ExpressionAttributeNames contains invalid value: Empty attribute name for key #DE") {
+          setErrorState('topic cannot be left blank')
+        }
+        console.log(savedTopicRes)
       }
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['italic', 'underline','strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image'],
+      ['clean']
+    ],
   }
 
   return (
@@ -75,7 +89,7 @@ export default function PublicString(props) {
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <ReactQuill value={selectedTopicState.quill} onChange={topicTypingFn} />
+          <ReactQuill modules={modules} value={selectedTopicState.quill} onChange={topicTypingFn} />
 
           <div className="flex flex-row">
             <div className="flex flex-row mr-10" >

@@ -41,6 +41,7 @@ export default function Edit(props) {
     screen: false,
     editing: false
   })
+  const [errorState, setErrorState] = useState('')
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -153,7 +154,9 @@ export default function Edit(props) {
           selectedTopicState={selectedTopicState} 
           setSelectedTopicState={setSelectedTopicState}
           userState={userState}
-          setUserState={setUserState}/>
+          setUserState={setUserState}
+          setErrorState={setErrorState}/>
+          {errorState}
         </div>
       </div>
     </>
