@@ -54,10 +54,25 @@ export default function Edit(props) {
       const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []
       for (const topicKey in getAllUsersRes.Item.topics.M) {
+        const string = getAllUsersRes.Item.topics.M[topicKey].S
+        let slicedKey
+        const keyStart = string.search('{key: ')
+        if (keyStart > -1) {
+          string.search
+          slicedKey = string.slice(keystart, )
+        }
+
+        console.log(keyStart)
+
+        // const getS3 = await Storage.vault.get(key)
+        // console.log('gets3: ', getS3)
+
+
         topicsArray.push({
           topic: topicKey,
-          string: DOMPurify.sanitize(getAllUsersRes.Item.topics.M[topicKey].S)
+          string: DOMPurify.sanitize(string)
         })
+
       }
       const TAVS = []
       const deviceInputRes = getAllUsersRes.Item.deviceInput.M

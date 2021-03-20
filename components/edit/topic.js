@@ -1,5 +1,5 @@
 import React from 'react'
-import { API, Auth } from 'aws-amplify'
+import { API, Auth, Storage } from 'aws-amplify'
 import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
@@ -44,8 +44,13 @@ export default function PublicString(props) {
       ? setUserState({...userState, topics: userState.topics.filter((topicObj) => topicObj.topic !== topicProp)})
       : console.log('delete failed')
   }
+
   const saveTopicString = async () => {
-    const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
+    uploadImage()
+    /*change to s3 url */
+    const stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${userState.Username}}`)
+    /**/ 
+    const escapedString = stringWithoutImg.replaceAll('"', '\\"')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
       const userSession = await Auth.currentSession()
@@ -74,14 +79,63 @@ export default function PublicString(props) {
     }
   }
 
+  async function uploadImage(e) {
+    const buf = Buffer.from(selectedTopicState.quill.replace(/^data:image\/\w+;base64,/, ""),'base64')
+    console.log(buf)
+    const data = {
+      Key: userState.Username,
+      Body: buf,
+      ContentEncoding: 'base64',
+      ContentType: 'image/jpeg'
+    }
+    const s3res = await Storage.vault.put(data.Key, data)
+        console.log('s3 res: ', s3res)
+  }
+
+  const imageHandler = (e) => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.click()
+
+    // Listen upload local image and save to server
+    input.onchange = async () => {
+      const file = input.files[0];
+      // file.name = {username} + '-' + file.name
+
+      // file type is only image.
+      if (/^image\//.test(file.type)) {
+        // saveToServer(file);
+        console.log(file)
+
+
+        const s3res = await Storage.vault.put(file.name, file)
+        console.log('s3 res: ', s3res)
+        const getS3 = await Storage.vault.get(s3res.key)
+        console.log('gets3: ', getS3)
+        const stringPushed = selectedTopicState.quill + getS3
+        console.log(selectedTopicState.quill)
+        setSelectedTopicState({ ...selectedTopicState, quill: stringPushed})
+        // push image url to rich editor.
+        // const range = editor.getSelection();
+        // editor.insertEmbed(range.index, 'image', `http://localhost:9000${url}`);
+      } else {
+        console.warn('You could only upload images.');
+      }
+    }
+  }
+
   const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, false] }],
-      ['italic', 'underline','strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image'],
-      ['clean']
-    ],
+    toolbar:  {
+      container: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline','strike', 'blockquote'],
+        [{'list': 'bullet'}],
+        [ 'image' ]
+      ],
+      // handlers: {
+      //   image: imageHandler
+      // }
+    },
   }
 
   return (
@@ -89,7 +143,10 @@ export default function PublicString(props) {
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <ReactQuill modules={modules} value={selectedTopicState.quill} onChange={topicTypingFn} />
+          <ReactQuill 
+          modules={modules} 
+          value={selectedTopicState.quill} 
+          onChange={topicTypingFn} />
 
           <div className="flex flex-row">
             <div className="flex flex-row mr-10" >
