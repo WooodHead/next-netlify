@@ -18,21 +18,19 @@ export default function Topic( { user, topic } ) {
       "width=500,height=700"
     )
   }
-
   return (
     <>
       <Head>
-        <title>Chat with {user.Username}, who might have solved this</title>
-        <meta name="description" content={'userprovidedcontent'} />
+        <title>{topic.topic}</title>
+        <meta name="description" content={topic.string} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavbarComp />
-      <UserComp user={user}/>
+      <UserComp user={user} />
       <div className="mx-5">
-      
-            <div>
-            <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic }} ></div>
-            </div>
+        <div>
+          <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic.string }} ></div>
+        </div>
       </div>
     </>
   )
@@ -80,7 +78,7 @@ export async function getStaticProps({ params }) {
 
       for (const key in user.topics) {
         if (key === params.topic) {
-          topic = user.topics[key].S
+          topic = { topic: [key], string: user.topics[key].S }
         }
     }    
   }})
