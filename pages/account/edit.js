@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Amplify, { API, Auth } from 'aws-amplify'
+import Amplify, { API, Auth, Storage } from 'aws-amplify'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
@@ -42,6 +42,7 @@ export default function Edit(props) {
     editing: false
   })
   const [errorState, setErrorState] = useState('')
+  const [imgsource, setimgsource] = useState()
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -56,17 +57,16 @@ export default function Edit(props) {
       for (const topicKey in getAllUsersRes.Item.topics.M) {
         const string = getAllUsersRes.Item.topics.M[topicKey].S
         let slicedKey
-        const keyStart = string.search('{key: ')
+        const keyStart = string.indexOf('{key: ')
         if (keyStart > -1) {
-          string.search
-          slicedKey = string.slice(keystart, )
+          const keyEnd = string.indexOf('}', keyStart)
+          slicedKey = '' + string.slice(keyStart + 6, keyEnd)
+          const getS3 = await Storage.vault.get(slicedKey)
+          setimgsource(getS3.toString())
+
         }
 
-        console.log(keyStart)
-
         // const getS3 = await Storage.vault.get(key)
-        // console.log('gets3: ', getS3)
-
 
         topicsArray.push({
           topic: topicKey,

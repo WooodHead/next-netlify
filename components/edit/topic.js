@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { createRef, useRef } from 'react'
 import { API, Auth, Storage } from 'aws-amplify'
 import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} /> },
+  { ssr: false }
+)
 
 export default function PublicString(props) {
   const selectedTopicState = props.selectedTopicState
@@ -12,9 +17,12 @@ export default function PublicString(props) {
   const getUserData = () => props.getUserData()
   const setErrorState = (e) => props.setErrorState(e)
 
+  const quillRef = useRef()
+
   const topicTypingFn = (e) => {
     setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
   }
+
   const onCloseTopicEdit = async () => {
     try {
       const userSession = await Auth.currentAuthenticatedUser()
@@ -46,11 +54,11 @@ export default function PublicString(props) {
   }
 
   const saveTopicString = async () => {
-    uploadImage()
+    // console.log(quillRef)
     /*change to s3 url */
-    const stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${userState.Username}}`)
+    // const stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${userState.Username}}`)
     /**/ 
-    const escapedString = stringWithoutImg.replaceAll('"', '\\"')
+    const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
       const userSession = await Auth.currentSession()
@@ -72,7 +80,6 @@ export default function PublicString(props) {
         if (savedTopicRes.err.message === "ExpressionAttributeNames contains invalid value: Empty attribute name for key #DE") {
           setErrorState('topic cannot be left blank')
         }
-        console.log(savedTopicRes)
       }
     } catch (err) {
       console.log(err)
@@ -81,7 +88,6 @@ export default function PublicString(props) {
 
   async function uploadImage(e) {
     const buf = Buffer.from(selectedTopicState.quill.replace(/^data:image\/\w+;base64,/, ""),'base64')
-    console.log(buf)
     const data = {
       Key: userState.Username,
       Body: buf,
@@ -96,31 +102,36 @@ export default function PublicString(props) {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.click()
-
-    // Listen upload local image and save to server
     input.onchange = async () => {
-      const file = input.files[0];
-      // file.name = {username} + '-' + file.name
+      const editor = quillRef.current.getEditor()
+      
+      const file = input.files[0]
+      const formData = new FormData()
 
-      // file type is only image.
-      if (/^image\//.test(file.type)) {
-        // saveToServer(file);
-        console.log(file)
-
-
-        const s3res = await Storage.vault.put(file.name, file)
-        console.log('s3 res: ', s3res)
-        const getS3 = await Storage.vault.get(s3res.key)
-        console.log('gets3: ', getS3)
-        const stringPushed = selectedTopicState.quill + getS3
-        console.log(selectedTopicState.quill)
-        setSelectedTopicState({ ...selectedTopicState, quill: stringPushed})
+      const range = editor.getSelection(true)
+      console.log(editor)
+      // editor.insertEmbed(range.index, 'image', `${window.location.origin}/images/loaders/placeholder.gif`);
+      /* Move cursor to right side of image (easier to continue typing) */
+      editor.setSelection(range.index + 1);
+      // const res = await apiPostNewsImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
+      console.log(file)
+      const s3res = await Storage.vault.put(file.name, file)
+      const getS3 = await Storage.vault.get(s3res.key)
+      console.log(getS3)
+      /* Remove placeholder image */
+      // editor.deleteText(range.index, 1);
+      /* Insert uploaded image */
+      editor.insertEmbed(range.index, 'image', getS3)
+      
+      // if (/^image\//.test(file.type)) {
+        // const stringPushed = selectedTopicState.quill + getS3
+        // setSelectedTopicState({ ...selectedTopicState, quill: stringPushed})
         // push image url to rich editor.
         // const range = editor.getSelection();
         // editor.insertEmbed(range.index, 'image', `http://localhost:9000${url}`);
-      } else {
-        console.warn('You could only upload images.');
-      }
+      // } else {
+      //   console.warn('You could only upload images.');
+      // }
     }
   }
 
@@ -132,9 +143,9 @@ export default function PublicString(props) {
         [{'list': 'bullet'}],
         [ 'image' ]
       ],
-      // handlers: {
-      //   image: imageHandler
-      // }
+      handlers: {
+        image: imageHandler
+      }
     },
   }
 
@@ -144,10 +155,10 @@ export default function PublicString(props) {
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
           <ReactQuill 
-          modules={modules} 
-          value={selectedTopicState.quill} 
-          onChange={topicTypingFn} />
-
+            forwardedRef={quillRef}
+            modules={modules} 
+            value={selectedTopicState.quill} 
+            onChange={topicTypingFn} />
           <div className="flex flex-row">
             <div className="flex flex-row mr-10" >
             <button onClick={() => saveTopicString()}>save</button>
