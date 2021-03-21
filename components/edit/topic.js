@@ -1,4 +1,4 @@
-import React, { createRef, useRef } from 'react'
+import React, { createRef, useRef, useState } from 'react'
 import { API, Auth, Storage } from 'aws-amplify'
 import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
@@ -86,18 +86,6 @@ export default function PublicString(props) {
     }
   }
 
-  async function uploadImage(e) {
-    const buf = Buffer.from(selectedTopicState.quill.replace(/^data:image\/\w+;base64,/, ""),'base64')
-    const data = {
-      Key: userState.Username,
-      Body: buf,
-      ContentEncoding: 'base64',
-      ContentType: 'image/jpeg'
-    }
-    const s3res = await Storage.vault.put(data.Key, data)
-        console.log('s3 res: ', s3res)
-  }
-
   const imageHandler = (e) => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -109,33 +97,14 @@ export default function PublicString(props) {
       const formData = new FormData()
 
       const range = editor.getSelection(true)
-      console.log(editor)
-      // editor.insertEmbed(range.index, 'image', `${window.location.origin}/images/loaders/placeholder.gif`);
-      /* Move cursor to right side of image (easier to continue typing) */
       editor.setSelection(range.index + 1);
-      // const res = await apiPostNewsImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
-      console.log(file)
       const s3res = await Storage.vault.put(file.name, file)
       const getS3 = await Storage.vault.get(s3res.key)
-      console.log(getS3)
-      /* Remove placeholder image */
-      // editor.deleteText(range.index, 1);
-      /* Insert uploaded image */
       editor.insertEmbed(range.index, 'image', getS3)
-      
-      // if (/^image\//.test(file.type)) {
-        // const stringPushed = selectedTopicState.quill + getS3
-        // setSelectedTopicState({ ...selectedTopicState, quill: stringPushed})
-        // push image url to rich editor.
-        // const range = editor.getSelection();
-        // editor.insertEmbed(range.index, 'image', `http://localhost:9000${url}`);
-      // } else {
-      //   console.warn('You could only upload images.');
-      // }
     }
   }
 
-  const modules = {
+  const [modules] =useState( {
     toolbar:  {
       container: [
         [{ 'header': [1, 2, false] }],
@@ -144,10 +113,10 @@ export default function PublicString(props) {
         [ 'image' ]
       ],
       handlers: {
-        image: imageHandler
+        image: () => imageHandler()
       }
     },
-  }
+  })
 
   return (
     <div>
