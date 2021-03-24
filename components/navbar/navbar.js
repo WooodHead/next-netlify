@@ -21,7 +21,7 @@ const NavbarComp = props => {
     { href: "/users", text: 'Users' },
     { href: usernameState ? "/account/edit" : "/newPage",
       text: usernameState ? 'Edit your page' : 'Create a page' },
-    { href: '/phone', text: 'Phone' },
+    // { href: '/phone', text: 'Phone' },
     // { href: '/questionmark', text: '?' },
     { href: usernameState ? '/account': '/signIn',
       text: usernameState ? usernameState : 'Login / Sign Up'}

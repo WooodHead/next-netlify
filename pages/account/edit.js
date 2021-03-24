@@ -65,9 +65,7 @@ export default function Edit(props) {
           setimgsource(getS3.toString())
 
         }
-
         // const getS3 = await Storage.vault.get(key)
-
         topicsArray.push({
           topic: topicKey,
           string: DOMPurify.sanitize(string)

@@ -2,6 +2,7 @@ import React from 'react'
 import { API, Auth } from 'aws-amplify'
 import '../../configureAmplify'
 import PPM from './ppm'
+import StripeOnboard from './onboard'
 
 export default function TAVS(props) {
   const tavsState = props.tavsState
@@ -52,6 +53,7 @@ export default function TAVS(props) {
         && <div>
           {deviceInputs.map((device) => <CustomCheckbox key={device} TAVS={device} />)}
           < PPM getUserData={getUserData} userState={userState} />
+          <StripeOnboard />
         </div>}
     </div>
     
