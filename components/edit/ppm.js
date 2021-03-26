@@ -27,8 +27,7 @@ export default function PPM(props) {
   }
 
   const submitPPM = async e => {
-    console.log('hello')
-    // e.preventDefault();
+    e.preventDefault()
     try {
       const userSession = await Auth.currentSession()
       if (userState.reciever) {
@@ -62,7 +61,7 @@ export default function PPM(props) {
 
   return (
     <div className="row ml-0 mt-1" >
-      <button onClick={submitPPM}>submit</button>
+      {/* <button onClick={submitPPM}>submit</button> */}
       <form onSubmit={submitPPM}>$ 
        <input
          style={{width: "60px"}}

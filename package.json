@@ -12,7 +12,7 @@
     "@aws-amplify/ui-react": "^0.2.34",
     "@opentok/client": "^2.19.0",
     "@stripe/react-stripe-js": "^1.2.2",
-    "@stripe/stripe-js": "^1.11.0",
+    "@stripe/stripe-js": "^1.13.2",
     "autoprefixer": "^10.2.4",
     "aws-amplify": "^3.3.14",
     "dompurify": "^2.2.6",

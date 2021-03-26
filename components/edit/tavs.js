@@ -52,7 +52,10 @@ export default function TAVS(props) {
       {tavsState.editing 
         && <div>
           {deviceInputs.map((device) => <CustomCheckbox key={device} TAVS={device} />)}
-          < PPM getUserData={getUserData} userState={userState} />
+          <div className="my-5">
+            < PPM getUserData={getUserData} userState={userState} />
+          </div>
+          
           <StripeOnboard />
         </div>}
     </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { API, Auth } from 'aws-amplify'
 import {loadStripe} from '@stripe/stripe-js'
-import stripeButton from '../../public/light-on-light.png'
 import Image from 'next/image'
 
 const stripePromise = loadStripe(process.env.STRIPE_KEY)
@@ -28,6 +27,6 @@ export default function Onboard() {
 
   return (
     <div>{onboardingLinkState && <a href={onboardingLinkState}>
-      <Image alt="connect with stripe" src={stripeButton} /></a>}</div>
+      <Image alt="connect with stripe" src='/light-on-light.png' width={190} height={33} /></a>}</div>
   )
 }
