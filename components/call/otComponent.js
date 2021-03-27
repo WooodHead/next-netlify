@@ -11,7 +11,7 @@ const OTcomponent = (props) => {
 
   const [otherConnection, setOtherConnection] = useState('');
   const [otherUserTyping, setOtherUserTyping] = useState(false)
-  const [markedInactive, setMarkedInactive] = useState(false)
+  // const [markedInactive, setMarkedInactive] = useState(false)
 
   const initialState = ''
   const reducer = (curState, action) => {
@@ -25,9 +25,11 @@ const OTcomponent = (props) => {
   const audioOn = allowedDevices.audio
   const otSDK = props.otSDK
   const sessionId = otSDK.credentials.sessionId
+  const router = useRouter()
 
-  let ringTimer = useRef()
-  console.log(otSDK)
+  // let ringTimer = useRef()
+  console.log('otSDK: ', otSDK)
+
   const disconnectWithAPI = async () => {
     try {
       navigator.sendBeacon(
@@ -40,7 +42,7 @@ const OTcomponent = (props) => {
       console.log(err)
     }
     otSDK.disconnect()
-    const router = useRouter()
+
     router.push(`/${currentUser}/review`)
   }
 
@@ -56,28 +58,28 @@ const OTcomponent = (props) => {
     )
   }
 
-  const disconnectionTimer = async () => {
-    try{
-        let init = {
-          body: {
-            userToMarkInactive: currentUser,
-            sessionId: sessionId
-          }
-        }
-        await API.post(process.env.apiGateway.NAME, "/userstatus/forceInactive", init)
-        navigator.sendBeacon(
-          process.env.apiGateway.URL +
-          "/disconnectCall" +
-          "?receiver=" + currentUser +
-          "&sessionId=" + sessionId
-        )
-        clearTimeout(ringTimer.current)
-        otSDK.disconnect()
-        setMarkedInactive(true)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // const disconnectionTimer = async () => {
+  //   try{
+  //       let init = {
+  //         body: {
+  //           userToMarkInactive: currentUser,
+  //           sessionId: sessionId
+  //         }
+  //       }
+  //       await API.post(process.env.apiGateway.NAME, "/userstatus/forceInactive", init)
+  //       navigator.sendBeacon(
+  //         process.env.apiGateway.URL +
+  //         "/disconnectCall" +
+  //         "?receiver=" + currentUser +
+  //         "&sessionId=" + sessionId
+  //       )
+  //       clearTimeout(ringTimer.current)
+  //       otSDK.disconnect()
+  //       setMarkedInactive(true)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   window.onunload = event => {
     event.preventDefault()
@@ -89,7 +91,6 @@ const OTcomponent = (props) => {
       "&sessionId=" + sessionId
     )
   }
-
 
   useEffect(() => {
     const session = otSDK.session
@@ -108,14 +109,14 @@ const OTcomponent = (props) => {
               "&sessionId=" + session.id
           )
         }
-        clearTimeout(ringTimer.current)
+        // clearTimeout(ringTimer.current)
         setOtherConnection(true)
       }
     })
     session.on('connectionDestroyed', () => {
-      console.log(':(')
+      console.log('connectionDestroyed')
       otSDK.disconnect()
-      history.push(`/${currentUser}/review`)
+      router.push(`/${currentUser}/review`)
     })
     session.on('signal', (event) => {
       const myConnectionId = session.connection.id
@@ -135,48 +136,48 @@ const OTcomponent = (props) => {
         textArea.scrollTop = textArea.scrollHeight
       }
     })
-  }, [otSDK, currentUser, history])
+  }, [otSDK, currentUser, router])
 
-  if (!markedInactive) {
-    
+  // if (!markedInactive) {
+
     if (otherConnection) {
 
-      clearTimeout(ringTimer.current)
+      // clearTimeout(ringTimer.current)
       return (
         <div>
-        {{
-          "audio": <AudioComponent otSDK={otSDK}/>,
-          "video": <VideoComponent audioOn={audioOn} otSDK={otSDK}/>,
-          "screen": <ScreenComponent audioOn={audioOn} otSDK={otSDK}/>
-        }[deviceInput]}
-  
-        {allowedDevices.text && otSDK && <TextComponent
-          selectedDevice={deviceInput}
-          textState={textState}
-          onSignalSend={onSignalSend}
-          otSDK={otSDK}
-        />}
-        {otherUserTyping ? <div>other user is typing</div> : <br />}
-        <button className="mt-5" id="disconnect" onClick={() => disconnectWithAPI()}>Disconnect</button>
+          {{
+            "audio": <AudioComponent otSDK={otSDK} />,
+            "video": <VideoComponent audioOn={audioOn} otSDK={otSDK} />,
+            "screen": <ScreenComponent audioOn={audioOn} otSDK={otSDK} />
+          }[deviceInput]}
+
+          {allowedDevices.text && otSDK && <TextComponent
+            selectedDevice={deviceInput}
+            textState={textState}
+            onSignalSend={onSignalSend}
+            otSDK={otSDK}
+          />}
+          {otherUserTyping ? <div>other user is typing</div> : <br />}
+          <button className="mt-5" id="disconnect" onClick={() => disconnectWithAPI()}>Disconnect</button>
         </div>
       )
     } else {
-      ringTimer.current = setTimeout(() => disconnectionTimer(), 120000)
+      // ringTimer.current = setTimeout(() => disconnectionTimer(), 120000)
       return (
         <div>calling</div>
       )
     }
-  } else {
-    return (
-      <div>
-<div style={{margin: '2%'}}>User failed to answer the call and has been marked inactive</div>
-<div>
-  <button onClick={() => history.go(0)} >refresh</button>
-</div>
-      </div>
-      
-    )
-  }
+  // } else {
+  //   return (
+  //     <div>
+  //       <div style={{ margin: '2%' }}>User failed to answer the call and has been marked inactive</div>
+  //       <div>
+  //         <button onClick={() => router.go(0)} >refresh</button>
+  //       </div>
+  //     </div>
+
+  //   )
+  // }
 
 }
 

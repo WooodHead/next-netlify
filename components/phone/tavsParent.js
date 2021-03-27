@@ -3,6 +3,7 @@ import AudioComponent from '../tavs/audio'
 import VideoComponent from '../tavs/video'
 import ScreenComponent from '../tavs/screen'
 import TextComponent from '../tavs/text'
+import { useRouter } from 'next/router';
 
 const TAVSparent = props => {
   const initialState = ''
@@ -11,7 +12,7 @@ const TAVSparent = props => {
     return curState + action.data + "\n"
   }
   const [textState, dispatchTextState] = useReducer(reducer, initialState)
-
+  const router = useRouter()
   const tokenDataProps = props.tokenData
   const allowedDevices = props.allowedDevices
   const audioOn = allowedDevices.audio
@@ -23,13 +24,15 @@ const TAVSparent = props => {
 
   const disconnectButton = async () => {
     otSDK.disconnect()
+    router.push('/')
+    console.log('disconnected', otSDK)
     // callDisconnected()
   }
 
   const onSignalSend = signalInputRefProp => {
     const signalObj = { "type": "signal", "data": "" + signalInputRefProp}
     otSDK.session.signal(signalObj)
-  };
+  }
 
   useEffect(() => {
     const session = otSDK.session
