@@ -23,13 +23,13 @@ const ReviewParent = props => {
   const tipAmountRef = useRef(1.00)
 
   const router = useRouter()
-  console.log(router.locale)
+  // console.log(router.locale)
   const receiver = router.locale
   
   const receiverRef = useRef()
   receiverRef.current = receiver
 
-  console.log(callerNumberState)
+  // console.log(callerNumberState)
 
   const setPayment = (paymentProp) => {
     
