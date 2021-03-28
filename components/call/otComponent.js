@@ -117,6 +117,12 @@ const OTcomponent = (props) => {
       console.log('connectionDestroyed')
       otSDK.disconnect()
       router.push(`/${currentUser}/review`)
+      navigator.sendBeacon(
+        process.env.apiGateway.URL +
+          "/disconnectCall" +
+          "?receiver=" + currentUser +
+          "&sessionId=" + session.id
+      )
     })
     session.on('signal', (event) => {
       const myConnectionId = session.connection.id

@@ -18,7 +18,7 @@ const CallComponent = (props) => {
         }
       }
       const createSessionRes = await API.post(process.env.apiGateway.NAME, '/createSession2', myInit)
-      console.log(createSessionRes)
+      console.log('createSessionRes', createSessionRes)
       const OTcreds = {
         apiKey: createSessionRes.apikey,
         sessionId: createSessionRes.SessionId,
@@ -29,6 +29,7 @@ const CallComponent = (props) => {
   }
 
   if (tokenDataState) {
+    console.log('tokenDataState', tokenDataState)
     const otSDK = new OpenTokSDK(tokenDataState.OTcreds)
     otSDK.connect()
       .then(() => { setConnectedState(true) })

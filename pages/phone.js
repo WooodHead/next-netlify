@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { API, Auth } from 'aws-amplify'
 import '../configureAmplify'
 import dynamic from "next/dynamic"
+import urlBase64ToUint8Array from '../components/custom/url64to8array'
 const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false })
 
 const Phone = () => {
@@ -96,12 +97,20 @@ const Phone = () => {
       }
 
       navigator.serviceWorker.addEventListener("message", async (event) => {
+        console.log('MESSAGE', event)
         if (event.data.message === "sessionCreated") {
           // audio.play()
-          const ownUser = await getSelfTavs
+          const selfTavs = await getSelfTavs
           const getOTsession = await API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
+          /* I think its necessary to get TAVS, otherwise state is updated with initial state, which is TAVS; all null */
           setState({
             ...state,
+            TAVS: {
+              audio: selfTavs.Item.deviceInput.M.audio.BOOL,
+              screen: selfTavs.Item.deviceInput.M.screen.BOOL,
+              text: selfTavs.Item.deviceInput.M.text.BOOL,
+              video: selfTavs.Item.deviceInput.M.video.BOOL
+            },
             otToken: {
               Receiver: getOTsession.Item.Receiver.S,
               apikey: getOTsession.Item.apikey.S,
@@ -157,7 +166,14 @@ const Phone = () => {
       console.log("acceptCall err: ", err)
     }
   }
-  const declineCall = () => {
+  const declineCall = async () => {
+    const authenticatedUser = await Auth.currentAuthenticatedUser()
+    navigator.sendBeacon(
+      process.env.apiGateway.URL +
+        "/disconnectCall" +
+        "?receiver=" + authenticatedUser.attributes.preferred_username +
+        "&sessionId=" + null
+    )
     setState({
       ...state,
       pageState: 'waiting',
@@ -191,8 +207,8 @@ const Phone = () => {
 
   return (
     <div className="mx-5 my-5">
-      {state.pageState === 'waiting' && <div>waiting on calls</div>}
-      {state.otToken.sessionId && <AcceptDecline />}
+      {state.pageState === 'waiting' && state.otToken.sessionId 
+        ? <AcceptDecline /> : <div>waiting on calls</div>}
       {state.pageState === 'accepted' 
         && <div><InitOT
             tokenData={state.otToken}

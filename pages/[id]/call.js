@@ -36,7 +36,7 @@ const Call = ({ user }) => {
     audio: false,
     video: false,
     screen: false
-  });
+  })
 
   const CustomRadioButton = (CRprops) => {
     return (
@@ -59,7 +59,7 @@ const Call = ({ user }) => {
         />
         {CRprops.TAVS}
       </div>
-    );
+    )
   }
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const Call = ({ user }) => {
     )
   }
 }
-export default Call;
+export default Call
 
 export async function getStaticPaths() {
   const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")

@@ -1,10 +1,12 @@
 const { PHASE_PRODUCTION_BUILD } = require('next/constants')
+const withPWA = require('next-pwa')
 
 module.exports = (phase) => {
 
   const isProd = phase === PHASE_PRODUCTION_BUILD
 
   const env = {
+    pwa: { dest: 'public' },
     STAGE: isProd? "prod" : "dev",
     STRIPE_KEY: isProd ? "pk_live_N8vqxQWqGt8Npt6r0yIJueJ3"
       : "pk_test_0ktNaTLSdckHwnQ7IuUQtFwK",
@@ -27,5 +29,5 @@ module.exports = (phase) => {
     }
   }
 
-  return { env }
+  return withPWA({ env })
 }
