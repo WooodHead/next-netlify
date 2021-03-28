@@ -20,7 +20,7 @@ const CardTip = props => {
   const [useCardOnFile, setUseCardOnFile] = useState(false)
 
   const router = useRouter()
-  console.log(router.locale)
+  console.log('router locale', router.locale)
   const receiver = router.locale
 
   const setPaymentState = (paymentParam) => {
