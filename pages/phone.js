@@ -187,7 +187,7 @@ const Phone = () => {
       }
     })
   }
-  console.log('state', state)
+
   useEffect(() => {
     checkAndReceiveCalls()
   }, [])

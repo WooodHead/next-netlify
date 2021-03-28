@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
-import { API } from 'aws-amplify';
 import { useRouter } from 'next/router'
 import AudioComponent from '../tavs/audio'
 import VideoComponent from '../tavs/video'

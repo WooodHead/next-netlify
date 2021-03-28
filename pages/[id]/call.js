@@ -5,6 +5,7 @@ import Link from 'next/link'
 import '../../configureAmplify'
 import Head from 'next/head';
 import dynamic from 'next/dynamic'
+
 const DynamicCallComponent = dynamic(
   () => import('../../components/call/callComponent'),
   { ssr: false }

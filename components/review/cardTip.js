@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
+import '../../configureAmplify'
 import CustomSpinner from '../../components/custom/spinner'
 import { useRouter } from "next/router";
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';

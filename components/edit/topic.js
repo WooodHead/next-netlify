@@ -1,5 +1,6 @@
 import React, { createRef, useRef, useState } from 'react'
 import { API, Auth, Storage } from 'aws-amplify'
+import '../../configureAmplify'
 import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
 const ReactQuill = dynamic(

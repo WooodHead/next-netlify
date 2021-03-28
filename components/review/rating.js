@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { API, Auth } from 'aws-amplify';
+import '../../configureAmplify'
 import CustomSpinner from '../../components/custom/spinner'
 import { useRouter } from "next/router";
 

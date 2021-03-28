@@ -6,6 +6,7 @@ import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/account/userComp'
 
+
 export default function Topic( { user, topic } ) {
 
   const openCallPhone = () => {
