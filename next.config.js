@@ -29,5 +29,5 @@ module.exports = (phase) => {
     }
   }
 
-  return withPWA({ env })
+  return { env }
 }
