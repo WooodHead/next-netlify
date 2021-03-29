@@ -12,8 +12,8 @@ Amplify.configure({
   },
   Storage: {
     AWSS3: {
-        bucket: 'talktreeuserimgs', //REQUIRED -  Amazon S3 bucket name
-        region: 'us-east-1', //OPTIONAL -  Amazon service region
+        bucket: process.env.storage.BUCKET, 
+        region: process.env.storage.REGION
     }
 }
 })

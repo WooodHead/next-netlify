@@ -25,7 +25,10 @@ module.exports = (phase) => {
         : "13tccrpqrs740rua48kbl8kt70",
       IDENTITY: isProd ? "us-east-1:6b320e0d-f2e3-466c-a4ce-b0c761788cdc"
         : "us-east-1:5697ad78-d1ea-429e-9dd4-3284ae4549fc" ,
-      
+    },
+    storage: {
+      BUCKET: 'talktreeusrimages',
+      REGION: 'us-east-1'
     }
   }
 

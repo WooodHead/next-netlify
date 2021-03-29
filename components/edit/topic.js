@@ -100,6 +100,7 @@ export default function PublicString(props) {
       const range = editor.getSelection(true)
       editor.setSelection(range.index + 1);
       try {
+        Storage.configure({ level: 'protected' })
         const s3res = await Storage.put(file.name, file)
         console.log('putStorageRes: ', s3res)
         const getS3 = await Storage.get(s3res.key)
@@ -112,7 +113,7 @@ export default function PublicString(props) {
     }
   }
 
-  const [modules] =useState( {
+  const [modules] = useState( {
     toolbar:  {
       container: [
         [{ 'header': [1, 2, false] }],
