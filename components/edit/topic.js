@@ -99,8 +99,10 @@ export default function PublicString(props) {
 
       const range = editor.getSelection(true)
       editor.setSelection(range.index + 1);
-      const s3res = await Storage.vault.put(file.name, file)
-      const getS3 = await Storage.vault.get(s3res.key)
+      const s3res = await Storage.put(file.name, file)
+      console.log('putStorageRes: ', s3res)
+      const getS3 = await Storage.get(s3res.key)
+      console.log('getStorageRes: ', getS3)
       editor.insertEmbed(range.index, 'image', getS3)
     }
   }
