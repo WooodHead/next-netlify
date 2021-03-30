@@ -56,5 +56,5 @@ export async function getStaticProps({ params }) {
       }
     }    
   })
-  return {props: { user: user } }
+  return {props: { user: user }, revalidate: 1 }
 }

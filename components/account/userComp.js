@@ -30,8 +30,8 @@ export default function UserComp(props) {
 
         <div className="bg-gray-100" >
           {Object.keys(user.topics).map((folder) => 
-            <div className="my-3">
-              <Link key={folder} href={"/" + user.Username + "/" + folder}>
+            <div key={folder} className="my-3">
+              <Link href={"/" + user.Username + "/" + folder}>
                 <a className="mx-2 py-1 px-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">{folder}</a>
                 </Link>
             </div>
