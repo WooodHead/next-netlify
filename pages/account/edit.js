@@ -42,7 +42,7 @@ export default function Edit(props) {
     editing: false
   })
   const [errorState, setErrorState] = useState('')
-  const [imgsource, setimgsource] = useState()
+  // const [imgsource, setimgsource] = useState()
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -52,23 +52,37 @@ export default function Edit(props) {
       }
     }
     try {
+      
       const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      
       const topicsArray = []
       for (const topicKey in getAllUsersRes.Item.topics.M) {
+        
         const string = getAllUsersRes.Item.topics.M[topicKey].S
+        console.log(string)
+
+        let newSRC
         let slicedKey
+        console.log(string)
         const keyStart = string.indexOf('{key: ')
+        console.log(keyStart)
         if (keyStart > -1) {
           const keyEnd = string.indexOf('}', keyStart)
           slicedKey = '' + string.slice(keyStart + 6, keyEnd)
-          const getS3 = await Storage.vault.get(slicedKey)
-          setimgsource(getS3.toString())
-
+          console.log('hello SLICED KEY?: ', slicedKey)
+          Storage.configure({ level: 'protected' })
+          const getS3 = await Storage.get(slicedKey)
+          console.log('gets3', getS3)
+          // setimgsource(getS3.toString())
+          newSRC = string.replace(`{key: ${slicedKey}}`, `<img src="${getS3}" />`)
+            /* i need to change the returned string from with key to a string with src url */
+            console.log('does string have key removed', newSRC)
         }
-        // const getS3 = await Storage.vault.get(key)
+        // const getS3 = await Storage.get(slicedKey)
+
         topicsArray.push({
           topic: topicKey,
-          string: DOMPurify.sanitize(string)
+          string: DOMPurify.sanitize(newSRC)
         })
 
       }

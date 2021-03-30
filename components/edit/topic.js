@@ -18,10 +18,13 @@ export default function PublicString(props) {
   const getUserData = () => props.getUserData()
   const setErrorState = (e) => props.setErrorState(e)
 
+  const [imgKeys, setImgKeys] = useState([])
   const quillRef = useRef()
 
   const topicTypingFn = (e) => {
+    console.log(e)
     setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
+
   }
 
   const onCloseTopicEdit = async () => {
@@ -57,9 +60,13 @@ export default function PublicString(props) {
   const saveTopicString = async () => {
     // console.log(quillRef)
     /*change to s3 url */
-    // const stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${userState.Username}}`)
+    let stringWithoutImg
+    console.log(imgKeys)
+    imgKeys.forEach((imgKey) => stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${imgKey}}`))
+    
+    console.log(stringWithoutImg)
     /**/ 
-    const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')
+    const escapedString = stringWithoutImg.replaceAll('"', '\\"')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
       const userSession = await Auth.currentSession()
@@ -98,18 +105,23 @@ export default function PublicString(props) {
       const formData = new FormData()
 
       const range = editor.getSelection(true)
-      editor.setSelection(range.index + 1);
+      editor.setSelection(range.index + 1)
+      console.log('RANGE', range)
       try {
         Storage.configure({ level: 'protected' })
         const s3res = await Storage.put(file.name, file)
+        console.log(...imgKeys, s3res.key)
+        setImgKeys([...imgKeys, s3res.key])
         console.log('putStorageRes: ', s3res)
+
         const getS3 = await Storage.get(s3res.key)
+
         console.log('getStorageRes: ', getS3)
+
         editor.insertEmbed(range.index, 'image', getS3)
       } catch (err) {
         console.log('storage err', err)
       }
-
     }
   }
 
