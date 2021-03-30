@@ -23,7 +23,6 @@ export default function PublicString(props) {
   const quillRef = useRef()
 
   const topicTypingFn = (e) => {
-    console.log(e)
     setSelectedTopicState({ ...selectedTopicState, quill: e, saved: false})
 
   }
@@ -63,6 +62,7 @@ export default function PublicString(props) {
     let stringWithoutImg
     imgKeys.forEach((imgKey) => stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${imgKey}}`))
     const modifiedString = stringWithoutImg || selectedTopicState.quill
+    console.log('modified string', modifiedString)
     const escapedString = modifiedString.replaceAll('"', '\\"')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {

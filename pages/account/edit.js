@@ -53,39 +53,15 @@ export default function Edit(props) {
       }
     }
     try {
-      
       const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      
       const topicsArray = []
+
       for (const topicKey in getAllUsersRes.Item.topics.M) {
-        
-        const string = await KeyToImage(getAllUsersRes.Item.topics.M[topicKey].S)
-        // console.log(string)
-
-        // let newSRC
-        // let slicedKey
-        // console.log(string)
-        // const keyStart = string.indexOf('{key: ')
-        // console.log(keyStart)
-        // if (keyStart > -1) {
-        //   const keyEnd = string.indexOf('}', keyStart)
-        //   slicedKey = '' + string.slice(keyStart + 6, keyEnd)
-        //   console.log('hello SLICED KEY?: ', slicedKey)
-        //   Storage.configure({ level: 'protected' })
-        //   const getS3 = await Storage.get(slicedKey)
-        //   console.log('gets3', getS3)
-        //   // setimgsource(getS3.toString())
-        //   newSRC = string.replace(`{key: ${slicedKey}}`, `<img src="${getS3}" />`)
-        //     /* i need to change the returned string from with key to a string with src url */
-        //     console.log('does string have key removed', newSRC)
-        // }
-        // const getS3 = await Storage.get(slicedKey)
-
+        console.log('string in Backend', getAllUsersRes.Item.topics.M[topicKey].S)
         topicsArray.push({
           topic: topicKey,
-          string: DOMPurify.sanitize(string)
+          string: DOMPurify.sanitize(getAllUsersRes.Item.topics.M[topicKey].S)
         })
-
       }
       const TAVS = []
       const deviceInputRes = getAllUsersRes.Item.deviceInput.M
@@ -97,7 +73,6 @@ export default function Edit(props) {
         Username: getAllUsersRes.Item.Username.S,
         active: getAllUsersRes.Item.active.BOOL,
         busy: getAllUsersRes.Item.busy.BOOL,
-        // folders: getAllUsersRes.Item.folders?.SS || [],
         TAVS: TAVS,
         ppm: getAllUsersRes.Item.ppm.N,
         ratingAv: getAllUsersRes.Item.ratingAv?.S || null,
@@ -134,12 +109,16 @@ export default function Edit(props) {
       editing: true
     })
   }
-  const selectTopic = (topicProp) => {
+  const selectTopic = async (topicProp) => {
+    /* string state should stay containing keys globally, and only show images on render */
+    // const imgKeys = ['ffs']
+    const stringWithImages = await KeyToImage(topicProp.string)
     setSelectedTopicState({
       ogTopic: topicProp.topic,
       topic: topicProp.topic,
-      string: topicProp.string,
-      quill: topicProp.string,
+      string: stringWithImages,
+      quill: stringWithImages,
+      // imgKeys: imgKeys,
       editing: false
     })
   }
