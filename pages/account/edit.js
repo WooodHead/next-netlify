@@ -7,6 +7,7 @@ import DOMPurify from 'dompurify';
 import PublicString from '../../components/edit/publicString'
 import TopicComponent from '../../components/edit/topic'
 import EditTAVScomp from '../../components/edit/tavs'
+import KeyToImage from '../../components/custom/keyToImage'
 
 export default function Edit(props) {
 
@@ -58,31 +59,31 @@ export default function Edit(props) {
       const topicsArray = []
       for (const topicKey in getAllUsersRes.Item.topics.M) {
         
-        const string = getAllUsersRes.Item.topics.M[topicKey].S
-        console.log(string)
+        const string = await KeyToImage(getAllUsersRes.Item.topics.M[topicKey].S)
+        // console.log(string)
 
-        let newSRC
-        let slicedKey
-        console.log(string)
-        const keyStart = string.indexOf('{key: ')
-        console.log(keyStart)
-        if (keyStart > -1) {
-          const keyEnd = string.indexOf('}', keyStart)
-          slicedKey = '' + string.slice(keyStart + 6, keyEnd)
-          console.log('hello SLICED KEY?: ', slicedKey)
-          Storage.configure({ level: 'protected' })
-          const getS3 = await Storage.get(slicedKey)
-          console.log('gets3', getS3)
-          // setimgsource(getS3.toString())
-          newSRC = string.replace(`{key: ${slicedKey}}`, `<img src="${getS3}" />`)
-            /* i need to change the returned string from with key to a string with src url */
-            console.log('does string have key removed', newSRC)
-        }
+        // let newSRC
+        // let slicedKey
+        // console.log(string)
+        // const keyStart = string.indexOf('{key: ')
+        // console.log(keyStart)
+        // if (keyStart > -1) {
+        //   const keyEnd = string.indexOf('}', keyStart)
+        //   slicedKey = '' + string.slice(keyStart + 6, keyEnd)
+        //   console.log('hello SLICED KEY?: ', slicedKey)
+        //   Storage.configure({ level: 'protected' })
+        //   const getS3 = await Storage.get(slicedKey)
+        //   console.log('gets3', getS3)
+        //   // setimgsource(getS3.toString())
+        //   newSRC = string.replace(`{key: ${slicedKey}}`, `<img src="${getS3}" />`)
+        //     /* i need to change the returned string from with key to a string with src url */
+        //     console.log('does string have key removed', newSRC)
+        // }
         // const getS3 = await Storage.get(slicedKey)
 
         topicsArray.push({
           topic: topicKey,
-          string: DOMPurify.sanitize(newSRC)
+          string: DOMPurify.sanitize(string)
         })
 
       }

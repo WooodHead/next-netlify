@@ -5,20 +5,27 @@ import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/account/userComp'
-
+import KeyToImage from '../../components/custom/keyToImage'
 
 export default function Topic( { user, topic } ) {
 
-  const openCallPhone = () => {
-    const devSite = `/${user.Username}/call`
-    const prodSite = `https://talktree.me/${user.Username}/call`
-    const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
-    window.open(
-      currentSite,
-      "MsgWindow",
-      "width=500,height=700"
-    )
-  }
+  // const openCallPhone = () => {
+  //   const devSite = `/${user.Username}/call`
+  //   const prodSite = `https://talktree.me/${user.Username}/call`
+  //   const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
+  //   window.open(
+  //     currentSite,
+  //     "MsgWindow",
+  //     "width=500,height=700"
+  //   )
+  // }
+
+  const [stringState, setStringState] = useState('')
+
+  useEffect(() => {
+    (async () => setStringState( await KeyToImage(topic.string)))()
+  }, [topic])
+
   return (
     <>
       <Head>
@@ -30,7 +37,7 @@ export default function Topic( { user, topic } ) {
       <UserComp user={user} />
       <div className="mx-5">
         <div>
-          <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: topic.string }} ></div>
+          <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
         </div>
       </div>
     </>

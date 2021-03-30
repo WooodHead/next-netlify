@@ -3,6 +3,7 @@ import { API, Auth, Storage } from 'aws-amplify'
 import '../../configureAmplify'
 import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
+import KeyToImage from '../../components/custom/keyToImage'
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
@@ -32,7 +33,7 @@ export default function PublicString(props) {
       const userSession = await Auth.currentAuthenticatedUser()
       const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
       const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      const userResString = getAllUserRes.Item.topics.M[selectedTopicState.topic].S
+      const userResString = await KeyToImage(getAllUserRes.Item.topics.M[selectedTopicState.topic].S)
       setSelectedTopicState({ ...selectedTopicState, string: userResString, editing: false, saved: false })
     } catch (err) {
       setSelectedTopicState({ ...selectedTopicState, editing: false, saved: false })
@@ -58,15 +59,11 @@ export default function PublicString(props) {
   }
 
   const saveTopicString = async () => {
-    // console.log(quillRef)
-    /*change to s3 url */
+
     let stringWithoutImg
-    console.log(imgKeys)
     imgKeys.forEach((imgKey) => stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${imgKey}}`))
-    
-    console.log(stringWithoutImg)
-    /**/ 
-    const escapedString = stringWithoutImg.replaceAll('"', '\\"')
+    const modifiedString = stringWithoutImg || selectedTopicState.quill
+    const escapedString = modifiedString.replaceAll('"', '\\"')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
       const userSession = await Auth.currentSession()
@@ -110,7 +107,6 @@ export default function PublicString(props) {
       try {
         Storage.configure({ level: 'protected' })
         const s3res = await Storage.put(file.name, file)
-        console.log(...imgKeys, s3res.key)
         setImgKeys([...imgKeys, s3res.key])
         console.log('putStorageRes: ', s3res)
 
