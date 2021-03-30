@@ -90,5 +90,8 @@ export async function getStaticProps({ params }) {
         }
     }    
   }})
-  return {props: { user: user, topic: topic } }
+  return { 
+    props: { user: user, topic: topic },
+    revalidate: 1
+  }
 }
