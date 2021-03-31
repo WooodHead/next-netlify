@@ -4,7 +4,7 @@ import '../configureAmplify'
 import Link from 'next/link'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
-import UserComp from '../components/account/userComp'
+import UserComp from '../components/[id]/userComp'
 
 export default function User({ user }) {
 

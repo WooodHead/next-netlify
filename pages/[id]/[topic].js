@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
-import UserComp from '../../components/account/userComp'
+import UserComp from '../../components/[id]/userComp'
 import KeyToImage from '../../components/custom/keyToImage'
 
 export default function Topic( { user, topic } ) {
@@ -39,19 +39,6 @@ export default function Topic( { user, topic } ) {
         </div>
       </>
     )
-  
-  // const openCallPhone = () => {
-  //   const devSite = `/${user.Username}/call`
-  //   const prodSite = `https://talktree.me/${user.Username}/call`
-  //   const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
-  //   window.open(
-  //     currentSite,
-  //     "MsgWindow",
-  //     "width=500,height=700"
-  //   )
-  // }
-
-
 }
 
 export async function getStaticPaths() {
@@ -96,7 +83,7 @@ export async function getStaticProps({ params }) {
 
       for (const key in user.topics) {
         if (key === params.topic) {
-          topic = { topic: [key], string: user.topics[key].S }
+          topic = { topic: key, string: user.topics[key].S }
         }
     }    
   }})

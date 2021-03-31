@@ -29,12 +29,18 @@ export default function UserComp(props) {
         </div>
 
         <div className="bg-gray-100" >
-          {Object.keys(user.topics).map((folder) => 
-            <div key={folder} className="my-3">
-              <Link href={"/" + user.Username + "/" + folder}>
-                <a className="mx-2 py-1 px-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">{folder}</a>
+          {Object.keys(user.topics).map((topic) => {
+            return (
+              <div key={topic} className="my-3">
+              <Link href={"/" + user.Username + "/" + topic}>
+                <a className="mx-2 py-1 px-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
+                  {topic.replace(/-/g, ' ')}
+                </a>
                 </Link>
             </div>
+            )
+          }
+
           )}
         </div>
       </div>
