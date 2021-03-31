@@ -57,9 +57,10 @@ export default function Edit(props) {
       const topicsArray = []
 
       for (const topicKey in getAllUsersRes.Item.topics.M) {
+        const topicWithSpaces = topicKey.replaceAll('_', ' ')
         console.log('string in Backend', getAllUsersRes.Item.topics.M[topicKey].S)
         topicsArray.push({
-          topic: topicKey,
+          topic: topicWithSpaces,
           string: DOMPurify.sanitize(getAllUsersRes.Item.topics.M[topicKey].S)
         })
       }
@@ -112,8 +113,11 @@ export default function Edit(props) {
   const selectTopic = async (topicProp) => {
     /* string state should stay containing keys globally, and only show images on render */
     // const imgKeys = ['ffs']
+    const topic_ = topicProp.topic.replaceAll(' ', '_')
     const stringWithImages = await KeyToImage(topicProp.string)
     setSelectedTopicState({
+      topic_: topic_,
+      // topicWSpaces: topicWithSpaces,
       ogTopic: topicProp.topic,
       topic: topicProp.topic,
       string: stringWithImages,
@@ -148,7 +152,7 @@ export default function Edit(props) {
         <div className="bg-gray-100" >
           {userState.topics.map((topicObj) =>
             <div key={topicObj.topic} >
-              <button onClick={() => selectTopic(topicObj)} href={"/" + userState.Username + '/topic'}>
+              <button onClick={() => selectTopic(topicObj)}>
                 <a>{topicObj.topic}</a>
               </button>
             </div>
