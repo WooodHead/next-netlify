@@ -64,7 +64,7 @@ export default function PublicString(props) {
     const modifiedString = stringWithoutImg || selectedTopicState.quill
     console.log('modified string', modifiedString)
     const escapedString = modifiedString.replaceAll('"', '\\"')
-    const noSpacesTopic = selectedTopicState.topic.replaceAll(' ', '_')
+    const noSpacesTopic = selectedTopicState.topic.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
       const userSession = await Auth.currentSession()

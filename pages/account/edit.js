@@ -57,8 +57,7 @@ export default function Edit(props) {
       const topicsArray = []
 
       for (const topicKey in getAllUsersRes.Item.topics.M) {
-        const topicWithSpaces = topicKey.replaceAll('_', ' ')
-        console.log('string in Backend', getAllUsersRes.Item.topics.M[topicKey].S)
+        const topicWithSpaces = topicKey.replaceAll('-', ' ')
         topicsArray.push({
           topic: topicWithSpaces,
           string: DOMPurify.sanitize(getAllUsersRes.Item.topics.M[topicKey].S)
@@ -113,10 +112,10 @@ export default function Edit(props) {
   const selectTopic = async (topicProp) => {
     /* string state should stay containing keys globally, and only show images on render */
     // const imgKeys = ['ffs']
-    const topic_ = topicProp.topic.replaceAll(' ', '_')
+    const topicDash = topicProp.topic.replaceAll(' ', '-')
     const stringWithImages = await KeyToImage(topicProp.string)
     setSelectedTopicState({
-      topic_: topic_,
+      topicDash: topicDash,
       // topicWSpaces: topicWithSpaces,
       ogTopic: topicProp.topic,
       topic: topicProp.topic,
