@@ -1,6 +1,7 @@
 import React, { useEffect, useState }  from 'react'
 import Amplify, { API, Auth } from 'aws-amplify'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
@@ -8,7 +9,37 @@ import UserComp from '../../components/account/userComp'
 import KeyToImage from '../../components/custom/keyToImage'
 
 export default function Topic( { user, topic } ) {
+  const router = useRouter()
+  if (router.isFallback) {
+    return (
+      <div>
+        the page is being created, try refreshing the page
+      </div>
+    )
+  } 
+    const [stringState, setStringState] = useState('')
 
+    useEffect(() => {
+      (async () => setStringState( await KeyToImage(topic.string)))()
+    }, [topic])
+  
+    return (
+      <>
+        <Head>
+          <title>{topic.topic}</title>
+          <meta name="description" content={topic.string} />
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
+        <NavbarComp />
+        <UserComp user={user} />
+        <div className="mx-5">
+          <div>
+            <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
+          </div>
+        </div>
+      </>
+    )
+  
   // const openCallPhone = () => {
   //   const devSite = `/${user.Username}/call`
   //   const prodSite = `https://talktree.me/${user.Username}/call`
@@ -20,28 +51,7 @@ export default function Topic( { user, topic } ) {
   //   )
   // }
 
-  const [stringState, setStringState] = useState('')
 
-  useEffect(() => {
-    (async () => setStringState( await KeyToImage(topic.string)))()
-  }, [topic])
-
-  return (
-    <>
-      <Head>
-        <title>{topic.topic}</title>
-        <meta name="description" content={topic.string} />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <NavbarComp />
-      <UserComp user={user} />
-      <div className="mx-5">
-        <div>
-          <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
-        </div>
-      </div>
-    </>
-  )
 }
 
 export async function getStaticPaths() {
