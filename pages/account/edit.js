@@ -109,19 +109,31 @@ export default function Edit(props) {
       editing: true
     })
   }
+
+  const getKeys = (topicProp) => {
+    const keyStart = topicProp.string.indexOf('{key: ')
+    const keys = []
+    if (keyStart > -1) {
+      const keyEnd = topicProp.string.indexOf('}', keyStart)
+      const slicedKey = '' + topicProp.string.slice(keyStart + 6, keyEnd)
+      keys.push(slicedKey)
+      const shortenedString = topicProp.string.slice(keyEnd)
+      getKeys(shortenedString)
+    }
+    return keys
+  }
+
   const selectTopic = async (topicProp) => {
-    /* string state should stay containing keys globally, and only show images on render */
-    // const imgKeys = ['ffs']
-    const topicDash = topicProp.topic.replaceAll(' ', '-')
+    // const imgKeys = getKeys(topicProp)
+    console.log("topicProp.string: ", topicProp.string)
     const stringWithImages = await KeyToImage(topicProp.string)
+    console.log('stringwithimages', stringWithImages)
+    // console.log('imgKeys', imgKeys)
     setSelectedTopicState({
-      topicDash: topicDash,
-      // topicWSpaces: topicWithSpaces,
       ogTopic: topicProp.topic,
       topic: topicProp.topic,
       string: stringWithImages,
       quill: stringWithImages,
-      // imgKeys: imgKeys,
       editing: false
     })
   }

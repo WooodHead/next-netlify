@@ -4,6 +4,7 @@ import '../../configureAmplify'
 import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
 import KeyToImage from '../../components/custom/keyToImage'
+import { v4 as uuidv4 } from 'uuid'
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
@@ -29,11 +30,12 @@ export default function PublicString(props) {
 
   const onCloseTopicEdit = async () => {
     try {
-      const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
-      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      const userResString = await KeyToImage(getAllUserRes.Item.topics.M[selectedTopicState.topic].S)
-      setSelectedTopicState({ ...selectedTopicState, string: userResString, editing: false, saved: false })
+      getUserData()
+      // const userSession = await Auth.currentAuthenticatedUser()
+      // const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
+      // const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      // const stringWithImages = await KeyToImage(getAllUserRes.Item.topics.M[selectedTopicState.topic]?.S)
+      setSelectedTopicState({ ...selectedTopicState, editing: false, saved: false })
     } catch (err) {
       setSelectedTopicState({ ...selectedTopicState, editing: false, saved: false })
       console.log(err)
@@ -57,13 +59,22 @@ export default function PublicString(props) {
       : console.log('delete failed')
   }
 
-  const saveTopicString = async () => {
+  const turnSrcStringsToKeys = (stringProp) => {
+    if (stringProp.indexOf('<img src=') > -1) {
+      const srcAddress = stringProp.slice(stringProp.indexOf('<img src='))
+      const slashSplit = srcAddress.split('/')
+      const qSplit = slashSplit[5].split('?')
+      const imgKey = qSplit[0]
+      const convertedString = stringProp.replace(/<img .*?>/, `{key: ${imgKey}}`)
+      const afterIterated = turnSrcStringsToKeys(convertedString)
+      return afterIterated
+    }
+    return stringProp
+  }
 
-    let stringWithoutImg
-    imgKeys.forEach((imgKey) => stringWithoutImg = selectedTopicState.quill.replace(/<img .*?>/, `{key: ${imgKey}}`))
-    const modifiedString = stringWithoutImg || selectedTopicState.quill
-    console.log('modified string', modifiedString)
-    const escapedString = modifiedString.replaceAll('"', '\\"')
+  const saveTopicString = async () => {
+    const keyifiedString = turnSrcStringsToKeys(selectedTopicState.quill)
+    const escapedString = keyifiedString.replaceAll('"', '\\"')
     const noSpacesTopic = selectedTopicState.topic.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
@@ -93,28 +104,22 @@ export default function PublicString(props) {
   }
 
   const imageHandler = (e) => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
+    const input = document.createElement('input')
+    input.setAttribute('type', 'file')
     input.click()
     input.onchange = async () => {
-      const editor = quillRef.current.getEditor()
-      
+      const editor = quillRef.current.getEditor()  
       const file = input.files[0]
-      const formData = new FormData()
-
       const range = editor.getSelection(true)
       editor.setSelection(range.index + 1)
-      console.log('RANGE', range)
       try {
+        console.log('file', file)
         Storage.configure({ level: 'protected' })
-        const s3res = await Storage.put(file.name, file)
+        const s3res = await Storage.put(uuidv4(), file)
         setImgKeys([...imgKeys, s3res.key])
-        console.log('putStorageRes: ', s3res)
-
+        // the problem here is I don't know where the image was placed... if I were to use key[]
         const getS3 = await Storage.get(s3res.key)
-
-        console.log('getStorageRes: ', getS3)
-
+        console.log('getS3', getS3)
         editor.insertEmbed(range.index, 'image', getS3)
       } catch (err) {
         console.log('storage err', err)
