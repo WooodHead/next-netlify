@@ -79,7 +79,7 @@ export async function getStaticProps() {
       topics: userRes.topics.M
     })
   })
-  return { props: { allUsers: newAllUsers } }
+  return { props: { allUsers: newAllUsers }, revalidate: 1 }
 }
 
 export default Users
