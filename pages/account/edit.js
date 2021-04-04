@@ -43,7 +43,6 @@ export default function Edit(props) {
     editing: false
   })
   const [errorState, setErrorState] = useState('')
-  // const [imgsource, setimgsource] = useState()
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -110,25 +109,8 @@ export default function Edit(props) {
     })
   }
 
-  const getKeys = (topicProp) => {
-    const keyStart = topicProp.string.indexOf('{key: ')
-    const keys = []
-    if (keyStart > -1) {
-      const keyEnd = topicProp.string.indexOf('}', keyStart)
-      const slicedKey = '' + topicProp.string.slice(keyStart + 6, keyEnd)
-      keys.push(slicedKey)
-      const shortenedString = topicProp.string.slice(keyEnd)
-      getKeys(shortenedString)
-    }
-    return keys
-  }
-
   const selectTopic = async (topicProp) => {
-    // const imgKeys = getKeys(topicProp)
-    console.log("topicProp.string: ", topicProp.string)
     const stringWithImages = await KeyToImage(topicProp.string)
-    console.log('stringwithimages', stringWithImages)
-    // console.log('imgKeys', imgKeys)
     setSelectedTopicState({
       ogTopic: topicProp.topic,
       topic: topicProp.topic,

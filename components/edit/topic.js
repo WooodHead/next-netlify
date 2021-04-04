@@ -19,8 +19,6 @@ export default function PublicString(props) {
   const setUserState = (e) => props.setUserState(e)
   const getUserData = () => props.getUserData()
   const setErrorState = (e) => props.setErrorState(e)
-
-  const [imgKeys, setImgKeys] = useState([])
   const quillRef = useRef()
 
   const topicTypingFn = (e) => {
@@ -59,13 +57,14 @@ export default function PublicString(props) {
       : console.log('delete failed')
   }
 
-  const turnSrcStringsToKeys = (stringProp) => {
+  const turnSrcStringsToKeys = async (stringProp) => {
     if (stringProp.indexOf('<img src=') > -1) {
       const srcAddress = stringProp.slice(stringProp.indexOf('<img src='))
       const slashSplit = srcAddress.split('/')
       const qSplit = slashSplit[5].split('?')
       const imgKey = qSplit[0]
-      const convertedString = stringProp.replace(/<img .*?>/, `{key: ${imgKey}}`)
+      const authIdentity = await Auth.currentCredentials()
+      const convertedString = stringProp.replace(/<img .*?>/, `{key: ${imgKey}, id: ${authIdentity.identityId}}`)
       const afterIterated = turnSrcStringsToKeys(convertedString)
       return afterIterated
     }
@@ -73,7 +72,7 @@ export default function PublicString(props) {
   }
 
   const saveTopicString = async () => {
-    const keyifiedString = turnSrcStringsToKeys(selectedTopicState.quill)
+    const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
     const escapedString = keyifiedString.replaceAll('"', '\\"')
     const noSpacesTopic = selectedTopicState.topic.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
@@ -104,6 +103,8 @@ export default function PublicString(props) {
   }
 
   const imageHandler = (e) => {
+    const date = new Date()
+    const time = date.getTime()
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.click()
@@ -115,8 +116,7 @@ export default function PublicString(props) {
       try {
         console.log('file', file)
         Storage.configure({ level: 'protected' })
-        const s3res = await Storage.put(uuidv4(), file)
-        setImgKeys([...imgKeys, s3res.key])
+        const s3res = await Storage.put(time + file.name, file)
         // the problem here is I don't know where the image was placed... if I were to use key[]
         const getS3 = await Storage.get(s3res.key)
         console.log('getS3', getS3)
@@ -137,7 +137,7 @@ export default function PublicString(props) {
       ],
       handlers: {
         image: () => imageHandler()
-      }
+      },
     },
   })
 
@@ -146,11 +146,13 @@ export default function PublicString(props) {
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <ReactQuill 
-            forwardedRef={quillRef}
-            modules={modules} 
-            value={selectedTopicState.quill} 
-            onChange={topicTypingFn} />
+          <div className='h-full flex-1'>
+            <ReactQuill 
+              forwardedRef={quillRef}
+              modules={modules} 
+              value={selectedTopicState.quill} 
+              onChange={topicTypingFn} />
+            </div>
           <div className="flex flex-row">
             <div className="flex flex-row mr-10" >
             <button onClick={() => saveTopicString()}>save</button>
@@ -170,10 +172,10 @@ export default function PublicString(props) {
 
         : <div>
           <div>{selectedTopicState.topic}</div>
-          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
           <button onClick={() => setSelectedTopicState({ ...selectedTopicState, editing: true })}>
             <div>edit</div>
           </button>
+          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
 
         </div>
 
