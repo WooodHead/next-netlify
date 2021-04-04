@@ -113,13 +113,12 @@ export default function PublicString(props) {
       const file = input.files[0]
       const range = editor.getSelection(true)
       editor.setSelection(range.index + 1)
+      const fileTypeLocation = file.name.indexOf('.')
+      const fileType = file.name.slice(fileTypeLocation)
       try {
-        console.log('file', file)
         Storage.configure({ level: 'protected' })
-        const s3res = await Storage.put(time + file.name, file)
-        // the problem here is I don't know where the image was placed... if I were to use key[]
+        const s3res = await Storage.put(uuidv4() + fileType, file)
         const getS3 = await Storage.get(s3res.key)
-        console.log('getS3', getS3)
         editor.insertEmbed(range.index, 'image', getS3)
       } catch (err) {
         console.log('storage err', err)
