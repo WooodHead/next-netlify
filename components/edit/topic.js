@@ -125,9 +125,10 @@ export default function PublicString(props) {
       }
     }
   }
-  // const quillStyle = {
-  //   resize: 'vertical'
-  // }
+  const quillStyle = {
+    resize: 'vertical',
+    overflow: 'auto'
+  }
   const [modules] = useState( {
     toolbar:  {
       container: [
@@ -143,14 +144,14 @@ export default function PublicString(props) {
   })
 
   return (
-    <div className="flex-1">
+    <div className="">
       {selectedTopicState.editing
-        ? <div className="flex-1">
+        ? <div className="">
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
           
-          <div className='flex-1 overflow-y-auto'>
+          <div className=''>
             <ReactQuill 
-              // style={quillStyle}
+              style={quillStyle}
               forwardedRef={quillRef}
               modules={modules} 
               value={selectedTopicState.quill} 

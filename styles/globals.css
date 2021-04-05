@@ -18,10 +18,4 @@
   input {
     @apply shadow-md bg-opacity-75
   }
-  .ql-editor {
-    overflow-y: scroll;
-    resize: vertical;
-    flex: 1;
-    max-height: 20rem;
-  }
 }
