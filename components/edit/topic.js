@@ -125,7 +125,9 @@ export default function PublicString(props) {
       }
     }
   }
-
+  // const quillStyle = {
+  //   resize: 'vertical'
+  // }
   const [modules] = useState( {
     toolbar:  {
       container: [
@@ -137,7 +139,7 @@ export default function PublicString(props) {
       handlers: {
         image: () => imageHandler()
       }
-    },
+    }
   })
 
   return (
@@ -148,6 +150,7 @@ export default function PublicString(props) {
           
           <div className='flex-1 overflow-y-auto'>
             <ReactQuill 
+              // style={quillStyle}
               forwardedRef={quillRef}
               modules={modules} 
               value={selectedTopicState.quill} 

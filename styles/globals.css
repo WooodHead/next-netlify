@@ -22,6 +22,6 @@
     overflow-y: scroll;
     resize: vertical;
     flex: 1;
-    /* max-height: 20rem; */
+    max-height: 20rem;
   }
 }
