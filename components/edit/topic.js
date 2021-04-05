@@ -136,22 +136,24 @@ export default function PublicString(props) {
       ],
       handlers: {
         image: () => imageHandler()
-      },
+      }
     },
   })
 
   return (
-    <div>
+    <div className="flex-1">
       {selectedTopicState.editing
-        ? <div>
+        ? <div className="flex-1">
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <div className='h-full flex-1'>
+          
+          <div className='flex-1 overflow-y-auto'>
             <ReactQuill 
               forwardedRef={quillRef}
               modules={modules} 
               value={selectedTopicState.quill} 
               onChange={topicTypingFn} />
             </div>
+
           <div className="flex flex-row">
             <div className="flex flex-row mr-10" >
             <button onClick={() => saveTopicString()}>save</button>
