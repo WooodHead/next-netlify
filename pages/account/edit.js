@@ -127,21 +127,24 @@ export default function Edit(props) {
   return (
     <>
       <NavbarComp />
+
       <div className="mx-5">
+
         <div className="flex flex-row bg-gray-100 my-5">
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
             {userState.TAVS}
-            <EditTAVScomp 
+            <EditTAVScomp
               userState={userState}
-              tavsState={tavsState} 
+              tavsState={tavsState}
               setTavsState={setTavsState}
-              getUserData={getUserData}/>
+              getUserData={getUserData} />
           </div>
-          <PublicString 
-            publicStringState={publicStringState} 
-            setPublicStringState={setPublicStringState}/>
+          <PublicString
+            publicStringState={publicStringState}
+            setPublicStringState={setPublicStringState} />
         </div>
+
         <div className="bg-gray-100" >
           {userState.topics.map((topicObj) =>
             <div key={topicObj.topic} >
@@ -152,16 +155,18 @@ export default function Edit(props) {
           )}
           <button onClick={createNewTopic}>create new topic</button>
         </div>
+
         <div className="my-5 bg-gray-100">
-        <TopicComponent 
-          getUserData={getUserData}
-          selectedTopicState={selectedTopicState} 
-          setSelectedTopicState={setSelectedTopicState}
-          userState={userState}
-          setUserState={setUserState}
-          setErrorState={setErrorState}/>
+          <TopicComponent
+            getUserData={getUserData}
+            selectedTopicState={selectedTopicState}
+            setSelectedTopicState={setSelectedTopicState}
+            userState={userState}
+            setUserState={setUserState}
+            setErrorState={setErrorState} />
           {errorState}
         </div>
+        
       </div>
     </>
   )

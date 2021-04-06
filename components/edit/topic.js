@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
 import KeyToImage from '../../components/custom/keyToImage'
 import { v4 as uuidv4 } from 'uuid'
+
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
@@ -125,9 +126,22 @@ export default function PublicString(props) {
       }
     }
   }
+  const qlEditor = () => {
+    const qlContainer = document.getElementsByClassName('ql-container')
+    console.log(qlContainer[0].style)
+    qlContainer[0].style.overflow = 'auto'
+    qlContainer[0].style.resize = 'vertical'
+    qlContainer[0].style.height = '700px'
+  }
+
+  const onEdit = () => {
+    setSelectedTopicState({ ...selectedTopicState, editing: true })
+  }
+
   const quillStyle = {
     resize: 'vertical',
-    overflow: 'auto'
+    overflow: 'auto',
+    height: '750px'
   }
   const [modules] = useState( {
     toolbar:  {
@@ -144,14 +158,15 @@ export default function PublicString(props) {
   })
 
   return (
-    <div className="">
+    <div>
       {selectedTopicState.editing
-        ? <div className="">
+        ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          
-          <div className=''>
+          <button onClick={() => qlEditor()}>reStyle</button>
+          <div className='h-full min-height-1 overflow-hidden'>
             <ReactQuill 
-              style={quillStyle}
+            // id="QuillId"
+              // style={quillStyle}
               forwardedRef={quillRef}
               modules={modules} 
               value={selectedTopicState.quill} 
@@ -177,7 +192,7 @@ export default function PublicString(props) {
 
         : <div>
           <div>{selectedTopicState.topic}</div>
-          <button onClick={() => setSelectedTopicState({ ...selectedTopicState, editing: true })}>
+          <button onClick={() => onEdit()}>
             <div>edit</div>
           </button>
           <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
