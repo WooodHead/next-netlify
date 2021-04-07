@@ -18,6 +18,7 @@ const CallComponent = (props) => {
           deviceInput: deviceInput,
         }
       }
+      console.log('call COMponent createSession init: ', myInit)
       const createSessionRes = await API.post(process.env.apiGateway.NAME, '/createSession2', myInit)
       console.log('createSessionRes', createSessionRes)
       const OTcreds = {
