@@ -30,7 +30,8 @@ module.exports = (phase) => {
     storage: {
       BUCKET: 'talktreeusrimages',
       REGION: 'us-east-1'
-    }
+    },
+    SITE_URL: isProd ? "talktree.me" : "talktree.me"
   }
 
   return isProd ? withPWA({ env }) : { env }
