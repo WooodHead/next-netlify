@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
 import KeyToImage from '../../components/custom/keyToImage'
 import { v4 as uuidv4 } from 'uuid'
+import styles from './topic.module.css'
 
 const ReactQuill = dynamic(
   async () => {
@@ -103,7 +104,7 @@ export default function PublicString(props) {
     }
   }
 
-  const imageHandler = (e) => {
+  const imageHandler = () => {
     const date = new Date()
     const time = date.getTime()
     const input = document.createElement('input')
@@ -126,6 +127,12 @@ export default function PublicString(props) {
       }
     }
   }
+  // const codeHandler = (e) => {
+  //   const editor = quillRef.current.getEditor()
+  //   editor.format('color', 'red')
+  //   // selectedTopicState.quill.replace('<code>', '<code className="code"')
+  // }
+
   const qlEditor = () => {
     const qlContainer = document.getElementsByClassName('ql-container')
     console.log(qlContainer[0].style)
@@ -143,22 +150,25 @@ export default function PublicString(props) {
     overflow: 'auto',
     height: '750px'
   }
+
   const [modules] = useState( {
     toolbar:  {
       container: [
         [{ 'header': [1, 2, false] }],
-        ['bold', 'italic', 'underline','strike', 'blockquote'],
+        ['bold', 'italic', 'underline','strike', 'blockquote', 'code-block'],
         [{'list': 'bullet'}],
         [ 'image' ]
       ],
       handlers: {
-        image: () => imageHandler()
+        image: () => imageHandler(),
+        // code: () => codeHandler()
       }
     }
   })
 
   return (
     <div>
+      <code className="code">this is 'code'</code>
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />

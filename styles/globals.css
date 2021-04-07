@@ -18,4 +18,16 @@
   input {
     @apply shadow-md bg-opacity-75
   }
+
+  .code {
+    background-color: #eee;
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
+  }
+  /* .quill {
+    resize: 'vertical';
+    overflow: 'auto';
+    height: '750px';
+  } */
 }
