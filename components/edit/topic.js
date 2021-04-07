@@ -75,7 +75,11 @@ export default function PublicString(props) {
 
   const saveTopicString = async () => {
     const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-    const escapedString = keyifiedString.replaceAll('"', '\\"')
+    const stringified = JSON.stringify
+    const escapedString2 = keyifiedString.replaceAll('"', '\\"')
+    const escapedString = JSON.stringify(keyifiedString)
+    console.log('stringified', escapedString)
+    console.log('custom', escapedString2)
     const noSpacesTopic = selectedTopicState.topic.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
@@ -87,7 +91,8 @@ export default function PublicString(props) {
           deleteTopic: false,
           ogTopic: selectedTopicState.ogTopic,
           topic: noSpacesTopic,
-          string: escapedString
+          string: escapedString,
+          accessToken: userSession.accessToken.jwtToken
         }
       }
       const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
@@ -132,7 +137,7 @@ export default function PublicString(props) {
   //   editor.format('color', 'red')
   //   // selectedTopicState.quill.replace('<code>', '<code className="code"')
   // }
-
+  // console.log(selectedTopicState.quill)
   const qlEditor = () => {
     const qlContainer = document.getElementsByClassName('ql-container')
     console.log(qlContainer[0].style)
@@ -168,7 +173,6 @@ export default function PublicString(props) {
 
   return (
     <div>
-      <code className="code">this is 'code'</code>
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />

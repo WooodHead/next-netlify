@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>talktree.me</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/account</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/account/edit</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/newPage</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/phone</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/signIn</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/users</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/6779991/Bike-ride-from-Keystone-to-Austin</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/6779991/Howtosaveanimageinquilltos3</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/6779991/Useless-notes</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/6779991/Web-app-issues</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/6779991/review</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/2747110/review</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/6779991/call</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/2747110/call</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/6779991</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
-<url><loc>talktree.me/2747110</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T02:26:42.095Z</lastmod></url>
+<url><loc>talktree.me</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/account</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/account/edit</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/newPage</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/phone</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/signIn</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/users</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/6779991/call</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/2747110/call</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/6779991/review</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/2747110/review</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/6779991/Bike-ride-from-Keystone-to-Austin</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/6779991/How-to-save-an-image-in-quill-to-s3</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.803Z</lastmod></url>
+<url><loc>talktree.me/6779991/Useless-notes</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.804Z</lastmod></url>
+<url><loc>talktree.me/6779991/Web-app-issues</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.804Z</lastmod></url>
+<url><loc>talktree.me/6779991</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.804Z</lastmod></url>
+<url><loc>talktree.me/2747110</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2021-04-07T16:37:27.804Z</lastmod></url>
 </urlset>
