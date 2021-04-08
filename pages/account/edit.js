@@ -54,7 +54,7 @@ export default function Edit(props) {
     try {
       const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []
-
+      console.log(getAllUsersRes)
       for (const topicKey in getAllUsersRes.Item.topics.M) {
         const topicWithSpaces = topicKey.replaceAll('-', ' ')
         topicsArray.push({
@@ -87,7 +87,9 @@ export default function Edit(props) {
         video: deviceInputRes.video.BOOL,
         screen: deviceInputRes.screen.BOOL
       })
+      console.log('non sanitized', getAllUsersRes.Item.publicString?.S)
       const sanitizedString = DOMPurify.sanitize(getAllUsersRes.Item.publicString?.S)
+      console.log(sanitizedString)
       const pubString = {
         ...publicStringState, 
         string: sanitizedString, 

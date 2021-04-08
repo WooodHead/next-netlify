@@ -6,6 +6,7 @@ import CustomSpinner from "../custom/spinner"
 import KeyToImage from '../../components/custom/keyToImage'
 import { v4 as uuidv4 } from 'uuid'
 import styles from './topic.module.css'
+import Head from "next/head"
 
 const ReactQuill = dynamic(
   async () => {
@@ -72,14 +73,25 @@ export default function PublicString(props) {
     }
     return stringProp
   }
+  const addCodeBlockClassname = (stringProp) => {
+    /* this would need to be <pre */
+    if (stringProp.indexOf('<code') > -1) {
+      const addedClassName = stringProp.replaceAll('<code', '<code className="code"')
+      return addedClassName
+    }
+    return stringProp
+  }
+
 
   const saveTopicString = async () => {
     const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-    const stringified = JSON.stringify
-    const escapedString2 = keyifiedString.replaceAll('"', '\\"')
-    const escapedString = JSON.stringify(keyifiedString)
-    console.log('stringified', escapedString)
-    console.log('custom', escapedString2)
+    console.log('lookin for code', selectedTopicState.quill)
+    // const codeBlocked = addCodeBlockClassname(keyifiedString)
+    // const stringified = JSON.stringify
+    // const escapedString2 = keyifiedString.replaceAll('"', '\\"')
+    // const escapedString = JSON.stringify(keyifiedString)
+    // console.log('stringified', escapedString)
+    // console.log('custom', escapedString2)
     const noSpacesTopic = selectedTopicState.topic.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
@@ -91,18 +103,17 @@ export default function PublicString(props) {
           deleteTopic: false,
           ogTopic: selectedTopicState.ogTopic,
           topic: noSpacesTopic,
-          string: escapedString,
+          string: keyifiedString,
           accessToken: userSession.accessToken.jwtToken
         }
       }
       const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
-      if (savedTopicRes.status === 200) {
+      if (savedTopicRes.string) {
         setSelectedTopicState({...selectedTopicState, saved: "saved"})
         getUserData()
       } else {
-        if (savedTopicRes.err.message === "ExpressionAttributeNames contains invalid value: Empty attribute name for key #DE") {
-          setErrorState('topic cannot be left blank')
-        }
+          setErrorState('topic cannot be left blank or something else happened...')
+
       }
     } catch (err) {
       console.log(err)
@@ -173,6 +184,17 @@ export default function PublicString(props) {
 
   return (
     <div>
+      <Head>
+      {/* <link 
+        rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css"/>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
+      {/* <link href="highlight.js/monokai-sublime.min.css" rel="stylesheet" />
+      <script href="highlight.js"></script> */}
+      {/* <link rel="stylesheet" href="/path/to/styles/default.css" />
+<script src="/path/to/highlight.min.js"></script>
+<script>hljs.highlightAll();</script> */}
+      </Head>
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
