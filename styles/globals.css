@@ -19,11 +19,16 @@
     @apply shadow-md bg-opacity-75
   }
   .ql-syntax {
-    display: block;
+    @apply block;
+    @apply overflow-x-auto;
+    @apply p-4;
+    @apply bg-gray-500;
+    @apply text-blue-200;
+    /* display: block;
     overflow-x: auto;
     padding: 0.5em;
     background: #23241f;
-    color: #e6db74;
+    color: #e6db74; */
 }
   /* .code {
     background-color: #eee;
