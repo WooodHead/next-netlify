@@ -24,6 +24,8 @@
     @apply p-4;
     @apply bg-gray-500;
     @apply text-blue-200;
-
+  }
+  .ql-editor {
+    @apply h-full overflow-auto resize-y;
   }
 }

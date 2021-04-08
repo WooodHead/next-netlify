@@ -143,28 +143,9 @@ export default function PublicString(props) {
       }
     }
   }
-  // const codeHandler = (e) => {
-  //   const editor = quillRef.current.getEditor()
-  //   editor.format('color', 'red')
-  //   // selectedTopicState.quill.replace('<code>', '<code className="code"')
-  // }
-  // console.log(selectedTopicState.quill)
-  const qlEditor = () => {
-    const qlContainer = document.getElementsByClassName('ql-container')
-    console.log(qlContainer[0].style)
-    qlContainer[0].style.overflow = 'auto'
-    qlContainer[0].style.resize = 'vertical'
-    qlContainer[0].style.height = '700px'
-  }
 
   const onEdit = () => {
     setSelectedTopicState({ ...selectedTopicState, editing: true })
-  }
-
-  const quillStyle = {
-    resize: 'vertical',
-    overflow: 'auto',
-    height: '750px'
   }
 
   const [modules] = useState( {
@@ -184,25 +165,11 @@ export default function PublicString(props) {
 
   return (
     <div>
-      <Head>
-      {/* <link 
-        rel="stylesheet"
-        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css"/>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
-      {/* <link href="highlight.js/monokai-sublime.min.css" rel="stylesheet" />
-      <script href="highlight.js"></script> */}
-      {/* <link rel="stylesheet" href="/path/to/styles/default.css" />
-<script src="/path/to/highlight.min.js"></script>
-<script>hljs.highlightAll();</script> */}
-      </Head>
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <button onClick={() => qlEditor()}>reStyle</button>
-          <div className='h-full min-height-1 overflow-hidden'>
+          <div className='h-full overflow-hidden min-height-1'>
             <ReactQuill 
-            // id="QuillId"
-              // style={quillStyle}
               forwardedRef={quillRef}
               modules={modules} 
               value={selectedTopicState.quill} 
