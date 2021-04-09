@@ -123,18 +123,6 @@ export default function PublicString(props) {
     }
   }
 
-  // hljs.configure({   // optionally configure hljs
-  //   languages: ['javascript', 'ruby', 'python']
-  // })
-
-  const qlEditor = () => {
-    const qlContainer = document.getElementsByClassName('ql-container')
-    console.log(qlContainer[0].style)
-    qlContainer[0].style.overflow = 'auto'
-    qlContainer[0].style.resize = 'vertical'
-    qlContainer[0].style.height = '700px'
-  }
-
   const onEdit = () => {
     setSelectedTopicState({ ...selectedTopicState, editing: true })
   }
@@ -159,7 +147,6 @@ export default function PublicString(props) {
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <button onClick={() => qlEditor()}>reStyle</button>
           <div className='h-full overflow-hidden min-height-1'>
             <ReactQuill 
               forwardedRef={quillRef}

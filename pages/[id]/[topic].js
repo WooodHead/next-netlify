@@ -34,7 +34,7 @@ export default function Topic( { user, topic } ) {
         <UserComp user={user} />
         <div className="mx-5">
           <div>
-            <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
+            <div className="my-5 prose bg-gray-100" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
           </div>
         </div>
       </>
