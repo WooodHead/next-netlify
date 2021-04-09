@@ -140,7 +140,7 @@ export default function PublicString(props) {
   }
 
   const [modules] = useState( {
-    syntax: true,
+    // syntax: true,
     toolbar:  {
       container: [
         [{ 'header': [1, 2, false] }],
