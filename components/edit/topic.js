@@ -1,12 +1,9 @@
-import React, { createRef, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { API, Auth, Storage } from 'aws-amplify'
 import '../../configureAmplify'
 import dynamic from 'next/dynamic'
 import CustomSpinner from "../custom/spinner"
-import KeyToImage from '../../components/custom/keyToImage'
 import { v4 as uuidv4 } from 'uuid'
-import styles from './topic.module.css'
-import Head from "next/head"
 
 const ReactQuill = dynamic(
   async () => {
@@ -73,25 +70,9 @@ export default function PublicString(props) {
     }
     return stringProp
   }
-  const addCodeBlockClassname = (stringProp) => {
-    /* this would need to be <pre */
-    if (stringProp.indexOf('<code') > -1) {
-      const addedClassName = stringProp.replaceAll('<code', '<code className="code"')
-      return addedClassName
-    }
-    return stringProp
-  }
-
 
   const saveTopicString = async () => {
     const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-    console.log('lookin for code', selectedTopicState.quill)
-    // const codeBlocked = addCodeBlockClassname(keyifiedString)
-    // const stringified = JSON.stringify
-    // const escapedString2 = keyifiedString.replaceAll('"', '\\"')
-    // const escapedString = JSON.stringify(keyifiedString)
-    // console.log('stringified', escapedString)
-    // console.log('custom', escapedString2)
     const noSpacesTopic = selectedTopicState.topic.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
     try {
@@ -121,8 +102,6 @@ export default function PublicString(props) {
   }
 
   const imageHandler = () => {
-    const date = new Date()
-    const time = date.getTime()
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.click()
@@ -144,11 +123,24 @@ export default function PublicString(props) {
     }
   }
 
+  // hljs.configure({   // optionally configure hljs
+  //   languages: ['javascript', 'ruby', 'python']
+  // })
+
+  const qlEditor = () => {
+    const qlContainer = document.getElementsByClassName('ql-container')
+    console.log(qlContainer[0].style)
+    qlContainer[0].style.overflow = 'auto'
+    qlContainer[0].style.resize = 'vertical'
+    qlContainer[0].style.height = '700px'
+  }
+
   const onEdit = () => {
     setSelectedTopicState({ ...selectedTopicState, editing: true })
   }
 
   const [modules] = useState( {
+    syntax: true,
     toolbar:  {
       container: [
         [{ 'header': [1, 2, false] }],
@@ -158,16 +150,16 @@ export default function PublicString(props) {
       ],
       handlers: {
         image: () => imageHandler(),
-        // code: () => codeHandler()
       }
     }
   })
 
   return (
-    <div>
+    <div >
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
+          <button onClick={() => qlEditor()}>reStyle</button>
           <div className='h-full overflow-hidden min-height-1'>
             <ReactQuill 
               forwardedRef={quillRef}
@@ -198,7 +190,7 @@ export default function PublicString(props) {
           <button onClick={() => onEdit()}>
             <div>edit</div>
           </button>
-          <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
+          <div className="mx-3 my-3 prose" dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
 
         </div>
 
