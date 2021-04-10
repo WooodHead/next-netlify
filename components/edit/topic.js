@@ -172,12 +172,12 @@ export default function PublicString(props) {
 
         </div>
 
-        : <div>
+        : <div className="flex justify-center">
           <div>{selectedTopicState.topic}</div>
           <button onClick={() => onEdit()}>
             <div>edit</div>
           </button>
-          <div className="mx-3 my-3 prose" dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
+          <div className="mx-3 my-3 prose " dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
 
         </div>
 

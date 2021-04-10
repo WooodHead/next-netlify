@@ -33,7 +33,7 @@ export default function Topic( { user, topic } ) {
         <NavbarComp />
         <UserComp user={user} />
         <div className="mx-5">
-          <div>
+          <div className="flex justify-center">
             <div className="my-5 prose bg-gray-100" dangerouslySetInnerHTML={{ __html: stringState }} ></div>
           </div>
         </div>
