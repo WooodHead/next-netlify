@@ -20,9 +20,7 @@ const CardTip = props => {
   const [tipErrorState, setTipErrorState] = useState('')
   const [useCardOnFile, setUseCardOnFile] = useState(false)
 
-  const router = useRouter()
-  console.log('router locale', router.locale)
-  const receiver = router.locale
+  const receiver = props.receiver
 
   const setPaymentState = (paymentParam) => {
     props.setPaymentState(paymentParam)
@@ -53,6 +51,7 @@ const CardTip = props => {
           setPaymentState('Csucceeded')
           return
         }
+        console.log('clientSecret', clientSecret)
         if (!stripe || !elements) {
           return //stripe hasn't loaded yet
         }
@@ -66,6 +65,7 @@ const CardTip = props => {
         }
 
       } catch (err) {
+        console.log(err)
         setCardSubmitting('failed')
         setPaymentState("failed")
         // amountInputDOM.disabled = false
@@ -112,7 +112,7 @@ const CardTip = props => {
       <Elements stripe={stripeState} >
         <CardComponent />
       </Elements>
-      <button onClick={() => setPaymentState('amount')} className="btn btn-link mt-2"><small>change amount?</small></button>
+      <button onClick={() => setPaymentState('amount')} className="mt-2 btn btn-link"><small>change amount?</small></button>
     </div>
   )
 }

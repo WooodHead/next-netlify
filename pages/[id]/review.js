@@ -22,14 +22,8 @@ const ReviewParent = props => {
   const [elementState, setElementState] = useState()
   const tipAmountRef = useRef(1.00)
 
-  const router = useRouter()
-  // console.log(router.locale)
-  const receiver = router.locale
-  
-  const receiverRef = useRef()
-  receiverRef.current = receiver
+  const receiver = props.user.Username
 
-  // console.log(callerNumberState)
 
   const setPayment = (paymentProp) => {
     
@@ -61,10 +55,10 @@ const ReviewParent = props => {
         /* get user receiver */
         const amountInputDOM = document.getElementById("amountInput")
         // const getUserParams = { headers: { Authorization: receiver } }
-        const getReceiverParams = { body: { receiver: receiverRef } } 
+        const getReceiverParams = { body: { receiver: receiver } } 
         // const getUser = await API.get(config.apiGateway.NAME, '/users', getUserParams)
         const getUser = await API.post(process.env.apiGateway.NAME, '/getReceiver', getReceiverParams)
-        if (getUser.body.onBoarding !== 'finished') {
+        if (getUser.body?.onBoarding !== 'finished') {
           setPaymentState('noReceiver'); amountInputDOM.disabled = true 
         }
           stripeAccount = getUser.body.account
@@ -82,7 +76,7 @@ const ReviewParent = props => {
             country: 'US',
             currency: 'usd',
             total: {
-              label: `tipping user ${receiverRef}`,
+              label: `tipping user ${receiver}`,
               amount: tipAmountRef.current.value * 100
             },
           })
@@ -110,11 +104,11 @@ const ReviewParent = props => {
 
   return (
     <div className="container">
-      <Rating />
+      <Rating receiver={receiver}/>
       <h3 className="mt-5">leave a tip</h3>
       <div className="mt-3">Amount</div>
       $<input 
-      className="mb-4 mt-1"
+      className="mt-1 mb-4"
         id="amountInput"
         disabled={false}
         ref={tipAmountRef}
@@ -147,7 +141,8 @@ const ReviewParent = props => {
         <div className="mt-3">The max is $500</div> 
       }
       {(paymentState === 'card') && 
-        <CardTip 
+        <CardTip
+          receiver={receiver} 
           stripeState={stripeState}
           amount={tipAmountRef.current.value} 
           callerNumberState={callerNumberState}

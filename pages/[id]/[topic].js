@@ -19,8 +19,6 @@ export default function Topic( { user, topic } ) {
   } 
     const [stringState, setStringState] = useState('')
     
-
-
     useEffect(() => {
       (async () => setStringState( await KeyToImage(topic.string)))()
     }, [topic])

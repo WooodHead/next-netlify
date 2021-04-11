@@ -5,16 +5,13 @@ import '../../configureAmplify'
 import CustomSpinner from '../../components/custom/spinner'
 import { useRouter } from "next/router";
 
-const Rating = () => {
+const Rating = props => {
     
     const [reviewSubmitting, setReviewSubmitting] = useState(false)
     const [rangeValue, setRangeValue] = useState('50')
     const [reviewErrorState, setReviewErrorState] = useState('')
 
-    const router = useRouter()
-    console.log(router.locale)
-    const receiver = router.locale
-
+    const receiver = props.receiver
     const ratingHandler = (event) => {
         setRangeValue(event.target.value)
       }
