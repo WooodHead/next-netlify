@@ -146,10 +146,6 @@ export default function PublicString(props) {
 
   return (
     <div >
-      <Head>
-        <title>insert web address without dashes</title>
-        <Meta name="description" content={metaDescription} />
-      </Head>
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
