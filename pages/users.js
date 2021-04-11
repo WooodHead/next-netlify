@@ -35,9 +35,7 @@ const Users = ({ allUsers }) => {
                       {Object.keys(user.topics).map((topic) => 
                       <div className="mx-5" key={user.Username + topic} >
                         {topic}
-                        
                       </div>
-
                     )
                   }</div>
                     </div>

@@ -142,8 +142,14 @@ export default function PublicString(props) {
     }
   })
 
+  const metaDescription = "insert meta description"
+
   return (
     <div >
+      <Head>
+        <title>insert web address without dashes</title>
+        <Meta name="description" content={metaDescription} />
+      </Head>
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
@@ -172,13 +178,14 @@ export default function PublicString(props) {
 
         </div>
 
-        : <div className="flex justify-center">
+        : <div>
           <div>{selectedTopicState.topic}</div>
           <button onClick={() => onEdit()}>
             <div>edit</div>
           </button>
+          <div className="flex justify-center">
           <div className="mx-3 my-3 prose " dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} ></div>
-
+          </div>
         </div>
 
       }
