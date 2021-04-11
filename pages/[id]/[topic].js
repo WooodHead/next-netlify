@@ -18,6 +18,8 @@ export default function Topic( { user, topic } ) {
     )
   } 
     const [stringState, setStringState] = useState('')
+    
+
 
     useEffect(() => {
       (async () => setStringState( await KeyToImage(topic.string)))()
@@ -27,7 +29,7 @@ export default function Topic( { user, topic } ) {
       <>
         <Head>
           <title>{topic.topic}</title>
-          <meta name="description" content={topic.string} />
+          <meta name="description" content={topic.description} />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>
         <NavbarComp />
@@ -83,10 +85,15 @@ export async function getStaticProps({ params }) {
 
       for (const key in user.topics) {
         if (key === params.topic) {
-          topic = { topic: key, string: user.topics[key].S }
+          const h2Index = user.topics[key].S.indexOf('<h2>')
+          const h2IndexEnd = user.topics[key].S.indexOf('</h2>', h2Index)
+          const h2Description = user.topics[key].S.slice(h2Index + 4, h2IndexEnd)
+
+          topic = { topic: key, string: user.topics[key].S, description: h2Description }
         }
     }    
   }})
+
   return { 
     props: { user: user, topic: topic },
     revalidate: 1

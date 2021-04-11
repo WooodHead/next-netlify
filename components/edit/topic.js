@@ -142,7 +142,6 @@ export default function PublicString(props) {
     }
   })
 
-  const metaDescription = "insert meta description"
 
   return (
     <div >
