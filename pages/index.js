@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import  Link from 'next/link'
 import NavbarComp from '../components/navbar/navbar'
 import SplashComp from '../components/index/splash'
-
+import FooterComp from '../components/navbar/footer'
 export default function Home() {
   
   return (
@@ -13,14 +13,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <main>
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-1">
         <NavbarComp />
         <SplashComp />
-        {/* <Header title="hello" /> */}
-        {/* <p className="description" onClick={goToUsers}>
-          See all users here
-        </p> */}       
-      </main>
+        </div>
+        <FooterComp />    
+      </div>
     </div>
   )
 }

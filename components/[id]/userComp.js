@@ -1,6 +1,10 @@
+import { useState } from 'react'
 import Link from 'next/link'
-
+// import CardTip from '../review/cardTip'
 export default function UserComp(props) {
+  const [state, setState] = useState({
+    tipping: false
+  })
   const user = props.user
 
   const openCallPhone = () => {
@@ -14,14 +18,20 @@ export default function UserComp(props) {
     )
   }
 
+  const donate = () => {
+    setState({...state, tipping: !state.tipping})
+  }
+
   return (
       <div className="mx-5">
-        <div className="flex flex-row bg-gray-100 my-5">
+        <div className="flex flex-row my-5 bg-gray-100">
           <div className="flex flex-col mx-5 mb-5">
             <h3 className='mx-5 mt-5'>{user.Username}</h3>
             <div className='mx-5 mb-3'>{user.TAVS}</div>
             {/* <div className='mx-5 mb-3'>{'$' + user.ppm}</div> */}
             <button type="button" onClick={openCallPhone}>chat</button>
+            {/* <button className="mt-3" type="button" onClick={donate}>donate</button> */}
+            {state.tipping && <div>card tip goes here</div>}
           </div>
           <div className="my-3" >
           <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
@@ -33,7 +43,7 @@ export default function UserComp(props) {
             return (
               <div key={topic} className="my-3">
               <Link href={"/" + user.Username + "/" + topic}>
-                <a className="mx-2 py-1 px-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
+                <a className="px-2 py-1 mx-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
                   {topic.replace(/-/g, ' ')}
                 </a>
                 </Link>
