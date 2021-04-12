@@ -34,5 +34,5 @@ module.exports = (phase) => {
     SITE_URL: isProd ? "talktree.me" : "talktree.me"
   }
 
-  return withPWA({ env }) 
+  return isProd ? withPWA({ env }) : { env }
 }

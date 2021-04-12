@@ -11,6 +11,7 @@ export default function Home() {
       <Head>
         <title>Talktree</title>
         <link rel="icon" href="/favicon.png" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
 
       <div className="flex flex-col min-h-screen">
