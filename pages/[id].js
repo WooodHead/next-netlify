@@ -22,9 +22,10 @@ export default function User({ user }) {
 }
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
-  const paths = getAllUsersRes.body.Items.map(user => { 
-    return { params: { id: user.Username.S }}
+  const allUsersInit = { headers: { Authorization: "all" } }
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
+  const paths = getAllUsersRes.body.Items.map(user => {
+    return { params: { id: user.Username.S } }
   })
   return {
     paths,
@@ -33,28 +34,30 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  let user
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
-  getAllUsersRes.body.Items.forEach((userRes) => {
-    const TAVS = []
-    userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
-    userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
-    userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
-    userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
-    if (userRes.Username.S === params.id) {
-      user = {
-        Username: userRes.Username.S,
-        active: userRes.active.BOOL,
-        busy: userRes.busy.BOOL,
-        folders: userRes.folders?.SS || [],
-        ppm: userRes.ppm.N,
-        TAVS: TAVS,
-        ratingAv: userRes.ratingAv?.S || null,
-        publicString: userRes.publicString?.S || null,
-        topicString: userRes.topicString?.S || null,
-        topics: userRes.topics?.M || null
-      }
-    }    
-  })
-  return {props: { user: user }, revalidate: 1 }
+
+  const specificUserInit = { headers: { Authorization: params.id } }
+  const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", specificUserInit)
+  const userRes = getUserRes.Item
+  // getUserRes.body.Items.forEach((userRes) => {
+  const TAVS = []
+  userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
+  userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
+  userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
+  userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
+  // if (userRes.Username.S === params.id) {
+  const user = {
+    Username: userRes.Username.S,
+    active: userRes.active.BOOL,
+    busy: userRes.busy.BOOL,
+    folders: userRes.folders?.SS || [],
+    ppm: userRes.ppm.N,
+    TAVS: TAVS,
+    ratingAv: userRes.ratingAv?.S || null,
+    publicString: userRes.publicString?.S || null,
+    topicString: userRes.topicString?.S || null,
+    topics: userRes.topics?.M || null
+  }
+  // }    
+  // })
+  return { props: { user: user }, revalidate: 1 }
 }

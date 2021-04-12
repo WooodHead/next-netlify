@@ -12,18 +12,18 @@ export default function PublicString(props) {
   const publicTypingFn = (e) => {
     setPublicStringState({...publicStringState, quill: e, saved: false})
   }
-  const onClosePublicEdit = async () => {
-    try {
-      const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
-      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      const userResString = getAllUserRes.Item.publicString.S
-      setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
-    } catch (err) {
-      setPublicStringState({ ...publicStringState, editing: false, saved: false })
-      console.log(err)
-    }
-  }
+  // const onClosePublicEdit = async () => {
+  //   try {
+  //     const userSession = await Auth.currentAuthenticatedUser()
+  //     const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
+  //     const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+  //     const userResString = getAllUserRes.Item.publicString.S
+  //     setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
+  //   } catch (err) {
+  //     setPublicStringState({ ...publicStringState, editing: false, saved: false })
+  //     console.log(err)
+  //   }
+  // }
   const savePublicStringButton = async () => {
     setCreateAccountState(true)
     // try {

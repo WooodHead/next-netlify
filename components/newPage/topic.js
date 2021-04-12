@@ -27,8 +27,8 @@ export default function PublicString(props) {
     try {
       const userSession = await Auth.currentAuthenticatedUser()
       const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
-      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      const userResString = getAllUserRes.Item.topics.M[selectedTopicState.topic].S
+      const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const userResString = getUserRes.Item.topics.M[selectedTopicState.topic].S
       setSelectedTopicState({ ...selectedTopicState, string: userResString, editing: false, saved: false })
     } catch (err) {
       setSelectedTopicState({ ...selectedTopicState, editing: false, saved: false })

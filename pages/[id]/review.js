@@ -169,7 +169,8 @@ const ReviewParent = props => {
 export default ReviewParent;
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
+  const allUsersInit = { headers: { Authorization: "all" } }
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
   const paths = getAllUsersRes.body.Items.map(user => {
     return { params: { id: user.Username.S } }
   })
@@ -181,7 +182,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let user
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/getAllUsers")
+  const allUsersInit = { headers: { Authorization: "all" } }
+  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {

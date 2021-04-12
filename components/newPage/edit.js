@@ -55,30 +55,30 @@ export default function EditComponent(props) {
       }
     }
     try {
-      const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []
-      for (const topicKey in getAllUsersRes.Item.topics.M) {
+      for (const topicKey in getUserRes.Item.topics.M) {
         topicsArray.push({
           topic: topicKey,
-          string: DOMPurify.sanitize(getAllUsersRes.Item.topics.M[topicKey].S)
+          string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].S)
         })
       }
       const TAVS = []
-      const deviceInputRes = getAllUsersRes.Item.deviceInput.M
+      const deviceInputRes = getUserRes.Item.deviceInput.M
       deviceInputRes.text.BOOL && TAVS.push("📝")
       deviceInputRes.audio.BOOL && TAVS.push("📞")
       deviceInputRes.video.BOOL && TAVS.push("📹")
       deviceInputRes.screen.BOOL && TAVS.push("💻")
       const user = {
-        Username: getAllUsersRes.Item.Username.S,
-        active: getAllUsersRes.Item.active.BOOL,
-        busy: getAllUsersRes.Item.busy.BOOL,
-        // folders: getAllUsersRes.Item.folders?.SS || [],
+        Username: getUserRes.Item.Username.S,
+        active: getUserRes.Item.active.BOOL,
+        busy: getUserRes.Item.busy.BOOL,
+        // folders: getUserRes.Item.folders?.SS || [],
         TAVS: TAVS,
-        ppm: getAllUsersRes.Item.ppm.N,
-        ratingAv: getAllUsersRes.Item.ratingAv?.S || null,
-        publicString: getAllUsersRes.Item.publicString?.S || null,
-        receiver: getAllUsersRes.Item.receiver.BOOL,
+        ppm: getUserRes.Item.ppm.N,
+        ratingAv: getUserRes.Item.ratingAv?.S || null,
+        publicString: getUserRes.Item.publicString?.S || null,
+        receiver: getUserRes.Item.receiver.BOOL,
         topics: topicsArray,
       }
       setUserState(user)
@@ -89,7 +89,7 @@ export default function EditComponent(props) {
         video: deviceInputRes.video.BOOL,
         screen: deviceInputRes.screen.BOOL
       })
-      const sanitizedString = DOMPurify.sanitize(getAllUsersRes.Item.publicString?.S)
+      const sanitizedString = DOMPurify.sanitize(getUserRes.Item.publicString?.S)
       const pubString = {
         ...publicStringState, 
         string: sanitizedString, 
@@ -158,7 +158,7 @@ export default function EditComponent(props) {
     <>
       <NavbarComp />
       <div className="mx-5">
-        <div className="flex flex-row bg-gray-100 my-5">
+        <div className="flex flex-row my-5 bg-gray-100">
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
             {userState.TAVS}
