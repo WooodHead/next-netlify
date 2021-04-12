@@ -19,7 +19,9 @@ export default function Topic({ user, topic }) {
   }
 
   const firstImgAddress = topic.firstImage
-  console.log(firstImgAddress)
+  const description = topic.description
+  console.log('description', description)
+  console.log('topic firstiamge', firstImgAddress)
   // const [stringState, setStringState] = useState('')
 
 
@@ -95,17 +97,19 @@ export async function getStaticProps({ params }) {
       const h2Index = user.topics[key].S.indexOf('<h2>')
       const h2IndexEnd = user.topics[key].S.indexOf('</h2>', h2Index)
       const h2Description = user.topics[key].S.slice(h2Index + 4, h2IndexEnd)
+      const description = (h2Index > -1) ? h2Description : 'no description provided'
 
       const keysNowStrings = await KeyToImage(user.topics[key].S)
       const firstImageBeginning = keysNowStrings.indexOf('<img')
       const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
       const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
+      const imageMeta = ( firstImageBeginning > - 1) ? firstImage : 'no image provided'
       topic = {
         topic: key,
         string: user.topics[key].S,
         stringNoKeys: keysNowStrings,
-        description: h2Description,
-        firstImage: firstImage
+        description: description,
+        firstImage: imageMeta
       }
 
     }
