@@ -12,7 +12,7 @@ export default function Home() {
         <title>Talktree</title>
         <link rel="icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta property="og:image" content="/favicon128.png"></meta>
+        <meta property="og:image" content="https://talktree.me/favicon128.png"></meta>
       </Head>
 
       <div className="flex flex-col min-h-screen">
