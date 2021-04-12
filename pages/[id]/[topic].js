@@ -20,20 +20,13 @@ export default function Topic({ user, topic }) {
 
   const firstImgAddress = topic.firstImage
   const description = topic.description
-  console.log('description', description)
-  console.log('topic firstiamge', firstImgAddress)
-  // const [stringState, setStringState] = useState('')
-
-
-  // useEffect(() => {
-  //   (async () => setStringState(await KeyToImage(topic.string)))()
-  // }, [topic])
+  const title = topic.title
 
   return (
     <>
       <Head>
-        <title>{topic.topic}</title>
-        <meta name="description" content={topic.description} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta property="og:image" content={firstImgAddress}></meta>
       </Head>
@@ -94,6 +87,8 @@ export async function getStaticProps({ params }) {
 
   for (const key in user.topics) {
     if (key === params.topic) {
+
+      const keyWithSpaces = key.replace(/-/g, ' ')
       const h2Index = user.topics[key].S.indexOf('<h2>')
       const h2IndexEnd = user.topics[key].S.indexOf('</h2>', h2Index)
       const h2Description = user.topics[key].S.slice(h2Index + 4, h2IndexEnd)
@@ -106,6 +101,7 @@ export async function getStaticProps({ params }) {
       const imageMeta = ( firstImageBeginning > - 1) ? firstImage : 'no image provided'
       topic = {
         topic: key,
+        title: keyWithSpaces,
         string: user.topics[key].S,
         stringNoKeys: keysNowStrings,
         description: description,
