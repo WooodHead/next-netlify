@@ -2,7 +2,22 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            // color: '#432342',
+            maxWidth: '110ch',
+            // a: {
+            //   color: '#3182ce',
+            //   '&:hover': {
+            //     color: '#2c5282',
+            //   },
+            // },
+          },
+        },
+      }
+    },
   },
   variants: {
     extend: {},

@@ -30,13 +30,24 @@ export default function Topic({ user, topic }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta property="og:image" content={firstImgAddress}></meta>
       </Head>
-      <NavbarComp />
-      <UserComp user={user} />
-      <div className="mx-5">
-        <div className="flex justify-center">
-          <div className="my-5 prose bg-gray-100 lg:prose-xl" dangerouslySetInnerHTML={{ __html: topic.stringNoKeys }} ></div>
+      <div className="">
+        <NavbarComp />
+        <UserComp user={user} />
+        <div className="">
+          {/* <div className="flex justify-center"> */}
+            <div 
+              className="flex justify-center my-5 bg-gray-100" 
+              >
+                <div 
+                className="prose-sm prose sm:prose"
+                dangerouslySetInnerHTML={{ __html: topic.stringNoKeys }} >
+
+                </div>
+              </div>
+          {/* </div> */}
         </div>
       </div>
+
     </>
   )
 }
@@ -98,7 +109,7 @@ export async function getStaticProps({ params }) {
       const firstImageBeginning = keysNowStrings.indexOf('<img')
       const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
       const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
-      const imageMeta = ( firstImageBeginning > - 1) ? firstImage : 'no image provided'
+      const imageMeta = (firstImageBeginning > - 1) ? firstImage : 'no image provided'
       topic = {
         topic: key,
         title: keyWithSpaces,
