@@ -8,11 +8,15 @@ import UserComp from '../components/[id]/userComp'
 
 export default function User({ user }) {
 
+  const description = user.publicString
   return (
     <>
       <Head>
-        <title>Chat with {user.Username}, who might have solved this</title>
-        <meta name="description" content={'userprovidedcontent'} />
+        <title>{user.Username}</title>
+        <meta name="description" content={description} />
+        <link rel="icon" href="/favicon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta property="og:image" content="/favicon512"></meta>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavbarComp />

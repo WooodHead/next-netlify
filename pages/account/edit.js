@@ -90,7 +90,7 @@ export default function Edit(props) {
       const pubString = {
         ...publicStringState, 
         string: sanitizedString, 
-        quill: sanitizedString === '' ? 'write something about yourself' : sanitizedString,
+        quill: sanitizedString === '' ? 'if you want to describe your page, write here, 160 character limit' : sanitizedString,
         editing: sanitizedString === '' ? true : false
       }
       setPublicStringState(pubString)

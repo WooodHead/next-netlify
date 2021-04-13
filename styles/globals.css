@@ -26,6 +26,9 @@
     @apply text-blue-200;
   } */
   .ql-editor {
-    @apply h-full overflow-auto resize-y;
+    @apply h-full overflow-auto resize;
+  }
+  textarea {
+    @apply shadow-md bg-opacity-100
   }
 }

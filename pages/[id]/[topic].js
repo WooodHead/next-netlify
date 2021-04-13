@@ -34,7 +34,7 @@ export default function Topic({ user, topic }) {
       <UserComp user={user} />
       <div className="mx-5">
         <div className="flex justify-center">
-          <div className="my-5 prose bg-gray-100" dangerouslySetInnerHTML={{ __html: topic.stringNoKeys }} ></div>
+          <div className="my-5 prose bg-gray-100 lg:prose-xl" dangerouslySetInnerHTML={{ __html: topic.stringNoKeys }} ></div>
         </div>
       </div>
     </>
