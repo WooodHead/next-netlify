@@ -2,3 +2,8 @@
 prose default width is actually decently wide, its the div aboves flex justify-center thats causing the width issue
 I want text to wrap, but I don't think I can because of injected html, not related to prose classname
 the container makes its max width equal to the longest word
+4/14
+Google recrawls 404ed pages, shouldn't tap into crawl budget.. I should return 410 on /i/ pages, I was able to submit a takedown old request
+I can't preload the images in Next cause of the temporary auth creds, I would need to get request, get a lambda,
+the lambda would then return a appropriately sized images
+I just need to getServerSideProps()

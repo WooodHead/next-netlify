@@ -148,14 +148,15 @@ export default function PublicString(props) {
       {selectedTopicState.editing
         ? <div>
           <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} />
-          <div className='h-full overflow-hidden min-height-1'>
+          <div className="flex justify-center w-10/12">
+          <div className='h-full max-w-6xl overflow-hidden min-height-1'>
             <ReactQuill 
               forwardedRef={quillRef}
               modules={modules} 
               value={selectedTopicState.quill} 
               onChange={topicTypingFn} />
             </div>
-
+            </div>
           <div className="flex flex-row">
             <div className="flex flex-row mr-10" >
             <button onClick={() => saveTopicString()}>save</button>

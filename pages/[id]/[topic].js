@@ -18,9 +18,26 @@ export default function Topic({ user, topic }) {
     )
   }
 
-  const firstImgAddress = topic.firstImage
+  const [state, setState] = useState({
+    text: topic.string
+  })
+
+  // const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
+
+  const populateImgKeys = async () => {
+      const keysNowStrings = await KeyToImage(topic.string)
+      const firstImageBeginning = keysNowStrings.indexOf('<img')
+      const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
+      const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
+      const imageMeta = (firstImageBeginning > - 1) ? firstImage : 'no image provided'
+      setState({...state, text: keysNowStrings})
+  }  
+
+  useEffect(() => {
+    populateImgKeys()
+  }, [topic])
 
   return (
     <>
@@ -28,7 +45,7 @@ export default function Topic({ user, topic }) {
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta property="og:image" content={firstImgAddress}></meta>
+        {/* <meta property="og:image" content={firstImgAddress}></meta> */}
       </Head>
       <div className="">
         <NavbarComp />
@@ -40,7 +57,7 @@ export default function Topic({ user, topic }) {
               >
                 <div 
                 className="prose-sm prose sm:prose"
-                dangerouslySetInnerHTML={{ __html: topic.stringNoKeys }} >
+                dangerouslySetInnerHTML={{ __html: state.text }} >
 
                 </div>
               </div>
@@ -105,18 +122,18 @@ export async function getStaticProps({ params }) {
       const h2Description = user.topics[key].S.slice(h2Index + 4, h2IndexEnd)
       const description = (h2Index > -1) ? h2Description : 'no description provided'
 
-      const keysNowStrings = await KeyToImage(user.topics[key].S)
-      const firstImageBeginning = keysNowStrings.indexOf('<img')
-      const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
-      const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
-      const imageMeta = (firstImageBeginning > - 1) ? firstImage : 'no image provided'
+      // const keysNowStrings = await KeyToImage(user.topics[key].S)
+      // const firstImageBeginning = keysNowStrings.indexOf('<img')
+      // const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
+      // const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
+      // const imageMeta = (firstImageBeginning > - 1) ? firstImage : 'no image provided'
       topic = {
         topic: key,
         title: keyWithSpaces,
         string: user.topics[key].S,
-        stringNoKeys: keysNowStrings,
+        // stringNoKeys: keysNowStrings,
         description: description,
-        firstImage: imageMeta
+        // firstImage: imageMeta
       }
 
     }
