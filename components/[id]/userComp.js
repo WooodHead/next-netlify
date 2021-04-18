@@ -2,10 +2,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 // import CardTip from '../review/cardTip'
 export default function UserComp(props) {
-  const [state, setState] = useState({
-    tipping: false
-  })
+
   const user = props.user
+
 
   const openCallPhone = () => {
     const devSite = `/${user.Username}/call`
@@ -17,9 +16,15 @@ export default function UserComp(props) {
       "width=500,height=700"
     )
   }
-
-  const donate = () => {
-    setState({...state, tipping: !state.tipping})
+  const openReviewPhone = () => {
+    const devSite = `/${user.Username}/review`
+    const prodSite = `https://talktree.me/${user.Username}/review`
+    const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
+    window.open(
+      currentSite,
+      "MsgWindow",
+      "width=500,height=700"
+    )
   }
 
   return (
@@ -30,8 +35,7 @@ export default function UserComp(props) {
             <div className='mx-5 mb-3'>{user.TAVS}</div>
             {/* <div className='mx-5 mb-3'>{'$' + user.ppm}</div> */}
             <button type="button" onClick={openCallPhone}>chat</button>
-            {/* <button className="mt-3" type="button" onClick={donate}>donate</button> */}
-            {state.tipping && <div>card tip goes here</div>}
+            {user.receiver && <button className="mt-3" type="button" onClick={openReviewPhone}>donate</button>}
           </div>
           <div className="my-3" >
           <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>

@@ -103,9 +103,10 @@ const ReviewParent = props => {
   }, [])
 
   return (
-    <div className="container">
+    <div className="container m-5">
       <Rating receiver={receiver}/>
-      <h3 className="mt-5">leave a tip</h3>
+      <div>
+      <div className="mt-8 text-xl ">Leave a tip</div>
       <div className="mt-3">Amount</div>
       $<input 
       className="mt-1 mb-4"
@@ -162,6 +163,8 @@ const ReviewParent = props => {
       } */}
       {(paymentState === 'failed') &&
         <div>payment failed</div>}
+      </div>
+
     </div>
   );
 }

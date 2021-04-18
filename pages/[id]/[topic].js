@@ -18,10 +18,14 @@ export default function Topic({ user, topic }) {
     )
   }
 
+  console.log('userProp receiver: ', user.receiver)
+
+
   const [state, setState] = useState({
     text: topic.string
   })
 
+  const userOnboarded = user.receiver
   // const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
@@ -111,6 +115,7 @@ export async function getStaticProps({ params }) {
     ratingAv: userRes.ratingAv?.S || null,
     publicString: userRes.publicString?.S || null,
     topics: userRes.topics?.M || null,
+    receiver: userRes.receiver.BOOL
   }
 
   for (const key in user.topics) {

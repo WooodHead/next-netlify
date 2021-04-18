@@ -59,7 +59,8 @@ export async function getStaticProps({ params }) {
     ratingAv: userRes.ratingAv?.S || null,
     publicString: userRes.publicString?.S || null,
     topicString: userRes.topicString?.S || null,
-    topics: userRes.topics?.M || null
+    topics: userRes.topics?.M || null,
+    receiver: userRes.receiver.BOOL
   }
   // }    
   // })
