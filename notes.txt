@@ -7,3 +7,6 @@ Google recrawls 404ed pages, shouldn't tap into crawl budget.. I should return 4
 I can't preload the images in Next cause of the temporary auth creds, I would need to get request, get a lambda,
 the lambda would then return a appropriately sized images
 I just need to getServerSideProps()
+4/15-16 was sick
+4/17
+noPurge layer in globals.css didnt work.
