@@ -11,9 +11,7 @@
   }
 }
 
-@layer noPurge {
-  .ql-editor {
-    @apply h-full overflow-auto resize;
-  }
+.ql-editor {
+  @apply h-full overflow-auto resize;
 }
 
