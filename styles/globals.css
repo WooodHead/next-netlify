@@ -6,29 +6,14 @@
   button {
     @apply px-2 py-1 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75;
   }
-  /* h1 {
-    @apply text-2xl;
+  textarea {
+    @apply bg-opacity-100 shadow-md;
   }
-  h2 {
-    @apply text-xl;
-  }
-  h3 {
-    @apply text-lg;
-  }
-  input {
-    @apply shadow-md bg-opacity-75
-  }
-  pre {
-    @apply block;
-    @apply overflow-x-auto;
-    @apply p-4;
-    @apply bg-gray-500;
-    @apply text-blue-200;
-  } */
+}
+
+@layer noPurge {
   .ql-editor {
     @apply h-full overflow-auto resize;
   }
-  textarea {
-    @apply shadow-md bg-opacity-100
-  }
 }
+
