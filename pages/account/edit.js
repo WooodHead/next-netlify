@@ -8,13 +8,22 @@ import PublicString from '../../components/edit/publicString'
 import TopicComponent from '../../components/edit/topic'
 import EditTAVScomp from '../../components/edit/tavs'
 import KeyToImage from '../../components/custom/keyToImage'
+import EditComponent from '../../components/edit/editComponent'
+import BlogEdit from '../../components/edit/blogEdit'
+import state from 'opentok-accelerator-core/dist/state'
 
-export default function Edit(props) {
+export default function EditParent(props) {
 
-  const users = props?.userState
-
+  const [selectedTopicState, setSelectedTopicState] = useState({
+    topic: '',
+    ogTopic: '',
+    string: '',
+    quill: '',
+    editing: false,
+    saved: false
+  })
   const [userState, setUserState] = useState({
-    Username: props ? users?.Username : 'loading...',
+    Username: 'loading...',
     ppm: 0,
     ratingAv: 'loading...',
     publicString: 'loading...',
@@ -27,22 +36,9 @@ export default function Edit(props) {
     editing: false,
     saved: false
   })
-  const [selectedTopicState, setSelectedTopicState] = useState({
-    topic: '',
-    ogTopic: '',
-    string: '',
-    quill: '',
-    editing: false,
-    saved: false
-  })
-  const [tavsState, setTavsState] = useState({
-    text: true,
-    audio: true,
-    video: false,
-    screen: false,
-    editing: false
-  })
-  const [errorState, setErrorState] = useState('')
+
+  const setUserStateFn = (e) => { setUserState({ ...userState, e }) }
+  const setPublicStateFn = (e) => { setPublicStringState({ ...publicStringState, e }) }
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -54,11 +50,15 @@ export default function Edit(props) {
     try {
       const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []
+      console.log("getUserRes :", getUserRes)
       for (const topicKey in getUserRes.Item.topics.M) {
-        const topicWithSpaces = topicKey.replaceAll('-', ' ')
+        const title = getUserRes.Item.topics.M[topicKey].title.S
+        const titleWithSpaces = title.replaceAll('-', ' ')
+
         topicsArray.push({
-          topic: topicWithSpaces,
-          string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].S)
+          topic: titleWithSpaces,
+          string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].string.S),
+          draft: getUserRes.Item.topics.M[topicKey].BOOL
         })
       }
       const TAVS = []
@@ -98,75 +98,38 @@ export default function Edit(props) {
       console.log(err)
     }
   }
-  const createNewTopic = async () => {
-    setSelectedTopicState({
-      topic: '',
-      ogTopic: '',
-      string: '',
-      quill: '',
-      editing: true
-    })
-  }
-
-  const selectTopic = async (topicProp) => {
-    const stringWithImages = await KeyToImage(topicProp.string)
-    setSelectedTopicState({
-      ogTopic: topicProp.topic,
-      topic: topicProp.topic,
-      string: stringWithImages,
-      quill: stringWithImages,
-      editing: false
-    })
-  }
 
   useEffect(() => {
     getUserData()
   }, [])
 
-  return (
+  const setSelectedTopic = (stateProp) => {
+    setSelectedTopicState({...selectedTopicState, ...stateProp})
+  }
+
+  // const users = props?.userState
+
+  return ( 
     <>
-      <NavbarComp />
-
-      <div className="mx-5">
-
-        <div className="flex flex-row my-5 bg-gray-100">
-          <div className="flex flex-col mx-5 my-5">
-            <h3 className='mx-5 my-5'>{userState.Username}</h3>
-            {userState.TAVS}
-            <EditTAVScomp
-              userState={userState}
-              tavsState={tavsState}
-              setTavsState={setTavsState}
-              getUserData={getUserData} />
-          </div>
-          <PublicString
-            publicStringState={publicStringState}
-            setPublicStringState={setPublicStringState} />
-        </div>
-
-        <div className="bg-gray-100" >
-          {userState.topics.map((topicObj) =>
-            <div key={topicObj.topic} >
-              <button onClick={() => selectTopic(topicObj)}>
-                <a>{topicObj.topic}</a>
-              </button>
-            </div>
-          )}
-          <button onClick={createNewTopic}>create new topic</button>
-        </div>
-
-        <div className="my-5 bg-gray-100">
-          <TopicComponent
-            getUserData={getUserData}
-            selectedTopicState={selectedTopicState}
-            setSelectedTopicState={setSelectedTopicState}
-            userState={userState}
-            setUserState={setUserState}
-            setErrorState={setErrorState} />
-          {errorState}
-        </div>
-        
-      </div>
+      {selectedTopicState.editing 
+      ? <BlogEdit 
+          setSelectedTopicState={setSelectedTopic}
+          selectedTopicState={selectedTopicState} 
+          setUserState={setUserStateFn}
+          setPublicStringState={setPublicStateFn}
+          userState={userState}
+          publicStringState={publicStringState}
+          getUserData={getUserData}
+          /> 
+      : <EditComponent 
+          setSelectedTopicState={setSelectedTopic}
+          selectedTopicState={selectedTopicState} 
+          setUserState={setUserStateFn}
+          setPublicStringState={setPublicStateFn}
+          userState={userState}
+          publicStringState={publicStringState}
+          getUserData={getUserData}
+          />}
     </>
   )
 }

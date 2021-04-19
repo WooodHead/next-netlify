@@ -10,3 +10,5 @@ I just need to getServerSideProps()
 4/15-16 was sick
 4/17
 noPurge layer in globals.css didnt work.
+4/18
+Quill is defined with max-w-4xl, while the blog post is maxWidth: '100ch'

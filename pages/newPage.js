@@ -40,7 +40,7 @@ export default function NewPage() {
     < EditComponent userState={userState} />
     {/* <NavbarComp />
     <div className="mx-5">
-        <div className="flex flex-row bg-gray-100 my-5">
+        <div className="flex flex-row my-5 bg-gray-100">
           <div className="flex flex-col mx-5 my-5">
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
           </div>
