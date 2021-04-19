@@ -14,7 +14,6 @@ const ReactQuill = dynamic(
 
 export default function BlogEdit(props) {
 
-  console.log('BlogEdit props: ', props)
   const quillRef = useRef()
   const setUserState = (e) => props.setUserState(e)
   const getUserData = () => props.getUserData()
@@ -74,7 +73,7 @@ export default function BlogEdit(props) {
       }
     }
   }
-  console.log('ogTopic,', selectedTopicState.ogTopic)
+
   const saveTopicString = async () => {
 
     const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
@@ -99,8 +98,7 @@ export default function BlogEdit(props) {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
           deleteTopic: false,
-          ogTopic: selectedTopicState.ogTopic,
-          topic: noSpacesTopic,
+          topicId: selectedTopicState.topicId,
           string: keyifiedString,
           accessToken: userSession.accessToken.jwtToken,
           topicObj: { 
@@ -115,30 +113,38 @@ export default function BlogEdit(props) {
         setSelectedTopicState({...selectedTopicState, saved: "saved"})
         getUserData()
       } else {
-          setErrorState('topic cannot be left blank or something else happened...')
-
+          setErrorState('save error... yikes')
       }
     } catch (err) {
       console.log(err)
     }
   }
   
-  const deleteTopic = async (topicProp) => {
+  const deleteTopic = async () => {
     const userSession = await Auth.currentSession()
     const deleteTopicParams = {
       headers: { Authorization: userSession.idToken.jwtToken },
       body: {
-        new: true,
         deleteTopic: true,
-        topic: topicProp,
-        ogTopic: topicProp,
-        string: null
+        accessToken: userSession.accessToken.jwtToken,
+        string: null,
+        topicId: selectedTopicState.topicId,
+        topicObj: null
       }
     }
     const deleteTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams)
-    deleteTopicRes.status === 200 
-      ? setUserState({...userState, topics: userState.topics.filter((topicObj) => topicObj.topic !== topicProp)})
-      : console.log('delete failed')
+    setSelectedTopicState({
+      topic: '',
+      topicId: '',
+      string: '',
+      quill: '',
+      editing: false,
+      saved: false
+    })
+    /* following seems to be redudant because of getUser in edit, to change */
+    // deleteTopicRes.body === "deleted" 
+    //   ? setUserState({ topics: props.userState.topics.filter((topicObj) => topicObj.topicId !== selectedTopicState.topicId)})
+    //   : console.log('delete failed')
   }
 
   const [modules] = useState( {
@@ -181,7 +187,7 @@ export default function BlogEdit(props) {
           </div>}
           </div>
             <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
-            <button className="mr-10" onClick={() => deleteTopic(selectedTopicState.topic)}>delete</button>
+            <button className="mr-10" onClick={() => deleteTopic()}>delete</button>
           </div>
 
 

@@ -8,111 +8,27 @@ import PublicString from './publicString'
 import TopicComponent from './topic'
 import EditTAVScomp from './tavs'
 import KeyToImage from '../custom/keyToImage'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function Edit(props) {
 
-  // const [userState, setUserState] = useState({
-  //   Username: 'loading...',
-  //   ppm: 0,
-  //   ratingAv: 'loading...',
-  //   publicString: 'loading...',
-  //   topics: [],
-  //   TAVS: []
-  // })
-  // const [publicStringState, setPublicStringState] = useState({
-  //   string: '',
-  //   quill: '',
-  //   editing: false,
-  //   saved: false
-  // })
   const publicStringState = props.publicStringState
   const setPublicStringState = (e) => { props.setPublicStringState(e) }
   const userState = props.userState
   const setUserState = (e) => { props.setUserState(e) }
   const getUserData = (e) => { props.getUserData(e)}
-  // const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
+  const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
   const selectedTopicState = props.selectedTopicState
   const setTavsState = (e) => { props.setTavsStateFn(e) }
   const tavsState = props.tavsState
 
-  // const [selectedTopicState, setSelectedTopicState] = useState({
-  //   topic: '',
-  //   ogTopic: '',
-  //   string: '',
-  //   quill: '',
-  //   // editing: false,
-  //   saved: false
-  // })
-  // const [tavsState, setTavsState] = useState({
-  //   text: true,
-  //   audio: true,
-  //   video: false,
-  //   screen: false,
-  //   editing: false
-  // })
   const [errorState, setErrorState] = useState('')
-
-  // const getUserData = async () => {
-  //   const userSession = await Auth.currentAuthenticatedUser()
-  //   const getUserInit = {
-  //     headers: {
-  //       Authorization: userSession.attributes.preferred_username
-  //     }
-  //   }
-  //   try {
-  //     const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-  //     const topicsArray = []
-  //     for (const topicKey in getUserRes.Item.topics.M) {
-  //       const topicWithSpaces = topicKey.replaceAll('-', ' ')
-  //       topicsArray.push({
-  //         topic: topicWithSpaces,
-  //         string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].S),
-  //         draft: getUserRes.Item.topics.M[topicKey].S
-  //       })
-  //     }
-  //     const TAVS = []
-  //     const deviceInputRes = getUserRes.Item.deviceInput.M
-  //     deviceInputRes.text.BOOL && TAVS.push("📝")
-  //     deviceInputRes.audio.BOOL && TAVS.push("📞")
-  //     deviceInputRes.video.BOOL && TAVS.push("📹")
-  //     deviceInputRes.screen.BOOL && TAVS.push("💻")
-  //     const user = {
-  //       Username: getUserRes.Item.Username.S,
-  //       active: getUserRes.Item.active.BOOL,
-  //       busy: getUserRes.Item.busy.BOOL,
-  //       TAVS: TAVS,
-  //       ppm: getUserRes.Item.ppm.N,
-  //       ratingAv: getUserRes.Item.ratingAv?.S || null,
-  //       publicString: getUserRes.Item.publicString?.S || null,
-  //       receiver: getUserRes.Item.receiver.BOOL,
-  //       topics: topicsArray,
-  //     }
-  //     setUserState(user)
-  //     setTavsState({
-  //       ...tavsState, 
-  //       text: deviceInputRes.text.BOOL,
-  //       audio: deviceInputRes.audio.BOOL,
-  //       video: deviceInputRes.video.BOOL,
-  //       screen: deviceInputRes.screen.BOOL
-  //     })
-  //     const sanitizedString = DOMPurify.sanitize(getUserRes.Item.publicString?.S)
-  //     const pubString = {
-  //       ...publicStringState, 
-  //       string: sanitizedString, 
-  //       quill: sanitizedString === '' ? 'if you want to describe your page, write here, 160 character limit' : sanitizedString,
-  //       editing: sanitizedString === '' ? true : false
-  //     }
-  //     setPublicStringState(pubString)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
   
   const createNewTopic = () => {
     
-    props.setSelectedTopicState({
+    setSelectedTopicState({
+      topicId: uuidv4(),
       topic: '',
-      ogTopic: '',
       string: '',
       quill: '',
       editing: true
@@ -120,28 +36,20 @@ export default function Edit(props) {
   }
 
   const selectTopic = async (topicProp) => {
-    console.log('selectTopicFN Prop', topicProp)
     try {
       const stringWithImages = await KeyToImage(topicProp.string)
-      console.log('not keyingtoimage')
       props.setSelectedTopicState({
-        ogTopic: topicProp.topic,
         topic: topicProp.topic,
         string: stringWithImages,
         quill: stringWithImages,
-        editing: false
+        editing: false,
+        topicId: topicProp.topicId
       })
     } catch (err) {
       console.log(err)
     }
-    
-
   }
 
-  // useEffect(() => {
-  //   getUserData()
-  // }, [])
-  console.log('editComp userState.topics: ', userState.topics)
   return (
     <>
       <NavbarComp />
@@ -179,7 +87,7 @@ export default function Edit(props) {
             {...props}
             getUserData={getUserData}
             selectedTopicState={selectedTopicState}
-            setSelectedTopicState={props.setSelectedTopicState}
+            setSelectedTopicState={setSelectedTopicState}
             userState={userState}
             setUserState={setUserState}
             setErrorState={setErrorState} />
