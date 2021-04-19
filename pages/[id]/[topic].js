@@ -76,7 +76,6 @@ export async function getStaticPaths() {
   const paths = []
   getAllUsersRes.body.Items.map(user => {
     if (user.topics) {
-      // user.topics.M.forEach((topicObj) => console.log('$$$$$', topicObj))
       for (const [uuidKey, topicObj] of Object.entries(user.topics.M)) {
         if (uuidKey) {
           paths.push({ params: { id: user.Username.S, topic: topicObj.M.title.S } })
@@ -120,15 +119,11 @@ export async function getStaticProps({ params }) {
     ppm: userRes.ppm.N,
     ratingAv: userRes.ratingAv?.S || null,
     publicString: userRes.publicString?.S || null,
-    /* should i remove topics, or should I sanitize it with a object.values etc */
     topics: topicsArray || null,
     receiver: userRes.receiver.BOOL
   }
-  console.log(user.topics)
 
-  // for (const key in user.topics) {
     user.topics.forEach((topicObj) => {
-    console.log(topicObj)
     const title = topicObj.title.S
     const string = topicObj.string.S
     const draft = topicObj.draft.BOOL

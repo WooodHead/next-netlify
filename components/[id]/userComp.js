@@ -26,7 +26,7 @@ export default function UserComp(props) {
       "width=500,height=700"
     )
   }
-  console.log(user.topics)
+
   return (
       <div className="mx-5">
         <div className="flex flex-row my-5 bg-gray-100">

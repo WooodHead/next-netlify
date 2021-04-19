@@ -16,10 +16,7 @@ export default async function KeyToImage(stringProp) {
     const idEnd = stringProp.indexOf('}', keyStart)
     const identityId = stringProp.slice(idStart + 5, idEnd)
     /* this relies on the data being stored in dynamo to prevent unlimited calls */
-    if (keyEnd || idStart || idEnd < 0) {
-      return '<p>keyToStringFn Error</p>'
-    }
-
+    console.log('k2i')
     const getS3 = await Storage.get(slicedKey, {
       level: 'protected',
       identityId: identityId
