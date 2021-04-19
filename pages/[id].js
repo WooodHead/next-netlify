@@ -42,13 +42,15 @@ export async function getStaticProps({ params }) {
   const specificUserInit = { headers: { Authorization: params.id } }
   const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", specificUserInit)
   const userRes = getUserRes.Item
-  // getUserRes.body.Items.forEach((userRes) => {
   const TAVS = []
   userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
   userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
   userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
   userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
-  // if (userRes.Username.S === params.id) {
+  const topicsArray = []
+  for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
+    topicsArray.push({...topicObj.M, topicId: key})
+  }
   const user = {
     Username: userRes.Username.S,
     active: userRes.active.BOOL,
@@ -59,10 +61,9 @@ export async function getStaticProps({ params }) {
     ratingAv: userRes.ratingAv?.S || null,
     publicString: userRes.publicString?.S || null,
     topicString: userRes.topicString?.S || null,
-    topics: userRes.topics?.M || null,
+    topics: topicsArray || null,
     receiver: userRes.receiver.BOOL
   }
-  // }    
-  // })
+
   return { props: { user: user }, revalidate: 1 }
 }

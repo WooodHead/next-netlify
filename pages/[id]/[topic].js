@@ -18,9 +18,6 @@ export default function Topic({ user, topic }) {
     )
   }
 
-  console.log('userProp receiver: ', user.receiver)
-
-
   const [state, setState] = useState({
     text: topic.string
   })
@@ -79,9 +76,15 @@ export async function getStaticPaths() {
   const paths = []
   getAllUsersRes.body.Items.map(user => {
     if (user.topics) {
-      Object.keys(user.topics.M).map((topic) => {
-        paths.push({ params: { id: user.Username.S, topic: topic } })
-      })
+      // user.topics.M.forEach((topicObj) => console.log('$$$$$', topicObj))
+      for (const [uuidKey, topicObj] of Object.entries(user.topics.M)) {
+        if (uuidKey) {
+          paths.push({ params: { id: user.Username.S, topic: topicObj.M.title.S } })
+        }
+      }
+      // Object.keys(user.topics.M).map((topic) => {
+      //   paths.push({ params: { id: user.Username.S, topic: topic } })
+      // })
     } else {
       paths.push({ params: { id: user.Username.S, topic: "" } })
     }
@@ -104,7 +107,10 @@ export async function getStaticProps({ params }) {
   userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
   userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
   userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
-
+  const topicsArray = []
+  for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
+    topicsArray.push({...topicObj.M, topicId: key})
+  }
   const user = {
     Username: userRes.Username.S,
     active: userRes.active.BOOL,
@@ -114,17 +120,25 @@ export async function getStaticProps({ params }) {
     ppm: userRes.ppm.N,
     ratingAv: userRes.ratingAv?.S || null,
     publicString: userRes.publicString?.S || null,
-    topics: userRes.topics?.M || null,
+    /* should i remove topics, or should I sanitize it with a object.values etc */
+    topics: topicsArray || null,
     receiver: userRes.receiver.BOOL
   }
+  console.log(user.topics)
 
-  for (const key in user.topics) {
-    if (key === params.topic) {
+  // for (const key in user.topics) {
+    user.topics.forEach((topicObj) => {
+    console.log(topicObj)
+    const title = topicObj.title.S
+    const string = topicObj.string.S
+    const draft = topicObj.draft.BOOL
+    const topicId = topicObj.topicId
+    if (title === params.topic) {
 
-      const keyWithSpaces = key.replace(/-/g, ' ')
-      const h2Index = user.topics[key].S.indexOf('<h2>')
-      const h2IndexEnd = user.topics[key].S.indexOf('</h2>', h2Index)
-      const h2Description = user.topics[key].S.slice(h2Index + 4, h2IndexEnd)
+      const titleWithSpaces = title.replace(/-/g, ' ')
+      const h2Index = string.indexOf('<h2>')
+      const h2IndexEnd = string.indexOf('</h2>', h2Index)
+      const h2Description = string.slice(h2Index + 4, h2IndexEnd)
       const description = (h2Index > -1) ? h2Description : 'no description provided'
 
       // const keysNowStrings = await KeyToImage(user.topics[key].S)
@@ -133,16 +147,17 @@ export async function getStaticProps({ params }) {
       // const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
       // const imageMeta = (firstImageBeginning > - 1) ? firstImage : 'no image provided'
       topic = {
-        topic: key,
-        title: keyWithSpaces,
-        string: user.topics[key].S,
+        topicId: topicId,
+        title: titleWithSpaces,
+        string: string,
         // stringNoKeys: keysNowStrings,
         description: description,
+        draft: draft
         // firstImage: imageMeta
       }
 
     }
-  }
+  })
 
   return {
     props: { user: user, topic: topic },

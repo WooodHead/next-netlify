@@ -26,7 +26,7 @@ export default function UserComp(props) {
       "width=500,height=700"
     )
   }
-
+  console.log(user.topics)
   return (
       <div className="mx-5">
         <div className="flex flex-row my-5 bg-gray-100">
@@ -43,12 +43,12 @@ export default function UserComp(props) {
         </div>
 
         <div className="bg-gray-100" >
-          {Object.keys(user.topics).map((topic) => {
+          {(user.topics).map((topicObj) => {
             return (
-              <div key={topic} className="my-3">
-              <Link href={"/" + user.Username + "/" + topic}>
+              <div key={topicObj.topicId} className="my-3">
+              <Link href={"/" + user.Username + "/" + topicObj.title.S}>
                 <a className="px-2 py-1 mx-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
-                  {topic.replace(/-/g, ' ')}
+                  {topicObj.title.S.replace(/-/g, ' ')}
                 </a>
                 </Link>
             </div>
