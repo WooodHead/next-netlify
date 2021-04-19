@@ -36,9 +36,18 @@ export default function EditParent(props) {
     editing: false,
     saved: false
   })
+  const [tavsState, setTavsState] = useState({
+    text: true,
+    audio: true,
+    video: false,
+    screen: false,
+    editing: false
+  })
+  const [errorState, setErrorState] = useState('')
 
   const setUserStateFn = (e) => { setUserState({ ...userState, e }) }
   const setPublicStateFn = (e) => { setPublicStringState({ ...publicStringState, e }) }
+  const setTavsStateFn = (e) => { setTavsState({ ...tavsState, e })}
 
   const getUserData = async () => {
     const userSession = await Auth.currentAuthenticatedUser()
@@ -51,14 +60,14 @@ export default function EditParent(props) {
       const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []
       console.log("getUserRes :", getUserRes)
+      
       for (const topicKey in getUserRes.Item.topics.M) {
-        const title = getUserRes.Item.topics.M[topicKey].title.S
+        const title = getUserRes.Item.topics.M[topicKey].M.title.S
         const titleWithSpaces = title.replaceAll('-', ' ')
-
         topicsArray.push({
           topic: titleWithSpaces,
-          string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].string.S),
-          draft: getUserRes.Item.topics.M[topicKey].BOOL
+          string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].M.string.S),
+          draft: getUserRes.Item.topics.M[topicKey].M.draft.BOOL
         })
       }
       const TAVS = []
@@ -104,8 +113,10 @@ export default function EditParent(props) {
   }, [])
 
   const setSelectedTopic = (stateProp) => {
+    console.log('stateProp: ', stateProp)
     setSelectedTopicState({...selectedTopicState, ...stateProp})
   }
+
 
   // const users = props?.userState
 
@@ -113,13 +124,15 @@ export default function EditParent(props) {
     <>
       {selectedTopicState.editing 
       ? <BlogEdit 
-          setSelectedTopicState={setSelectedTopic}
+          setSelectedTopicState={(e) => setSelectedTopic(e)}
           selectedTopicState={selectedTopicState} 
           setUserState={setUserStateFn}
           setPublicStringState={setPublicStateFn}
           userState={userState}
           publicStringState={publicStringState}
           getUserData={getUserData}
+          setTavsState={setTavsStateFn}
+          tavsState={tavsState}
           /> 
       : <EditComponent 
           setSelectedTopicState={setSelectedTopic}
@@ -129,6 +142,8 @@ export default function EditParent(props) {
           userState={userState}
           publicStringState={publicStringState}
           getUserData={getUserData}
+          setTavsState={setTavsStateFn}
+          tavsState={tavsState}
           />}
     </>
   )

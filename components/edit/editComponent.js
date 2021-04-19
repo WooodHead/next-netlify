@@ -30,8 +30,10 @@ export default function Edit(props) {
   const userState = props.userState
   const setUserState = (e) => { props.setUserState(e) }
   const getUserData = (e) => { props.getUserData(e)}
-  const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
+  // const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
   const selectedTopicState = props.selectedTopicState
+  const setTavsState = (e) => { props.setTavsStateFn(e) }
+  const tavsState = props.tavsState
 
   // const [selectedTopicState, setSelectedTopicState] = useState({
   //   topic: '',
@@ -41,13 +43,13 @@ export default function Edit(props) {
   //   // editing: false,
   //   saved: false
   // })
-  const [tavsState, setTavsState] = useState({
-    text: true,
-    audio: true,
-    video: false,
-    screen: false,
-    editing: false
-  })
+  // const [tavsState, setTavsState] = useState({
+  //   text: true,
+  //   audio: true,
+  //   video: false,
+  //   screen: false,
+  //   editing: false
+  // })
   const [errorState, setErrorState] = useState('')
 
   // const getUserData = async () => {
@@ -105,8 +107,10 @@ export default function Edit(props) {
   //     console.log(err)
   //   }
   // }
-  const createNewTopic = async () => {
-    setSelectedTopicState({
+  
+  const createNewTopic = () => {
+    
+    props.setSelectedTopicState({
       topic: '',
       ogTopic: '',
       string: '',
@@ -116,20 +120,28 @@ export default function Edit(props) {
   }
 
   const selectTopic = async (topicProp) => {
-    const stringWithImages = await KeyToImage(topicProp.string)
-    setSelectedTopicState({
-      ogTopic: topicProp.topic,
-      topic: topicProp.topic,
-      string: stringWithImages,
-      quill: stringWithImages,
-      editing: false
-    })
+    console.log('selectTopicFN Prop', topicProp)
+    try {
+      const stringWithImages = await KeyToImage(topicProp.string)
+      console.log('not keyingtoimage')
+      props.setSelectedTopicState({
+        ogTopic: topicProp.topic,
+        topic: topicProp.topic,
+        string: stringWithImages,
+        quill: stringWithImages,
+        editing: false
+      })
+    } catch (err) {
+      console.log(err)
+    }
+    
+
   }
 
   // useEffect(() => {
   //   getUserData()
   // }, [])
-
+  console.log('editComp userState.topics: ', userState.topics)
   return (
     <>
       <NavbarComp />
@@ -167,7 +179,7 @@ export default function Edit(props) {
             {...props}
             getUserData={getUserData}
             selectedTopicState={selectedTopicState}
-            setSelectedTopicState={setSelectedTopicState}
+            setSelectedTopicState={props.setSelectedTopicState}
             userState={userState}
             setUserState={setUserState}
             setErrorState={setErrorState} />

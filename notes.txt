@@ -12,3 +12,4 @@ I just need to getServerSideProps()
 noPurge layer in globals.css didnt work.
 4/18
 Quill is defined with max-w-4xl, while the blog post is maxWidth: '100ch'
+My nested keyToImage function repeated forever; the console in chrome devtools appeared to not work until chrome restart

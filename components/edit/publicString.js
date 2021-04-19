@@ -46,7 +46,6 @@ export default function PublicString(props) {
   const modules = {
     toolbar:  []
   }
-  console.log(publicStringState.quill)
   return (
     <div>
       {publicStringState.editing
