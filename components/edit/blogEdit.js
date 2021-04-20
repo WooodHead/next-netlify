@@ -8,7 +8,8 @@ import CustomSpinner from "../custom/spinner"
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
-    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} /> },
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />
+  },
   { ssr: false }
 )
 
@@ -20,7 +21,7 @@ export default function BlogEdit(props) {
   const setErrorState = (e) => props.setErrorState(e)
   const setSelectedTopicState = (e) => props.setSelectedTopicState(e)
   const topicTypingFn = (e) => {
-    setSelectedTopicState({ quill: e, saved: false})
+    setSelectedTopicState({ quill: e, saved: false })
   }
   const selectedTopicState = props.selectedTopicState
 
@@ -80,7 +81,7 @@ export default function BlogEdit(props) {
 
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')
-    if (h1index > -1 ) {
+    if (h1index > -1) {
       const h1end = selectedTopicState.quill.indexOf('</h1>', h1index)
       const slicedTitle = selectedTopicState.quill.slice(h1index + 4, h1end)
       firstHeading1 = slicedTitle
@@ -90,7 +91,7 @@ export default function BlogEdit(props) {
     }
     const noSpacesTopic = firstHeading1.replaceAll(' ', '-')
 
-    setSelectedTopicState({ ...selectedTopicState, saved: 'saving'})
+    setSelectedTopicState({ ...selectedTopicState, saved: 'saving' })
 
     try {
       const userSession = await Auth.currentSession()
@@ -101,25 +102,25 @@ export default function BlogEdit(props) {
           topicId: selectedTopicState.topicId,
           string: keyifiedString,
           accessToken: userSession.accessToken.jwtToken,
-          topicObj: { 
-            title: { S: noSpacesTopic }, 
-            string: { S: keyifiedString }, 
-            draft: { BOOL: false } 
+          topicObj: {
+            title: { S: noSpacesTopic },
+            string: { S: keyifiedString },
+            draft: { BOOL: false }
           }
         }
       }
       const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
       if (savedTopicRes.string) {
-        setSelectedTopicState({...selectedTopicState, saved: "saved"})
+        setSelectedTopicState({ ...selectedTopicState, saved: "saved" })
         getUserData()
       } else {
-          setErrorState('save error... yikes')
+        setErrorState('save error... yikes')
       }
     } catch (err) {
       console.log(err)
     }
   }
-  
+
   const deleteTopic = async () => {
     const userSession = await Auth.currentSession()
     const deleteTopicParams = {
@@ -147,14 +148,14 @@ export default function BlogEdit(props) {
     //   : console.log('delete failed')
   }
 
-  const [modules] = useState( {
+  const [modules] = useState({
     // syntax: true,
-    toolbar:  {
+    toolbar: {
       container: [
         [{ 'header': [1, 2, false] }],
-        ['bold', 'italic', 'underline','strike', 'blockquote', 'code-block'],
-        [{'list': 'bullet'}],
-        [ 'image' ]
+        ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
+        [{ 'list': 'bullet' }],
+        ['image']
       ],
       handlers: {
         image: () => imageHandler(),
@@ -165,33 +166,34 @@ export default function BlogEdit(props) {
   return (
     <>
       <Navbar />
-      <div>
-          {/* <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} /> */}
-          <div className="flex justify-center prose">
-          <div className='h-full overflow-hidden min-height-1'>
-           <ReactQuill 
+      <div className="">
+        {/* <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} /> */}
+        <div className="h-full bg-gray-300">
+          <div className='h-80 flex flex-row justify-center bg-gray-100'>
+            {/* <div className=''>1</div> */}
+            <ReactQuill
+              className="flex-1 overflow-auto"
               forwardedRef={quillRef}
-              modules={modules} 
-              value={selectedTopicState.quill} 
+              modules={modules}
+              value={selectedTopicState.quill}
               onChange={topicTypingFn} />
-            </div> 
-            </div>
-          <div className="flex flex-row">
-            <div className="flex flex-row mr-10" >
+              {/* <div className=''>2</div> */}
+          </div>
+        </div>
+        <div className="flex flex-row">
+          <div className="flex flex-row mr-10" >
             <button onClick={() => saveTopicString()}>save</button>
             {selectedTopicState.saved === "saving" && <CustomSpinner />}
-          {selectedTopicState.saved === "saved" && <div className="">
-            <div>
-              saved
+            {selectedTopicState.saved === "saved" && <div className="">
+              <div>
+                saved
             </div>
-          </div>}
+            </div>}
           </div>
-            <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
-            <button className="mr-10" onClick={() => deleteTopic()}>delete</button>
-          </div>
-
-
+          <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
+          <button className="mr-10" onClick={() => deleteTopic()}>delete</button>
         </div>
+      </div>
     </>
   )
 }

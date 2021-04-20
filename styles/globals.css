@@ -11,7 +11,9 @@
   }
 }
 
-.ql-editor {
-  @apply w-full h-full overflow-auto resize;
-}
-
+/* .ql-editor {
+  @apply w-full h-full overflow-auto;
+} */
+/* .ql-container {
+  @apply overflow-auto resize;
+} */
