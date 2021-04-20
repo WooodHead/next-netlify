@@ -6,6 +6,7 @@ import NavbarComp from '../components/navbar/navbar'
 
 const Users = ({ allUsers }) => {
   const router = useRouter()
+  
 
   const userClickFn = (idProp) => {
     router.push(`/${idProp}`)
@@ -34,7 +35,7 @@ const Users = ({ allUsers }) => {
                     <div className="flex flex-col flex-wrap max-h-20">
                       {user.topics.map((topicObj) => 
                       <div className="mx-5" key={topicObj.topicId} >
-                        {topicObj.title.S}
+                        {topicObj.title.S.replace(/-/g, ' ')}
                       </div>
                     )
                   }</div>
