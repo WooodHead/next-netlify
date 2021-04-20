@@ -15,7 +15,7 @@ import state from 'opentok-accelerator-core/dist/state'
 export default function EditParent(props) {
 
   const [selectedTopicState, setSelectedTopicState] = useState({
-    topic: '',
+    title: '',
     topicId: '',
     string: '',
     quill: '',
@@ -65,7 +65,7 @@ export default function EditParent(props) {
         const titleWithSpaces = title.replaceAll('-', ' ')
         topicsArray.push({
           topicId: topicKey,
-          topic: titleWithSpaces,
+          title: titleWithSpaces,
           string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].M.string.S),
           draft: getUserRes.Item.topics.M[topicKey].M.draft.BOOL
         })

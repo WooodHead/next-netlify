@@ -32,9 +32,9 @@ const Users = ({ allUsers }) => {
                     {user.TAVS}
                     {/* this aint workin? */}
                     <div className="flex flex-col flex-wrap max-h-20">
-                      {Object.keys(user.topics).map((topic) => 
-                      <div className="mx-5" key={user.Username + topic} >
-                        {topic}
+                      {user.topics.map((topicObj) => 
+                      <div className="mx-5" key={topicObj.topicId} >
+                        {topicObj.title.S}
                       </div>
                     )
                   }</div>
@@ -61,6 +61,12 @@ export async function getStaticProps() {
   const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
   getAllUsersRes.body.Items.forEach((userRes) => {
     const TAVS = []
+    const topicsArray = []
+    for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
+      if (!topicObj.M.draft.BOOL) {
+        topicsArray.push({...topicObj.M, topicId: key})
+      }
+    }
     userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
     userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
     userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
@@ -75,7 +81,7 @@ export async function getStaticProps() {
       ppm: userRes.ppm.N,
       ratingAv: userRes.ratingAv?.S || null,
       publicString: userRes.publicString?.S || null,
-      topics: userRes.topics.M
+      topics: topicsArray
     })
   })
   return { props: { allUsers: newAllUsers }, revalidate: 1 }

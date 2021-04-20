@@ -135,7 +135,7 @@ export default function BlogEdit(props) {
     }
     const deleteTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams)
     setSelectedTopicState({
-      topic: '',
+      title: '',
       topicId: '',
       string: '',
       quill: '',

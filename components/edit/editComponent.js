@@ -28,7 +28,7 @@ export default function Edit(props) {
     
     setSelectedTopicState({
       topicId: uuidv4(),
-      topic: '',
+      title: '',
       string: '',
       quill: '',
       editing: true
@@ -41,7 +41,7 @@ export default function Edit(props) {
     try {
       const stringWithImages = await KeyToImage(topicProp.string)
       props.setSelectedTopicState({
-        topic: topicProp.topic,
+        title: topicProp.title,
         string: stringWithImages,
         quill: stringWithImages,
         editing: false,
@@ -51,7 +51,7 @@ export default function Edit(props) {
       console.log(err)
     }
   }
-  console.log(userState.topics)
+
   return (
     <>
       <NavbarComp />
@@ -75,9 +75,9 @@ export default function Edit(props) {
 
         <div className="bg-gray-100" >
           {userState.topics.map((topicObj) =>
-            <div key={topicObj.topic} >
+            <div key={topicObj.title} >
               <button className={topicObj.draft ? "bg-gray-300" : ""} onClick={() => selectTopic(topicObj)}>
-                <a>{topicObj.topic}</a>
+                <a>{topicObj.title}</a>
               </button>
             </div>
           )}
