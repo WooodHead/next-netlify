@@ -44,10 +44,8 @@ const Users = ({ allUsers }) => {
                   <div dangerouslySetInnerHTML={{ __html: user.publicString }}>
                   </div>
                   </a>
-                  
                 </Link>
               </div>
-                
             </div>
           )
         })}

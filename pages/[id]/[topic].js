@@ -51,18 +51,16 @@ export default function Topic({ user, topic }) {
       <div className="">
         <NavbarComp />
         <UserComp user={user} />
-        <div className="">
-          {/* <div className="flex justify-center"> */}
+        <div className="mx-5">
             <div 
               className="flex justify-center my-5 bg-gray-100" 
               >
                 <div 
-                className="prose-sm prose sm:prose"
+                className="m-3 prose-sm prose sm:prose overflow-auto"
                 dangerouslySetInnerHTML={{ __html: state.text }} >
 
                 </div>
               </div>
-          {/* </div> */}
         </div>
       </div>
 

@@ -19,9 +19,9 @@ export default function PublicString(props) {
       const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
       const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const userResString = getAllUserRes.Item.publicString.S
-      setPublicStringState({ ...publicStringState, string: userResString, editing: false, saved: false })
+      setPublicStringState({ string: userResString, editing: false, saved: false })
     } catch (err) {
-      setPublicStringState({ ...publicStringState, editing: false, saved: false })
+      setPublicStringState({ editing: false, saved: false })
       console.log(err)
     }
   }
@@ -37,7 +37,7 @@ export default function PublicString(props) {
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
 
-      setPublicStringState({ ...publicStringState, string: savedString.body, saved: true })
+      setPublicStringState({ string: savedString.body, saved: true })
     } catch (err) {
       console.log(err)
     }
@@ -72,7 +72,7 @@ export default function PublicString(props) {
             {/* <div className="mx-3 my-3" dangerouslySetInnerHTML={{ __html: publicStringState.string }} ></div> */}
           </div>
           <div>
-            <button onClick={() => setPublicStringState({ ...publicStringState, editing: true })} >
+            <button onClick={() => setPublicStringState({ editing: true })} >
               edit
             </button>
           </div>

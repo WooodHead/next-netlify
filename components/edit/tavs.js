@@ -45,7 +45,7 @@ export default function TAVS(props) {
       {CCprops.TAVS}
     </div>
   );
-
+    console.log(tavsState)
   return (
     <div>
       <button onClick={() => setTavsState({...tavsState, editing: !tavsState.editing})}>settings</button>

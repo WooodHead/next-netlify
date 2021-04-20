@@ -45,8 +45,8 @@ export default function EditParent(props) {
   })
 
   const setUserStateFn = (e) => { setUserState({ ...userState, e }) }
-  const setPublicStateFn = (e) => { setPublicStringState({ ...publicStringState, e }) }
-  const setTavsStateFn = (e) => { setTavsState({ ...tavsState, e })}
+  const setPublicStateFn = (e) => { setPublicStringState({ ...publicStringState, ...e }) }
+  const setTavsStateFn = (e) => { setTavsState({ ...tavsState, ...e })}
   const setSelectedTopic = (e) => { setSelectedTopicState({...selectedTopicState, ...e}) }
 
   const getUserData = async () => {

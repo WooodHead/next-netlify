@@ -18,3 +18,4 @@ In prod I tried logging in twice and failed to reach Cognito, refreshed, tried a
 keyToImage function was repeating forever when data wasn't right, I added a failsafe but it was too strict, currently have a weak one
 4/20
 'topic' naming in edit existed while it was called 'title' in [id]&[topic], changed to title
+focus outline doesn't seem to work on navbar, is because errthangs getting rerendered?
