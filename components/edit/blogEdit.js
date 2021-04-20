@@ -164,36 +164,30 @@ export default function BlogEdit(props) {
   })
 
   return (
-    <>
-      <Navbar />
-      <div className="">
-        {/* <input type="text" onChange={(e) => setSelectedTopicState({ ...selectedTopicState, topic: e.target.value })} value={selectedTopicState.topic} /> */}
-        <div className="h-full bg-gray-300">
-          <div className='h-80 flex flex-row justify-center bg-gray-100'>
-            {/* <div className=''>1</div> */}
+    <div className="flex flex-col flex-auto h-screen">
+      <Navbar className="h-8"/>
+      <div className="h-full">
+        {/* <div className=""> */}
+          {/* <div className="flex-1"> */}
+          <div className='flex h-5/6 justify-center'>
             <ReactQuill
-              className="flex-1 overflow-auto"
+              className="m-5 h-5/6 flex-1 max-w-5xl max-w-80"
               forwardedRef={quillRef}
               modules={modules}
               value={selectedTopicState.quill}
               onChange={topicTypingFn} />
-              {/* <div className=''>2</div> */}
           </div>
-        </div>
-        <div className="flex flex-row">
-          <div className="flex flex-row mr-10" >
-            <button onClick={() => saveTopicString()}>save</button>
+          {/* </div> */}
+        {/* </div> */}
+
+        <div className="justify-center flex mx-10 flex-row h-8">
+            <button className="mr-10" onClick={() => saveTopicString()}>save</button>
             {selectedTopicState.saved === "saving" && <CustomSpinner />}
-            {selectedTopicState.saved === "saved" && <div className="">
-              <div>
-                saved
-            </div>
-            </div>}
-          </div>
-          <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
-          <button className="mr-10" onClick={() => deleteTopic()}>delete</button>
+            {selectedTopicState.saved === "saved" && <div className="">saved</div>}
+            <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
+            <button className="mr-10" onClick={() => deleteTopic()}>delete</button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
