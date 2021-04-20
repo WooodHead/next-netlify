@@ -49,7 +49,7 @@ export async function getStaticProps({ params }) {
   userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
   const topicsArray = []
   for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
-    topicsArray.push({...topicObj.M, topicId: key})
+    !topicObj.M.draft.BOOL && topicsArray.push({...topicObj.M, topicId: key})
   }
   const user = {
     Username: userRes.Username.S,

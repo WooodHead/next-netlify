@@ -5,7 +5,7 @@ import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../navbar/navbar'
 import DOMPurify from 'dompurify';
 import PublicString from './publicString'
-import TopicComponent from './topic'
+import TopicComponent from './topicComponent'
 import EditTAVScomp from './tavs'
 import KeyToImage from '../custom/keyToImage'
 import { v4 as uuidv4 } from 'uuid'
@@ -35,6 +35,8 @@ export default function Edit(props) {
     })
   }
 
+
+
   const selectTopic = async (topicProp) => {
     try {
       const stringWithImages = await KeyToImage(topicProp.string)
@@ -49,7 +51,7 @@ export default function Edit(props) {
       console.log(err)
     }
   }
-
+  console.log(userState.topics)
   return (
     <>
       <NavbarComp />
@@ -74,7 +76,7 @@ export default function Edit(props) {
         <div className="bg-gray-100" >
           {userState.topics.map((topicObj) =>
             <div key={topicObj.topic} >
-              <button onClick={() => selectTopic(topicObj)}>
+              <button className={topicObj.draft ? "bg-gray-300" : ""} onClick={() => selectTopic(topicObj)}>
                 <a>{topicObj.topic}</a>
               </button>
             </div>

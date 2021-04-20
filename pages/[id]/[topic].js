@@ -77,7 +77,7 @@ export async function getStaticPaths() {
   getAllUsersRes.body.Items.map(user => {
     if (user.topics) {
       for (const [uuidKey, topicObj] of Object.entries(user.topics.M)) {
-        if (uuidKey) {
+        if (!topicObj.M.draft.BOOL) {
           paths.push({ params: { id: user.Username.S, topic: topicObj.M.title.S } })
         }
       }
@@ -108,7 +108,9 @@ export async function getStaticProps({ params }) {
   userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
   const topicsArray = []
   for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
-    topicsArray.push({...topicObj.M, topicId: key})
+    if (!topicObj.M.draft.BOOL) {
+      topicsArray.push({...topicObj.M, topicId: key})
+    }
   }
   const user = {
     Username: userRes.Username.S,
@@ -126,7 +128,7 @@ export async function getStaticProps({ params }) {
     user.topics.forEach((topicObj) => {
     const title = topicObj.title.S
     const string = topicObj.string.S
-    const draft = topicObj.draft.BOOL
+    // const draft = topicObj.draft.BOOL
     const topicId = topicObj.topicId
     if (title === params.topic) {
 
@@ -147,10 +149,9 @@ export async function getStaticProps({ params }) {
         string: string,
         // stringNoKeys: keysNowStrings,
         description: description,
-        draft: draft
+        // draft: draft
         // firstImage: imageMeta
       }
-
     }
   })
 

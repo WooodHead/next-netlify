@@ -5,7 +5,7 @@ import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../../components/navbar/navbar'
 import DOMPurify from 'dompurify';
 import PublicString from '../../components/edit/publicString'
-import TopicComponent from '../../components/edit/topic'
+import TopicComponent from '../../components/edit/topicComponent'
 import EditTAVScomp from '../../components/edit/tavs'
 import KeyToImage from '../../components/custom/keyToImage'
 import EditComponent from '../../components/edit/editComponent'
@@ -111,9 +111,6 @@ export default function EditParent(props) {
   useEffect(() => {
     getUserData()
   }, [])
-
-
-
 
   // const users = props?.userState
 

@@ -75,10 +75,10 @@ export default function BlogEdit(props) {
     }
   }
 
-  const saveTopicString = async () => {
+  const saveTopicString = async (isDraftProp) => {
 
     const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-
+    console.log(isDraftProp)
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')
     if (h1index > -1) {
@@ -105,7 +105,7 @@ export default function BlogEdit(props) {
           topicObj: {
             title: { S: noSpacesTopic },
             string: { S: keyifiedString },
-            draft: { BOOL: false }
+            draft: { BOOL: isDraftProp }
           }
         }
       }
@@ -181,7 +181,8 @@ export default function BlogEdit(props) {
         {/* </div> */}
 
         <div className="justify-center flex mx-10 flex-row h-8">
-            <button className="mr-10" onClick={() => saveTopicString()}>save</button>
+            <button className="mr-10" onClick={() => saveTopicString(false)}>save and publish</button>
+            <button className="mr-10" onClick={() => saveTopicString(true)}>save as draft</button>
             {selectedTopicState.saved === "saving" && <CustomSpinner />}
             {selectedTopicState.saved === "saved" && <div className="">saved</div>}
             <button className="mr-10" onClick={onCloseTopicEdit} >close</button>

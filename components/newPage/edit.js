@@ -5,7 +5,7 @@ import '../../configureAmplify'
 import NavbarComp from '../navbar/navbar'
 import DOMPurify from 'dompurify';
 import PublicString from './publicString'
-import TopicComponent from '../edit/topic'
+import TopicComponent from '../edit/topicComponent'
 import EditTAVScomp from './tavs'
 import CreateAccount from './createAccount'
 import { useRouter } from 'next/router'
