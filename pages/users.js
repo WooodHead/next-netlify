@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import API from 'aws-amplify/api'
+import API from '@aws-amplify/api'
 import { useRouter } from 'next/router'
 import '../configureAmplify'
 import NavbarComp from '../components/navbar/navbar'

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import Auth from 'aws-amplify/auth'
+import Auth from '@aws-amplify/auth'
 import '../../configureAmplify'
 
 const ForgotPassword = props => {

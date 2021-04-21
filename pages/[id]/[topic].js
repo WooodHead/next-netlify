@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import API from 'aws-amplify/api'
+import API from '@aws-amplify/api'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import '../../configureAmplify'

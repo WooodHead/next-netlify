@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import API from 'aws-amplify/api'
-import Auth from 'aws-amplify/auth'
+import API from '@aws-amplify/api'
+import Auth from '@aws-amplify/auth'
 import '../../configureAmplify'
 import NavbarComp from '../navbar/navbar'
 import DOMPurify from 'dompurify';

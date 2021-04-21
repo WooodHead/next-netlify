@@ -1,5 +1,5 @@
 
-import API from 'aws-amplify/api'
+import API from '@aws-amplify/api'
 import '../configureAmplify'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'

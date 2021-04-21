@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import API from 'aws-amplify/api'
+import API from '@aws-amplify/api'
 import '../../configureAmplify'
 import Head from 'next/head';
 import dynamic from 'next/dynamic'

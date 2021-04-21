@@ -23,3 +23,6 @@ path [id] still exists, I just made the links in /users and /index forward to a 
 I had a link and click event in /users.. deleted click event
 Also was necessary to use () in string + conditional statement.
 google search brings up title with dashes because thats what it used to be, fixed.
+Whats up with all the unused /chunks/static next js? as well as it getting crawled by google - is that detracting from crawl budge?
+4/21
+Implemented serverless image handler, used gui to spin up cloudformation. I don't know if this is even beneficial...

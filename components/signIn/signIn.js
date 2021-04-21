@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Auth from 'aws-amplify/auth'
+import Auth from '@aws-amplify/auth'
 import CustomSpinner from "../custom/spinner"
 import ForgotPassword from "./forgotPassword"
 import '../../configureAmplify'

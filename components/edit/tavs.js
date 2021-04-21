@@ -1,6 +1,6 @@
 import React from 'react'
-import API from 'aws-amplify/api'
-import Auth from 'aws-amplify/auth'
+import API from '@aws-amplify/api'
+import Auth from '@aws-amplify/auth'
 import '../../configureAmplify'
 import PPM from './ppm'
 import StripeOnboard from './onboard'

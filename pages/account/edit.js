@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import API from 'aws-amplify/api'
-import Auth from 'aws-amplify/auth'
+import API from '@aws-amplify/api'
+import Auth from '@aws-amplify/auth'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import DOMPurify from 'dompurify';

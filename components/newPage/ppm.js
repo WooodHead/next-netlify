@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import API from 'aws-amplify/api'
-import Auth from 'aws-amplify/auth'
+import API from '@aws-amplify/api'
+import Auth from '@aws-amplify/auth'
 import '../../configureAmplify'
 import CustomSpinner from "../custom/spinner"
 // import { Link } from "react-router-dom";
