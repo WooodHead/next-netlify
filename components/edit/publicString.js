@@ -1,8 +1,8 @@
 import React, { useRef } from 'react'
-import { API, Auth } from 'aws-amplify'
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
 import '../../configureAmplify'
 import dynamic from 'next/dynamic'
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function PublicString(props) {
 
@@ -55,7 +55,7 @@ export default function PublicString(props) {
           <textarea 
           ref={textAreaRef} 
           maxLength="160" 
-          className="px-2 py-1.5 overflow-auto resize bg-gray-50">
+          className="px-2 py-1.5 overflow-auto resize h-24 w-96 max-w-full bg-gray-50">
             {publicStringState.quill}
           </textarea>
           </div>

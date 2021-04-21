@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Amplify, { API, Auth } from 'aws-amplify'
-import Link from 'next/link'
+import API from 'aws-amplify/api'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import '../../configureAmplify'
@@ -63,7 +62,6 @@ export default function Topic({ user, topic }) {
               </div>
         </div>
       </div>
-
     </>
   )
 }

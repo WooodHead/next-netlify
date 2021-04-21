@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { v4 as uuidv4 } from 'uuid'
-import { API, Auth, Storage } from 'aws-amplify'
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
+import Storage from 'aws-amplify/storage'
 import Navbar from '../navbar/navbar'
 import CustomSpinner from "../custom/spinner"
 

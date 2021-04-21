@@ -1,16 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Amplify, { API, Auth, Storage } from 'aws-amplify'
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
-import NavbarComp from '../../components/navbar/navbar'
 import DOMPurify from 'dompurify';
-import PublicString from '../../components/edit/publicString'
-import TopicComponent from '../../components/edit/topicComponent'
-import EditTAVScomp from '../../components/edit/tavs'
-import KeyToImage from '../../components/custom/keyToImage'
 import EditComponent from '../../components/edit/editComponent'
 import BlogEdit from '../../components/edit/blogEdit'
-import state from 'opentok-accelerator-core/dist/state'
 
 export default function EditParent(props) {
 

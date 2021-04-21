@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { API, Auth } from 'aws-amplify';
-import { useRouter } from "next/router";
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
 import Rating from '../../components/review/rating'
 import PaymentNavbar from '../../components/review/paymentNavbar'
 import CardTip from '../../components/review/cardTip'

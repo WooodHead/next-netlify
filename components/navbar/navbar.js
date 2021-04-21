@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from 'next/link'
 import '../../configureAmplify'
-import { Auth } from "aws-amplify"
+import Auth from 'aws-amplify/auth'
 
 const NavbarComp = props => {
   const [usernameState, setUsernameState] = useState()

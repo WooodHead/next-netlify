@@ -1,5 +1,6 @@
 import React from 'react'
-import { API, Auth } from 'aws-amplify'
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
 import '../../configureAmplify'
 import PPM from './ppm'
 import StripeOnboard from './onboard'
@@ -44,8 +45,8 @@ export default function TAVS(props) {
       />
       {CCprops.TAVS}
     </div>
-  );
-    console.log(tavsState)
+  )
+  
   return (
     <div>
       <button onClick={() => setTavsState({...tavsState, editing: !tavsState.editing})}>settings</button>

@@ -19,3 +19,7 @@ keyToImage function was repeating forever when data wasn't right, I added a fail
 4/20
 'topic' naming in edit existed while it was called 'title' in [id]&[topic], changed to title
 focus outline doesn't seem to work on navbar, is because errthangs getting rerendered?
+path [id] still exists, I just made the links in /users and /index forward to a specific topic topics[0] or stringed
+I had a link and click event in /users.. deleted click event
+Also was necessary to use () in string + conditional statement.
+google search brings up title with dashes because thats what it used to be, fixed.

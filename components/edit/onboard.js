@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { API, Auth } from 'aws-amplify'
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
 import '../../configureAmplify'
 import {loadStripe} from '@stripe/stripe-js'
 import Image from 'next/image'

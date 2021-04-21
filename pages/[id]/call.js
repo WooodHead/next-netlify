@@ -1,7 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import { API, Auth } from 'aws-amplify'
-import Link from 'next/link'
-// import CallComponent from '../../components/call/callComponent'
+import API from 'aws-amplify/api'
 import '../../configureAmplify'
 import Head from 'next/head';
 import dynamic from 'next/dynamic'

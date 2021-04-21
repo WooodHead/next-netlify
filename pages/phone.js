@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { API, Auth } from 'aws-amplify'
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
 import '../configureAmplify'
 import dynamic from "next/dynamic"
 import urlBase64ToUint8Array from '../components/custom/url64to8array'

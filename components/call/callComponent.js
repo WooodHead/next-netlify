@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { API } from 'aws-amplify';
+import API from '@aws-amplify/api';
 import '../../configureAmplify'
 import { OpenTokSDK } from 'opentok-accelerator-core';
 import OTcommponent from './otComponent'

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Amplify, { API, Auth } from 'aws-amplify'
+import API from 'aws-amplify/api'
+import Auth from 'aws-amplify/auth'
 import '../../configureAmplify'
-// import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../navbar/navbar'
 import DOMPurify from 'dompurify';
 import PublicString from './publicString'

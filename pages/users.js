@@ -1,16 +1,17 @@
 import Link from 'next/link'
-import { API } from 'aws-amplify'
+import API from 'aws-amplify/api'
 import { useRouter } from 'next/router'
 import '../configureAmplify'
 import NavbarComp from '../components/navbar/navbar'
 
 const Users = ({ allUsers }) => {
   const router = useRouter()
-  
 
-  const userClickFn = (idProp) => {
-    router.push(`/${idProp}`)
-  }
+  // const userClickFn = (userObjProp) => {
+  //   console.log(userObjProp.topics[0].title.S)
+  //   const titleIfExists = userObjProp.topics[0] ? userObjProp.topics[0].title.S : ''
+  //   // router.push(`/${userObjProp.Username + "/" + titleIfExists}`)
+  // }
   return (
     <>
         <NavbarComp />
@@ -20,18 +21,16 @@ const Users = ({ allUsers }) => {
             <div
               className="flex mx-5 my-5 bg-gray-100 hover:bg-gray-200"
               key={user.Username}
-              onClick={() => userClickFn(user.Username)}
             >
               <div className="mx-5 my-2">
                 <Link 
                 className="" 
-                href={"/" + user.Username}
+                href={"/" + user.Username + "/" + (user.topics[0] ? user.topics[0].title.S : '')}
                 >
-                  <a className="flex flex-row">
+                  <a className="flex overflow-auto flex-row">
                     <div>
                     {user.Username}
                     {user.TAVS}
-                    {/* this aint workin? */}
                     <div className="flex flex-col flex-wrap max-h-20">
                       {user.topics.map((topicObj) => 
                       <div className="mx-5" key={topicObj.topicId} >

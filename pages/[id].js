@@ -1,7 +1,6 @@
 
-import { API } from 'aws-amplify'
+import API from 'aws-amplify/api'
 import '../configureAmplify'
-import Link from 'next/link'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'

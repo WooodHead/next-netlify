@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Auth } from "aws-amplify";
-// import { useHistory } from "react-router-dom"
+import Auth from 'aws-amplify/auth'
 import CustomSpinner from "../custom/spinner"
 import ForgotPassword from "./forgotPassword"
 import '../../configureAmplify'

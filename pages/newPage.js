@@ -1,5 +1,4 @@
-import React, { useEffect, useState }  from 'react'
-import Amplify, { API, Auth } from 'aws-amplify'
+import React, { useState }  from 'react'
 import '../configureAmplify'
 import "../node_modules/react-quill/dist/quill.snow.css"
 // import NavbarComp from '../components/navbar/navbar'

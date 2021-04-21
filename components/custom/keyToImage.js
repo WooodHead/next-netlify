@@ -1,4 +1,4 @@
-import { Storage, Auth } from 'aws-amplify'
+import Storage from '@aws-amplify/storage'
 import '../../configureAmplify'
 
 export default async function KeyToImage(stringProp) {
@@ -16,7 +16,6 @@ export default async function KeyToImage(stringProp) {
     const idEnd = stringProp.indexOf('}', keyStart)
     const identityId = stringProp.slice(idStart + 5, idEnd)
     /* this relies on the data being stored in dynamo to prevent unlimited calls */
-    console.log('k2i')
     const getS3 = await Storage.get(slicedKey, {
       level: 'protected',
       identityId: identityId

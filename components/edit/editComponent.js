@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Amplify, { API, Auth, Storage } from 'aws-amplify'
+import React, { useState } from 'react'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import NavbarComp from '../navbar/navbar'
-import DOMPurify from 'dompurify';
 import PublicString from './publicString'
 import TopicComponent from './topicComponent'
 import EditTAVScomp from './tavs'
@@ -19,7 +17,7 @@ export default function Edit(props) {
   const getUserData = (e) => { props.getUserData(e)}
   const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
   const selectedTopicState = props.selectedTopicState
-  const setTavsState = (e) => { props.setTavsState(e) }
+  const setTavsState = (e) => { props.setTavsStateFn(e) }
   const tavsState = props.tavsState
 
   const [errorState, setErrorState] = useState('')
