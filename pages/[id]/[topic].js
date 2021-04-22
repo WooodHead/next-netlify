@@ -6,7 +6,37 @@ import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
 // import KeyToImage from '../../components/custom/keyToImage'
-import Image from 'next/image'
+// import Image from 'next/image'
+
+function KeyToImage (stringProp) {
+  const keyStart = stringProp.indexOf('{key: ')
+  if (keyStart > -1) {
+    const keyEnd = stringProp.indexOf(',', keyStart)
+    const vw = 600
+    const slicedKey = '' + stringProp.slice(keyStart + 6, keyEnd)
+    const jsonToUrl = {
+      "bucket": "talktreeimagespublic",
+      "key": `${slicedKey}`,
+      "edits": {
+        "resize": {
+          "width": 900,
+          "height": 675,
+          "fit": "cover"
+        }
+      }
+    }
+    const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+    const convertedUrl = "https://d1pvyp5tr4e89i.cloudfront.net/" + converting
+    const idStart = stringProp.indexOf(' id: ', keyStart)
+    const idEnd = stringProp.indexOf('}', keyStart)
+    const identityId = stringProp.slice(idStart + 5, idEnd)
+    const stringWithImg = stringProp.replace(`{key: ${slicedKey}, id: ${identityId}}`, `<img src="${convertedUrl}" />`)
+    const allKeysToImages = KeyToImage(stringWithImg)
+    return allKeysToImages
+  } else {
+    return stringProp
+  }
+}
 
 export default function Topic({ user, topic }) {
   const router = useRouter()
@@ -18,47 +48,14 @@ export default function Topic({ user, topic }) {
     )
   }
 
-  const [state, setState] = useState({
-    text: topic.string
-  })
-
   const userOnboarded = user.receiver
   // const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
 
-  const KeyToImage = (stringProp) => {
-    const keyStart = stringProp.indexOf('{key: ')
-    if (keyStart > -1) {
-      const keyEnd = stringProp.indexOf(',', keyStart)
-      const vw = 600
-      const slicedKey = '' + stringProp.slice(keyStart + 6, keyEnd)
-      const jsonToUrl = {
-        "bucket": "talktreeimagespublic",
-        "key": `${slicedKey}`,
-        "edits": {
-          "resize": {
-            "width": vw < 500 ? 480: 900,
-            "height": vw < 500 ? 360: 675,
-            "fit": "cover"
-          }
-        }
-      }
-      const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-      const convertedUrl = "https://d1pvyp5tr4e89i.cloudfront.net/" + converting
-      console.log(convertedUrl)
-      const idStart = stringProp.indexOf(' id: ', keyStart)
-      const idEnd = stringProp.indexOf('}', keyStart)
-      const identityId = stringProp.slice(idStart + 5, idEnd)
-      const stringWithImg = stringProp.replace(`{key: ${slicedKey}, id: ${identityId}}`, `<img src="${convertedUrl}" />`)
-      const allKeysToImages = KeyToImage(stringWithImg)
-      return allKeysToImages
-    } else {
-      return stringProp
-    }
-  }
 
-  const newString = KeyToImage(topic.string)
+
+  // const newString = KeyToImage(topic.string)
 
   return (
     <>
@@ -78,7 +75,7 @@ export default function Topic({ user, topic }) {
               >
                 <div 
                 className="m-3 prose-sm prose sm:prose overflow-auto"
-                dangerouslySetInnerHTML={{ __html: newString }} >
+                dangerouslySetInnerHTML={{ __html: topic.stringNoKeys }} >
 
                 </div>
                 
@@ -159,7 +156,7 @@ export async function getStaticProps({ params }) {
       const h2Description = string.slice(h2Index + 4, h2IndexEnd)
       const description = (h2Index > -1) ? h2Description : 'no description provided'
 
-      // try {const keysNowStrings = string ? await KeyToImage(string) : null
+      const keysNowStrings = string ? KeyToImage(string) : null
       // console.log(keysNowStrings)
       // } catch (err) {
       //   console.log(err)
@@ -172,7 +169,7 @@ export async function getStaticProps({ params }) {
         topicId: topicId,
         title: titleWithSpaces,
         string: string,
-        // stringNoKeys: keysNowStrings,
+        stringNoKeys: keysNowStrings,
         description: description,
         // draft: draft
         // firstImage: imageMeta

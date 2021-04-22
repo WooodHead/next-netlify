@@ -31,7 +31,7 @@ module.exports = (phase) => {
         : "us-east-1:5697ad78-d1ea-429e-9dd4-3284ae4549fc" ,
     },
     storage: {
-      BUCKET: 'talktreeusrimages',
+      BUCKET: 'talktreeimagespublic',
       REGION: 'us-east-1'
     },
     SITE_URL: isProd ? "talktree.me" : "talktree.me"
