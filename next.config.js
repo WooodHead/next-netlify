@@ -8,7 +8,7 @@ module.exports = (phase) => {
   const env = {
     pwa: { dest: 'public' },
     images: {
-      domains: ["talktreeimagespublic.s3.us-east-1.amazonaws.com"]
+      domains: ["localhost", "d1la1a6cwiwn48.cloudfront.net", "https://d1la1a6cwiwn48.cloudfront.net"]
     },
 
     STAGE: isProd? "prod" : "dev",

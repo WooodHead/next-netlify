@@ -26,3 +26,5 @@ google search brings up title with dashes because thats what it used to be, fixe
 Whats up with all the unused /chunks/static next js? as well as it getting crawled by google - is that detracting from crawl budge?
 4/21
 Implemented serverless image handler, used gui to spin up cloudformation. I don't know if this is even beneficial...
+It appears <Image /> still  - is defaulting to <img>, appears to work in injected html
+Window/document btoa, all available in the useEffect hook.

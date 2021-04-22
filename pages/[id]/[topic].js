@@ -5,7 +5,8 @@ import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
-import KeyToImage from '../../components/custom/keyToImage'
+// import KeyToImage from '../../components/custom/keyToImage'
+import Image from 'next/image'
 
 export default function Topic({ user, topic }) {
   const router = useRouter()
@@ -26,18 +27,38 @@ export default function Topic({ user, topic }) {
   const description = topic.description
   const title = topic.title
 
-  const populateImgKeys = async () => {
-      const keysNowStrings = await KeyToImage(topic.string)
-      const firstImageBeginning = keysNowStrings.indexOf('<img')
-      const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
-      const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
-      const imageMeta = (firstImageBeginning > - 1) ? firstImage : 'no image provided'
-      setState({...state, text: keysNowStrings})
-  }  
+  const KeyToImage = (stringProp) => {
+    const keyStart = stringProp.indexOf('{key: ')
+    if (keyStart > -1) {
+      const keyEnd = stringProp.indexOf(',', keyStart)
+      const vw = 600
+      const slicedKey = '' + stringProp.slice(keyStart + 6, keyEnd)
+      const jsonToUrl = {
+        "bucket": "talktreeimagespublic",
+        "key": `${slicedKey}`,
+        "edits": {
+          "resize": {
+            "width": vw < 500 ? 480: 900,
+            "height": vw < 500 ? 360: 675,
+            "fit": "cover"
+          }
+        }
+      }
+      const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+      const convertedUrl = "https://d1pvyp5tr4e89i.cloudfront.net/" + converting
+      console.log(convertedUrl)
+      const idStart = stringProp.indexOf(' id: ', keyStart)
+      const idEnd = stringProp.indexOf('}', keyStart)
+      const identityId = stringProp.slice(idStart + 5, idEnd)
+      const stringWithImg = stringProp.replace(`{key: ${slicedKey}, id: ${identityId}}`, `<img src="${convertedUrl}" />`)
+      const allKeysToImages = KeyToImage(stringWithImg)
+      return allKeysToImages
+    } else {
+      return stringProp
+    }
+  }
 
-  useEffect(() => {
-    populateImgKeys()
-  }, [topic])
+  const newString = KeyToImage(topic.string)
 
   return (
     <>
@@ -50,16 +71,19 @@ export default function Topic({ user, topic }) {
       <div className="">
         <NavbarComp />
         <UserComp user={user} />
+        {/* <img src={html}  /> */}
         <div className="mx-5">
             <div 
               className="flex justify-center my-5 bg-gray-100" 
               >
                 <div 
                 className="m-3 prose-sm prose sm:prose overflow-auto"
-                dangerouslySetInnerHTML={{ __html: state.text }} >
+                dangerouslySetInnerHTML={{ __html: newString }} >
 
                 </div>
+                
               </div>
+              <p>after injection</p>
         </div>
       </div>
     </>
@@ -121,9 +145,10 @@ export async function getStaticProps({ params }) {
     receiver: userRes.receiver.BOOL
   }
 
-    user.topics.forEach((topicObj) => {
+    user.topics.forEach( async (topicObj) => {
     const title = topicObj.title.S
     const string = topicObj.string.S
+
     // const draft = topicObj.draft.BOOL
     const topicId = topicObj.topicId
     if (title === params.topic) {
@@ -134,7 +159,11 @@ export async function getStaticProps({ params }) {
       const h2Description = string.slice(h2Index + 4, h2IndexEnd)
       const description = (h2Index > -1) ? h2Description : 'no description provided'
 
-      // const keysNowStrings = await KeyToImage(user.topics[key].S)
+      // try {const keysNowStrings = string ? await KeyToImage(string) : null
+      // console.log(keysNowStrings)
+      // } catch (err) {
+      //   console.log(err)
+      // }
       // const firstImageBeginning = keysNowStrings.indexOf('<img')
       // const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
       // const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
