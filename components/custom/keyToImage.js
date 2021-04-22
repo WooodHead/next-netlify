@@ -45,7 +45,6 @@ export default function KeyToImage (stringProp) {
       }
     }
     const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-    console.log(slicedKey)
     const convertedUrl = "https://d1pvyp5tr4e89i.cloudfront.net/" + converting
     const idStart = stringProp.indexOf(' id: ', keyStart)
     const idEnd = stringProp.indexOf('}', keyStart)

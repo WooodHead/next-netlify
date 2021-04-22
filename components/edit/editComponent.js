@@ -17,7 +17,7 @@ export default function Edit(props) {
   const getUserData = (e) => { props.getUserData(e)}
   const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
   const selectedTopicState = props.selectedTopicState
-  const setTavsState = (e) => { props.setTavsStateFn(e) }
+  const setTavsState = (e) => { props.setTavsState(e) }
   const tavsState = props.tavsState
 
   const [errorState, setErrorState] = useState('')
