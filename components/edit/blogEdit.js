@@ -44,8 +44,9 @@ export default function BlogEdit(props) {
   const turnSrcStringsToKeys = async (stringProp) => {
     if (stringProp.indexOf('<img src=') > -1) {
       const srcAddress = stringProp.slice(stringProp.indexOf('<img src='))
+      console.log(srcAddress)
       const slashSplit = srcAddress.split('/')
-      const qSplit = slashSplit[5].split('?')
+      const qSplit = slashSplit[4].split('?')
       const imgKey = qSplit[0]
       const authIdentity = await Auth.currentCredentials()
       const convertedString = stringProp.replace(/<img .*?>/, `{key: ${imgKey}, id: ${authIdentity.identityId}}`)
@@ -67,7 +68,7 @@ export default function BlogEdit(props) {
       const fileTypeLocation = file.name.indexOf('.')
       const fileType = file.name.slice(fileTypeLocation)
       try {
-        Storage.configure({ level: 'protected' })
+        // Storage.configure({ level: 'public' })
         const s3res = await Storage.put(uuidv4() + fileType, file)
         const getS3 = await Storage.get(s3res.key)
         editor.insertEmbed(range.index, 'image', getS3)
@@ -78,9 +79,7 @@ export default function BlogEdit(props) {
   }
 
   const saveTopicString = async (isDraftProp) => {
-
     const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-    console.log(isDraftProp)
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')
     if (h1index > -1) {

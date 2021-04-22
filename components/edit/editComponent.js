@@ -32,9 +32,9 @@ export default function Edit(props) {
     })
   }
 
-  const selectTopic = async (topicProp) => {
+  const selectTopic = (topicProp) => {
     try {
-      const stringWithImages = await KeyToImage(topicProp.string)
+      const stringWithImages = KeyToImage(topicProp.string)
       props.setSelectedTopicState({
         title: topicProp.title,
         string: stringWithImages,

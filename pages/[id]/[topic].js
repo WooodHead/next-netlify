@@ -5,38 +5,8 @@ import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
-// import KeyToImage from '../../components/custom/keyToImage'
+import KeyToImage from '../../components/custom/keyToImage'
 // import Image from 'next/image'
-
-function KeyToImage (stringProp) {
-  const keyStart = stringProp.indexOf('{key: ')
-  if (keyStart > -1) {
-    const keyEnd = stringProp.indexOf(',', keyStart)
-    const vw = 600
-    const slicedKey = '' + stringProp.slice(keyStart + 6, keyEnd)
-    const jsonToUrl = {
-      "bucket": "talktreeimagespublic",
-      "key": `${slicedKey}`,
-      "edits": {
-        "resize": {
-          "width": 900,
-          "height": 675,
-          "fit": "cover"
-        }
-      }
-    }
-    const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-    const convertedUrl = "https://d1pvyp5tr4e89i.cloudfront.net/" + converting
-    const idStart = stringProp.indexOf(' id: ', keyStart)
-    const idEnd = stringProp.indexOf('}', keyStart)
-    const identityId = stringProp.slice(idStart + 5, idEnd)
-    const stringWithImg = stringProp.replace(`{key: ${slicedKey}, id: ${identityId}}`, `<img src="${convertedUrl}" />`)
-    const allKeysToImages = KeyToImage(stringWithImg)
-    return allKeysToImages
-  } else {
-    return stringProp
-  }
-}
 
 export default function Topic({ user, topic }) {
   const router = useRouter()
@@ -52,8 +22,6 @@ export default function Topic({ user, topic }) {
   // const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
-
-
 
   // const newString = KeyToImage(topic.string)
 
