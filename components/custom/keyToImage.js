@@ -58,3 +58,22 @@ export default function KeyToImage (stringProp) {
     return stringProp
   }
 }
+
+export function turnBracketsToAlt(stringProp) {
+  if (stringProp.indexOf('<img src=') > -1) {
+    const srcAddress = stringProp.slice(stringProp.indexOf('<img src='))
+    const altBeginning = srcAddress.indexOf('[')
+    if (altBeginning > -1) {
+      const altEnd = srcAddress.indexOf(']', altBeginning)
+      const altString = srcAddress.slice(altBeginning +1, altEnd)
+      const bracketsRemoved = srcAddress.replace('[' + altString + ']', '')
+      const inserted = bracketsRemoved.slice(0, 4) + " alt='" + altString + "'" + bracketsRemoved.slice(4)
+      console.log(inserted)
+      return turnBracketsToAlt(inserted)
+    }
+    else {
+      return stringProp
+    }
+  }
+  return stringProp
+}

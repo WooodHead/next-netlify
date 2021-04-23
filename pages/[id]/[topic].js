@@ -48,7 +48,6 @@ export default function Topic({ user, topic }) {
                 </div>
                 
               </div>
-              <p>after injection</p>
         </div>
       </div>
     </>

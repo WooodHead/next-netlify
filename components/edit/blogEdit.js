@@ -6,6 +6,7 @@ import Auth from '@aws-amplify/auth'
 import Storage from '@aws-amplify/storage'
 import Navbar from '../navbar/navbar'
 import CustomSpinner from "../custom/spinner"
+import { turnBracketsToAlt } from "../../components/custom/keyToImage"
 
 const ReactQuill = dynamic(
   async () => {
@@ -56,6 +57,10 @@ export default function BlogEdit(props) {
     }
     return stringProp
   }
+  const turnAltToBrackets = (stringProp) => {
+    if (stringProp.indexOf('<img alt') > -1) {
+    }
+  }
 
   const imageHandler = async () => {
     const input = document.createElement('input')
@@ -69,10 +74,8 @@ export default function BlogEdit(props) {
       const fileTypeLocation = file.name.indexOf('.')
       const fileType = file.name.slice(fileTypeLocation)
       try {
-        // Storage.configure({ level: 'public' })
         const s3res = await Storage.put(uuidv4() + fileType, file)
         const getS3 = await Storage.get(s3res.key)
-        console.log(s3res.key)
         const jsonToUrl = {
           "bucket": "talktreeimagespublic",
           "key": `public/${s3res.key}`,
@@ -96,7 +99,8 @@ export default function BlogEdit(props) {
   }
 
   const saveTopicString = async (isDraftProp) => {
-    const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
+    // const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
+    const imgAltAdded = turnBracketsToAlt(selectedTopicState.quill)
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')
     if (h1index > -1) {
@@ -118,11 +122,11 @@ export default function BlogEdit(props) {
         body: {
           deleteTopic: false,
           topicId: selectedTopicState.topicId,
-          string: keyifiedString,
+          string: imgAltAdded,
           accessToken: userSession.accessToken.jwtToken,
           topicObj: {
             title: { S: noSpacesTopic },
-            string: { S: keyifiedString },
+            string: { S: imgAltAdded },
             draft: { BOOL: isDraftProp }
           }
         }

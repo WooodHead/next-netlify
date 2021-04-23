@@ -6,6 +6,7 @@ import "../../node_modules/react-quill/dist/quill.snow.css"
 import DOMPurify from 'dompurify';
 import EditComponent from '../../components/edit/editComponent'
 import BlogEdit from '../../components/edit/blogEdit'
+// import { turnBracketsToAlt } from "../../components/custom/keyToImage"
 
 export default function EditParent(props) {
 
@@ -58,10 +59,11 @@ export default function EditParent(props) {
       for (const topicKey in getUserRes.Item.topics.M) {
         const title = getUserRes.Item.topics.M[topicKey].M.title.S
         const titleWithSpaces = title.replaceAll('-', ' ')
+        // const stringWithAltTags = turnBracketsToAlt(getUserRes.Item.topics.M[topicKey].M.string.S)
         topicsArray.push({
           topicId: topicKey,
           title: titleWithSpaces,
-          string: DOMPurify.sanitize(getUserRes.Item.topics.M[topicKey].M.string.S),
+          string: getUserRes.Item.topics.M[topicKey].M.string.S,
           draft: getUserRes.Item.topics.M[topicKey].M.draft.BOOL
         })
       }
