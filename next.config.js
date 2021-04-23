@@ -7,10 +7,10 @@ module.exports = (phase) => {
 
   const env = {
     pwa: { dest: 'public' },
-    images: {
-      domains: ["localhost", "d1la1a6cwiwn48.cloudfront.net", "https://d1la1a6cwiwn48.cloudfront.net"]
-    },
-
+    // images: {
+    //   domains: ["localhost", "d1la1a6cwiwn48.cloudfront.net", "https://d1la1a6cwiwn48.cloudfront.net"]
+    // },
+    img_cloudfront: "https://d1pvyp5tr4e89i.cloudfront.net",
     STAGE: isProd? "prod" : "dev",
     STRIPE_KEY: isProd ? "pk_live_N8vqxQWqGt8Npt6r0yIJueJ3"
       : "pk_test_0ktNaTLSdckHwnQ7IuUQtFwK",

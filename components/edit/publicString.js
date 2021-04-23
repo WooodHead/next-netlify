@@ -53,10 +53,10 @@ export default function PublicString(props) {
         ? <div>
           <div className="mt-3">
           <textarea 
+          defaultValue={publicStringState.quill}
           ref={textAreaRef} 
           maxLength="160" 
           className="px-2 py-1.5 overflow-auto resize h-24 w-96 max-w-full bg-gray-50">
-            {publicStringState.quill}
           </textarea>
           </div>
           

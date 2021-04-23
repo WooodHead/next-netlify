@@ -29,10 +29,12 @@ import '../../configureAmplify'
 // }
 
 export default function KeyToImage (stringProp) {
+  console.log(stringProp)
   const keyStart = stringProp.indexOf('{key: ')
   if (keyStart > -1) {
     const keyEnd = stringProp.indexOf(',', keyStart)
     const slicedKey = '' + stringProp.slice(keyStart + 6, keyEnd)
+    // console.log(slicedKey)
     const jsonToUrl = {
       "bucket": "talktreeimagespublic",
       "key": `public/${slicedKey}`,

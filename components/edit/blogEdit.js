@@ -42,21 +42,22 @@ export default function BlogEdit(props) {
   }
 
   const turnSrcStringsToKeys = async (stringProp) => {
+    console.log(stringProp)
     if (stringProp.indexOf('<img src=') > -1) {
       const srcAddress = stringProp.slice(stringProp.indexOf('<img src='))
       console.log(srcAddress)
       const slashSplit = srcAddress.split('/')
       const qSplit = slashSplit[4].split('?')
       const imgKey = qSplit[0]
-      const authIdentity = await Auth.currentCredentials()
-      const convertedString = stringProp.replace(/<img .*?>/, `{key: ${imgKey}, id: ${authIdentity.identityId}}`)
+      // const authIdentity = await Auth.currentCredentials()
+      const convertedString = stringProp.replace(/<img .*?>/, `{key: ${imgKey}, id: ${null}}`)
       const afterIterated = turnSrcStringsToKeys(convertedString)
       return afterIterated
     }
     return stringProp
   }
 
-  const imageHandler = () => {
+  const imageHandler = async () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.click()
@@ -71,7 +72,23 @@ export default function BlogEdit(props) {
         // Storage.configure({ level: 'public' })
         const s3res = await Storage.put(uuidv4() + fileType, file)
         const getS3 = await Storage.get(s3res.key)
-        editor.insertEmbed(range.index, 'image', getS3)
+        console.log(s3res.key)
+        const jsonToUrl = {
+          "bucket": "talktreeimagespublic",
+          "key": `public/${s3res.key}`,
+          "edits": {
+            "resize": {
+              "width": 900,
+              "height": 675,
+              "fit": "cover"
+            }
+          }
+        }
+        const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+        const convertedUrl = process.env.img_cloudfront + "/" + converting
+        console.log(convertedUrl)
+
+        editor.insertEmbed(range.index, 'image', convertedUrl)
       } catch (err) {
         console.log('storage err', err)
       }

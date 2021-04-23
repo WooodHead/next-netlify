@@ -26,7 +26,15 @@ google search brings up title with dashes because thats what it used to be, fixe
 Whats up with all the unused /chunks/static next js? as well as it getting crawled by google - is that detracting from crawl budge?
 4/21
 Implemented serverless image handler, used gui to spin up cloudformation. I don't know if this is even beneficial...
-It appears <Image /> still  - is defaulting to <img>, appears to work in injected html
+It appears <Image /> still  - is defaulting to <img>; next Image doesn't work with injected html
 Window/document btoa, all available in the useEffect hook.
 4/22
 Amplify mandates folder prefixes on upload, I just have to address them in the JSON key: property.
+I could slice out the first image, and render it a as a Next Image, since that is the one that matters for content shift
+Changed env variables in Seed, didn't immediatly take effect, forced redeploy, worked.
+The reconstructed event seems to have charge and details false while the account property seems to say they exist.
+account_updated isn't getting called
+gifs dont work with serverless image handler..
+4/23
+Can the alt tag be exploited? Am I sanitizing the text as the very last process
+front end saves the string s3 first save has s3 url with id, converts to 
