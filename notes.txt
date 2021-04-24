@@ -39,3 +39,6 @@ gifs dont work with serverless image handler..
 Can the alt tag be exploited? Am I sanitizing the text as the very last process
 front end saves the string s3 first save has s3 url with id, converts to 
 App is no longer converting to keys, but if keys still exist, it will convert them to str
+4/24
+I could make the alt descriptions stay so visible in quill but then be removed after receiving from dynamo.
+However it was easier to just have them disappear on save.

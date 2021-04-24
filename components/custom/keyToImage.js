@@ -76,7 +76,6 @@ export function turnBracketsToAlt(stringProp) {
         if (altLength < 161) {
           const altString = stringProp.slice(altBeginning + 1, altEnd)
           /* matched string is just <img > */
-          // const bracketsReplacedString = matchedString.replace('[' + altString + ']', '')
           const string = matchedString.slice(0, 4) + " alt='" + altString + "'" + matchedString.slice(4, -1)
           mutableString = mutableString.replace(matchedString + '[' + altString + ']', string)
         }
