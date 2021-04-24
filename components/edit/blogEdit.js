@@ -100,7 +100,7 @@ export default function BlogEdit(props) {
 
   const saveTopicString = async (isDraftProp) => {
     // const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-    const imgAltAdded = selectedTopicState.quill
+    const imgAltAdded = turnBracketsToAlt(selectedTopicState.quill)
 
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')

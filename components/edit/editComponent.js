@@ -5,7 +5,6 @@ import NavbarComp from '../navbar/navbar'
 import PublicString from './publicString'
 import TopicComponent from './topicComponent'
 import EditTAVScomp from './tavs'
-import KeyToImage from '../custom/keyToImage'
 import { v4 as uuidv4 } from 'uuid'
 
 export default function Edit(props) {
@@ -34,11 +33,10 @@ export default function Edit(props) {
 
   const selectTopic = (topicProp) => {
     try {
-      const stringWithImages = KeyToImage(topicProp.string)
       props.setSelectedTopicState({
         title: topicProp.title,
-        string: stringWithImages,
-        quill: stringWithImages,
+        string: topicProp.string,
+        quill: topicProp.string,
         editing: false,
         topicId: topicProp.topicId
       })

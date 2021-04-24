@@ -5,7 +5,7 @@ import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
-import KeyToImage from '../../components/custom/keyToImage'
+// import KeyToImage from '../../components/custom/keyToImage'
 // import Image from 'next/image'
 
 export default function Topic({ user, topic }) {
@@ -43,7 +43,7 @@ export default function Topic({ user, topic }) {
               >
                 <div 
                 className="m-3 prose-sm prose sm:prose overflow-auto"
-                dangerouslySetInnerHTML={{ __html: topic.stringNoKeys }} >
+                dangerouslySetInnerHTML={{ __html: topic.string }} >
 
                 </div>
                 
@@ -123,7 +123,7 @@ export async function getStaticProps({ params }) {
       const h2Description = string.slice(h2Index + 4, h2IndexEnd)
       const description = (h2Index > -1) ? h2Description : 'no description provided'
       /* this runs in case keys still exist from previous */
-      const keysNowStrings = string ? KeyToImage(string) : null
+      // const keysNowStrings = string ? KeyToImage(string) : null
       // console.log(keysNowStrings)
       // } catch (err) {
       //   console.log(err)
@@ -136,7 +136,7 @@ export async function getStaticProps({ params }) {
         topicId: topicId,
         title: titleWithSpaces,
         string: string,
-        stringNoKeys: keysNowStrings,
+        // stringNoKeys: keysNowStrings,
         description: description,
         // draft: draft
         // firstImage: imageMeta
