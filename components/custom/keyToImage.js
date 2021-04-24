@@ -60,20 +60,29 @@ export default function KeyToImage (stringProp) {
 }
 
 export function turnBracketsToAlt(stringProp) {
-  if (stringProp.indexOf('<img src=') > -1) {
-    const srcAddress = stringProp.slice(stringProp.indexOf('<img src='))
-    const altBeginning = srcAddress.indexOf('[')
-    if (altBeginning > -1) {
-      const altEnd = srcAddress.indexOf(']', altBeginning)
-      const altString = srcAddress.slice(altBeginning +1, altEnd)
-      const bracketsRemoved = srcAddress.replace('[' + altString + ']', '')
-      const inserted = bracketsRemoved.slice(0, 4) + " alt='" + altString + "'" + bracketsRemoved.slice(4)
-      console.log(inserted)
-      return turnBracketsToAlt(inserted)
-    }
-    else {
-      return stringProp
-    }
+  const imgIndex = stringProp.indexOf('<img src=')
+  let mutableString = stringProp
+  if (imgIndex > -1) {
+    const matched = stringProp.match(/<img .*?>/g)
+    matched.forEach((matchedString) => {
+      const matchedIndex = stringProp.indexOf(matchedString)
+      const matchedLength = matchedString.length
+      const afterStringIndex = matchedIndex + matchedLength
+      const afterString = stringProp[afterStringIndex]
+      if (afterString === '[') {
+        const altBeginning = stringProp.indexOf('[', afterStringIndex)
+        const altEnd = stringProp.indexOf(']', afterStringIndex)
+        const altLength = altEnd - altBeginning
+        if (altLength < 161) {
+          const altString = stringProp.slice(altBeginning + 1, altEnd)
+          /* matched string is just <img > */
+          // const bracketsReplacedString = matchedString.replace('[' + altString + ']', '')
+          const string = matchedString.slice(0, 4) + " alt='" + altString + "'" + matchedString.slice(4, -1)
+          mutableString = mutableString.replace(matchedString + '[' + altString + ']', string)
+        }
+      }
+    })
+    return mutableString
   }
   return stringProp
 }

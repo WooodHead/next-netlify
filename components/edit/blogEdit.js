@@ -51,7 +51,7 @@ export default function BlogEdit(props) {
       const qSplit = slashSplit[4].split('?')
       const imgKey = qSplit[0]
       // const authIdentity = await Auth.currentCredentials()
-      const convertedString = stringProp.replace(/<img .*?>/, `{key: ${imgKey}, id: ${null}}`)
+      const convertedString = stringProp.match(/<img .*?>/, `{key: ${imgKey}, id: ${null}}`)
       const afterIterated = turnSrcStringsToKeys(convertedString)
       return afterIterated
     }
@@ -101,6 +101,7 @@ export default function BlogEdit(props) {
   const saveTopicString = async (isDraftProp) => {
     // const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
     const imgAltAdded = turnBracketsToAlt(selectedTopicState.quill)
+    console.log(imgAltAdded)
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')
     if (h1index > -1) {

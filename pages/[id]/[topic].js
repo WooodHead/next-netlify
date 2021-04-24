@@ -122,7 +122,7 @@ export async function getStaticProps({ params }) {
       const h2IndexEnd = string.indexOf('</h2>', h2Index)
       const h2Description = string.slice(h2Index + 4, h2IndexEnd)
       const description = (h2Index > -1) ? h2Description : 'no description provided'
-
+      /* this runs in case keys still exist from previous */
       const keysNowStrings = string ? KeyToImage(string) : null
       // console.log(keysNowStrings)
       // } catch (err) {
