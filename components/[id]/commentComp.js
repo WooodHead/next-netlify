@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 export default function CommentComp () {
-  const [textAreaState, setTextAreaState] = useState(" Leave a comment or advice, this will not be displayed publicly")
+  const [textAreaState, setTextAreaState] = useState(" Should I use more photos or add more text?   Submit your advice, it won't be displayed publicly")
   const router = useRouter()
   const { id, topic } = router.query
   console.log(topic)
@@ -11,9 +11,15 @@ export default function CommentComp () {
   const submitHandler = async () => {
     console.log(textAreaState)
     const submitCommentParams = {
-      body: { receiver: '' + id, comment: '' + textAreaState}, topic: topic,
+      body: { receiver: '' + id, comment: '' + textAreaState, topic: topic },
     }
-    await API.post(process.env.apiGateway.NAME, '/leaveComment', submitCommentParams)
+    try {
+      const leaveCommentRes = await API.post(process.env.apiGateway.NAME, '/leaveComment', submitCommentParams)
+      console.log(leaveCommentRes)
+    } catch (err) {
+      console.log(err)
+    }
+
   }
 
   return (
