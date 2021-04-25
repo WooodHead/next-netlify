@@ -42,3 +42,5 @@ App is no longer converting to keys, but if keys still exist, it will convert th
 4/24
 I could make the alt descriptions stay so visible in quill but then be removed after receiving from dynamo.
 However it was easier to just have them disappear on save.
+4/25
+/LeaveComment is using reviewRole, so now reviewRole has some extra permissions

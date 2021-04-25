@@ -5,6 +5,7 @@ import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
+import CommentComp from '../../components/[id]/commentComp'
 // import KeyToImage from '../../components/custom/keyToImage'
 // import Image from 'next/image'
 
@@ -41,10 +42,15 @@ export default function Topic({ user, topic }) {
             <div 
               className="flex justify-center my-5 bg-gray-100" 
               >
-                <div 
-                className="m-3 prose-sm prose sm:prose overflow-auto"
-                dangerouslySetInnerHTML={{ __html: topic.string }} >
-
+                <div className="flex flex-col">
+                  <div 
+                    className="m-3 prose-sm prose sm:prose overflow-auto"
+                    dangerouslySetInnerHTML={{ __html: topic.string }} 
+                  ></div>
+                  <div className="justify-center flex">
+                  < CommentComp />
+                  </div>
+                  
                 </div>
                 
               </div>
