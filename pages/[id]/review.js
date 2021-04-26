@@ -8,6 +8,7 @@ import CardTip from '../../components/review/cardTip'
 // import PRTip from '../../components/review/prTip'
 import { loadStripe } from '@stripe/stripe-js';
 import '../../configureAmplify'
+import Head from 'next/head'
 
 // const DynamicCallComponent = dynamic(
 //   () => import('../../components/review/callComponent'),
@@ -103,6 +104,10 @@ const ReviewParent = props => {
   }, [])
 
   return (
+    <>
+    <Head>
+    <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <div className="container m-5">
       <Rating receiver={receiver}/>
       <div>
@@ -166,6 +171,7 @@ const ReviewParent = props => {
       </div>
 
     </div>
+    </>
   );
 }
 

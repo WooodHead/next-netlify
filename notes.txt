@@ -45,3 +45,6 @@ However it was easier to just have them disappear on save.
 4/25
 /LeaveComment is using reviewRole, so now reviewRole has some extra permissions
 Added ctrl alt b, v for highlighting html open/closes
+4/26
+twitter: @_gty__ failed to save in public string
+reminder - s3 bucket is not in cloudformation, do I add it to yaml... I dunno
