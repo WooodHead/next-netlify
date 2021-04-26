@@ -34,7 +34,8 @@ module.exports = (phase) => {
       BUCKET: 'talktreeimagespublic',
       REGION: 'us-east-1'
     },
-    SITE_URL: isProd ? "talktree.me" : "talktree.me"
+    SITE_URL: isProd ? "talktree.me" : "talktree.me",
+    NEXT_PUBLIC_GOOGLE_ANALYTICS: "G-5E2G7WDTKQ"
   }
 
   return isProd ? withPWA({ env }) : { env }

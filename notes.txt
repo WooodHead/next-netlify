@@ -44,3 +44,4 @@ I could make the alt descriptions stay so visible in quill but then be removed a
 However it was easier to just have them disappear on save.
 4/25
 /LeaveComment is using reviewRole, so now reviewRole has some extra permissions
+Added ctrl alt b, v for highlighting html open/closes
