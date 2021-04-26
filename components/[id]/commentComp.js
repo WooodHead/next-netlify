@@ -6,16 +6,13 @@ export default function CommentComp () {
   const [textAreaState, setTextAreaState] = useState(" Should I use more photos or add more text?   Submit your advice, it won't be displayed publicly")
   const router = useRouter()
   const { id, topic } = router.query
-  console.log(topic)
 
   const submitHandler = async () => {
-    console.log(textAreaState)
     const submitCommentParams = {
       body: { receiver: '' + id, comment: '' + textAreaState, topic: topic },
     }
     try {
       const leaveCommentRes = await API.post(process.env.apiGateway.NAME, '/leaveComment', submitCommentParams)
-      console.log(leaveCommentRes)
     } catch (err) {
       console.log(err)
     }

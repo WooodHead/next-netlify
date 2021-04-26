@@ -54,17 +54,13 @@ const Phone = () => {
       // audio.load()
       /* GET vapidkeys from /register, POST to /register Subscriptions */
       const registration = await navigator.serviceWorker.ready
-      console.log(Notification)
       if (Notification.permission !== "granted") {
-        Notification.requestPermission().then(function (permission) {
-          // if Notifications block, it doesn't appear to re-ask
-        })
+        Notification.requestPermission()
       }
 
       try {
         /* get existing subscription */
         const subscription = await registration.pushManager.getSubscription()
-        console.log('subscription exists: ', subscription)
         /* duplicated code in catch */
         const subEndpoint = subscription.endpoint
         const newSubscription = JSON.parse(JSON.stringify(subscription))
@@ -79,7 +75,6 @@ const Phone = () => {
         }
         API.post(process.env.apiGateway.NAME, "/register", myInit)
       } catch (err) {
-        console.log('subscription doesnt exist maybe: ', err)
         /* if subscription doesn't exist */
         const response = await API.get(process.env.apiGateway.NAME, "/register", {
           headers: { Authorization: userSession.idToken.jwtToken }
@@ -220,7 +215,14 @@ const Phone = () => {
       <Navbar />
       <div className="mx-5 my-5">
         {state.pageState === 'waiting' && state.otToken.sessionId 
-          ? <AcceptDecline /> : <div>waiting on calls</div>}
+          ? <AcceptDecline /> 
+          : <div>
+            <div className="font-medium text-lg">Waiting on calls</div>
+            <div className="max-w-prose mt-5">You'll be e-mailed a link to open this phone when someone is trying to call you; 
+            you can receive notifications, and do not need this tab open; accept or decline the call after alerted</div>
+            <div>
+              </div>
+            </div>}
         {state.pageState === 'accepted' 
           && <div><InitOT
               tokenData={state.otToken}
