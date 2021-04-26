@@ -88,6 +88,7 @@ const Call = ({ user }) => {
     return (
       <div>
         <Head>
+        <meta name="robots" content="noindex, nofollow" />
         <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
         </Head>
         <DynamicCallComponent

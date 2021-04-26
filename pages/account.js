@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import CustomSpinner from "../components/custom/spinner"
 import '../configureAmplify'
 import Navbar from '../components/navbar/navbar'
-
+import Footer from '../components/navbar/footer'
 const AccountSettings = props => {
 
   const oldPassRef = useRef()
@@ -60,7 +60,8 @@ const AccountSettings = props => {
 
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-1">
       <Navbar />
         <div className="container-fluid ml-3">
         <div className="row">
@@ -136,6 +137,9 @@ const AccountSettings = props => {
         </div>}
       </div>
       </div>
+      </div>
+      <Footer />
+      
     </div>
   )
 }

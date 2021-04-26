@@ -4,6 +4,8 @@ import Auth from '@aws-amplify/auth'
 import '../configureAmplify'
 import dynamic from "next/dynamic"
 import urlBase64ToUint8Array from '../components/custom/url64to8array'
+import Footer from '../components/navbar/footer'
+import Navbar from '../components/navbar/navbar'
 const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false })
 
 const Phone = () => {
@@ -52,6 +54,12 @@ const Phone = () => {
       // audio.load()
       /* GET vapidkeys from /register, POST to /register Subscriptions */
       const registration = await navigator.serviceWorker.ready
+      console.log(Notification)
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission().then(function (permission) {
+          // if Notifications block, it doesn't appear to re-ask
+        })
+      }
 
       try {
         /* get existing subscription */
@@ -207,17 +215,25 @@ const Phone = () => {
   }
 
   return (
-    <div className="mx-5 my-5">
-      {state.pageState === 'waiting' && state.otToken.sessionId 
-        ? <AcceptDecline /> : <div>waiting on calls</div>}
-      {state.pageState === 'accepted' 
-        && <div><InitOT
-            tokenData={state.otToken}
-            allowedDevices={state.TAVS}
-          /></div>
-      }
-      {state.pageState === 'disconnected' && <div>caller disconnected, waiting</div>}
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-1">
+      <Navbar />
+      <div className="mx-5 my-5">
+        {state.pageState === 'waiting' && state.otToken.sessionId 
+          ? <AcceptDecline /> : <div>waiting on calls</div>}
+        {state.pageState === 'accepted' 
+          && <div><InitOT
+              tokenData={state.otToken}
+              allowedDevices={state.TAVS}
+            /></div>
+        }
+        {state.pageState === 'disconnected' && <div>caller disconnected, waiting</div>}
+      </div>
+      </div>
+      <Footer />
+
     </div>
+
   )
 }
 
