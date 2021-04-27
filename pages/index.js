@@ -7,7 +7,7 @@ import FooterComp from '../components/navbar/footer'
 export default function Home() {
 
   return (
-    <div className="container">
+    <div className="">
       <Head>
         <title>Talktree</title>
         <link rel="icon" href="/favicon.png" />

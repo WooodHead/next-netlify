@@ -7,6 +7,7 @@ import DOMPurify from 'dompurify';
 import EditComponent from '../../components/edit/editComponent'
 import BlogEdit from '../../components/edit/blogEdit'
 // import { turnBracketsToAlt } from "../../components/custom/keyToImage"
+import Footer from '../../components/navbar/footer'
 
 export default function EditParent(props) {
 
@@ -113,6 +114,8 @@ export default function EditParent(props) {
 
   return ( 
     <>
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-1">
       {selectedTopicState.editing 
       ? <BlogEdit 
           setSelectedTopicState={(e) => setSelectedTopic(e)}
@@ -136,6 +139,10 @@ export default function EditParent(props) {
           setTavsState={setTavsStateFn}
           tavsState={tavsState}
           />}
+      </div>
+      <Footer />
+    </div>
+
     </>
   )
 }

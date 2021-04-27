@@ -5,7 +5,6 @@ import NavbarComp from '../navbar/navbar'
 import PublicString from './publicString'
 import TopicComponent from './topicComponent'
 import EditTAVScomp from './tavs'
-import { v4 as uuidv4 } from 'uuid'
 
 export default function Edit(props) {
 
@@ -20,19 +19,17 @@ export default function Edit(props) {
   const tavsState = props.tavsState
 
   const [errorState, setErrorState] = useState('')
-  
-  const createNewTopic = () => {
-    setSelectedTopicState({
-      topicId: uuidv4(),
-      title: '',
-      string: '',
-      quill: '',
-      editing: true
-    })
-  }
 
   const selectTopic = (topicProp) => {
-    try {
+    if (topicProp.topicId === selectedTopicState.topicId) {
+      setSelectedTopicState({
+        topicId: '',
+        title: '',
+        string: '',
+        quill: '',
+        editing: false
+      })
+    } else {
       props.setSelectedTopicState({
         title: topicProp.title,
         string: topicProp.string,
@@ -40,8 +37,6 @@ export default function Edit(props) {
         editing: false,
         topicId: topicProp.topicId
       })
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -74,7 +69,6 @@ export default function Edit(props) {
               </button>
             </div>
           )}
-          <button onClick={createNewTopic}>create new topic</button>
         </div>
 
         <div className="my-5 bg-gray-100">
