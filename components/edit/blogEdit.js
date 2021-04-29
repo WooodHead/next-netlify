@@ -77,7 +77,7 @@ export default function BlogEdit(props) {
         const s3res = await Storage.put(uuidv4() + fileType, file)
         const getS3 = await Storage.get(s3res.key)
         const jsonToUrl = {
-          "bucket": "talktreeimagespublic",
+          "bucket": process.env.storage.BUCKET,
           "key": `public/${s3res.key}`,
           "edits": {
             "resize": {

@@ -48,3 +48,10 @@ Added ctrl alt b, v for highlighting html open/closes
 4/26
 twitter: @_gty__ failed to save in public string
 reminder - s3 bucket is not in cloudformation, do I add it to yaml... I dunno
+4/27
+Code license? I don't use anyone else code do I?
+4/28
+It seems like I might be able to use the user's id with the key on the image request
+I should implement uploading to protected, if this works with image handler - it does not
+seem to work by simply adding the identity id to key
+Cloudfront doesn't have the IAM, because its going to api gateway, going to lambda, to s3
