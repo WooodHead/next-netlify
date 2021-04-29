@@ -10,7 +10,7 @@ module.exports = (phase) => {
     // images: {
     //   domains: ["localhost", "d1la1a6cwiwn48.cloudfront.net", "https://d1la1a6cwiwn48.cloudfront.net"]
     // },
-    img_cloudfront: isProd ? "d31kifv93uudih.cloudfront.net" : "https://d1yh8cksvv9kll.cloudfront.net",
+    img_cloudfront: isProd ? "https://d31kifv93uudih.cloudfront.net" : "https://d1yh8cksvv9kll.cloudfront.net",
     STAGE: isProd? "prod" : "dev",
     STRIPE_KEY: isProd ? "pk_live_N8vqxQWqGt8Npt6r0yIJueJ3"
       : "pk_test_0ktNaTLSdckHwnQ7IuUQtFwK",
