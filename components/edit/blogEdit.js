@@ -178,7 +178,7 @@ export default function BlogEdit(props) {
         [{ 'header': [1, 2, false] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
         [{ 'list': 'bullet' }],
-        ['image']
+        ['link', 'image']
       ],
       handlers: {
         image: () => imageHandler(),

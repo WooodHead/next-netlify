@@ -12,8 +12,8 @@ Amplify.configure({
   },
   Storage: {
     AWSS3: {
-        bucket: process.env.storage.BUCKET, 
-        region: process.env.storage.REGION
+      bucket: process.env.storage.BUCKET,
+      region: process.env.storage.REGION
     }
-}
+  }
 })
