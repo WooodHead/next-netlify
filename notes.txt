@@ -55,3 +55,7 @@ It seems like I might be able to use the user's id with the key on the image req
 I should implement uploading to protected, if this works with image handler - it does not
 seem to work by simply adding the identity id to key
 Cloudfront doesn't have the IAM, because its going to api gateway, going to lambda, to s3
+4/30
+uploading images >5mb seems to fail, but this wasn't always the case. Tried to go back to aws-amplify 
+instead of storage specific, kept getting a 'steam' error
+Uploading images was a CORS exposedHeaders - Etag

@@ -12,7 +12,7 @@
     "@aws-amplify/api": "^3.2.29",
     "@aws-amplify/auth": "^3.4.29",
     "@aws-amplify/core": "^3.8.21",
-    "@aws-amplify/storage": "^3.3.29",
+    "@aws-amplify/storage": "^3.4.0",
     "@opentok/client": "^2.19.0",
     "@stripe/react-stripe-js": "^1.4.0",
     "@stripe/stripe-js": "^1.13.2",

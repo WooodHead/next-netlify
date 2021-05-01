@@ -41,7 +41,6 @@ export default function BlogEdit(props) {
       console.log(err)
     }
   }
-
   const turnSrcStringsToKeys = async (stringProp) => {
     console.log(stringProp)
     if (stringProp.indexOf('<img src=') > -1) {
@@ -61,7 +60,7 @@ export default function BlogEdit(props) {
     if (stringProp.indexOf('<img alt') > -1) {
     }
   }
-
+  
   const imageHandler = async () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
@@ -74,8 +73,11 @@ export default function BlogEdit(props) {
       const fileTypeLocation = file.name.indexOf('.')
       const fileType = file.name.slice(fileTypeLocation)
       try {
-        const s3res = await Storage.put(uuidv4() + fileType, file)
-        const getS3 = await Storage.get(s3res.key)
+        const putS3 = Storage.put(uuidv4() + fileType, file)
+        prompt('loading')
+        const s3res = await putS3
+        console.log('s3 res'. s3res)
+        // const getS3 = await Storage.get(s3res.key)
         const jsonToUrl = {
           "bucket": process.env.storage.BUCKET,
           "key": `public/${s3res.key}`,
