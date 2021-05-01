@@ -74,10 +74,8 @@ export default function BlogEdit(props) {
       const fileType = file.name.slice(fileTypeLocation)
       try {
         const putS3 = Storage.put(uuidv4() + fileType, file)
-        prompt('loading')
         const s3res = await putS3
         console.log('s3 res'. s3res)
-        // const getS3 = await Storage.get(s3res.key)
         const jsonToUrl = {
           "bucket": process.env.storage.BUCKET,
           "key": `public/${s3res.key}`,

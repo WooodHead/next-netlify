@@ -14,6 +14,7 @@ export default function SplashPage() {
     </Head>
     <div className="mx-5 my-5">
       <h1 className="mx-5 my-4 mt-10">A different way to make money blogging</h1>
+      <h2 className="mx-5 my-4 mt-10">You don't need to be an expert to start helping others</h2>
       {/* <h1 className="mx-5 my-4">get found on google</h1>
       <h1 className="mx-5 my-4 mb-10">make money maybe</h1> */}
       <Link className="mx-5 my-5" href="/6779991/How-to-upload-images-to-S3-using-Quill,-React,-and-Amplify">

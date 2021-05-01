@@ -34,7 +34,7 @@ export default function UserComp(props) {
             <h3 className='mx-5 mt-5'>{user.Username}</h3>
             <div className='mx-5 mb-3'>{user.TAVS}</div>
             {/* <div className='mx-5 mb-3'>{'$' + user.ppm}</div> */}
-            <button type="button" onClick={openCallPhone}>chat</button>
+            <button type="button" onClick={openCallPhone}>call</button>
             {user.receiver && <button className="mt-3" type="button" onClick={openReviewPhone}>donate</button>}
           </div>
           <div className="my-3" >
