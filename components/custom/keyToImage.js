@@ -92,7 +92,7 @@ export function turnBracketsToAlt(stringProp) {
       const matchedLength = matchedString.length
       const afterStringIndex = matchedIndex + matchedLength
       const afterString = stringProp[afterStringIndex]
-      const srcUrl = matchedString.match(/src="*.+"/)
+      const srcUrl = matchedString.match(/src=".+?"/)
       const addressArray = srcUrl[0].split('/')
       const convertedAtob = JSON.parse(Buffer.from(addressArray[3], 'base64').toString())
       if (afterString === '[') {
@@ -141,9 +141,12 @@ export function pullBracketData(stringProp) {
       const matchedLength = matchedString.length
       const afterStringIndex = matchedIndex + matchedLength
       const afterString = stringProp[afterStringIndex]
-      const srcUrl = matchedString.match(/src="*.+"/)
+      const srcUrl = matchedString.match(/src=".+?"/)
       const addressArray = srcUrl[0].split('/')
+      console.log(matchedString)
+      // SHIT CONTAINS ALT TAG
       const convertedAtob = JSON.parse(Buffer.from(addressArray[3], 'base64').toString())
+      console.log(convertedAtob)
       if (afterString === '[') {
         const altBeginning = stringProp.indexOf('[', afterStringIndex)
         const altEnd = stringProp.indexOf(';', afterStringIndex)
@@ -169,12 +172,12 @@ export function pullBracketData(stringProp) {
         if (altLength < 161) {
           const altString = stringProp.slice(altBeginning + 1, altEnd)
           const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
-          const string = matchedString.slice(0, 4) + " alt='" + altString + "'" + matchedString.slice(4, -1)
+          const string = matchedString.slice(0, 4) + " alt='" + altString + "'" + matchedString.slice(4, -1) + '>'
           mutableString = mutableString.replace(matchedString, string)
           console.log(matchedString)
           console.log(string)
         }
-        mutableString = mutableString.replace(/src=".*?"/, `src="${convertedUrl}"` + '>' )
+        mutableString = mutableString.replace(/src=".*?"/, `src="${convertedUrl}"`)
       }
     })
     return mutableString
