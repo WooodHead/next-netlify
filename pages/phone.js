@@ -216,20 +216,20 @@ const Phone = () => {
       <div className="mx-5 my-5">
         {state.pageState === 'waiting' && state.otToken.sessionId 
           ? <AcceptDecline /> 
-          : <div>
-            <div className="font-medium text-lg">Waiting on calls</div>
-            <div className="max-w-prose mt-5">You'll be e-mailed a link to open this phone when someone is trying to call you; 
-            you can receive notifications, and do not need this tab open; accept or decline the call after alerted</div>
-            <div>
-              </div>
-            </div>}
-        {state.pageState === 'accepted' 
-          && <div><InitOT
+          : state.pageState === 'accepted'
+          ? <div><InitOT
               tokenData={state.otToken}
               allowedDevices={state.TAVS}
             /></div>
-        }
-        {state.pageState === 'disconnected' && <div>caller disconnected, waiting</div>}
+          : state.pageState === 'disconnected'
+          ? <div>caller disconnected, waiting</div>
+          : <div>
+              <div className="font-medium text-lg">Waiting on calls</div>
+              <div className="max-w-prose mt-5">You'll be e-mailed a link to open this phone when someone is trying to call you; 
+              you can receive notifications, and do not need this tab open; accept or decline the call after alerted</div>
+              <div>
+              </div>
+            </div>}
       </div>
       </div>
       <Footer />

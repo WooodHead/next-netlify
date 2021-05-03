@@ -18,9 +18,7 @@ const CallComponent = (props) => {
           deviceInput: deviceInput,
         }
       }
-      console.log('call COMponent createSession init: ', myInit)
       const createSessionRes = await API.post(process.env.apiGateway.NAME, '/createSession2', myInit)
-      console.log('createSessionRes', createSessionRes)
       const OTcreds = {
         apiKey: createSessionRes.apikey,
         sessionId: createSessionRes.SessionId,
@@ -31,7 +29,6 @@ const CallComponent = (props) => {
   }
 
   if (tokenDataState) {
-    console.log('tokenDataState', tokenDataState)
     const otSDK = new OpenTokSDK(tokenDataState.OTcreds)
     otSDK.connect()
       .then(() => { setConnectedState(true) })
@@ -43,11 +40,11 @@ const CallComponent = (props) => {
         </div>
       )
     } else {
-      return <div>calling</div>
+      return <div className="m-5">Calling</div>
     }
   } else {
     return (
-      <div>establishing call</div>
+      <div className="m-5">establishing call</div>
     )
   }
 }

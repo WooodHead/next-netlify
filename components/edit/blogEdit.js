@@ -100,7 +100,7 @@ export default function BlogEdit(props) {
 
   const saveTopicString = async (isDraftProp) => {
     // const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-    const imgAltAdded = turnBracketsToAlt(selectedTopicState.quill)
+    // const imgAltAdded = turnBracketsToAlt(selectedTopicState.quill)
 
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')
@@ -123,11 +123,11 @@ export default function BlogEdit(props) {
         body: {
           deleteTopic: false,
           topicId: selectedTopicState.topicId,
-          string: imgAltAdded,
+          string: selectedTopicState.quill,
           accessToken: userSession.accessToken.jwtToken,
           topicObj: {
             title: { S: noSpacesTopic },
-            string: { S: imgAltAdded },
+            string: { S: selectedTopicState.quill },
             draft: { BOOL: isDraftProp }
           }
         }

@@ -59,3 +59,5 @@ Cloudfront doesn't have the IAM, because its going to api gateway, going to lamb
 uploading images >5mb seems to fail, but this wasn't always the case. Tried to go back to aws-amplify 
 instead of storage specific, kept getting a 'steam' error
 Uploading images was a CORS exposedHeaders - Etag
+5/1
+Previous notes -I can get preferred username out of the IDjwttoken.atob

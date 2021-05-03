@@ -27,7 +27,6 @@ const OTcomponent = (props) => {
   const router = useRouter()
 
   // let ringTimer = useRef()
-  console.log('otSDK: ', otSDK)
 
   const disconnectWithAPI = async () => {
     try {
@@ -149,7 +148,7 @@ const OTcomponent = (props) => {
 
       // clearTimeout(ringTimer.current)
       return (
-        <div>
+        <div className="m-5">
           {{
             "audio": <AudioComponent otSDK={otSDK} />,
             "video": <VideoComponent audioOn={audioOn} otSDK={otSDK} />,
@@ -169,7 +168,8 @@ const OTcomponent = (props) => {
     } else {
       // ringTimer.current = setTimeout(() => disconnectionTimer(), 120000)
       return (
-        <div>calling</div>
+        <div className="m-5 justify-center">Calling<span id="wait">.</span></div>
+
       )
     }
   // } else {

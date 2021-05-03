@@ -35,7 +35,7 @@ const ScreenComponent = props => {
 
     console.log(otSDK)
     const subscribeToStream = stream => {
-      if (otSDK.session.streamMap && otSDK.session.streamMap[stream.id]) { return; }
+      if (otSDK.session.streamMap && otSDK.session.streamMap[stream.id]) { return }
       const options = {
         insertMode: 'before',
         width: 1024,

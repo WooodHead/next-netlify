@@ -8,6 +8,7 @@ import UserComp from '../../components/[id]/userComp'
 import CommentComp from '../../components/[id]/commentComp'
 // import KeyToImage from '../../components/custom/keyToImage'
 // import Image from 'next/image'
+import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 
 export default function Topic({ user, topic }) {
   const router = useRouter()
@@ -115,7 +116,7 @@ export async function getStaticProps({ params }) {
 
     user.topics.forEach( async (topicObj) => {
     const title = topicObj.title.S
-    const string = topicObj.string.S
+    const string = turnBracketsToAlt(topicObj.string.S)
 
     // const draft = topicObj.draft.BOOL
     const topicId = topicObj.topicId

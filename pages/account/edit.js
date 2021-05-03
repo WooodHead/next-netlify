@@ -8,6 +8,7 @@ import EditComponent from '../../components/edit/editComponent'
 import BlogEdit from '../../components/edit/blogEdit'
 // import { turnBracketsToAlt } from "../../components/custom/keyToImage"
 import Footer from '../../components/navbar/footer'
+import { pullBracketData } from '../../components/custom/keyToImage'
 
 export default function EditParent(props) {
 
@@ -61,10 +62,11 @@ export default function EditParent(props) {
         const title = getUserRes.Item.topics.M[topicKey].M.title.S
         const titleWithSpaces = title.replaceAll('-', ' ')
         // const stringWithAltTags = turnBracketsToAlt(getUserRes.Item.topics.M[topicKey].M.string.S)
+        const stringWithBracketData = pullBracketData(getUserRes.Item.topics.M[topicKey].M.string.S)
         topicsArray.push({
           topicId: topicKey,
           title: titleWithSpaces,
-          string: getUserRes.Item.topics.M[topicKey].M.string.S,
+          string: stringWithBracketData,
           draft: getUserRes.Item.topics.M[topicKey].M.draft.BOOL
         })
       }
