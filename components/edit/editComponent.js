@@ -5,7 +5,7 @@ import NavbarComp from '../navbar/navbar'
 import PublicString from './publicString'
 import TopicComponent from './topicComponent'
 import EditTAVScomp from './tavs'
-
+import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 export default function Edit(props) {
 
   const publicStringState = props.publicStringState
@@ -21,6 +21,7 @@ export default function Edit(props) {
   const [errorState, setErrorState] = useState('')
 
   const selectTopic = (topicProp) => {
+    // console.log(turnBracketsToAlt(topicProp.string))
     if (topicProp.topicId === selectedTopicState.topicId) {
       setSelectedTopicState({
         topicId: '',
@@ -32,7 +33,7 @@ export default function Edit(props) {
     } else {
       props.setSelectedTopicState({
         title: topicProp.title,
-        string: topicProp.string,
+        string: turnBracketsToAlt(topicProp.string),
         quill: topicProp.string,
         editing: false,
         topicId: topicProp.topicId
