@@ -1,11 +1,9 @@
 export function turnBracketsToAlt(stringProp) {
   const imgIndex = stringProp.indexOf('<img ')
   let mutableString = stringProp
-  console.log(stringProp)
   if (imgIndex > -1) {
     const matched = stringProp.match(/<img .*?>/g)
     matched.forEach((matchedString) => {
-      console.log('matchedstring', matchedString)
       const matchedIndex = stringProp.indexOf(matchedString)
       const matchedLength = matchedString.length
       const afterStringIndex = matchedIndex + matchedLength
@@ -35,13 +33,11 @@ export function turnBracketsToAlt(stringProp) {
         }
         const convertedBTOA = Buffer.from(JSON.stringify(newJson)).toString('base64')
         const convertedUrl = process.env.img_cloudfront + "/" + convertedBTOA
-        console.log(altLength)
         if (altLength < 161) {
           const altString = stringProp.slice(altBeginning + 1, altEnd)
           const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
           const string = matchedString.slice(0, 4) + " alt='" + altString + "'" + matchedString.slice(4, -1)
           mutableString = mutableString.replace(matchedString + '[' + allBrackets + ']', string + '>')
-          console.log('hello', string)
         }
         mutableString = mutableString.replace(srcUrl, `src="${convertedUrl}"` )
       }

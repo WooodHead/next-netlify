@@ -31,6 +31,9 @@ export default function Topic({ user, topic }) {
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
         {/* <meta property="og:image" content={firstImgAddress}></meta> */}
       </Head>
       <div className="">

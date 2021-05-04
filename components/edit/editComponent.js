@@ -6,6 +6,7 @@ import PublicString from './publicString'
 import TopicComponent from './topicComponent'
 import EditTAVScomp from './tavs'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
+
 export default function Edit(props) {
 
   const publicStringState = props.publicStringState
@@ -83,6 +84,7 @@ export default function Edit(props) {
             setErrorState={setErrorState} />
           {errorState}
         </div>
+
         
       </div>
     </>

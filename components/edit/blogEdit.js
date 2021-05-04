@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { v4 as uuidv4 } from 'uuid'
 import API from '@aws-amplify/api'
@@ -10,13 +10,24 @@ import { turnBracketsToAlt } from "../../components/custom/keyToImage"
 
 const ReactQuill = dynamic(
   async () => {
-    const { default: RQ } = await import("react-quill");
+    const { default: RQ, Quill } = await import("react-quill");
+    // const code = Quill.import('formats/code-block')
+    // console.log(code)
+    // code.tagName = 'span'
+    // Quill.register(code, true)
     return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />
   },
   { ssr: false }
 )
 
+
 export default function BlogEdit(props) {
+
+  // useEffect(() => {
+  //   const { Quill } = ReactQuill
+  //   console.log(Quill)
+  // }, [ReactQuill])
+  
 
   const quillRef = useRef()
   const setUserState = (e) => props.setUserState(e)
@@ -172,7 +183,7 @@ export default function BlogEdit(props) {
   }
 
   const [modules] = useState({
-    // syntax: true,
+    syntax: true,
     toolbar: {
       container: [
         [{ 'header': [1, 2, false] }],

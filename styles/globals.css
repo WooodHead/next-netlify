@@ -11,6 +11,18 @@
   }
 }
 
+/* .ql-syntax {
+  border-radius: 3px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 5px 10px;
+} */
+
+
+/* code {
+  font-size: 50%;
+  padding: 2px 4px;
+} */
 /* .ql-editor {
   @apply w-full h-full overflow-auto;
 } */
