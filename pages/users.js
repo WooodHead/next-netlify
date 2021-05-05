@@ -30,17 +30,24 @@ const Users = ({ allUsers }) => {
                   >
                     <a className="flex overflow-auto flex-row">
                       <div>
-                        {user.Username}
-                        {user.TAVS}
-                        <div className="flex flex-col flex-wrap max-h-20">
+                        <div className="flex flex-col w-20">
+                          <div>
+                          {user.Username}
+                          </div>
+                          <div>
+                          {user.TAVS}
+                          </div>
+                        </div>
+
+                        {/* <div className="flex flex-col flex-wrap max-h-20">
                           {user.topics.map((topicObj) =>
                             <div className="mx-5" key={topicObj.topicId} >
                               {topicObj.title.S.replace(/-/g, ' ')}
                             </div>
                           )
-                          }</div>
+                          }</div> */}
                       </div>
-                      <div dangerouslySetInnerHTML={{ __html: user.publicString }}>
+                      <div className="ml-2" dangerouslySetInnerHTML={{ __html: user.publicString }}>
                       </div>
                     </a>
                   </Link>

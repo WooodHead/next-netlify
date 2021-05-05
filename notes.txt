@@ -65,3 +65,4 @@ Previous notes -I can get preferred username out of the IDjwttoken.atob
 Highlight is working but only in blog edit where I declare it, it also looks like shit, I'd rather
 just paste in code, and it keeps colors across pages.
 How does pasting in text with color work .. with Quill
+highlighting doesn't work in prod

@@ -9,7 +9,7 @@ import BlogEdit from '../../components/edit/blogEdit'
 // import { turnBracketsToAlt } from "../../components/custom/keyToImage"
 import Footer from '../../components/navbar/footer'
 import { pullBracketData } from '../../components/custom/keyToImage'
-import Head from 'next/head'
+// import Head from 'next/head'
 
 export default function EditParent(props) {
 
@@ -119,11 +119,11 @@ export default function EditParent(props) {
 
   return ( 
     <>
-    <Head>
+    {/* <Head>
     <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
-    </Head>
+    </Head> */}
     <div className="flex flex-col min-h-screen">
       <div className="flex-1">
       {selectedTopicState.editing 
