@@ -19,7 +19,7 @@ export default function Topic({ user, topic }) {
   }
 
   const userOnboarded = user.receiver
-  // const firstImgAddress = topic.firstImage
+  const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
 
@@ -34,7 +34,7 @@ export default function Topic({ user, topic }) {
         {/* <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css" />
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
-        {/* <meta property="og:image" content={firstImgAddress}></meta> */}
+        <meta property="og:image" content={firstImgAddress}></meta>
       </Head>
       <div className="">
         <NavbarComp />
@@ -134,6 +134,10 @@ export async function getStaticProps({ params }) {
       // } catch (err) {
       //   console.log(err)
       // }
+      const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
+      const imgSrc = wholeImgTag[1]
+      console.log(imgSrc)
+
       // const firstImageBeginning = keysNowStrings.indexOf('<img')
       // const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
       // const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
@@ -145,7 +149,7 @@ export async function getStaticProps({ params }) {
         // stringNoKeys: keysNowStrings,
         description: description,
         // draft: draft
-        // firstImage: imageMeta
+        firstImage: imgSrc
       }
     }
   })
