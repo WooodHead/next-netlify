@@ -41,17 +41,15 @@ export default function Topic({ user, topic }) {
         <UserComp user={user} />
         {/* <img src={html}  /> */}
         <div className="mx-5">
-            <div 
-              className="flex justify-center my-5 bg-gray-100" 
-              >
-                <div className="flex flex-col">
+            <div className="my-5 lg:flex justify-center bg-gray-100" >
+                <div className="">
                   <div 
-                    className="m-3 prose-sm prose sm:prose overflow-auto"
+                    className="m-3 sm:prose prose-sm prose overflow-auto"
                     dangerouslySetInnerHTML={{ __html: topic.string }} 
                   ></div>
-                  <div className="justify-center flex">
+                  {/* <div className="justify-center flex">
                   < CommentComp />
-                  </div>
+                  </div> */}
                   
                 </div>
                 

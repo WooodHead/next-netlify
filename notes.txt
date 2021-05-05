@@ -66,3 +66,5 @@ Highlight is working but only in blog edit where I declare it, it also looks lik
 just paste in code, and it keeps colors across pages.
 How does pasting in text with color work .. with Quill
 highlighting doesn't work in prod
+I don't want to use prose because of formatting error, but I kinda have to cause nothing has formatting otherwise...
+I guess I could format it myself if need be

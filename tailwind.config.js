@@ -10,7 +10,7 @@ module.exports = {
         DEFAULT: {
           css: {
             // color: '#432342',
-            maxWidth: '100ch',
+            maxWidth: '85ch',
             // a: {
             //   color: '#3182ce',
             //   '&:hover': {
