@@ -183,7 +183,7 @@ export default function BlogEdit(props) {
   }
 
   const [modules] = useState({
-    syntax: true,
+    // syntax: true,
     toolbar: {
       container: [
         [{ 'header': [1, 2, false] }],
