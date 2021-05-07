@@ -64,11 +64,13 @@ export default function EditParent(props) {
         const titleWithSpaces = title.replaceAll('-', ' ')
         // const stringWithAltTags = turnBracketsToAlt(getUserRes.Item.topics.M[topicKey].M.string.S)
         const stringWithBracketData = pullBracketData(getUserRes.Item.topics.M[topicKey].M.string.S)
+        const lastSave = getUserRes.Item.topics.M[topicKey].M.lastSave ? getUserRes.Item.topics.M[topicKey].M.lastSave.S : null
         topicsArray.push({
           topicId: topicKey,
           title: titleWithSpaces,
           string: stringWithBracketData,
-          draft: getUserRes.Item.topics.M[topicKey].M.draft.BOOL
+          draft: getUserRes.Item.topics.M[topicKey].M.draft.BOOL,
+          lastSave: lastSave
         })
       }
       const TAVS = []

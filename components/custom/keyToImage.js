@@ -19,8 +19,8 @@ export function turnBracketsToAlt(stringProp) {
         const brackets = stringProp.slice(altBeginning + 1, bracketEnd)
         const heightObj = brackets.match(/h:([0-9]+)/) 
         const widthObj = brackets.match(/w:([0-9]+)/)
-        const imgHeight = heightObj[1] ? heightObj[1] : 675
-        const imgWidth = widthObj[1] ? widthObj[1] : 900
+        const imgHeight = heightObj ? heightObj[1] : 675
+        const imgWidth = widthObj ? widthObj[1] : 900
         const newJson = {
           bucket: convertedAtob.bucket,
           key: convertedAtob.key,

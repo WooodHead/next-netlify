@@ -71,6 +71,7 @@ export default function BlogEdit(props) {
         const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
         const convertedUrl = process.env.img_cloudfront + "/" + converting
         editor.insertEmbed(range.index, 'image', convertedUrl)
+        editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
       } catch (err) {
         console.log('storage err', err)
       }

@@ -33,6 +33,10 @@ export default function TopicComponent(props) {
           dangerouslySetInnerHTML={{ __html: selectedTopicState.string }} >
         </div>
       </div>
+      {selectedTopicState.lastSave && <div className="text-xs flex justify-center ">
+        last updated: {selectedTopicState.lastSave}
+      </div>}
+
     </div>
   )
 }

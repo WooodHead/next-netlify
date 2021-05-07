@@ -28,18 +28,34 @@ export default function Edit(props) {
         title: '',
         string: '',
         quill: '',
-        editing: false
+        editing: false,
+        lastSave: ''
       })
     } else {
+      let dateString = ''
+      if (topicProp.lastSave) {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"]
+        const lastSaveDate = new Date(JSON.parse(topicProp.lastSave))
+        console.log(lastSaveDate)
+        const day = lastSaveDate.getDate()
+        const month = lastSaveDate.getMonth()
+        const year = lastSaveDate.getFullYear()
+        dateString = '' + monthNames[month] + ' ' + day + ' ' + year
+      }
+
       props.setSelectedTopicState({
         title: topicProp.title,
         string: turnBracketsToAlt(topicProp.string),
         quill: topicProp.string,
         editing: false,
-        topicId: topicProp.topicId
+        topicId: topicProp.topicId,
+        lastSave: dateString
       })
     }
   }
+
+  
 
   return (
     <>

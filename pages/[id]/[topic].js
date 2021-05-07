@@ -32,10 +32,6 @@ export default function Topic({ user, topic }) {
     const year = lastSaveDate.getFullYear()
     dateString = '' + monthNames[month] + ' ' + day + ' ' + year
   }
-  const titleDesImage = {
-    title: title,
-
-  }
 
   return (
     <>
