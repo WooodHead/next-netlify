@@ -141,7 +141,7 @@ const Phone = () => {
         }
       })
     } catch (err) {
-      console.log("goOnline", err)
+      err === 'No current user' ? setState({...state, pageState: 'no auth'}) : console.log("getUserInPhone", err)
     }
   }
 
@@ -223,6 +223,8 @@ const Phone = () => {
             /></div>
           : state.pageState === 'disconnected'
           ? <div>caller disconnected, waiting</div>
+          : state.pageState === "no auth"
+          ? <div>You need to be logged in</div>
           : <div>
               <div className="font-medium text-lg">Waiting on calls</div>
               <div className="max-w-prose mt-5">You'll be e-mailed a link to open this phone when someone is trying to call you; 
