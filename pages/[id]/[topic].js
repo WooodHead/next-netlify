@@ -26,7 +26,6 @@ export default function Topic({ user, topic }) {
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"]
     const lastSaveDate = new Date(JSON.parse(topic.lastSave))
-    console.log(lastSaveDate)
     const day = lastSaveDate.getDate()
     const month = lastSaveDate.getMonth()
     const year = lastSaveDate.getFullYear()
