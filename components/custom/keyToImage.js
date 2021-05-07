@@ -17,10 +17,10 @@ export function turnBracketsToAlt(stringProp) {
         const bracketEnd = stringProp.indexOf(']', altBeginning)
         const altLength = altEnd - altBeginning
         const brackets = stringProp.slice(altBeginning + 1, bracketEnd)
-        const heightObj = brackets.match(/(h:[0-9]+)/)
-        const widthObj = brackets.match(/(w:[0-9]+)/)
-        const imgHeight = heightObj[0].match(/[0-9]+/)
-        const imgWidth = widthObj[0].match(/[0-9]+/)
+        const heightObj = brackets.match(/h:([0-9]+)/) 
+        const widthObj = brackets.match(/w:([0-9]+)/)
+        const imgHeight = heightObj[1] ? heightObj[1] : 675
+        const imgWidth = widthObj[1] ? widthObj[1] : 900
         const newJson = {
           bucket: convertedAtob.bucket,
           key: convertedAtob.key,
@@ -36,7 +36,11 @@ export function turnBracketsToAlt(stringProp) {
         if (altLength < 161) {
           const altString = stringProp.slice(altBeginning + 1, altEnd)
           const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
-          const string = matchedString.slice(0, 4) + " alt='" + altString + "'" + matchedString.slice(4, -1)
+          const string = matchedString.slice(0, 4) 
+          + " alt='" + altString + "'" 
+          + " width='" + imgWidth + "'"
+          + " height='" + imgHeight + "'"
+          + matchedString.slice(4, -1)
           mutableString = mutableString.replace(matchedString + '[' + allBrackets + ']', string + '>')
         }
         mutableString = mutableString.replace(srcUrl, `src="${convertedUrl}"` )
@@ -66,10 +70,10 @@ export function pullBracketData(stringProp) {
         const bracketEnd = stringProp.indexOf(']', altBeginning)
         const altLength = altEnd - altBeginning
         const brackets = stringProp.slice(altBeginning + 1, bracketEnd)
-        const heightObj = brackets.match(/(h:[0-9]+)/)
-        const widthObj = brackets.match(/(w:[0-9]+)/)
-        const imgHeight = heightObj[0].match(/[0-9]+/)
-        const imgWidth = widthObj[0].match(/[0-9]+/)
+        const heightObj = brackets.match(/h:([0-9]+)/)
+        const widthObj = brackets.match(/w:([0-9]+)/)
+        const imgHeight = heightObj[1]
+        const imgWidth = widthObj[1]
         const newJson = {
           bucket: convertedAtob.bucket,
           key: convertedAtob.key,

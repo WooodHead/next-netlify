@@ -71,3 +71,5 @@ I guess I could format it myself if need be
 5/6
 In /topics im updating a topicObj in dynamodb without doing anything to the object, is this a vulnerability?
 Could someone said whatever obj they want to the database? What could that do..
+That Lambda proxy response... gotta be right, "" + var didn't work for body, had to use JSON.stringify()
+Didn't need next image, just used image with height and width to prerender

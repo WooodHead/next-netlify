@@ -6,8 +6,8 @@ import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
 import CommentComp from '../../components/[id]/commentComp'
-// import Image from 'next/image'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
+// import Image from 'next/image'
 
 export default function Topic({ user, topic }) {
   const router = useRouter()
@@ -21,7 +21,7 @@ export default function Topic({ user, topic }) {
   const description = topic.description
   const title = topic.title
   let dateString = ''
-  console.log(Date(topic.lastSave))
+
   if (topic.lastSave) {
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"]
@@ -32,6 +32,11 @@ export default function Topic({ user, topic }) {
     const year = lastSaveDate.getFullYear()
     dateString = '' + monthNames[month] + ' ' + day + ' ' + year
   }
+  const titleDesImage = {
+    title: title,
+
+  }
+
   return (
     <>
       <Head>
@@ -48,10 +53,12 @@ export default function Topic({ user, topic }) {
         <UserComp user={user} />
         <div className="mx-5">
             <div className="my-5 lg:flex justify-center bg-gray-100" >
-                <div className="">
-                
+                <div className="prose">
+                  {/* <h1>{title}</h1>
+                  <h2>{description}</h2>
+                  <Image src={firstImgAddress} alt={topic.firstImageAlt}></Image> */}
                   <div 
-                    className="m-3 sm:prose prose-sm prose overflow-auto"
+                    className="m-3 sm:prose prose-sm overflow-auto"
                     dangerouslySetInnerHTML={{ __html: topic.string }} 
                   ></div>
                   {/* <div className="justify-center flex">
@@ -133,6 +140,7 @@ export async function getStaticProps({ params }) {
       const description = h2Tag ? h2Tag[1] : null
       const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
       const imgSrc = wholeImgTag ? wholeImgTag[1] : null
+      // add height and width to <img>s
       topic = {
         topicId: topicId,
         title: titleWithSpaces,
@@ -140,7 +148,7 @@ export async function getStaticProps({ params }) {
         description: description,
         // draft: draft
         firstImage: imgSrc,
-        lastSave: lastSave
+        lastSave: lastSave,
       }
     }
   })

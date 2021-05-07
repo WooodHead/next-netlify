@@ -57,7 +57,6 @@ export default function BlogEdit(props) {
       try {
         const putS3 = Storage.put(uuidv4() + fileType, file)
         const s3res = await putS3
-        console.log('s3 res'. s3res)
         const jsonToUrl = {
           "bucket": process.env.storage.BUCKET,
           "key": `public/${s3res.key}`,
@@ -71,8 +70,6 @@ export default function BlogEdit(props) {
         }
         const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
         const convertedUrl = process.env.img_cloudfront + "/" + converting
-        console.log(convertedUrl)
-
         editor.insertEmbed(range.index, 'image', convertedUrl)
       } catch (err) {
         console.log('storage err', err)
@@ -157,7 +154,7 @@ export default function BlogEdit(props) {
     // syntax: true,
     toolbar: {
       container: [
-        [{ 'header': [1, 2, false] }],
+        [{ 'header': 1},{ 'header': 2}],
         ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
         [{ 'list': 'bullet' }],
         ['link', 'image'],
