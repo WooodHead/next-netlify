@@ -32,12 +32,12 @@ export default function PublicString(props) {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
           stringType: 'publicString',
-          string: `` + textAreaRef.current.value
+          string: `` + textAreaRef.current.value,
+          accessToken: userSession.accessToken.jwtToken
         }
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
-
-      setPublicStringState({ string: savedString.body, saved: true })
+      setPublicStringState({ string: savedString, saved: true })
     } catch (err) {
       console.log(err)
     }

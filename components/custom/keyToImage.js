@@ -3,7 +3,7 @@ export function turnBracketsToAlt(stringProp) {
   let mutableString = stringProp
   if (imgIndex > -1) {
     const matched = stringProp.match(/<img .*?>/g)
-    matched.forEach((matchedString) => {
+    matched?.forEach((matchedString) => {
       const matchedIndex = stringProp.indexOf(matchedString)
       const matchedLength = matchedString.length
       const afterStringIndex = matchedIndex + matchedLength

@@ -8,7 +8,6 @@ import EditTAVScomp from './tavs'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 
 export default function Edit(props) {
-
   const publicStringState = props.publicStringState
   const setPublicStringState = (e) => { props.setPublicStringState(e) }
   const userState = props.userState

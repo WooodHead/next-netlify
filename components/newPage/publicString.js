@@ -31,7 +31,8 @@ export default function PublicString(props) {
     //     headers: { Authorization: userSession.idToken.jwtToken },
     //     body: {
     //       stringType: 'publicString',
-    //       string: `` + publicStringState.quill
+    //       string: `` + publicStringState.quill,
+    //       accessToken:
     //     }
     //   }
     //   const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)

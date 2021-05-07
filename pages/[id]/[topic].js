@@ -6,7 +6,6 @@ import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
 import CommentComp from '../../components/[id]/commentComp'
-// import KeyToImage from '../../components/custom/keyToImage'
 // import Image from 'next/image'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 
@@ -17,14 +16,22 @@ export default function Topic({ user, topic }) {
 <div>error</div>
     )
   }
-
   const userOnboarded = user.receiver
   const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
-
-  // const newString = KeyToImage(topic.string)
-
+  let dateString = ''
+  console.log(Date(topic.lastSave))
+  if (topic.lastSave) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"]
+    const lastSaveDate = new Date(JSON.parse(topic.lastSave))
+    console.log(lastSaveDate)
+    const day = lastSaveDate.getDate()
+    const month = lastSaveDate.getMonth()
+    const year = lastSaveDate.getFullYear()
+    dateString = '' + monthNames[month] + ' ' + day + ' ' + year
+  }
   return (
     <>
       <Head>
@@ -39,10 +46,10 @@ export default function Topic({ user, topic }) {
       <div className="">
         <NavbarComp />
         <UserComp user={user} />
-        {/* <img src={html}  /> */}
         <div className="mx-5">
             <div className="my-5 lg:flex justify-center bg-gray-100" >
                 <div className="">
+                
                   <div 
                     className="m-3 sm:prose prose-sm prose overflow-auto"
                     dangerouslySetInnerHTML={{ __html: topic.string }} 
@@ -50,6 +57,7 @@ export default function Topic({ user, topic }) {
                   {/* <div className="justify-center flex">
                   < CommentComp />
                   </div> */}
+                  <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div>
                   
                 </div>
                 
@@ -71,9 +79,6 @@ export async function getStaticPaths() {
           paths.push({ params: { id: user.Username.S, topic: topicObj.M.title.S } })
         }
       }
-      // Object.keys(user.topics.M).map((topic) => {
-      //   paths.push({ params: { id: user.Username.S, topic: topic } })
-      // })
     } else {
       paths.push({ params: { id: user.Username.S, topic: "" } })
     }
@@ -121,35 +126,21 @@ export async function getStaticProps({ params }) {
 
     // const draft = topicObj.draft.BOOL
     const topicId = topicObj.topicId
+    const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
     if (title === params.topic) {
-
       const titleWithSpaces = title.replace(/-/g, ' ')
-      const h2Index = string.indexOf('<h2>')
-      const h2IndexEnd = string.indexOf('</h2>', h2Index)
-      const h2Description = string.slice(h2Index + 4, h2IndexEnd)
-      const description = (h2Index > -1) ? h2Description : 'no description provided'
-      /* this runs in case keys still exist from previous */
-      // const keysNowStrings = string ? KeyToImage(string) : null
-      // console.log(keysNowStrings)
-      // } catch (err) {
-      //   console.log(err)
-      // }
+      const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
+      const description = h2Tag ? h2Tag[1] : null
       const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
-      const imgSrc = wholeImgTag[1]
-      console.log(imgSrc)
-
-      // const firstImageBeginning = keysNowStrings.indexOf('<img')
-      // const firstImageEnd = keysNowStrings.indexOf('/>', firstImageBeginning)
-      // const firstImage = keysNowStrings.slice(firstImageBeginning + 10, firstImageEnd - 2)
-      // const imageMeta = (firstImageBeginning > - 1) ? firstImage : 'no image provided'
+      const imgSrc = wholeImgTag ? wholeImgTag[1] : null
       topic = {
         topicId: topicId,
         title: titleWithSpaces,
         string: string,
-        // stringNoKeys: keysNowStrings,
         description: description,
         // draft: draft
-        firstImage: imgSrc
+        firstImage: imgSrc,
+        lastSave: lastSave
       }
     }
   })

@@ -127,7 +127,8 @@ export default function EditComponent(props) {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
           stringType: 'publicString',
-          string: `` + publicStringState.quill
+          string: `` + publicStringState.quill,
+          accessToken: userSession.accessToken.jwtToken
         }
       }
       const escapedString = selectedTopicState.quill.replaceAll('"', '\\"')

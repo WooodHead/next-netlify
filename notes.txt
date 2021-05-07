@@ -68,3 +68,6 @@ How does pasting in text with color work .. with Quill
 highlighting doesn't work in prod
 I don't want to use prose because of formatting error, but I kinda have to cause nothing has formatting otherwise...
 I guess I could format it myself if need be
+5/6
+In /topics im updating a topicObj in dynamodb without doing anything to the object, is this a vulnerability?
+Could someone said whatever obj they want to the database? What could that do..

@@ -23,12 +23,6 @@ const ReactQuill = dynamic(
 
 export default function BlogEdit(props) {
 
-  // useEffect(() => {
-  //   const { Quill } = ReactQuill
-  //   console.log(Quill)
-  // }, [ReactQuill])
-  
-
   const quillRef = useRef()
   const setUserState = (e) => props.setUserState(e)
   const getUserData = () => props.getUserData()
@@ -42,36 +36,13 @@ export default function BlogEdit(props) {
   const onCloseTopicEdit = async () => {
     try {
       getUserData()
-      // const userSession = await Auth.currentAuthenticatedUser()
-      // const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
-      // const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
-      // const stringWithImages = await KeyToImage(getAllUserRes.Item.topics.M[selectedTopicState.topic]?.S)
       setSelectedTopicState({ editing: false, saved: false })
     } catch (err) {
       setSelectedTopicState({ editing: false, saved: false })
       console.log(err)
     }
   }
-  const turnSrcStringsToKeys = async (stringProp) => {
-    console.log(stringProp)
-    if (stringProp.indexOf('<img src=') > -1) {
-      const srcAddress = stringProp.slice(stringProp.indexOf('<img src='))
-      console.log(srcAddress)
-      const slashSplit = srcAddress.split('/')
-      const qSplit = slashSplit[4].split('?')
-      const imgKey = qSplit[0]
-      // const authIdentity = await Auth.currentCredentials()
-      const convertedString = stringProp.match(/<img .*?>/, `{key: ${imgKey}, id: ${null}}`)
-      const afterIterated = turnSrcStringsToKeys(convertedString)
-      return afterIterated
-    }
-    return stringProp
-  }
-  const turnAltToBrackets = (stringProp) => {
-    if (stringProp.indexOf('<img alt') > -1) {
-    }
-  }
-  
+
   const imageHandler = async () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
@@ -110,8 +81,6 @@ export default function BlogEdit(props) {
   }
 
   const saveTopicString = async (isDraftProp) => {
-    // const keyifiedString = await turnSrcStringsToKeys(selectedTopicState.quill)
-    // const imgAltAdded = turnBracketsToAlt(selectedTopicState.quill)
 
     let firstHeading1 = 'no title'
     const h1index = selectedTopicState.quill.indexOf('<h1>')
@@ -129,6 +98,7 @@ export default function BlogEdit(props) {
 
     try {
       const userSession = await Auth.currentSession()
+      const now = new Date()
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
@@ -139,7 +109,8 @@ export default function BlogEdit(props) {
           topicObj: {
             title: { S: noSpacesTopic },
             string: { S: selectedTopicState.quill },
-            draft: { BOOL: isDraftProp }
+            draft: { BOOL: isDraftProp },
+            lastSave: { S: "" + now.getTime() }
           }
         }
       }
@@ -189,7 +160,8 @@ export default function BlogEdit(props) {
         [{ 'header': [1, 2, false] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
         [{ 'list': 'bullet' }],
-        ['link', 'image']
+        ['link', 'image'],
+        // [{ 'background': [] }],
       ],
       handlers: {
         image: () => imageHandler(),
