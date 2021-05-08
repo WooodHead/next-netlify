@@ -48,7 +48,7 @@ export default function Topic({ user, topic }) {
         <UserComp user={user} />
         <div className="mx-5">
             <div className="my-5 lg:flex justify-center bg-gray-100" >
-                <div className="prose">
+                <div className="my-5 prose">
                   {/* <h1>{title}</h1>
                   <h2>{description}</h2>
                   <Image src={firstImgAddress} alt={topic.firstImageAlt}></Image> */}

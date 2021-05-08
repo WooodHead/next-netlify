@@ -49,13 +49,13 @@ export default function EditParent(props) {
   const setSelectedTopic = (e) => { setSelectedTopicState({...selectedTopicState, ...e}) }
 
   const getUserData = async () => {
-    const userSession = await Auth.currentAuthenticatedUser()
-    const getUserInit = {
-      headers: {
-        Authorization: userSession.attributes.preferred_username
-      }
-    }
     try {
+      const userSession = await Auth.currentAuthenticatedUser()
+      const getUserInit = {
+        headers: {
+          Authorization: userSession.attributes.preferred_username
+        }
+      }
       const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const topicsArray = []
       
