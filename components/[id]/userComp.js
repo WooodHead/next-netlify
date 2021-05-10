@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import Link from 'next/link'
-// import CardTip from '../review/cardTip'
+
 export default function UserComp(props) {
 
   const user = props.user
-
 
   const openCallPhone = () => {
     const devSite = `/${user.Username}/call`

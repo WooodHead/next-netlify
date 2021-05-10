@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
 import '../../configureAmplify'
-import {loadStripe} from '@stripe/stripe-js'
+// import {loadStripe} from '@stripe/stripe-js'
 import Image from 'next/image'
 
-const stripePromise = loadStripe(process.env.STRIPE_KEY)
+// const stripePromise = loadStripe(process.env.STRIPE_KEY)
 
 export default function Onboard() {
   const [onboardingLinkState, setOnboardingLinkState] = useState()

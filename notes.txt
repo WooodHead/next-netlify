@@ -73,3 +73,5 @@ In /topics im updating a topicObj in dynamodb without doing anything to the obje
 Could someone said whatever obj they want to the database? What could that do..
 That Lambda proxy response... gotta be right, "" + var didn't work for body, had to use JSON.stringify()
 Didn't need next image, just used image with height and width to prerender
+5/8
+"can you name everything in my bookmark bar" - tweet

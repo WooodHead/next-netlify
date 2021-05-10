@@ -102,13 +102,15 @@ const Call = ({ user }) => {
   } else {
     return (
       <div className="mx-5 my-2">
-        <div className="mt-1">Receiver: {id}</div>
-        <div className="mt-1 mb-3">Price: free</div>
+        <div className="text-3xl my-5 mx-5">Receiver: {id}</div>
+        <div className="text-2xl my-5 mx-5">Price: free</div>
+        <div className="text-xl my-5 mx-5">
         < CustomRadioButton TAVS="text" />
         < CustomRadioButton TAVS="audio" />
         < CustomRadioButton TAVS="video" />
         < CustomRadioButton TAVS="screen" />
-        <button onClick={() => setCallingState(true)} className="mt-3 mb-3">call</button>
+        <button onClick={() => setCallingState(true)} className="my-10">Call</button>
+        </div>
         {deviceBadState && <div>Choose an available device</div>}
         {mobileState && (deviceInputState === 'screen') && <div style={{ color: 'red' }}>mobile devices do not currently support screen publishing</div>}
       </div>

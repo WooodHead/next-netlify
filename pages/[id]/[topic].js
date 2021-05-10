@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import API from '@aws-amplify/api'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -56,9 +56,9 @@ export default function Topic({ user, topic }) {
                     className="m-3 sm:prose prose-sm overflow-auto"
                     dangerouslySetInnerHTML={{ __html: topic.string }} 
                   ></div>
-                  {/* <div className="justify-center flex">
+                  <div className="justify-center flex">
                   < CommentComp />
-                  </div> */}
+                  </div>
                   <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div>
                   
                 </div>
