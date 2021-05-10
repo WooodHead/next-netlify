@@ -27,27 +27,21 @@ export default function PPM(props) {
       setPPMstate(eventNumber.currentTarget.value)
     }
   }
-
+  //userState.receiver - does that exist?
   const submitPPM = async e => {
     e.preventDefault()
     try {
       const userSession = await Auth.currentSession()
-      if (userState.reciever) {
+      if (userState.receiver) {
         const myInit = {
           headers: { Authorization: userSession.idToken.jwtToken },
           body: { PPMnum: "" + ppmState }
         }
+        console.log('my init', myInit)
         setPPMloading(true)
-        API.post(process.env.apiGateway.NAME, "/setPPM", myInit)
-          .then((res) => {
-            if (res.statusCode === 500) {setPPMdenied(true)} else {
-              setPPMdenied(false)
-              getUserData()
-            }
-            setPPMloading(false)
-          }).catch(err => { console.log(err)
-            setPPMloading(false)
-          });
+        const PPMres = await API.post(process.env.apiGateway.NAME, "/setPPM", myInit)
+        PPMres.statusCode === 500 ? setPPMdenied(true) : setPPMdenied(false), getUserData()
+        setPPMloading(false)
       } else {
         setNoReciever(true)
       }

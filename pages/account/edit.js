@@ -27,7 +27,8 @@ export default function EditParent(props) {
     ratingAv: 'loading...',
     publicString: 'loading...',
     topics: [],
-    TAVS: []
+    TAVS: [],
+    receiver: null
   })
   const [publicStringState, setPublicStringState] = useState({
     string: '',

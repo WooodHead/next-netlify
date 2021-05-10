@@ -103,7 +103,8 @@ const Call = ({ user }) => {
     return (
       <div className="mx-5 my-2">
         <div className="text-3xl my-5 mx-5">Receiver: {id}</div>
-        <div className="text-2xl my-5 mx-5">Price: free</div>
+        <div className="text-2xl my-5 mx-5">Price: ${user.ppm} per minute</div>
+        <div className="mx-5">with a $0.50 minimum</div>
         <div className="text-xl my-5 mx-5">
         < CustomRadioButton TAVS="text" />
         < CustomRadioButton TAVS="audio" />

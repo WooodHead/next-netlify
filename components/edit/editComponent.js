@@ -72,12 +72,11 @@ export default function Edit(props) {
               setTavsState={setTavsState}
               getUserData={getUserData} />
           </div>
+          <div className="flex flex-col">
           <PublicString
             publicStringState={publicStringState}
-            setPublicStringState={setPublicStringState} />
-        </div>
-
-        <div className="bg-gray-100" >
+            setPublicStringState={setPublicStringState} 
+            />
           {userState.topics.map((topicObj) =>
             <div key={topicObj.title} >
               <button className={topicObj.draft ? "bg-gray-300" : ""} onClick={() => selectTopic(topicObj)}>
@@ -85,7 +84,10 @@ export default function Edit(props) {
               </button>
             </div>
           )}
+          </div>
         </div>
+
+
 
         <div className="my-5 bg-gray-100">
           <TopicComponent

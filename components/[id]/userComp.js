@@ -37,24 +37,21 @@ export default function UserComp(props) {
           </div>
           <div className="my-3" >
           <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
-          </div>
-        </div>
-
-        <div className="bg-gray-100" >
-          {(user.topics).map((topicObj) => {
-            return (
-              <div key={topicObj.topicId} className="my-3">
+                  <div className="bg-gray-100" >
+          {(user.topics).map((topicObj) => (
+            <div key={topicObj.topicId} className="my-3">
               <Link href={"/" + user.Username + "/" + topicObj.title.S}>
                 <a className="px-2 py-1 mx-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
                   {topicObj.title.S.replace(/-/g, ' ')}
                 </a>
                 </Link>
             </div>
-            )
-          }
-
-          )}
+          ))}
         </div>
+          </div>
+        </div>
+
+
       </div>
   )
 }

@@ -75,3 +75,6 @@ That Lambda proxy response... gotta be right, "" + var didn't work for body, had
 Didn't need next image, just used image with height and width to prerender
 5/8
 "can you name everything in my bookmark bar" - tweet
+5/10
+Active/PPM glitch - opening phone makes user active, can't edit PPM while active, have no way of going inactive
+except dynamodb - if I remove, You could change price mid call, and charge would use the new price

@@ -12,15 +12,15 @@ export default function Onboard() {
 
 
   const getOnboardLink = async () => {
-    console.log('getOnboardingLink render')
-    const authSession = await Auth.currentAuthenticatedUser()
-    const userSession = authSession.signInUserSession
-    const params = {
-      headers: { Authorization: userSession.idToken.jwtToken }
+    try {
+      const authSession = await Auth.currentAuthenticatedUser()
+      const userSession = authSession.signInUserSession
+      const params = { headers: { Authorization: userSession.idToken.jwtToken } }
+      const { status, body } = await API.get(process.env.apiGateway.NAME, '/onboard', params)
+      setOnboardingLinkState(body.url)
+    } catch (err) {
+      console.log(err)
     }
-    const { status, body } = await API.get(process.env.apiGateway.NAME, '/onboard', params)
-    setOnboardingLinkState(body.url)
-
   }
 
   useEffect(() => {
