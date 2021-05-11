@@ -25,13 +25,19 @@ export default function SplashPage() {
       <Head>
         <title>Talktree</title>
         <meta name="description" content="Ask an expert on demand" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="talktree.me" />
+        <meta property="twitter:url" content="https://talktree.me" />
+        <meta name="twitter:title" content="Talktree" />
+        <meta name="twitter:description" content="Ask an expert on demand" />
+        <meta name="twitter:image" content="https://talktree.me/1200x630.png" />
       </Head>
       <div className="mx-20 my-5">
         <h1 className="text-5xl my-10">Talk to an expert immediately</h1>
 
         <div className="text-2xl">Talktree is a platform for experts to pick up your call when you need it</div>
         <div className="mt-10 mb-5">Select one of the available experts in the Users tab</div>
-        <img width="421" src="/with677.png" alt="Talktree example users list"></img>
+        <img width="" src="/with677.png" alt="Talktree example users list"></img>
         <div className="mt-10 mb-5">Press call to open the call options
       </div>
 
