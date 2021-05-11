@@ -10,12 +10,6 @@ import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 // import Image from 'next/image'
 
 export default function Topic({ user, topic }) {
-  const router = useRouter()
-  if (router.isFallback) {
-    return (
-<div>error</div>
-    )
-  }
   const userOnboarded = user.receiver
   const firstImgAddress = topic.firstImage
   const description = topic.description
@@ -87,13 +81,13 @@ export async function getStaticPaths() {
   })
 
   return {
-    paths,
-    fallback: true
+    paths: paths,
+    fallback: "blocking"
   }
 }
 
 export async function getStaticProps({ params }) {
-  let topic
+  let topic = {}
   const specificUserInit = { headers: { Authorization: params.id } }
   const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", specificUserInit)
   const userRes = getUserRes.Item
@@ -121,27 +115,22 @@ export async function getStaticProps({ params }) {
     topics: topicsArray || null,
     receiver: userRes.receiver.BOOL
   }
-
     user.topics.forEach( async (topicObj) => {
     const title = topicObj.title.S
     const string = turnBracketsToAlt(topicObj.string.S)
-
-    // const draft = topicObj.draft.BOOL
     const topicId = topicObj.topicId
     const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
-    if (title === params.topic) {
+    if (title === params?.topic) {
       const titleWithSpaces = title.replace(/-/g, ' ')
       const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
       const description = h2Tag ? h2Tag[1] : null
       const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
       const imgSrc = wholeImgTag ? wholeImgTag[1] : null
-      // add height and width to <img>s
       topic = {
         topicId: topicId,
         title: titleWithSpaces,
         string: string,
         description: description,
-        // draft: draft
         firstImage: imgSrc,
         lastSave: lastSave,
       }
