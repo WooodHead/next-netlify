@@ -16,7 +16,6 @@ export default function CommentComp () {
     } catch (err) {
       console.log(err)
     }
-
   }
 
   return (

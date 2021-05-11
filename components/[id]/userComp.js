@@ -34,6 +34,7 @@ export default function UserComp(props) {
             {/* <div className='mx-5 mb-3'>{'$' + user.ppm}</div> */}
             <button type="button" onClick={openCallPhone}>call</button>
             {user.receiver && <button className="mt-3" type="button" onClick={openReviewPhone}>donate</button>}
+            {user.ppm > 0 && <div className="text-md m-2">${user.ppm} / minute</div>}
           </div>
           <div className="my-3" >
           <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div>
