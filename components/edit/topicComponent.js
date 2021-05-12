@@ -13,7 +13,7 @@ export default function TopicComponent(props) {
       topicId: uuidv4(),
       title: '',
       string: '',
-      quill: '',
+      quill: '<h1>This is the page title and URL</h1><h2>And this is the page description</h2><img src="https://d1yh8cksvv9kll.cloudfront.net/eyJidWNrZXQiOiJ0dDMtczMtZGV2LWltYWdlc2J1Y2tldC1vaG12ZmN1a3h3aXYiLCJrZXkiOiJwdWJsaWMvMGNjMDRlYmUtY2YzYy00MDdmLTg3OGYtYzBkZjA4OGUzODgzLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6OTAwLCJoZWlnaHQiOjY3NSwiZml0IjoiY292ZXIifX19" height="300" width="400" ></img>[this is the img alt tag; h:300, w:400]',
       editing: true
     })
   }

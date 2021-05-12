@@ -21,7 +21,6 @@ export default function Edit(props) {
   const [errorState, setErrorState] = useState('')
 
   const selectTopic = (topicProp) => {
-    // console.log(turnBracketsToAlt(topicProp.string))
     if (topicProp.topicId === selectedTopicState.topicId) {
       setSelectedTopicState({
         topicId: '',
@@ -42,7 +41,6 @@ export default function Edit(props) {
         const year = lastSaveDate.getFullYear()
         dateString = '' + monthNames[month] + ' ' + day + ' ' + year
       }
-
       props.setSelectedTopicState({
         title: topicProp.title,
         string: turnBracketsToAlt(topicProp.string),
@@ -53,8 +51,6 @@ export default function Edit(props) {
       })
     }
   }
-
-  
 
   return (
     <>

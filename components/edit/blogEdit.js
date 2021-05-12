@@ -150,7 +150,7 @@ export default function BlogEdit(props) {
     //   ? setUserState({ topics: props.userState.topics.filter((topicObj) => topicObj.topicId !== selectedTopicState.topicId)})
     //   : console.log('delete failed')
   }
-
+  console.log(selectedTopicState)
   const [modules] = useState({
     // syntax: true,
     toolbar: {
