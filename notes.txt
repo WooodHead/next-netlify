@@ -78,3 +78,6 @@ Didn't need next image, just used image with height and width to prerender
 5/10
 Active/PPM glitch - opening phone makes user active, can't edit PPM while active, have no way of going inactive
 except dynamodb - if I remove, You could change price mid call, and charge would use the new price
+5/11
+hoyl fucking shit the Property 'idToken' does not exist on type 'CognitoUserSession' is because I was getting
+the object instead of the function which I guess is proper?

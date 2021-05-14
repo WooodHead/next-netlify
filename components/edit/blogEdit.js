@@ -155,7 +155,7 @@ export default function BlogEdit(props) {
     // syntax: true,
     toolbar: {
       container: [
-        [{ 'header': 1},{ 'header': 2}],
+        [{ 'header': 1},{ 'header': 2}, 'code'],
         ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
         [{ 'list': 'bullet' }],
         ['link', 'image'],

@@ -8,6 +8,12 @@ import Footer from '../components/navbar/footer'
 import Navbar from '../components/navbar/navbar'
 const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false })
 
+declare var process : {
+  env: {
+    apiGateway: { NAME: string, URL: string }
+  }
+}
+
 const Phone = () => {
   const [state, setState] = useState({
     pageState: 'waiting',
@@ -27,10 +33,13 @@ const Phone = () => {
     }
   })
 
+  const apiGateway = process.env.apiGateway
+
+
   const checkAndReceiveCalls = async () => {
     try {
       const userSession = await Auth.currentSession()
-      const authHeader = { headers: { Authorization: userSession.idToken.jwtToken } }
+      const authHeader = { headers: { Authorization: userSession.getIdToken() } }
       const getSelfTavs = API.get(process.env.apiGateway.NAME, "/users/folders", authHeader)
       const getOTsession = API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
       const selfTavs = await getSelfTavs
@@ -65,7 +74,7 @@ const Phone = () => {
         const subEndpoint = subscription.endpoint
         const newSubscription = JSON.parse(JSON.stringify(subscription))
         let myInit = {
-          headers: { Authorization: userSession.idToken.jwtToken },
+          headers: { Authorization: userSession.getIdToken() },
           body: {
             endpoint: subEndpoint,
             auth: newSubscription.keys.auth,
@@ -77,7 +86,7 @@ const Phone = () => {
       } catch (err) {
         /* if subscription doesn't exist */
         const response = await API.get(process.env.apiGateway.NAME, "/register", {
-          headers: { Authorization: userSession.idToken.jwtToken }
+          headers: { Authorization: userSession.getIdToken() }
         })
         const vapidPublicKey2 = "" + response;
         const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey2)
@@ -89,7 +98,7 @@ const Phone = () => {
         const subEndpoint = subscription.endpoint
         const newSubscription = JSON.parse(JSON.stringify(subscription))
         let myInit = {
-          headers: { Authorization: userSession.idToken.jwtToken },
+          headers: { Authorization: userSession.getIdToken() },
           body: {
             endpoint: subEndpoint,
             auth: newSubscription.keys.auth,
@@ -149,7 +158,7 @@ const Phone = () => {
     try {
       setState({ ...state, pageState: 'accepted' })
       const userSession = await Auth.currentSession()
-      const authHeader = { headers: { Authorization: userSession.idToken.jwtToken } }
+      const authHeader = { headers: { Authorization: userSession.getIdToken() } }
       const getOTsession = await API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
       /* check to see if the caller didn't disconnect, if they didn't use the already existing OT state */
       if (getOTsession.Item.sessionId.S === 'null') {

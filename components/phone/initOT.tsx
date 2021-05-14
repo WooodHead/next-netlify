@@ -3,7 +3,7 @@ import { OpenTokSDK } from 'opentok-accelerator-core';
 import TAVSparent from './tavsParent'
 
 const InitOT = props => {
-    const [connectedState, setConnectedState] = useState()
+    const [connectedState, setConnectedState] = useState(false)
 
     const tokenDataProps = props.tokenData
 
