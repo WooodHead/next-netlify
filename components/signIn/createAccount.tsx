@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react'
 import Auth from '@aws-amplify/auth'
 import { useRouter } from 'next/router'
 import CustomSpinner from '../custom/spinner'
@@ -8,16 +8,17 @@ const SignUp = props => {
   
     const [submitAccountState, setSubmitAccountState] = useState(false)
     const [submitConfirmationState, setSubmitConfirmationState] = useState(false)
-    const [submitConfirmation, setSubmitConfirmation] = useState()
+    const [submitConfirmation, setSubmitConfirmation] = useState(null)
     const [hiddenPassState, setHiddenPassState] = useState(true)
-    const [errState, setErrState] = useState(false)
-    const [splashState, setSplashState] = useState(false)
+    const [errState, setErrState] = useState(null)
+    const [splashState, setSplashState] = useState(null)
 
   const signInFn = props.signInFn
 
-  const emailInputRef = useRef();
-  const passInputRef = useRef();
-  const securityCode = useRef();
+  const emailInputRef = useRef(null)
+  const passInputRef = useRef(null)
+  const usernameInputRef = useRef(null)
+  const securityCode = useRef(null)
   
   const router = useRouter()
 
@@ -29,7 +30,7 @@ const SignUp = props => {
         username: "" + emailInputRef.current.value,
         password: "" + passInputRef.current.value,
         attributes: {
-          preferred_username: "toBeReplaced"
+          preferred_username: usernameInputRef.current.value
         }
       })
       setErrState("accepted")
@@ -85,6 +86,13 @@ const SignUp = props => {
       <div className="container">
         <div className="column">
           <h4 className="mb-2">create an account</h4>
+          <div className="mb-3">
+            Username - this will be your URL (eg: talktree.me/gty)
+            <div >
+              <input ref={usernameInputRef} className="bg-blue-100" disabled={(errState === "accepted")} placeholder="enter username"></input>
+              {/* {(errState === "emailBad") && ' ❌' } */}
+            </div>
+          </div>
           <div className="mb-3">
             email
             <div>

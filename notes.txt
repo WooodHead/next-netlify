@@ -81,3 +81,6 @@ except dynamodb - if I remove, You could change price mid call, and charge would
 5/11
 hoyl fucking shit the Property 'idToken' does not exist on type 'CognitoUserSession' is because I was getting
 the object instead of the function which I guess is proper?
+5/18
+reverted to yaml
+the images dont work cause of the keyToImage bracket parsing function
