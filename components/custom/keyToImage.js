@@ -53,7 +53,6 @@ export function turnBracketsToAlt(stringProp) {
   } catch (err) {
     console.log(err)
   }
-
 }
 
 export function pullBracketData(stringProp) {

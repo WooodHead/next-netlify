@@ -7,7 +7,7 @@ import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
 import CommentComp from '../../components/[id]/commentComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
-// import Image from 'next/image'
+import UserIsland from '../../components/[id]/[topic]/userIsland'
 
 export default function Topic({ user, topic }) {
   const userOnboarded = user.receiver
@@ -26,6 +26,7 @@ export default function Topic({ user, topic }) {
     dateString = '' + monthNames[month] + ' ' + day + ' ' + year
   }
 
+
   return (
     <>
       <Head>
@@ -39,26 +40,32 @@ export default function Topic({ user, topic }) {
       </Head>
       <div className="">
         <NavbarComp />
-        <UserComp user={user} />
+        {/* <UserComp user={user} /> */}
+        <div className="flex flex-row bg-gray-100">
+        <div className="flex flex-1 justify-center">
+          <div className="mt-12">
+            <UserIsland user={user}/>
+          </div>
+        </div>
         <div className="mx-5">
-            <div className="my-5 lg:flex justify-center bg-gray-100" >
+            <div className="my-5 lg:flex " >
                 <div className="my-5 prose">
-                  {/* <h1>{title}</h1>
-                  <h2>{description}</h2>
-                  <Image src={firstImgAddress} alt={topic.firstImageAlt}></Image> */}
                   <div 
                     className="m-3 sm:prose prose-sm overflow-auto"
                     dangerouslySetInnerHTML={{ __html: topic.string }} 
                   ></div>
                   <div className="justify-center flex">
-                  < CommentComp />
+                  < CommentComp user={user} />
                   </div>
                   <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div>
-                  
                 </div>
-                
               </div>
         </div>
+        <div className="flex flex-1">
+          {/* this is the empty right column */}
+        </div>
+        </div>
+
       </div>
     </>
   )
