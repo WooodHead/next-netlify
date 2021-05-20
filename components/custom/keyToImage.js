@@ -57,7 +57,7 @@ export function turnBracketsToAlt(stringProp) {
 }
 
 export function pullBracketData(stringProp) {
-
+try {
   const imgIndex = stringProp.indexOf('<img ')
   let mutableString = stringProp
   if (imgIndex > -1) {
@@ -104,4 +104,8 @@ export function pullBracketData(stringProp) {
     return mutableString
   }
   return stringProp
+} catch (err) {
+  console.log(err)
+}
+
 }
