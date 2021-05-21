@@ -39,31 +39,35 @@ export default function Topic({ user, topic }) {
       </Head>
       <div className="">
         <NavbarComp />
+
         {/* <UserComp user={user} /> */}
-        <div className="flex flex-row bg-gray-100">
-        <div className="flex flex-1 justify-center">
-          <div className="mt-12">
-            <UserIsland user={user}/>
-          </div>
-        </div>
-        <div className="mx-5">
-            <div className="my-5 lg:flex " >
+        <div className="m-5">
+          <div className="flex flex-row bg-gray-100">
+            <div className="flex flex-1 justify-center">
+              <div className="mt-10 mr-2 flex justify-center">
+                <UserIsland user={user} />
+              </div>
+            </div>
+            <div className="mx-5">
+              <div className="my-5 lg:flex " >
                 <div className="my-5 prose">
-                  <div 
-                    className="m-3 sm:prose prose-sm overflow-auto"
-                    dangerouslySetInnerHTML={{ __html: topic.string }} 
+                  <div
+                    className=" sm:prose prose-sm overflow-auto"
+                    dangerouslySetInnerHTML={{ __html: topic.string }}
                   ></div>
                   <div className="justify-center flex">
-                  < CommentComp user={user} />
+                    < CommentComp user={user} />
                   </div>
                   <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-1">
+              {/* this is the empty right column */}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-1">
-          {/* this is the empty right column */}
-        </div>
-        </div>
+
       </div>
     </>
   )
@@ -105,7 +109,7 @@ export async function getStaticProps({ params }) {
   const topicsArray = []
   for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
     if (!topicObj.M.draft.BOOL) {
-      topicsArray.push({...topicObj.M, topicId: key})
+      topicsArray.push({ ...topicObj.M, topicId: key })
     }
   }
   const user = {
@@ -118,9 +122,10 @@ export async function getStaticProps({ params }) {
     ratingAv: userRes.ratingAv?.S || null,
     publicString: userRes.publicString?.S || null,
     topics: topicsArray || null,
-    receiver: userRes.receiver.BOOL
+    receiver: userRes.receiver.BOOL,
+    image: userRes.urlString?.S || null,
   }
-    user.topics.forEach( async (topicObj) => {
+  user.topics.forEach(async (topicObj) => {
     const title = topicObj.title.S
     const string = turnBracketsToAlt(topicObj.string.S)
     if (string) {

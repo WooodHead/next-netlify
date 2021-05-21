@@ -28,7 +28,7 @@ export default function UserComp(props) {
 
   const TopicCard = React.forwardRef(({ onClick, href, topicObj }, ref) => {
     return (
-      <div className="px-2 py-1 mx-2 rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
+      <div  className="max-w-prose-lgpx-2 py-1 mx-2 rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
         <a href={href} onClick={onClick}>
           <div className="flex flex-row">
             <div className="flex-shrink-0">
@@ -69,7 +69,7 @@ export default function UserComp(props) {
 
   const UserComponentSide = () => {
     return (
-      <div className="hidden md:flex lg:flex xl:flex 2xl:flex flex-col m-5">
+      <div className="hidden md:flex lg:flex xl:flex 2xl:flex flex-col mt-10">
         <img src={user.image} ></img>
         <h3 className='mx-5 mt-5'>{user.Username}</h3>
         <div className='mx-5 mb-3'>{user.TAVS}</div>
@@ -86,11 +86,13 @@ export default function UserComp(props) {
     <div className="mx-5">
       <div className="flex flex-row my-5 bg-gray-100">
         <div className="flex-1">
-        <UserComponentSide />
+          <div className="flex justify-center">
+          <UserComponentSide />
+          </div>
+
         </div>
 
         <div className="flex my-3" >
-          {/* <div className="my-5 bg-gray-100" dangerouslySetInnerHTML={{ __html: user.publicString }} ></div> */}
           <div className="bg-gray-100" >
             <UserComponentTop />
             {(user.topics).map((topicObj) => (
