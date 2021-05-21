@@ -8,12 +8,6 @@ import Footer from '../components/navbar/footer'
 import Navbar from '../components/navbar/navbar'
 const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false })
 
-declare var process : {
-  env: {
-    apiGateway: { NAME: string, URL: string }
-  }
-}
-
 const Phone = () => {
   const [state, setState] = useState({
     pageState: 'waiting',
@@ -34,7 +28,6 @@ const Phone = () => {
   })
 
   const apiGateway = process.env.apiGateway
-
 
   const checkAndReceiveCalls = async () => {
     try {

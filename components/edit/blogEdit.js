@@ -52,8 +52,8 @@ export default function BlogEdit(props) {
       const file = input.files[0]
       const range = editor.getSelection(true)
       editor.setSelection(range.index + 1)
-      const fileTypeLocation = file.name.indexOf('.')
-      const fileType = file.name.slice(fileTypeLocation)
+      // const fileTypeLocation = file.name.indexOf('.')
+      const fileType = file.name.match(/\.[0-9a-z]+$/i)
       try {
         const putS3 = Storage.put(uuidv4() + fileType, file)
         const s3res = await putS3

@@ -4,6 +4,7 @@ import '../configureAmplify'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'
+import { stringify } from 'postcss'
 
 export default function User({ user }) {
 
@@ -47,8 +48,37 @@ export async function getStaticProps({ params }) {
   userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
   userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
   const topicsArray = []
-  for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
-    !topicObj.M.draft.BOOL && topicsArray.push({...topicObj.M, topicId: key})
+  if (userRes.topics) {
+    for (const [key, topicObj] of Object.entries(userRes.topics.M) as [key:string, topicObj:any]) {
+      if (!topicObj.M.draft.BOOL) {
+        const title = topicObj.M.title.S
+        const topicString = topicObj.M.string.S
+        const lastSave = topicObj.M.lastSave ? topicObj.M.lastSave.S : null
+        // const titleWithSpaces = title.replace(/-/g, ' ')
+        const h2Tag = topicString.match(/<h2>(.+?)<\/h2>/)
+        const description = h2Tag ? h2Tag[1] : null
+        const wholeImgTag = topicString.match(/<img.+?src=".+?cloudfront.net\/(.+?)"/)
+        const wholeURL = wholeImgTag ? wholeImgTag[0].match(/https.+?cloudfront.net\/(.+?)"/) : null
+        const imgSrc = wholeImgTag ? wholeImgTag[1] : null
+        const atob = a => Buffer.from(a, 'base64').toString('binary')
+        const btoa = b => Buffer.from(b).toString('base64')
+        const converted = JSON.parse(atob(imgSrc))
+        converted.edits.resize.width = 100
+        converted.edits.resize.height = 100
+        const reverted = btoa(JSON.stringify(converted))
+        const rebuiltString = wholeURL[0].replace(/(https:.+?cloudfront.net\/).+?"/, function(a, b) {
+          return b + reverted
+        })
+        topicsArray.push({
+          topicId: key,
+          title: title,
+          // string: topicString,
+          description: description,
+          firstImage: rebuiltString,
+          lastSave: lastSave,
+        })
+      }
+    }
   }
   const user = {
     Username: userRes.Username.S,
@@ -61,7 +91,8 @@ export async function getStaticProps({ params }) {
     publicString: userRes.publicString?.S || null,
     topicString: userRes.topicString?.S || null,
     topics: topicsArray || null,
-    receiver: userRes.receiver.BOOL
+    receiver: userRes.receiver.BOOL,
+    image: userRes.urlString?.S || null,
   }
 
   return { props: { user: user }, revalidate: 1 }

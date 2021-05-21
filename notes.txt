@@ -84,3 +84,6 @@ the object instead of the function which I guess is proper?
 5/18
 reverted to yaml
 the images dont work cause of the keyToImage bracket parsing function
+5/20
+I don't think you need to delete the photos, storage can only be accessed through cloudfront, and 
+you need to know the image key, which is a uuid.. so you couldnt try crawling or anything

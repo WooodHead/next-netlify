@@ -26,7 +26,7 @@ const Users = ({ allUsers }) => {
                 <div className="mx-5 my-2">
                   <Link
                     className=""
-                    href={"/" + user.Username + "/" + (user.topics[0] ? user.topics[0].title.S : '')}
+                    href={"/" + user.Username}
                   >
                     <a className="flex overflow-auto flex-row">
                       <div>

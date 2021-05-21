@@ -27,6 +27,7 @@ export default function UserComp(props) {
 
   return (
       <div className="">
+        <img width="100" height="100" src={user.image} ></img>
         <h3 className='mx-5 mt-5 '>{user.Username}</h3>
         <div className='mx-5 mb-3'>{user.TAVS}</div>
         <div className=" justify-center">

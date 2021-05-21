@@ -26,7 +26,6 @@ export default function Topic({ user, topic }) {
     dateString = '' + monthNames[month] + ' ' + day + ' ' + year
   }
 
-
   return (
     <>
       <Head>
@@ -65,7 +64,6 @@ export default function Topic({ user, topic }) {
           {/* this is the empty right column */}
         </div>
         </div>
-
       </div>
     </>
   )
@@ -144,7 +142,6 @@ export async function getStaticProps({ params }) {
         }
       }
     }
-
   })
 
   return {

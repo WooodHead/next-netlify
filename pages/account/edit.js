@@ -28,7 +28,8 @@ export default function EditParent(props) {
     publicString: 'loading...',
     topics: [],
     TAVS: [],
-    receiver: null
+    receiver: null,
+    image: null
   })
   const [publicStringState, setPublicStringState] = useState({
     string: '',
@@ -90,6 +91,7 @@ export default function EditParent(props) {
         publicString: getUserRes.Item.publicString?.S || null,
         receiver: getUserRes.Item.receiver.BOOL,
         topics: topicsArray,
+        image: getUserRes.Item.urlString?.S
       }
       setUserState(user)
       setTavsState({
@@ -118,8 +120,6 @@ export default function EditParent(props) {
 
   // const users = props?.userState
 
-
-
   return ( 
     <>
     {/* <Head>
@@ -140,7 +140,7 @@ export default function EditParent(props) {
           getUserData={getUserData}
           setTavsState={setTavsStateFn}
           tavsState={tavsState}
-          /> 
+          />
       : <EditComponent 
           setSelectedTopicState={setSelectedTopic}
           selectedTopicState={selectedTopicState} 

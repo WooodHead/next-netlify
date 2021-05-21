@@ -5,8 +5,11 @@ import NavbarComp from '../navbar/navbar'
 import PublicString from './publicString'
 import TopicComponent from './topicComponent'
 import EditTAVScomp from './tavs'
-import { turnBracketsToAlt } from '../../components/custom/keyToImage'
-
+import { turnBracketsToAlt } from '../custom/keyToImage'
+import API from '@aws-amplify/api'
+import Auth from '@aws-amplify/auth'
+import Storage from '@aws-amplify/storage'
+import { v4 as uuidv4 } from 'uuid'
 export default function Edit(props) {
   const publicStringState = props.publicStringState
   const setPublicStringState = (e) => { props.setPublicStringState(e) }
@@ -52,6 +55,49 @@ export default function Edit(props) {
     }
   }
 
+  const imageHandler = async (event) => {
+    console.log(event)
+    // I should add an "only this type of image", serverless image handler wont return anything not correct
+      const file = event.target.files[0]
+      const fileType = file.name.match(/\.[0-9a-z]+$/i)
+      try {
+        const fileKey:string = uuidv4() + fileType
+        const putS3:any = await Storage.put(fileKey, file)
+        // const s3res = await putS3
+        const jsonToUrl = {
+          "bucket": process.env.storage.BUCKET,
+          "key": `public/${putS3.key}`,
+          "edits": {
+            smartCrop: {
+              padding: 240
+            },
+            // roundCrop: true,
+            "resize": {
+              "width": 100,
+              "height": 100,
+              "fit": "cover"
+            }
+          }
+        }
+        const userSession = await Auth.currentSession()
+        const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+        const convertedUrl = process.env.img_cloudfront + "/" + converting
+        const stringInit = {
+          headers: { Authorization: userSession.getIdToken().getJwtToken() },
+          body: {
+            stringType: 'urlString',
+            string: convertedUrl,
+            accessToken: userSession.getAccessToken().getJwtToken()
+          }
+        }
+        const saveUrl = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
+        console.log(saveUrl)
+        setUserState({...userState, image: convertedUrl })
+      } catch (err) {
+        console.log('storage err', err)
+      }
+  }
+
   return (
     <>
       <NavbarComp />
@@ -60,7 +106,11 @@ export default function Edit(props) {
 
         <div className="flex flex-row my-5 bg-gray-100">
           <div className="flex flex-col mx-5 my-5">
+            <img width="100" height="100" src={userState.image} ></img>
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
+            <div>
+            <input type="file" onChange={(e) => imageHandler(e)} ></input>
+          </div>
             {userState.TAVS}
             <EditTAVScomp
               userState={userState}
@@ -73,6 +123,8 @@ export default function Edit(props) {
             publicStringState={publicStringState}
             setPublicStringState={setPublicStringState} 
             />
+
+
           {userState.topics.map((topicObj) =>
             <div key={topicObj.title} >
               <button className={topicObj.draft ? "bg-gray-300" : ""} onClick={() => selectTopic(topicObj)}>
