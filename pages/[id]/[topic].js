@@ -7,7 +7,8 @@ import NavbarComp from '../../components/navbar/navbar'
 import UserComp from '../../components/[id]/userComp'
 import CommentComp from '../../components/[id]/commentComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
-import UserIsland from '../../components/[id]/[topic]/userIsland'
+import SideUserIsland from '../../components/[id]/[topic]/sideUserIsland'
+import TopUserIsland from '../../components/[id]/[topic]/topUserIsland'
 
 export default function Topic({ user, topic }) {
   const userOnboarded = user.receiver
@@ -39,20 +40,25 @@ export default function Topic({ user, topic }) {
       </Head>
       <div className="">
         <NavbarComp />
-
-        {/* <UserComp user={user} /> */}
         <div className="m-5">
           <div className="flex flex-row bg-gray-100">
             <div className="flex flex-1 justify-center">
-              <div className="mt-10 mr-2 flex justify-center">
-                <UserIsland user={user} />
+              <div className="hidden md:flex lg:flex xl:flex mt-10 mr-2 2xl:flex justify-center">
+                <SideUserIsland user={user} />
               </div>
-            </div>
+              </div>
             <div className="mx-5">
-              <div className="my-5 lg:flex " >
-                <div className="my-5 prose">
+              <TopUserIsland user={user} />
+              <div className="flex my-5" >
+                <div className="my-5">
+                {/* <img src="https://d31kifv93uudih.cloudfront.net/eyJidWNrZXQiOiJ0dDMtczMtcHJvZC1pbWFnZXNidWNrZXQtODBncWJxbmMwNDJhIiwia2V5IjoicHVibGljL2FiMWU2NjUxLTA0ZWMtNGYwNi04YmJlLTg4MTAyMGY5YzhiMi5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOiI5MDAiLCJoZWlnaHQiOiIzMDAifX19" 
+                  alt="AWS serverless image handler console" 
+                  className="w-100% h-100% flex-shrink"
+                  // height="300" 
+                  // width="900"
+                  ></img> */}
                   <div
-                    className=" sm:prose prose-sm overflow-auto"
+                    className="prose sm:prose prose-sm"
                     dangerouslySetInnerHTML={{ __html: topic.string }}
                   ></div>
                   <div className="justify-center flex">
@@ -128,7 +134,9 @@ export async function getStaticProps({ params }) {
   user.topics.forEach(async (topicObj) => {
     const title = topicObj.title.S
     const string = turnBracketsToAlt(topicObj.string.S)
+    // add height and width elements to img
     if (string) {
+      const stringWithResize = string.replace(/<img/g, "<img className='w-100% h-100%'")
       const topicId = topicObj.topicId
       const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
       if (title === params?.topic) {
@@ -140,7 +148,7 @@ export async function getStaticProps({ params }) {
         topic = {
           topicId: topicId,
           title: titleWithSpaces,
-          string: string,
+          string: stringWithResize,
           description: description,
           firstImage: imgSrc,
           lastSave: lastSave,

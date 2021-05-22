@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-export default function UserComp(props) {
+export default function UserIslandTopic(props) {
 
   const user = props.user
   const router = useRouter()

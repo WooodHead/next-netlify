@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-export default function UserComp(props) {
+export default function UserCompId(props) {
 
   const user = props.user
 
@@ -28,7 +28,7 @@ export default function UserComp(props) {
 
   const TopicCard = React.forwardRef(({ onClick, href, topicObj }, ref) => {
     return (
-      <div  className="max-w-prose-lgpx-2 py-1 mx-2 rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
+      <div  className="max-w-prose-lg px-2 py-1 mx-2 rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
         <a href={href} onClick={onClick}>
           <div className="flex flex-row">
             <div className="flex-shrink-0">
@@ -62,7 +62,6 @@ export default function UserComp(props) {
         <div>
           {user.publicString}
         </div>
-
       </div>
     )
   }
@@ -89,9 +88,7 @@ export default function UserComp(props) {
           <div className="flex justify-center">
           <UserComponentSide />
           </div>
-
         </div>
-
         <div className="flex my-3" >
           <div className="bg-gray-100" >
             <UserComponentTop />
