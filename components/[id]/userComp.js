@@ -48,7 +48,7 @@ export default function UserCompId(props) {
     return (
       <div className="md:hidden flex m-5 mb-10">
         <div className="flex-shrink-0">
-          <img src={user.image} ></img>
+          {user.image && <img src={user.image} ></img>}
         </div>
 
         <div className="flex flex-col">
@@ -69,7 +69,7 @@ export default function UserCompId(props) {
   const UserComponentSide = () => {
     return (
       <div className="hidden md:flex lg:flex xl:flex 2xl:flex flex-col mt-10">
-        <img src={user.image} ></img>
+        {user.image && <img src={user.image} ></img>}
         <h3 className='mx-5 mt-5'>{user.Username}</h3>
         <div className='mx-5 mb-3'>{user.TAVS}</div>
         {/* <div className='mx-5 mb-3'>{'$' + user.ppm}</div> */}
