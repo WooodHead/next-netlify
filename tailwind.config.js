@@ -6,6 +6,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      width: {
+        screen: '88vw'
+      },
       typography: {
         DEFAULT: {
           css: {

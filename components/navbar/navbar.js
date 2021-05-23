@@ -29,7 +29,7 @@ const NavbarComp = props => {
 
   const loggedIn = false
   return (
-    <nav className="flex flex-row mx-5">
+    <nav className="flex flex-row">
       {pages.map((page) =>
         <div key={page.href} className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">
           <Link href={page.href}>

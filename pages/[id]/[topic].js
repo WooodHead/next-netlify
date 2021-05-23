@@ -38,10 +38,11 @@ export default function Topic({ user, topic }) {
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
         <meta property="og:image" content={firstImgAddress}></meta>
       </Head>
-      <div className="">
-        <NavbarComp />
+      <NavbarComp />
+      <div className="bg-gray-100">
+
         <div className="my-5 w-screen">
-          <div className="flex flex-row bg-gray-100">
+          <div className="flex flex-row">
 
             <div className="flex flex-1 justify-center">
               <div className="hidden md:flex lg:flex xl:flex mt-10 mr-2 2xl:flex justify-center">
@@ -53,15 +54,14 @@ export default function Topic({ user, topic }) {
               <TopUserIsland user={user} />
               <div className="my-5" >
                 <div className="my-5">
-                  <pre className="w-screen overflow-auto">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</pre>
                   <div
                     className="prose sm:prose prose-sm"
                     dangerouslySetInnerHTML={{ __html: topic.string }}
                   ></div>
-                  {/* <div className="justify-center flex">
+                  <div className="justify-center flex">
                     < CommentComp user={user} />
                   </div>
-                  <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div> */}
+                  <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div>
                 </div>
               </div>
             </div>

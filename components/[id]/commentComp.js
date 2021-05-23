@@ -31,18 +31,18 @@ export default function CommentComp (props) {
 
   return (
     <div className="flex flex-col">
-      <div className="text-lg flex font-bold mt-5 justify-center" >Still need help? Talk to me right now</div>
+      <div className="text-lg flex font-bold mt-10 justify-center" >Still need help? Talk to me right now</div>
       <div className="flex justify-center mt-3 mb-2">
-          <button className="w-24" type="button" onClick={openCallPhone}>Call</button>
+          <button className="w-24 mb-12" type="button" onClick={openCallPhone}>Call</button>
         </div>
         {/* <div className='justify-center flex'>{user.TAVS}</div> */}
         {user.ppm > 0 
           && <div className="flex justify-center mb-10 mt-2">${user.ppm} / minute</div>
         }
-      <button></button>
+      {/* <button></button> */}
       <textarea 
       onChange={(e) => setTextAreaState(e)} 
-      className="resize overflowE-auto" 
+      className="w-screen md:w-full resize overflow-auto" 
       rows="3" 
       cols="40"
       defaultValue={textAreaState}></textarea>
