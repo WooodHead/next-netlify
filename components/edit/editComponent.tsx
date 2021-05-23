@@ -10,18 +10,21 @@ import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
 import Storage from '@aws-amplify/storage'
 import { v4 as uuidv4 } from 'uuid'
+import CustomSpinner from '../custom/spinner'
+
 export default function Edit(props) {
   const publicStringState = props.publicStringState
   const setPublicStringState = (e) => { props.setPublicStringState(e) }
   const userState = props.userState
   const setUserState = (e) => { props.setUserState(e) }
-  const getUserData = (e) => { props.getUserData(e)}
+  const getUserData = () => { props.getUserData()}
   const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
   const selectedTopicState = props.selectedTopicState
   const setTavsState = (e) => { props.setTavsState(e) }
   const tavsState = props.tavsState
 
   const [errorState, setErrorState] = useState('')
+  const [loadingImageState, setLoadingImageState] = useState(false)
 
   const selectTopic = (topicProp) => {
     if (topicProp.topicId === selectedTopicState.topicId) {
@@ -56,6 +59,7 @@ export default function Edit(props) {
   }
 
   const imageHandler = async (event) => {
+    setLoadingImageState(true)
     console.log(event)
     // I should add an "only this type of image", serverless image handler wont return anything not correct
       const file = event.target.files[0]
@@ -93,8 +97,11 @@ export default function Edit(props) {
         const saveUrl = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
         console.log(saveUrl)
         setUserState({...userState, image: convertedUrl })
+        getUserData()
+        setLoadingImageState(false)
       } catch (err) {
         console.log('storage err', err)
+        setLoadingImageState(false)
       }
   }
 
@@ -110,6 +117,7 @@ export default function Edit(props) {
             <h3 className='mx-5 my-5'>{userState.Username}</h3>
             <div>
             <input type="file" onChange={(e) => imageHandler(e)} ></input>
+            {loadingImageState && <CustomSpinner />}
           </div>
             {userState.TAVS}
             <EditTAVScomp
@@ -123,8 +131,6 @@ export default function Edit(props) {
             publicStringState={publicStringState}
             setPublicStringState={setPublicStringState} 
             />
-
-
           {userState.topics.map((topicObj) =>
             <div key={topicObj.title} >
               <button className={topicObj.draft ? "bg-gray-300" : ""} onClick={() => selectTopic(topicObj)}>

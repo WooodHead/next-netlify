@@ -39,8 +39,8 @@ export function turnBracketsToAlt(stringProp) {
             const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
             const string = matchedString.slice(0, 4) 
             + " alt='" + altString + "'" 
-            + " width='" + imgWidth + "'"
-            + " height='" + imgHeight + "'"
+            // + " width='" + imgWidth + "'"
+            // + " height='" + imgHeight + "'"
             + matchedString.slice(4, -1)
             mutableString = mutableString.replace(matchedString + '[' + allBrackets + ']', string + '>')
           }
@@ -56,6 +56,7 @@ export function turnBracketsToAlt(stringProp) {
 }
 
 export function pullBracketData(stringProp) {
+  // this is for within blogEdit
 try {
   const imgIndex = stringProp.indexOf('<img ')
   let mutableString = stringProp

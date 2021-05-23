@@ -40,34 +40,32 @@ export default function Topic({ user, topic }) {
       </Head>
       <div className="">
         <NavbarComp />
-        <div className="m-5">
+        <div className="my-5 w-screen">
           <div className="flex flex-row bg-gray-100">
+
             <div className="flex flex-1 justify-center">
               <div className="hidden md:flex lg:flex xl:flex mt-10 mr-2 2xl:flex justify-center">
                 <SideUserIsland user={user} />
               </div>
-              </div>
+            </div>
+
             <div className="mx-5">
               <TopUserIsland user={user} />
-              <div className="flex my-5" >
+              <div className="my-5" >
                 <div className="my-5">
-                {/* <img src="https://d31kifv93uudih.cloudfront.net/eyJidWNrZXQiOiJ0dDMtczMtcHJvZC1pbWFnZXNidWNrZXQtODBncWJxbmMwNDJhIiwia2V5IjoicHVibGljL2FiMWU2NjUxLTA0ZWMtNGYwNi04YmJlLTg4MTAyMGY5YzhiMi5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOiI5MDAiLCJoZWlnaHQiOiIzMDAifX19" 
-                  alt="AWS serverless image handler console" 
-                  className="w-100% h-100% flex-shrink"
-                  // height="300" 
-                  // width="900"
-                  ></img> */}
+                  <pre className="w-screen overflow-auto">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</pre>
                   <div
                     className="prose sm:prose prose-sm"
                     dangerouslySetInnerHTML={{ __html: topic.string }}
                   ></div>
-                  <div className="justify-center flex">
+                  {/* <div className="justify-center flex">
                     < CommentComp user={user} />
                   </div>
-                  <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div>
+                  <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div> */}
                 </div>
               </div>
             </div>
+            
             <div className="flex flex-1">
               {/* this is the empty right column */}
             </div>
@@ -136,7 +134,8 @@ export async function getStaticProps({ params }) {
     const string = turnBracketsToAlt(topicObj.string.S)
     // add height and width elements to img
     if (string) {
-      const stringWithResize = string.replace(/<img/g, "<img className='w-100% h-100%'")
+      // const stringWithResize = string.replace(/<img/g, "<img className='w-100% h-100%'") shits w-full not 100 lol
+      // const constWithPreChanged = string.replace(/<pre/g, "<pre className='max-w-screen overflow-auto'")
       const topicId = topicObj.topicId
       const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
       if (title === params?.topic) {
@@ -148,7 +147,7 @@ export async function getStaticProps({ params }) {
         topic = {
           topicId: topicId,
           title: titleWithSpaces,
-          string: stringWithResize,
+          string: string,
           description: description,
           firstImage: imgSrc,
           lastSave: lastSave,

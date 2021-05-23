@@ -9,6 +9,9 @@
   textarea {
     @apply bg-opacity-100 shadow-md;
   }
+  pre {
+    @apply w-screen overflow-auto
+  }
 }
 
 /* .ql-syntax {

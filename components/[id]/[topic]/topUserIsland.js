@@ -30,7 +30,6 @@ const UserComponentTop = (props) => {
       <div>
         {user.publicString}
       </div>
-
     </div>
   )
 }
