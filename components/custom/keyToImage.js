@@ -10,8 +10,8 @@ export function turnBracketsToAlt(stringProp) {
         const afterStringIndex = matchedIndex + matchedLength
         const afterString = stringProp[afterStringIndex]
         const srcUrl = matchedString.match(/src=".+?"/)
-        const addressArray = srcUrl[0]?.split('/')
-        const convertedAtob = JSON.parse(Buffer.from(addressArray[3], 'base64').toString())
+        const addressArray = srcUrl ? srcUrl[0]?.split('/') : null
+        const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
         if (afterString === '[') {
           const altBeginning = stringProp.indexOf('[', afterStringIndex)
           const altEnd = stringProp.indexOf(';', afterStringIndex)
@@ -39,8 +39,8 @@ export function turnBracketsToAlt(stringProp) {
             const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
             const string = matchedString.slice(0, 4) 
             + " alt='" + altString + "'" 
-            // + " width='" + imgWidth + "'"
-            // + " height='" + imgHeight + "'"
+            + " width='" + imgWidth + "'"
+            + " height='" + imgHeight + "'"
             + matchedString.slice(4, -1)
             mutableString = mutableString.replace(matchedString + '[' + allBrackets + ']', string + '>')
           }
@@ -68,8 +68,8 @@ try {
       const afterStringIndex = matchedIndex + matchedLength
       const afterString = stringProp[afterStringIndex]
       const srcUrl = matchedString.match(/src=".+?"/)
-      const addressArray = srcUrl[0].split('/')
-      const convertedAtob = JSON.parse(Buffer.from(addressArray[3], 'base64').toString())
+      const addressArray = srcUrl ? srcUrl[0].split('/') : null
+      const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
       if (afterString === '[') {
         const altBeginning = stringProp.indexOf('[', afterStringIndex)
         const altEnd = stringProp.indexOf(';', afterStringIndex)

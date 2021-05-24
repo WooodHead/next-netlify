@@ -16,7 +16,7 @@ const UserComponentTop = (props) => {
   return (
     <div className="md:hidden flex m-5 mb-10">
       <div className="flex-shrink-0">
-        { user.iamge && <img src={user.image} ></img>}
+        { user.image && <img src={user.image} ></img>}
       </div>
 
       <div className="flex flex-col">
