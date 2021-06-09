@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from 'next/link'
 import '../../configureAmplify'
 import Auth from '@aws-amplify/auth'
+import Modal from '../logIn/modal'
 
 const NavbarComp = props => {
   const [usernameState, setUsernameState] = useState()
@@ -36,6 +37,7 @@ const NavbarComp = props => {
             <a>{page.text}</a>
           </Link>
         </div>)}
+        <Modal />
     </nav>
   )
 }
