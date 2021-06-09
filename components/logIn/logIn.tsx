@@ -5,17 +5,18 @@ import ForgotPassword from "./forgotPassword"
 import '../../configureAmplify'
 import { useRouter } from 'next/router'
 import Navbar from '../navbar/navbar'
-import CreateAccount from '../signIn/createAccount'
+// import CreateAccount from '../signIn/createAccount'
 
-const SignIn = props => {
+const LogIn = props => {
+  const setModalState = (e) => props.setModalState(e)
 
   const router = useRouter()
 
-  const [pageState, setPageState] = useState(false)
+  const [pageState, setPageState] = useState(null)
   const [isSubmitting, setSubmitting] = useState(false)
-  const [errState, setErrState] = useState(false)
-  const emailInputRef = useRef();
-  const passInputRef = useRef();
+  const [errState, setErrState] = useState(null)
+  const emailInputRef = useRef(null)
+  const passInputRef = useRef(null)
 
   const userLoginHandler = async e => {
     setSubmitting(true)
@@ -41,7 +42,7 @@ const SignIn = props => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="m-5">
       {
         (pageState === 'forgotPass') ? <div>
@@ -49,7 +50,7 @@ const SignIn = props => {
           <ForgotPassword setPageState={setPageState} />
         </div> :
           (pageState === 'createAccount') ? <div>
-            <CreateAccount />
+            {/* <CreateAccount /> */}
           </div> :
             <div>
               <div className="container" >
@@ -80,7 +81,7 @@ const SignIn = props => {
 
                 <div className="d-flex justify-content-center mb-1">or</div>
                 <div className="d-flex justify-content-center">
-                  <button onClick={() => setPageState('createAccount')}>create an account</button>
+                  <button onClick={() => setModalState('signUp')}>create an account</button>
                 </div>
               </div>
               <div>
@@ -92,4 +93,4 @@ const SignIn = props => {
   )
 }
 
-export default SignIn;
+export default LogIn;
