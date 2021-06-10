@@ -5,9 +5,12 @@ import ForgotPassword from "./forgotPassword"
 import '../../configureAmplify'
 import { useRouter } from 'next/router'
 import Navbar from '../navbar/navbar'
+import Link from 'next/link'
 // import CreateAccount from '../signIn/createAccount'
 
 const LogIn = props => {
+
+  const [hiddenPassState, setHiddenPassState] = useState(true)
   const setModalState = (e) => props.setModalState(e)
 
   const router = useRouter()
@@ -42,46 +45,61 @@ const LogIn = props => {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <span>By continuing, you agree to our </span>
+      <span className="text-blue-500" >
+        <Link href="/about">User Agreement</Link>
+      </span>
+      <span> and </span>
+      <span className="text-blue-500">
+        <Link href="/about">Privacy Policy</Link>
+      </span>
+      <span>
+        .
+      </span>
       <div className="m-5">
       {
-        (pageState === 'forgotPass') ? <div>
+        // (pageState === 'forgotPass') ? <div>
 
-          <ForgotPassword setPageState={setPageState} />
-        </div> :
+        //   <ForgotPassword setPageState={setPageState} />
+        // </div> :
           (pageState === 'createAccount') ? <div>
             {/* <CreateAccount /> */}
           </div> :
             <div>
               <div className="container" >
-                <div className="mb-3">
-                  email
+                <div className="mb-5">
+                  Email
                 <div>
-                    <input type="email" ref={emailInputRef} placeholder="enter email"></input>
+                    <input className="bg-blue-50" type="email" ref={emailInputRef} placeholder="enter email"></input>
                     {errState === "emailErr" && ' ❌'}
                   </div>
                 </div>
 
-                <div className="mb-3">
-                  password
+                <div className="mb-5">
+                  Password
                 <div>
-                    <input type="password" ref={passInputRef} placeholder="enter password"></input>
+                    <input className="bg-blue-50" type={ hiddenPassState ? "password" : "text" } ref={passInputRef} placeholder="enter password"></input>
+                    <span 
+                      className="ml-2" 
+                      style={{cursor: "pointer"}} 
+                      onClick={() => setHiddenPassState(!hiddenPassState)}>
+                    <span></span>{(hiddenPassState) ? 'show' : 'hide' }
+                  </span>
                     {errState === "passErr" && ' ❌'}
                   </div>
                 </div>
 
-                <div className="mb-2">
-                  <button onClick={userLoginHandler} disabled={isSubmitting}>sign in</button>
-                  {isSubmitting && <CustomSpinner />}
+                <div className="mb-10 flex flex-row">
+                  <button onClick={userLoginHandler} disabled={isSubmitting}>Log In </button>
+                  <div className="mx-2 mt-1">{isSubmitting && <CustomSpinner />}</div>
                 </div>
 
-                <div className="mb-3">
-                  <button type="button" className="link-button" onClick={() => setPageState('forgotPass')}>forgot password?</button>
+                <div className="mb-5">
+                  <div className="link-button">Forgot your <span onClick={() => setModalState('Reset Password')} className="text-blue-500 cursor-pointer">password</span>?</div>
                 </div>
 
-                <div className="d-flex justify-content-center mb-1">or</div>
                 <div className="d-flex justify-content-center">
-                  <button onClick={() => setModalState('signUp')}>create an account</button>
+                  Don't have an account? <span className="text-blue-500 cursor-pointer" onClick={() => setModalState('Sign Up')}>SIGN UP</span>
                 </div>
               </div>
               <div>

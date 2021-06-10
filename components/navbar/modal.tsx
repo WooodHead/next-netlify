@@ -1,8 +1,12 @@
-import SignUp from '../logIn/signUp'
+import Login from '../logIn/logIn'
 import Link from 'next/link'
+import SignUp from '../logIn/signUp'
+import ForgotPassword from '../logIn/forgotPassword'
 
-const SignUpModal = props => {
+const LogInModal = props => {
   const setModalState = (e) => props.setModalState(e)
+  const modalState = props.modalState
+
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -11,15 +15,15 @@ const SignUpModal = props => {
             
             <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200">
               <div className="text-3xl font-semibold">
-                Sign Up
+                {modalState}
               </div>
               <div onClick={() => setModalState(false)} className="hover:bg-gray-200 rounded cursor-pointer py-1 px-2 text-2xl block outline-none focus:outline-none">
-                X
+                x
               </div>
             </div>
 
             <div className="relative p-6 flex-auto">
-              <span>By continuing, you agree to our </span>
+              {/* <span>By continuing, you agree to our </span>
               <span className="text-blue-500" >
                 <Link href="/about">User Agreement</Link>
               </span>
@@ -29,9 +33,16 @@ const SignUpModal = props => {
               </span>
               <span>
                 .
-              </span>
+              </span> */}
               <div>
-                <SignUp setModalState={setModalState} />
+                {(modalState === "Login")
+                  ? <Login setModalState={setModalState} /> 
+                  : (modalState === "Sign Up")
+                  ? <SignUp setModalState={setModalState} /> 
+                  : (modalState === "Reset Password")
+                  ? <ForgotPassword setModalState={setModalState}/>
+                  : null
+                }
               </div>
             </div>
 
@@ -43,4 +54,4 @@ const SignUpModal = props => {
   )
 }
 
-export default SignUpModal
+export default LogInModal

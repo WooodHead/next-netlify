@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from 'next/link'
 import '../../configureAmplify'
 import Auth from '@aws-amplify/auth'
-import LoginModal from './logInModal'
-import SignUpModal from './signUpModal'
+import Modal from './modal'
 
 const NavbarComp = props => {
   const [usernameState, setUsernameState] = useState(null)
@@ -38,22 +37,26 @@ const NavbarComp = props => {
           <a>Phone</a>
         </Link>
       </div>
-      <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">
-        <div onClick={() => setModalState("login")} className="cursor-pointer">
-          Login
+      {usernameState
+        ? <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">
+            <Link href="/account">
+              <a>{usernameState}</a>
+            </Link>
+          </div>
+        : <div className="flex flex-row">
+            <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">
+              <div onClick={() => setModalState("Login")} className="cursor-pointer">
+                Login
+              </div>
             </div>
-      </div>
-      <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">
-        <div onClick={() => setModalState("signUp")} className="cursor-pointer">
-          Sign Up
-      </div>
-        {(modalState === "login") ? (
-          <LoginModal setModalState={setModalState} />
-        ) : (modalState === "signUp") ? (
-          <SignUpModal setModalState={setModalState} />
-        ) : null}
-      </div>
-
+            <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">
+              <div onClick={() => setModalState("Sign Up")} className="cursor-pointer">
+                Sign Up
+              </div>
+            {modalState ? <Modal setModalState={setModalState} modalState={modalState} /> : null}
+          </div>
+        </div>
+      }
     </nav>
   )
 }

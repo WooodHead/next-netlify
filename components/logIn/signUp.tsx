@@ -3,38 +3,40 @@ import Auth from '@aws-amplify/auth'
 import { useRouter } from 'next/router'
 import CustomSpinner from '../custom/spinner'
 import '../../configureAmplify'
-
+import Link from 'next/link'
 const SignUp = props => {
-  
-    const [submitAccountState, setSubmitAccountState] = useState(false)
-    const [submitConfirmationState, setSubmitConfirmationState] = useState(false)
-    const [submitConfirmation, setSubmitConfirmation] = useState(null)
-    const [hiddenPassState, setHiddenPassState] = useState(true)
-    const [errState, setErrState] = useState(null)
-    const [splashState, setSplashState] = useState(null)
 
-  const signInFn = props.signInFn
+  const [submitAccountState, setSubmitAccountState] = useState(false)
+  const [submitConfirmationState, setSubmitConfirmationState] = useState(false)
+  const [submitConfirmation, setSubmitConfirmation] = useState(null)
+  const [hiddenPassState, setHiddenPassState] = useState(true)
+  const [errState, setErrState] = useState(null)
+  const [splashState, setSplashState] = useState(null)
+  const [userNameState, setUserNameState] = useState('') /* using state instead of ref because I want to rerender url example */
+
+  // const signInFn = props.signInFn
+  const setModalState = (e) => props.setModalState(e)
 
   const emailInputRef = useRef(null)
   const passInputRef = useRef(null)
   const usernameInputRef = useRef(null)
   const securityCode = useRef(null)
-  
+
   const router = useRouter()
 
   const userAddHandler = async e => {
     e.preventDefault();
-    setSubmitAccountState(true)
+
     try {
       await Auth.signUp({
         username: "" + emailInputRef.current.value,
         password: "" + passInputRef.current.value,
         attributes: {
-          preferred_username: usernameInputRef.current.value
+          preferred_username: userNameState
         }
       })
       setErrState("accepted")
-      setSubmitAccountState(false)
+      setSubmitAccountState(true)
     } catch (err) {
       console.log(err)
       if (err.message === "Username should be an email." || err.code === "UsernameExistsException") {
@@ -43,10 +45,10 @@ const SignUp = props => {
       if (err.message.includes('password')) {
         setErrState("passBad")
       }
-      setSubmitAccountState(false) 
+      setSubmitAccountState(false)
     }
   };
-  
+
   const userVerifyHandler = async e => {
     e.preventDefault();
     setSubmitConfirmationState(true)
@@ -54,13 +56,23 @@ const SignUp = props => {
       await Auth.confirmSignUp(emailInputRef.current.value, securityCode.current.value)
       setSubmitConfirmation("accepted")
       setSubmitConfirmationState(false)
-      await Auth.signIn( emailInputRef.current.value, passInputRef.current.value )
+      await Auth.signIn(emailInputRef.current.value, passInputRef.current.value)
       router.push('/account/edit')
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       setSubmitConfirmation("denied")
       setSubmitConfirmationState(false)
     }
+  }
+
+  const usernameHandler = (usernameInput) => {
+    const sanitized = usernameInput.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/]/g, "")
+    // console.log(isNotAllowed)
+    // if (isNotAllowed) {
+    //   setUserNameState('❌')
+    // } else {
+    setUserNameState(sanitized)
+    // }
   }
 
   const isLoggedIn = async () => {
@@ -84,61 +96,81 @@ const SignUp = props => {
   } else {
     return (
       <div className="container">
-        <div className="column">
-          <h4 className="mb-2">create an account</h4>
-          <div className="mb-3">
-            Username - this will be your URL (eg: talktree.me/gty)
+        <span>By continuing, you agree to our </span>
+        <span className="text-blue-500" >
+          <Link href="/about">User Agreement</Link>
+        </span>
+        <span> and </span>
+        <span className="text-blue-500">
+          <Link href="/about">Privacy Policy</Link>
+        </span>
+        <span>
+          .
+        </span>
+        {!submitAccountState ? <div className="m-5"><div className="mb-5 mt-5">
+          Username
             <div >
-              <input ref={usernameInputRef} className="bg-blue-100" disabled={(errState === "accepted")} placeholder="enter username"></input>
-              {/* {(errState === "emailBad") && ' ❌' } */}
-            </div>
+            <input
+              onChange={(event) => usernameHandler(event.target.value)}
+              className="bg-blue-100" disabled={(errState === "accepted")}
+              placeholder="Enter username">
+            </input>
+            <div>talktree.me/{userNameState}</div>
+            {/* {(errState === "emailBad") && ' ❌' } */}
           </div>
-          <div className="mb-3">
-            email
+        </div>
+          <div className="mb-5">
+            Email
             <div>
-              <input ref={emailInputRef} disabled={(errState === "accepted")} placeholder="enter email"></input>
-              {(errState === "emailBad") && ' ❌' }
+              <input ref={emailInputRef} disabled={(errState === "accepted")} placeholder="enter email"></input>{(errState === "emailBad") && ' ❌'}
+              <div>You can use either username or email to login</div>
             </div>
-          </div>
-          <div className="mb-3">
-            password
-            <div className="container-fluid row">
-              <input 
-              type={ hiddenPassState ? "password" : "text" }
-              ref={passInputRef} 
-              disabled={(errState === "accepted")} 
-              placeholder="enter password"
-              ></input>            <div 
-              className="ml-1" 
-              style={{cursor: "pointer"}} 
-              onClick={() => setHiddenPassState(!hiddenPassState)}>
-             {(hiddenPassState) ? 'show' : 'hide' }
-            </div>
-              {(errState === "passBad") && ' ❌' }
-  
-            </div>
-            <div>please make it complicated</div>
           </div>
           <div className="mb-5">
-            <button disabled={(errState === "accepted")} onClick={userAddHandler}>submit</button> 
-            {(errState === "accepted") && ' ✔️' }
-            {submitAccountState && <CustomSpinner />}
+            Password
+            <div className="container-fluid row">
+              <input
+                type={hiddenPassState ? "password" : "text"}
+                ref={passInputRef}
+                disabled={(errState === "accepted")}
+                placeholder="enter password"
+              ></input>
+              <span
+                className="ml-2"
+                style={{ cursor: "pointer" }}
+                onClick={() => setHiddenPassState(!hiddenPassState)}>
+                <span></span>{(hiddenPassState) ? 'show' : 'hide'}
+              </span>
+              {(errState === "passBad") && ' ❌'}
+
+            </div>
+            {/* <div>please make it complicated</div> */}
           </div>
-          <div className="mb-2">and check your email for a confirmation code</div>
+          <div className="mb-5">
+            <button disabled={(errState === "accepted")} onClick={userAddHandler}>Submit</button>
+            {(errState === "accepted") && ' ✔️'}
+            {submitAccountState && <CustomSpinner />}
+          </div></div> : <div className="column m-5">
+
+          <div className="mb-2">We sent a confirmation code to your email</div>
           <div className="mb-3">
-            <input ref={securityCode} placeholder="confirmation code"></input>
+            <input ref={securityCode} placeholder="Confirmation code"></input>
           </div>
           <div>
             <button disabled={submitConfirmationState} onClick={userVerifyHandler}>submit</button>
             {submitConfirmationState && <CustomSpinner />}
             {(submitConfirmation === "accepted") ? <CustomSpinner /> : (submitConfirmation === "denied") ? ' ❌' : null}
           </div>
+
+        </div>}
+        <div className="mt-10">
+          Already have an account? <span className=" cursor-pointer text-blue-500" onClick={() => setModalState('Login')}>LOG IN</span>
         </div>
       </div>
     )
   }
-    
-  
+
+
 }
 
 export default SignUp
