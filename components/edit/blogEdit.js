@@ -60,7 +60,7 @@ export default function BlogEdit(props) {
           const cloudfrontUrl = process.env.gif_cloudfront + "/" + s3res.key
           console.log(cloudfrontUrl)
           editor.insertEmbed(range.index, 'image', cloudfrontUrl)
-          editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
+          editor.insertText(range.index + 1, true)
         } catch (err) {
           console.log('storage err', err)
         }
@@ -87,7 +87,7 @@ export default function BlogEdit(props) {
           console.log('storage err', err)
         }
       }
-      }
+    }
   }
 
   const saveTopicString = async (isDraftProp) => {
