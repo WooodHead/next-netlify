@@ -29,7 +29,7 @@ const NavbarComp = props => {
       </div>
       <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">
         <Link href="/account/edit">
-          <a>Create a page</a>
+          <a>{usernameState ? "Your page" : "Create a page"}</a>
         </Link>
       </div>
       <div className="mx-5 my-1 py-1 px-2 rounded hover:bg-gray-200 ">

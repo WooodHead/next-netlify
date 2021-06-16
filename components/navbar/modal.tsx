@@ -23,17 +23,6 @@ const LogInModal = props => {
             </div>
 
             <div className="relative p-6 flex-auto">
-              {/* <span>By continuing, you agree to our </span>
-              <span className="text-blue-500" >
-                <Link href="/about">User Agreement</Link>
-              </span>
-              <span> and </span>
-              <span className="text-blue-500">
-                <Link href="/about">Privacy Policy</Link>
-              </span>
-              <span>
-                .
-              </span> */}
               <div>
                 {(modalState === "Login")
                   ? <Login setModalState={setModalState} /> 
@@ -45,7 +34,6 @@ const LogInModal = props => {
                 }
               </div>
             </div>
-
           </div>
         </div>
       </div>

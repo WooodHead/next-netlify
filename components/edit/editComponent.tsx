@@ -59,8 +59,8 @@ export default function Edit(props) {
   }
 
   const imageHandler = async (event) => {
+    /* THIS IS FOR USER IMAGE */
     setLoadingImageState(true)
-    console.log(event)
     // I should add an "only this type of image", serverless image handler wont return anything not correct
       const file = event.target.files[0]
       const fileType = file.name.match(/\.[0-9a-z]+$/i)
@@ -140,8 +140,6 @@ export default function Edit(props) {
           )}
           </div>
         </div>
-
-
 
         <div className="my-5 bg-gray-100">
           <TopicComponent

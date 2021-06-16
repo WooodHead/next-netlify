@@ -52,30 +52,42 @@ export default function BlogEdit(props) {
       const file = input.files[0]
       const range = editor.getSelection(true)
       editor.setSelection(range.index + 1)
-      // const fileTypeLocation = file.name.indexOf('.')
       const fileType = file.name.match(/\.[0-9a-z]+$/i)
-      try {
-        const putS3 = Storage.put(uuidv4() + fileType, file)
-        const s3res = await putS3
-        const jsonToUrl = {
-          "bucket": process.env.storage.BUCKET,
-          "key": `public/${s3res.key}`,
-          "edits": {
-            "resize": {
-              "width": 900,
-              "height": 675,
-              "fit": "cover"
+      if (fileType[0] === ".gif") {
+        try {
+          const putS3 = Storage.put(uuidv4() + fileType, file)
+          const s3res = await putS3
+          const cloudfrontUrl = process.env.gif_cloudfront + "/" + s3res.key
+          console.log(cloudfrontUrl)
+          editor.insertEmbed(range.index, 'image', cloudfrontUrl)
+          editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
+        } catch (err) {
+          console.log('storage err', err)
+        }
+      } else {
+        try {
+          const putS3 = Storage.put(uuidv4() + fileType, file)
+          const s3res = await putS3
+          const jsonToUrl = {
+            "bucket": process.env.storage.BUCKET,
+            "key": `public/${s3res.key}`,
+            "edits": {
+              "resize": {
+                "width": 900,
+                "height": 675,
+                "fit": "cover"
+              }
             }
           }
+          const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+          const convertedUrl = process.env.img_cloudfront + "/" + converting
+          editor.insertEmbed(range.index, 'image', convertedUrl)
+          editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
+        } catch (err) {
+          console.log('storage err', err)
         }
-        const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-        const convertedUrl = process.env.img_cloudfront + "/" + converting
-        editor.insertEmbed(range.index, 'image', convertedUrl)
-        editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
-      } catch (err) {
-        console.log('storage err', err)
       }
-    }
+      }
   }
 
   const saveTopicString = async (isDraftProp) => {
@@ -150,7 +162,7 @@ export default function BlogEdit(props) {
     //   ? setUserState({ topics: props.userState.topics.filter((topicObj) => topicObj.topicId !== selectedTopicState.topicId)})
     //   : console.log('delete failed')
   }
-  console.log(selectedTopicState)
+
   const [modules] = useState({
     // syntax: true,
     toolbar: {

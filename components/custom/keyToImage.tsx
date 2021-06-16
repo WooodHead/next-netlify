@@ -1,5 +1,6 @@
 export function turnBracketsToAlt(stringProp) {
   try {
+    console.log(stringProp)
     const imgIndex = stringProp.indexOf('<img ')
     let mutableString = stringProp
     if (imgIndex > -1) {
@@ -10,9 +11,15 @@ export function turnBracketsToAlt(stringProp) {
         const afterStringIndex = matchedIndex + matchedLength
         const afterString = stringProp[afterStringIndex]
         const srcUrl = matchedString.match(/src=".+?"/)
-        const addressArray = srcUrl ? srcUrl[0]?.split('/') : null
-        const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
+
+        const gifUrl = srcUrl[0].match(process.env.gif_cloudfront)
+        console.log(gifUrl)
+        if (gifUrl) {
+          return mutableString
+        } 
         if (afterString === '[') {
+          const addressArray = srcUrl ? srcUrl[0]?.split('/') : null
+          const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
           const altBeginning = stringProp.indexOf('[', afterStringIndex)
           const altEnd = stringProp.indexOf(';', afterStringIndex)
           const bracketEnd = stringProp.indexOf(']', altBeginning)
@@ -56,7 +63,7 @@ export function turnBracketsToAlt(stringProp) {
 }
 
 export function pullBracketData(stringProp) {
-  // this is for within blogEdit
+  /* this is for within blogEdit */
 try {
   const imgIndex = stringProp.indexOf('<img ')
   let mutableString = stringProp
@@ -68,9 +75,14 @@ try {
       const afterStringIndex = matchedIndex + matchedLength
       const afterString = stringProp[afterStringIndex]
       const srcUrl = matchedString.match(/src=".+?"/)
-      const addressArray = srcUrl ? srcUrl[0].split('/') : null
-      const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
+      const gifUrl = srcUrl[0].match(process.env.gif_cloudfront)
+      console.log(gifUrl)
+      if (gifUrl) {
+        return mutableString
+      }
       if (afterString === '[') {
+        const addressArray = srcUrl ? srcUrl[0].split('/') : null
+        const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
         const altBeginning = stringProp.indexOf('[', afterStringIndex)
         const altEnd = stringProp.indexOf(';', afterStringIndex)
         const bracketEnd = stringProp.indexOf(']', altBeginning)
@@ -101,6 +113,7 @@ try {
         mutableString = mutableString.replace(srcUrl, `src="${convertedUrl}"`)
       }
     })
+
     return mutableString
   }
   return stringProp
