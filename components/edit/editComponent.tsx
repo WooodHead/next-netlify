@@ -95,7 +95,6 @@ export default function Edit(props) {
           }
         }
         const saveUrl = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
-        console.log(saveUrl)
         setUserState({...userState, image: convertedUrl })
         getUserData()
         setLoadingImageState(false)

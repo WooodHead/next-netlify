@@ -58,7 +58,6 @@ export default function BlogEdit(props) {
           const putS3 = Storage.put(uuidv4() + fileType, file)
           const s3res = await putS3
           const cloudfrontUrl = process.env.gif_cloudfront + "/" + s3res.key
-          console.log(cloudfrontUrl)
           editor.insertEmbed(range.index, 'image', cloudfrontUrl)
           editor.insertText(range.index + 1, true)
         } catch (err) {
