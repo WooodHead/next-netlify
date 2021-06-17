@@ -1,6 +1,5 @@
 export function turnBracketsToAlt(stringProp) {
   try {
-    console.log(stringProp)
     const imgIndex = stringProp.indexOf('<img ')
     let mutableString = stringProp
     if (imgIndex > -1) {
@@ -11,9 +10,7 @@ export function turnBracketsToAlt(stringProp) {
         const afterStringIndex = matchedIndex + matchedLength
         const afterString = stringProp[afterStringIndex]
         const srcUrl = matchedString.match(/src=".+?"/)
-
         const gifUrl = srcUrl[0].match(process.env.gif_cloudfront)
-        console.log(gifUrl)
         if (gifUrl) {
           return mutableString
         } 
@@ -76,7 +73,6 @@ try {
       const afterString = stringProp[afterStringIndex]
       const srcUrl = matchedString.match(/src=".+?"/)
       const gifUrl = srcUrl[0].match(process.env.gif_cloudfront)
-      console.log(gifUrl)
       if (gifUrl) {
         return mutableString
       }
