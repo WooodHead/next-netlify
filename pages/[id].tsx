@@ -59,22 +59,27 @@ export async function getStaticProps({ params }) {
         const description = h2Tag ? h2Tag[1] : null
         const wholeImgTag = topicString.match(/<img.+?src=".+?cloudfront.net\/(.+?)"/)
         const wholeURL = wholeImgTag ? wholeImgTag[0].match(/https.+?cloudfront.net\/(.+?)"/) : null
-        const imgSrc = wholeImgTag ? wholeImgTag[1] : null
-        const atob = a => Buffer.from(a, 'base64').toString('binary')
-        const btoa = b => Buffer.from(b).toString('base64')
-        const converted = JSON.parse(atob(imgSrc))
-        converted.edits.resize.width = 100
-        converted.edits.resize.height = 100
-        const reverted = btoa(JSON.stringify(converted))
-        const rebuiltString = wholeURL[0].replace(/(https:.+?cloudfront.net\/).+?"/, function(a, b) {
-          return b + reverted
-        })
+        const isGif = wholeImgTag[0].match(/gif/)
+        let firstImage = null
+        if (!isGif) {
+          const imgSrc = wholeImgTag ? wholeImgTag[1] : null
+          const atob = a => Buffer.from(a, 'base64').toString('binary')
+          const btoa = b => Buffer.from(b).toString('base64')
+          const converted = JSON.parse(atob(imgSrc))
+          converted.edits.resize.width = 100
+          converted.edits.resize.height = 100
+          const reverted = btoa(JSON.stringify(converted))
+          firstImage = wholeURL[0].replace(/(https:.+?cloudfront.net\/).+?"/, function(a, b) {
+            return b + reverted
+          })
+        } 
+
         topicsArray.push({
           topicId: key,
           title: title,
           // string: topicString,
           description: description,
-          firstImage: rebuiltString,
+          firstImage: firstImage,
           lastSave: lastSave,
         })
       }
