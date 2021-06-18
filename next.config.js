@@ -36,7 +36,7 @@ module.exports = (phase) => {
       REGION: 'us-east-1'
     },
     SITE_URL: isProd ? "talktree.me" : "talktree.me",
-    NEXT_PUBLIC_GOOGLE_ANALYTICS: isProd ? "G-5E2G7WDTKQ" : "G-YCPJBLFQST"
+    NEXT_PUBLIC_GOOGLE_ANALYTICS: isProd ? "GTM-5B8ZS88" : "G-YCPJBLFQST"
   }
 
   return isProd ? withPWA({ env }) : { env }
