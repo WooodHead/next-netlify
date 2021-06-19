@@ -12,15 +12,13 @@ const SignUp = props => {
   const [hiddenPassState, setHiddenPassState] = useState(true)
   const [errState, setErrState] = useState(null)
   const [splashState, setSplashState] = useState(null)
-  const [userNameState, setUserNameState] = useState('') /* using state instead of ref because I want to rerender url example */
-
-  // const signInFn = props.signInFn
+  const [loginState, setLoginState] = useState({
+    username: '',
+    email: '',
+    password: '',
+    code: '',
+  })
   const setModalState = (e) => props.setModalState(e)
-
-  const emailInputRef = useRef(null)
-  const passInputRef = useRef(null)
-  const usernameInputRef = useRef(null)
-  const securityCode = useRef(null)
 
   const router = useRouter()
 
@@ -29,10 +27,10 @@ const SignUp = props => {
 
     try {
       await Auth.signUp({
-        username: "" + emailInputRef.current.value,
-        password: "" + passInputRef.current.value,
+        username: "" + loginState.email,
+        password: "" + loginState.password,
         attributes: {
-          preferred_username: userNameState
+          preferred_username: loginState.username
         }
       })
       setErrState("accepted")
@@ -53,10 +51,10 @@ const SignUp = props => {
     e.preventDefault();
     setSubmitConfirmationState(true)
     try {
-      await Auth.confirmSignUp(emailInputRef.current.value, securityCode.current.value)
+      await Auth.confirmSignUp(loginState.email, loginState.code)
       setSubmitConfirmation("accepted")
       setSubmitConfirmationState(false)
-      await Auth.signIn(emailInputRef.current.value, passInputRef.current.value)
+      await Auth.signIn(loginState.email, loginState.password)
       router.push('/account/edit')
     } catch (err) {
       console.log(err)
@@ -71,7 +69,7 @@ const SignUp = props => {
     // if (isNotAllowed) {
     //   setUserNameState('❌')
     // } else {
-    setUserNameState(sanitized)
+    setLoginState({...loginState, username: sanitized})
     // }
   }
 
@@ -115,14 +113,18 @@ const SignUp = props => {
               className="bg-blue-100" disabled={(errState === "accepted")}
               placeholder="Enter username">
             </input>
-            <div>talktree.me/{userNameState}</div>
+            <div>talktree.me/{loginState.username}</div>
             {/* {(errState === "emailBad") && ' ❌' } */}
           </div>
         </div>
           <div className="mb-5">
             Email
             <div>
-              <input ref={emailInputRef} disabled={(errState === "accepted")} placeholder="enter email"></input>{(errState === "emailBad") && ' ❌'}
+              <input 
+                onChange={(event) => setLoginState({...loginState, email: event.target.value})} 
+                disabled={(errState === "accepted")} 
+                placeholder="enter email">
+              </input>{(errState === "emailBad") && ' ❌'}
               <div>You can use either username or email to login</div>
             </div>
           </div>
@@ -131,7 +133,7 @@ const SignUp = props => {
             <div className="container-fluid row">
               <input
                 type={hiddenPassState ? "password" : "text"}
-                ref={passInputRef}
+                onChange={(event) => setLoginState({...loginState, password: event.target.value})}
                 disabled={(errState === "accepted")}
                 placeholder="enter password"
               ></input>
@@ -154,7 +156,7 @@ const SignUp = props => {
 
           <div className="mb-2">We sent a confirmation code to your email</div>
           <div className="mb-3">
-            <input ref={securityCode} placeholder="Confirmation code"></input>
+            <input onChange={(event) => setLoginState({...loginState, code: event.target.value})} placeholder="Confirmation code"></input>
           </div>
           <div>
             <button disabled={submitConfirmationState} onClick={userVerifyHandler}>submit</button>
