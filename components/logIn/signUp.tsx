@@ -27,10 +27,10 @@ const SignUp = props => {
 
     try {
       await Auth.signUp({
-        username: "" + loginState.email,
+        username: "" + loginState.username,
         password: "" + loginState.password,
         attributes: {
-          preferred_username: loginState.username
+          email: loginState.email
         }
       })
       setErrState("accepted")
@@ -51,7 +51,7 @@ const SignUp = props => {
     e.preventDefault();
     setSubmitConfirmationState(true)
     try {
-      await Auth.confirmSignUp(loginState.email, loginState.code)
+      await Auth.confirmSignUp(loginState.username, loginState.code)
       setSubmitConfirmation("accepted")
       setSubmitConfirmationState(false)
       await Auth.signIn(loginState.email, loginState.password)
