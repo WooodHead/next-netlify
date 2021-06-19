@@ -45,7 +45,7 @@ const SignUp = props => {
       }
       setSubmitAccountState(false)
     }
-  };
+  }
 
   const userVerifyHandler = async e => {
     e.preventDefault();
@@ -156,7 +156,7 @@ const SignUp = props => {
 
           <div className="mb-2">We sent a confirmation code to your email</div>
           <div className="mb-3">
-            <input onChange={(event) => setLoginState({...loginState, code: event.target.value})} placeholder="Confirmation code"></input>
+            <input onChange={(event) => setLoginState({...loginState, code: '' + event.target.value})} placeholder="Confirmation code"></input>
           </div>
           <div>
             <button disabled={submitConfirmationState} onClick={userVerifyHandler}>submit</button>
