@@ -27,12 +27,59 @@ const Phone = () => {
     }
   })
 
-  const apiGateway = process.env.apiGateway
-
+  console.log(state)
   const checkAndReceiveCalls = async () => {
     try {
       const userSession = await Auth.currentSession()
-      const authHeader = { headers: { Authorization: userSession.getIdToken() } }
+      const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
+
+      const registration = await navigator.serviceWorker.ready
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission()
+      }
+      try {
+        /* get existing subscription */
+        const subscription = await registration.pushManager.getSubscription()
+        /* duplicated code in catch */
+        const subEndpoint = subscription.endpoint
+        const newSubscription = JSON.parse(JSON.stringify(subscription))
+        let myInit = {
+          headers: { Authorization: userSession.getIdToken().getJwtToken() },
+          body: {
+            endpoint: subEndpoint,
+            auth: newSubscription.keys.auth,
+            p256dh: newSubscription.keys.p256dh,
+            phoneToken: 'null'
+          }
+        }
+        await API.post(process.env.apiGateway.NAME, "/register", myInit)
+      } catch (err) {
+        /* if subscription doesn't exist */
+        const response = await API.get(process.env.apiGateway.NAME, "/register", {
+          headers: { Authorization: userSession.getIdToken().getJwtToken() }
+        })
+        console.log('getVapid', response)
+        const vapidPublicKey2 = "" + response;
+        const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey2)
+        const subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: convertedVapidKey
+        })
+        /* duplicate code in try */
+        const subEndpoint = subscription.endpoint
+        const newSubscription = JSON.parse(JSON.stringify(subscription))
+        let myInit = {
+          headers: { Authorization: userSession.getIdToken().getJwtToken() },
+          body: {
+            endpoint: subEndpoint,
+            auth: newSubscription.keys.auth,
+            p256dh: newSubscription.keys.p256dh,
+            phoneToken: 'null'
+          }
+        }
+        await API.post(process.env.apiGateway.NAME, "/register", myInit)
+      }
+
       const getSelfTavs = API.get(process.env.apiGateway.NAME, "/users/folders", authHeader)
       const getOTsession = API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
       const selfTavs = await getSelfTavs
@@ -46,68 +93,21 @@ const Phone = () => {
           video: selfTavs.Item.deviceInput.M.video.BOOL
         },
         otToken: {
-          Receiver: otSession.Item.Receiver.S,
-          apikey: otSession.Item.apikey.S,
-          caller: otSession.Item.caller.S,
-          deviceInput: otSession.Item.deviceInput.S,
-          sessionId: otSession.Item.sessionId.S !== 'null' ? otSession.Item.sessionId.S : null,
-          token: otSession.Item.token.S
+          Receiver: otSession.body.Item.Receiver.S,
+          apikey: otSession.body.Item.apikey.S,
+          caller: otSession.body.Item.caller.S,
+          deviceInput: otSession.body.Item.deviceInput.S,
+          sessionId: otSession.body.Item.sessionId.S !== 'null' ? otSession.body.Item.sessionId.S : null,
+          token: otSession.body.Item.token.S
         }})
       // audio.load()
-      /* GET vapidkeys from /register, POST to /register Subscriptions */
-      const registration = await navigator.serviceWorker.ready
-      if (Notification.permission !== "granted") {
-        Notification.requestPermission()
-      }
-
-      try {
-        /* get existing subscription */
-        const subscription = await registration.pushManager.getSubscription()
-        /* duplicated code in catch */
-        const subEndpoint = subscription.endpoint
-        const newSubscription = JSON.parse(JSON.stringify(subscription))
-        let myInit = {
-          headers: { Authorization: userSession.getIdToken() },
-          body: {
-            endpoint: subEndpoint,
-            auth: newSubscription.keys.auth,
-            p256dh: newSubscription.keys.p256dh,
-            phoneToken: 'null'
-          }
-        }
-        API.post(process.env.apiGateway.NAME, "/register", myInit)
-      } catch (err) {
-        /* if subscription doesn't exist */
-        const response = await API.get(process.env.apiGateway.NAME, "/register", {
-          headers: { Authorization: userSession.getIdToken() }
-        })
-        const vapidPublicKey2 = "" + response;
-        const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey2)
-        const subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: convertedVapidKey
-        })
-        /* duplicate code in try */
-        const subEndpoint = subscription.endpoint
-        const newSubscription = JSON.parse(JSON.stringify(subscription))
-        let myInit = {
-          headers: { Authorization: userSession.getIdToken() },
-          body: {
-            endpoint: subEndpoint,
-            auth: newSubscription.keys.auth,
-            p256dh: newSubscription.keys.p256dh,
-            phoneToken: 'null'
-          }
-        }
-        API.post(process.env.apiGateway.NAME, "/register", myInit)
-      }
 
       navigator.serviceWorker.addEventListener("message", async (event) => {
         console.log('MESSAGE', event)
         if (event.data.message === "sessionCreated") {
           // audio.play()
-          const selfTavs = await getSelfTavs
-          const getOTsession = await API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
+          // const selfTavs = await getSelfTavs
+          // const getOTsession = await API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
           /* I think its necessary to get TAVS, otherwise state is updated with initial state, which is TAVS; all null */
           setState({
             ...state,
@@ -118,12 +118,12 @@ const Phone = () => {
               video: selfTavs.Item.deviceInput.M.video.BOOL
             },
             otToken: {
-              Receiver: getOTsession.Item.Receiver.S,
-              apikey: getOTsession.Item.apikey.S,
-              caller: getOTsession.Item.caller.S,
-              deviceInput: getOTsession.Item.deviceInput.S,
-              sessionId: getOTsession.Item.sessionId.S,
-              token: getOTsession.Item.token.S
+              Receiver: otSession.body.Item.Receiver.S,
+              apikey: otSession.body.Item.apikey.S,
+              caller: otSession.body.Item.caller.S,
+              deviceInput: otSession.body.Item.deviceInput.S,
+              sessionId: otSession.body.Item.sessionId.S,
+              token: otSession.body.Item.token.S
             }
           })
         } else if (event.data.message === "callDisconnected") {
@@ -151,10 +151,10 @@ const Phone = () => {
     try {
       setState({ ...state, pageState: 'accepted' })
       const userSession = await Auth.currentSession()
-      const authHeader = { headers: { Authorization: userSession.getIdToken() } }
+      const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
       const getOTsession = await API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
       /* check to see if the caller didn't disconnect, if they didn't use the already existing OT state */
-      if (getOTsession.Item.sessionId.S === 'null') {
+      if (getOTsession.body.Item.sessionId.S === 'null') {
         setState({
           ...state,
           pageState: 'disconnected',
