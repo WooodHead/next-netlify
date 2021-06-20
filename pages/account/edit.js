@@ -55,7 +55,7 @@ export default function EditParent(props) {
       const userSession = await Auth.currentAuthenticatedUser()
       const getUserInit = {
         headers: {
-          Authorization: userSession.attributes.preferred_username
+          Authorization: userSession.username
         }
       }
       const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)

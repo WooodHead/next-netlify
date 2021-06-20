@@ -16,7 +16,7 @@ export default function PublicString(props) {
   const onClosePublicEdit = async () => {
     try {
       const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
+      const getUserInit = { headers: { Authorization: userSession.username } }
       const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const userResString = getAllUserRes.Item.publicString.S
       setPublicStringState({ string: userResString, editing: false, saved: false })
@@ -37,6 +37,7 @@ export default function PublicString(props) {
         }
       }
       const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
+      console.log('savePubStringRes: ', savedString)
       setPublicStringState({ string: savedString, saved: true })
     } catch (err) {
       console.log(err)

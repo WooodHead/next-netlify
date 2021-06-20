@@ -92,7 +92,7 @@ const ReviewParent = props => {
       try { 
         /* does caller have cardOnFile */
         const authUser = await Auth.currentAuthenticatedUser()
-        setCallerNumberState(authUser.attributes.preferred_username)
+        setCallerNumberState(authUser.username)
         const userSession = authUser.signInUserSession
         const getCardParams = { headers: { Authorization: userSession.idToken.jwtToken } }
         try {

@@ -107,6 +107,7 @@ export default function BlogEdit(props) {
 
     try {
       const userSession = await Auth.currentSession()
+      console.log(userSession)
       const now = new Date()
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },

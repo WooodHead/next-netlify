@@ -51,7 +51,7 @@ export default function EditComponent(props) {
     const userSession = await Auth.currentAuthenticatedUser()
     const getUserInit = {
       headers: {
-        Authorization: userSession.attributes.preferred_username
+        Authorization: userSession.username
       }
     }
     try {

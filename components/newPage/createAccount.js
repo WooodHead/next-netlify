@@ -26,10 +26,10 @@ const SignUp = props => {
     setSubmitAccountState(true)
     try {
       await Auth.signUp({
-        username: emailPassInput.emailInput,
+        username: '',
         password: emailPassInput.passInput,
         attributes: {
-          preferred_username: "toBeReplaced"
+          email: emailPassInput.emailInput
         }
       })
       setErrState("accepted")

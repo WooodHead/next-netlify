@@ -177,7 +177,7 @@ const Phone = () => {
     navigator.sendBeacon(
       process.env.apiGateway.URL +
         "/disconnectCall" +
-        "?receiver=" + authenticatedUser.attributes.preferred_username +
+        "?receiver=" + authenticatedUser.username +
         "&sessionId=" + null
     )
     setState({

@@ -27,7 +27,7 @@ export default function PublicString(props) {
   const onCloseTopicEdit = async () => {
     try {
       const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = { headers: { Authorization: userSession.attributes.preferred_username } }
+      const getUserInit = { headers: { Authorization: userSession.username } }
       const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
       const userResString = getUserRes.Item.topics.M[selectedTopicState.topic].S
       setSelectedTopicState({ ...selectedTopicState, string: userResString, editing: false, saved: false })
