@@ -5,7 +5,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic'
 
 const DynamicCallComponent = dynamic(
-  () => import('../../components/call/callComponent'),
+  () => import('../../components/[id]/call/callComponent'),
   { ssr: false }
 )
 

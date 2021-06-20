@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useRouter } from 'next/router'
-import AudioComponent from '../tavs/audio'
-import VideoComponent from '../tavs/video'
-import ScreenComponent from '../tavs/screen'
-import TextComponent from '../tavs/text'
+import AudioComponent from '../../tavs/audio'
+import VideoComponent from '../../tavs/video'
+import ScreenComponent from '../../tavs/screen'
+import TextComponent from '../../tavs/text'
 
 
 const OTcomponent = (props) => {
