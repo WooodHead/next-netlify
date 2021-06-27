@@ -1,12 +1,12 @@
 self.addEventListener('install', event => {
   console.log('sw install: ', event)
-  // event.waitUntil(
-  //   caches.open('newCache1').then(function (cache) {
-  //     return cache.addAll([
-  //       '/static/js/bundle.js'
-  //     ])
-  //   })
-  // )
+  event.waitUntil(
+    caches.open('cache Index').then(function (cache) {
+      return cache.addAll([
+        '/'
+      ])
+    })
+  )
 })
 
 // self.clients.matchAll(async (client) => console.log(client))
@@ -51,7 +51,7 @@ self.addEventListener('push', function (event) {
 })
 
 self.addEventListener('notificationclick', function (event) {
-  event.notification.close();
+  event.notification.close()
   /* too much work to get env variable in sw */
   const devAddress = 'https://dev.talktree.me/phone'
   const prodAddress = 'https://talktree.me/phone'
