@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react'
 
-const TextOnlyComponent = props => {
+const TextComponent = props => {
 
   const textState = props.textState
-  const selectedDevice = props.selectedDevice
-
   const signalInputRef = useRef('')
 
   const [typingState, setTypingState] = useState(false)
@@ -43,7 +41,7 @@ const TextOnlyComponent = props => {
           id='textArea'
           readOnly
           style={{ resize: "both" }}
-          rows={ (selectedDevice === "text") ? "8" : "3" }
+          rows="12"
           cols="42"
           value={
             textState
@@ -57,7 +55,7 @@ const TextOnlyComponent = props => {
                 placeholder='type here'
                 onKeyDown={onKeyPress}
                 style={{ resize: "both" }}
-                rows={ (selectedDevice === "text") ? "2" : "1" }
+                rows="2"
                 cols="42"
                 ref={signalInputRef}
               ></textarea>
@@ -68,4 +66,4 @@ const TextOnlyComponent = props => {
     );
 }
 
-export default TextOnlyComponent
+export default TextComponent

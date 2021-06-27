@@ -3,40 +3,30 @@ import API from '@aws-amplify/api'
 import '../../configureAmplify'
 import Head from 'next/head';
 import dynamic from 'next/dynamic'
+// import MessageOtComponent from "../../components/[id]/message/messageComponent"
 
-const DynamicCallComponent = dynamic(
-  () => import('../../components/[id]/call/callComponent'),
+const DynamicMessageComponent = dynamic(
+  () => import('../../components/[id]/message/messageOtComponent'),
   { ssr: false }
 )
 
-const Call = ({ user }) => {
+const Message = ({ user }) => {
 
   const id = user.Username
 
-  const deviceInputState = 'text'
-  const allowedDevices = {
-    text: true,
-    audio: true,
-    video: true,
-    screen: true
-  }
-
-    return (
-      <div>
-        <Head>
+  return (
+    <div>
+      <Head>
         <meta name="robots" content="noindex, nofollow" />
         <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-        </Head>
-        <DynamicCallComponent
-          targetUser={id}
-          folder={null}
-          deviceInput={deviceInputState}
-          allowedDevices={allowedDevices}
-        />
-      </div>
-    )
+      </Head>
+      <DynamicMessageComponent
+        targetUser={id}
+      />
+    </div>
+  )
 }
-export default Call
+export default Message
 
 export async function getStaticPaths() {
   const allUsersInit = { headers: { Authorization: "all" } }

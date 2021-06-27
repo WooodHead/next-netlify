@@ -5,14 +5,14 @@
 @layer base {
   button {
     @apply px-2 py-1 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75;
-  }
+  };
   textarea {
     @apply bg-opacity-100 shadow-md;
-  }
+  };
   pre {
-    @apply w-screen md:w-full overflow-auto
-  }
-}
+    @apply w-screen md:w-full overflow-auto;
+  };
+};
 
 /* .ql-syntax {
   border-radius: 3px;
@@ -26,9 +26,4 @@
   font-size: 50%;
   padding: 2px 4px;
 } */
-/* .ql-editor {
-  @apply w-full h-full overflow-auto;
-} */
-/* .ql-container {
-  @apply overflow-auto resize;
-} */
+
