@@ -1,7 +1,10 @@
+import Head from 'next/head'
+
 export default () => {
   return (
     <>
-    <div>can't do much offline</div>
+    <Head><title>Talktree</title></Head>
+    <div>This is the offline page, get some internet</div>
     </>
   )
 }
