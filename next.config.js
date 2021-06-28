@@ -6,6 +6,7 @@ module.exports = (phase) => {
   const isProd = phase === PHASE_PRODUCTION_BUILD
 
   const env = {
+    future: {webpack5: true},
     pwa: { dest: 'public' },
     // images: {
     //   domains: ["localhost", "d1la1a6cwiwn48.cloudfront.net", "https://d1la1a6cwiwn48.cloudfront.net"]
