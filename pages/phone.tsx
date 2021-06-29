@@ -26,8 +26,7 @@ const Phone = () => {
       token: null
     }
   })
-
-  console.log(state)
+  
   const checkAndReceiveCalls = async () => {
     try {
       const userSession = await Auth.currentSession()
@@ -228,8 +227,8 @@ const Phone = () => {
           : state.pageState === "no auth"
           ? <div>You need to be logged in</div>
           : <div>
-              <div className="font-medium text-lg">Waiting on calls</div>
-              <div className="max-w-prose mt-5">You'll be e-mailed a link to open this phone when someone is trying to call you; 
+              <div className="text-lg font-medium">Waiting on calls</div>
+              <div className="mt-5 max-w-prose">You'll be e-mailed a link to open this phone when someone is trying to call you; 
               you can receive notifications, and do not need this tab open; accept or decline the call after alerted</div>
               <div>
               </div>
