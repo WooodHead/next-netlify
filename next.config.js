@@ -6,8 +6,8 @@ module.exports = (phase) => {
   const isProd = phase === PHASE_PRODUCTION_BUILD
 
   const env = {
-    // future: {webpack5: true},
-    pwa: { dest: 'public' },
+    // future: { webpack5: true },
+    pwa: { dest: 'public', disable: false },
     // images: {
     //   domains: ["localhost", "d1la1a6cwiwn48.cloudfront.net", "https://d1la1a6cwiwn48.cloudfront.net"]
     // },
@@ -46,5 +46,5 @@ module.exports = (phase) => {
     NEXT_PUBLIC_GOOGLE_ANALYTICS: isProd ? "GTM-N6LXWFR" : "GTM-KQMLD57"
   }
 
-  return isProd ? withPWA({ env }) : { env }
+  return isProd ? withPWA({ env }) : withPWA({ env })
 }
