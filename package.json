@@ -1,6 +1,6 @@
 {
-  "name": "next-netlify-starter",
-  "version": "0.2.0",
+  "name": "talktree",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
