@@ -14,22 +14,29 @@ const TextComponent = props => {
   }
 
   let typingTimer
+
   const handleKeyPress = (e) => {
-    if (typingTimer) { clearTimeout(typingTimer) }
-    if (!typingState) {
-      setTypingState(true)
-      props.onSignalSend('%t%yping')
+    /* prevents cognito Error every keystroke */
+    if (props.otherUser) {
+      if (typingTimer) { clearTimeout(typingTimer) }
+      if (!typingState) {
+        setTypingState(true)
+        props.onSignalSend('%t%yping')
+      }
+      typingTimer = setTimeout(() => {
+        setTypingState(false)
+        props.onSignalSend('not%t%yping')
+      }, 2000)
     }
-    typingTimer = setTimeout(() => {
-      setTypingState(false)
-      props.onSignalSend('not%t%yping')
-    }, 2000)
   }
 
   const onKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
-      props.onSignalSend(signalInputRef.current.value)
+      /* prevents textmessage from being called every keystroke */
+      if (!props.otherUser) {
+        props.onSignalSend(signalInputRef.current.value)
+      }
       signalInputRef.current.value = ''
     }
     handleKeyPress(e)

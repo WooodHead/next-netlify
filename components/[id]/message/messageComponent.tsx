@@ -28,7 +28,6 @@ const MessageComponent = (props) => {
 
   const currentUser = props.targetUser
   const session = props.otSession
-  console.log(session)
   
   const sessionId = session.id
 
@@ -49,8 +48,8 @@ const MessageComponent = (props) => {
     router.push(`/${currentUser}/review`)
   }
 
-  const onSignalSend = signalInputRefProp => {
-    let txtMessage = signalInputRefProp;
+  const onSignalSend = async signalInputRefProp => {
+    let txtMessage = signalInputRefProp
     session.signal(
       { type: "signal", data: "" + txtMessage },
       function signalCallback(err) {
@@ -60,13 +59,16 @@ const MessageComponent = (props) => {
       }
     )
     if (!state.otherUser) {
+      console.log('no other user')
       const myInit = {
-        headers: {},
+        // headers: {},
         body: {
-          
+          message: txtMessage,
+          receiver: currentUser
         }
       }
-      API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/', myInit)
+      const omg = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/textMessage', myInit)
+      console.log('omg', omg)
     }
   }
 
@@ -136,6 +138,7 @@ const MessageComponent = (props) => {
           {state.text && <TextOnlyComponent
             textState={textState}
             onSignalSend={onSignalSend}
+            otherUser={state.otherUser}
           />}
 
 

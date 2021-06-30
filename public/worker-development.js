@@ -1,8 +1,5 @@
 /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
-// // declare const self: any
-// // declare const clients: any
-// export default () => {
 function messageToClient(client, data) {
   return new Promise(function (resolve, reject) {
     const channel = new MessageChannel();
@@ -17,20 +14,10 @@ function messageToClient(client, data) {
 
     client.postMessage(data, [channel.port2]);
   });
-} // console.log('hello')
-// if ('serviceWorker' in navigator) {
+} // self.addEventListener('install', event => {
+//   console.log("SW INSTALLED")
+// })
 
-
-console.log('sw exists');
-self.addEventListener('install', event => {
-  console.log("SW INSTALLED"); // event.waitUntil(
-  //   caches.open('cache Index').then(function (cache) {
-  //     return cache.addAll([
-  //       '/'
-  //     ])
-  //   })
-  // )
-}); // self.clients.matchAll(async (client) => console.log(client))
 
 self.addEventListener('push', function (event) {
   const webPushData = event.data.text();
@@ -79,7 +66,6 @@ self.addEventListener('notificationclick', function (event) {
     });
   });
   event.waitUntil(promiseChain);
-}); // }
-// }
+});
 /******/ })()
 ;
