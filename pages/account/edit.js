@@ -58,7 +58,7 @@ export default function EditParent(props) {
           Authorization: userSession.username
         }
       }
-      const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", getUserInit)
       const topicsArray = []
       
       for (const topicKey in getUserRes.Item.topics.M) {

@@ -51,10 +51,10 @@ const Phone = () => {
             phoneToken: 'null'
           }
         }
-        await API.post(process.env.apiGateway.NAME, "/register", myInit)
+        await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", myInit)
       } catch (err) {
         /* if subscription doesn't exist */
-        const response = await API.get(process.env.apiGateway.NAME, "/register", {
+        const response = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", {
           headers: { Authorization: userSession.getIdToken().getJwtToken() }
         })
         console.log('getVapid', response)
@@ -76,11 +76,11 @@ const Phone = () => {
             phoneToken: 'null'
           }
         }
-        await API.post(process.env.apiGateway.NAME, "/register", myInit)
+        await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", myInit)
       }
 
-      const getSelfTavs = API.get(process.env.apiGateway.NAME, "/users/folders", authHeader)
-      const getOTsession = API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
+      const getSelfTavs = API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users/folders", authHeader)
+      const getOTsession = API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
       const selfTavs = await getSelfTavs
       const otSession = await getOTsession
       setState({
@@ -106,7 +106,7 @@ const Phone = () => {
         if (event.data.message === "sessionCreated") {
           // audio.play()
           // const selfTavs = await getSelfTavs
-          // const getOTsession = await API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
+          // const getOTsession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
           /* I think its necessary to get TAVS, otherwise state is updated with initial state, which is TAVS; all null */
           setState({
             ...state,
@@ -151,7 +151,7 @@ const Phone = () => {
       setState({ ...state, pageState: 'accepted' })
       const userSession = await Auth.currentSession()
       const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
-      const getOTsession = await API.get(process.env.apiGateway.NAME, "/tokbox", authHeader)
+      const getOTsession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
       /* check to see if the caller didn't disconnect, if they didn't use the already existing OT state */
       if (getOTsession.body.Item.sessionId.S === 'null') {
         setState({
@@ -174,7 +174,7 @@ const Phone = () => {
   const declineCall = async () => {
     const authenticatedUser = await Auth.currentAuthenticatedUser()
     navigator.sendBeacon(
-      process.env.apiGateway.URL +
+      process.env.NEXT_PUBLIC_APIGATEWAY_URL +
         "/disconnectCall" +
         "?receiver=" + authenticatedUser.username +
         "&sessionId=" + null

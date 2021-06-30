@@ -13,7 +13,7 @@ export default function CommentComp (props) {
   //     body: { receiver: '' + id, comment: '' + textAreaState, topic: topic },
   //   }
   //   try {
-  //     const leaveCommentRes = await API.post(process.env.apiGateway.NAME, '/leaveComment', submitCommentParams)
+  //     const leaveCommentRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/leaveComment', submitCommentParams)
   //   } catch (err) {
   //     console.log(err)
   //   }
@@ -22,7 +22,7 @@ export default function CommentComp (props) {
   const openCallPhone = () => {
     const devSite = `/${user.Username}/call`
     const prodSite = `https://talktree.me/${user.Username}/call`
-    const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
+    const currentSite = process.env.NEXT_PUBLIC_STAGE === 'prod' ? prodSite : devSite
     window.open(
       currentSite,
       "MsgWindow",
@@ -32,7 +32,7 @@ export default function CommentComp (props) {
   const openMessagePhone = () => {
     const devSite = `/${user.Username}/message`
     const prodSite = `https://talktree.me/${user.Username}/message`
-    const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
+    const currentSite = process.env.NEXT_PUBLIC_STAGE === 'prod' ? prodSite : devSite
     window.open(
       currentSite,
       "MsgWindow",

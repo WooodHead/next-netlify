@@ -69,7 +69,7 @@ export default function Edit(props) {
         const putS3:any = await Storage.put(fileKey, file)
         // const s3res = await putS3
         const jsonToUrl = {
-          "bucket": process.env.storage.BUCKET,
+          "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
           "key": `public/${putS3.key}`,
           "edits": {
             smartCrop: {
@@ -85,7 +85,7 @@ export default function Edit(props) {
         }
         const userSession = await Auth.currentSession()
         const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-        const convertedUrl = process.env.img_cloudfront + "/" + converting
+        const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + converting
         const stringInit = {
           headers: { Authorization: userSession.getIdToken().getJwtToken() },
           body: {
@@ -94,7 +94,7 @@ export default function Edit(props) {
             accessToken: userSession.getAccessToken().getJwtToken()
           }
         }
-        const saveUrl = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
+        const saveUrl = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveStrings', stringInit)
         setUserState({...userState, image: convertedUrl })
         getUserData()
         setLoadingImageState(false)

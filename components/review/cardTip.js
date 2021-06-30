@@ -43,7 +43,7 @@ const CardTip = props => {
           caller: callerNumberState,
           usingCardOnFile: cardOnFile
         } }
-        const clientSecret = await API.post(process.env.apiGateway.NAME, '/createTipIntent', myInit);
+        const clientSecret = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/createTipIntent', myInit);
         if (clientSecret.err === "User does not exist") {
           setTipErrorState('User does not exist')
         }

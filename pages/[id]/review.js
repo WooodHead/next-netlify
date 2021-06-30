@@ -58,7 +58,7 @@ const ReviewParent = props => {
         // const getUserParams = { headers: { Authorization: receiver } }
         const getReceiverParams = { body: { receiver: receiver } } 
         // const getUser = await API.get(config.apiGateway.NAME, '/users', getUserParams)
-        const getUser = await API.post(process.env.apiGateway.NAME, '/getReceiver', getReceiverParams)
+        const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getReceiver', getReceiverParams)
         if (getUser.body?.onBoarding !== 'finished') {
           setPaymentState('noReceiver'); amountInputDOM.disabled = true 
         }
@@ -96,7 +96,7 @@ const ReviewParent = props => {
         const userSession = authUser.signInUserSession
         const getCardParams = { headers: { Authorization: userSession.idToken.jwtToken } }
         try {
-          const getCardOnFile = await API.get(process.env.apiGateway.NAME, '/cards', getCardParams)
+          const getCardOnFile = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/cards', getCardParams)
           setCardOnFile(getCardOnFile.body.Item.preferredCard)
         } catch { /* no card on file found */ }  
       } catch { /* user not logged in */ }
@@ -179,7 +179,7 @@ export default ReviewParent;
 
 export async function getStaticPaths() {
   const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
   const paths = getAllUsersRes.body.Items.map(user => {
     return { params: { id: user.Username.S } }
   })
@@ -192,7 +192,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   let user
   const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {

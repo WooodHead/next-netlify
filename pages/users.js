@@ -66,7 +66,7 @@ const Users = ({ allUsers }) => {
 export async function getStaticProps() {
   const newAllUsers = []
   const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
   getAllUsersRes.body.Items.forEach((userRes) => {
     const TAVS = []
     const topicsArray = []

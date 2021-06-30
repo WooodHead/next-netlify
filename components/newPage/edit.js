@@ -55,7 +55,7 @@ export default function EditComponent(props) {
       }
     }
     try {
-      const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", getUserInit)
       const topicsArray = []
       for (const topicKey in getUserRes.Item.topics.M) {
         topicsArray.push({
@@ -141,8 +141,8 @@ export default function EditComponent(props) {
           string: escapedString
         }
       }
-      const savedTopicRes = API.post(process.env.apiGateway.NAME, '/topics', topicStringInit)
-      const savedString = API.post(process.env.apiGateway.NAME, '/saveStrings', pubStringInit)
+      const savedTopicRes = API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/topics', topicStringInit)
+      const savedString = API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveStrings', pubStringInit)
       await savedTopicRes
       await savedString
       router.push('/account/edit')

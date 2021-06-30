@@ -39,7 +39,7 @@ export default function PPM(props) {
           body: { PPMnum: "" + ppmState }
         }
         setPPMloading(true)
-        API.post(process.env.apiGateway.NAME, "/setPPM", myInit)
+        API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/setPPM", myInit)
           .then((res) => {
             if (res.statusCode === 500) {setPPMdenied(true)} else {
               setPPMdenied(false)

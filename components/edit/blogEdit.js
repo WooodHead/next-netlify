@@ -57,7 +57,7 @@ export default function BlogEdit(props) {
         try {
           const putS3 = Storage.put(uuidv4() + fileType, file)
           const s3res = await putS3
-          const cloudfrontUrl = process.env.gif_cloudfront + "/" + s3res.key
+          const cloudfrontUrl = process.env.NEXT_PUBLIC_GIF_CLOUDFRONT_cloudfront + "/" + s3res.key
           editor.insertEmbed(range.index, 'image', cloudfrontUrl)
           editor.insertText(range.index + 1, true)
         } catch (err) {
@@ -68,7 +68,7 @@ export default function BlogEdit(props) {
           const putS3 = Storage.put(uuidv4() + fileType, file)
           const s3res = await putS3
           const jsonToUrl = {
-            "bucket": process.env.storage.BUCKET,
+            "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
             "key": `public/${s3res.key}`,
             "edits": {
               "resize": {
@@ -79,7 +79,7 @@ export default function BlogEdit(props) {
             }
           }
           const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-          const convertedUrl = process.env.img_cloudfront + "/" + converting
+          const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + converting
           editor.insertEmbed(range.index, 'image', convertedUrl)
           editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
         } catch (err) {
@@ -124,7 +124,7 @@ export default function BlogEdit(props) {
           }
         }
       }
-      const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
+      const savedTopicRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/topics', stringInit)
       if (savedTopicRes.string) {
         setSelectedTopicState({ ...selectedTopicState, saved: "saved" })
         getUserData()
@@ -148,7 +148,7 @@ export default function BlogEdit(props) {
         topicObj: null
       }
     }
-    const deleteTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams)
+    const deleteTopicRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/topics', deleteTopicParams)
     setSelectedTopicState({
       title: '',
       topicId: '',

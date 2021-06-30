@@ -17,7 +17,7 @@ const MessageOtComponent = (props) => {
           deviceInput: 'text',
         }
       }
-      const createSessionRes = await API.post(process.env.apiGateway.NAME, '/createSession2', myInit)
+      const createSessionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/createSession2', myInit)
       const otSession = OT.initSession(createSessionRes.apikey, createSessionRes.SessionId)
       setSessionState(otSession)
       otSession.connect(createSessionRes.token, function(err){

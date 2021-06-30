@@ -29,7 +29,7 @@ const Rating = props => {
               recipient: receiver
             }
           }
-          const postReview = await API.post(process.env.apiGateway.NAME, '/review', myInit)
+          const postReview = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/review', myInit)
           if (postReview?.errorType === 'ValidationException') {
             setReviewErrorState('User does not exist')
           } else if (postReview.body === 'success') {

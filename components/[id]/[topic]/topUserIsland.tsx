@@ -4,7 +4,7 @@ const UserComponentTop = (props) => {
   const openCallPhone = () => {
     const devSite = `/${user.Username}/call`
     const prodSite = `https://talktree.me/${user.Username}/call`
-    const currentSite = process.env.STAGE === 'prod' ? prodSite : devSite
+    const currentSite = process.env.NEXT_PUBLIC_STAGE === 'prod' ? prodSite : devSite
     window.open(
       currentSite,
       "MsgWindow",

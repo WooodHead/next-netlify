@@ -27,7 +27,7 @@ export default function User({ user }) {
 
 export async function getStaticPaths() {
   const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
   const paths = getAllUsersRes.body.Items.map(user => {
     return { params: { id: user.Username.S } }
   })
@@ -40,7 +40,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
 
   const specificUserInit = { headers: { Authorization: params.id } }
-  const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", specificUserInit)
+  const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
   const userRes = getUserRes.Item
   const TAVS = []
   userRes.deviceInput.M.text.BOOL && TAVS.push("📝")

@@ -17,7 +17,7 @@ export default function PublicString(props) {
     try {
       const userSession = await Auth.currentAuthenticatedUser()
       const getUserInit = { headers: { Authorization: userSession.username } }
-      const getAllUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const getAllUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", getUserInit)
       const userResString = getAllUserRes.Item.publicString.S
       setPublicStringState({ string: userResString, editing: false, saved: false })
     } catch (err) {
@@ -36,7 +36,7 @@ export default function PublicString(props) {
           accessToken: userSession.accessToken.jwtToken
         }
       }
-      const savedString = await API.post(process.env.apiGateway.NAME, '/saveStrings', stringInit)
+      const savedString = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveStrings', stringInit)
       console.log('savePubStringRes: ', savedString)
       setPublicStringState({ string: savedString, saved: true })
     } catch (err) {

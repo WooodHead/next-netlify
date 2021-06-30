@@ -54,7 +54,7 @@ const AccountSettings = props => {
         userPoolId: "" + userPool
       }
     }
-    await API.post(process.env.apiGateway.NAME, "/disableUserSelf", disableAccountInit)
+    await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/disableUserSelf", disableAccountInit)
     signOut()
   }
 

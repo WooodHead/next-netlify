@@ -37,7 +37,7 @@ const MessageComponent = (props) => {
   const disconnectWithAPI = async () => {
     try {
       navigator.sendBeacon(
-        process.env.apiGateway.URL +
+        process.env.NEXT_PUBLIC_APIGATEWAY_URL +
         "/disconnectCall" +
         "?receiver=" + currentUser +
         "&sessionId=" + sessionId
@@ -66,7 +66,7 @@ const MessageComponent = (props) => {
           
         }
       }
-      API.post(process.env.apiGateway.NAME, '/', myInit)
+      API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/', myInit)
     }
   }
 
@@ -74,7 +74,7 @@ const MessageComponent = (props) => {
     event.preventDefault()
     event.returnValue = ""
     navigator.sendBeacon(
-      process.env.apiGateway.URL +
+      process.env.NEXT_PUBLIC_APIGATEWAY_URL +
       "/disconnectCall" +
       "?receiver=" + currentUser +
       "&sessionId=" + sessionId
@@ -91,7 +91,7 @@ const MessageComponent = (props) => {
           event.preventDefault()
           event.returnValue = ""
           navigator.sendBeacon(
-            process.env.apiGateway.URL +
+            process.env.NEXT_PUBLIC_APIGATEWAY_URL +
               "/disconnectCall" +
               "?receiver=" + currentUser +
               "&sessionId=" + session.id
@@ -105,7 +105,7 @@ const MessageComponent = (props) => {
       session.disconnect()
       router.push(`/${currentUser}/review`)
       navigator.sendBeacon(
-        process.env.apiGateway.URL +
+        process.env.NEXT_PUBLIC_APIGATEWAY_URL +
           "/disconnectCall" +
           "?receiver=" + currentUser +
           "&sessionId=" + session.id

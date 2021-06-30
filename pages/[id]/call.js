@@ -68,7 +68,7 @@ const Call = ({ user }) => {
       }
       try {
         /* this authorization isn't context, its header.params; I'm stupidly using it to send data */
-        const receiverGot = await API.get(process.env.apiGateway.NAME,"/users",{headers: {Authorization: id}})
+        const receiverGot = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME,"/users",{headers: {Authorization: id}})
         if (receiverGot.hasOwnProperty('Item')) {
           /* if receiver exists */
           const rawDevices = receiverGot.Item.deviceInput.M
@@ -122,7 +122,7 @@ export default Call
 
 export async function getStaticPaths() {
   const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
   const paths = getAllUsersRes.body.Items.map(user => {
     return { params: { id: user.Username.S } }
   })
@@ -135,7 +135,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   let user
   const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.apiGateway.NAME, "/users", allUsersInit)
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
   getAllUsersRes.body.Items.forEach((userRes) => {
     if (userRes.Username.S === params.id) {
       user = {

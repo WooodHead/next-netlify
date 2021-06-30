@@ -39,7 +39,7 @@ export default function PPM(props) {
         }
         console.log('my init', myInit)
         setPPMloading(true)
-        const PPMres = await API.post(process.env.apiGateway.NAME, "/setPPM", myInit)
+        const PPMres = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/setPPM", myInit)
         PPMres.statusCode === 500 ? setPPMdenied(true) : setPPMdenied(false), getUserData()
         setPPMloading(false)
       } else {

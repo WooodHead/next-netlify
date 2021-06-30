@@ -28,7 +28,7 @@ export default function PublicString(props) {
     try {
       const userSession = await Auth.currentAuthenticatedUser()
       const getUserInit = { headers: { Authorization: userSession.username } }
-      const getUserRes = await API.get(process.env.apiGateway.NAME, "/users", getUserInit)
+      const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", getUserInit)
       const userResString = getUserRes.Item.topics.M[selectedTopicState.topic].S
       setSelectedTopicState({ ...selectedTopicState, string: userResString, editing: false, saved: false })
     } catch (err) {
@@ -48,7 +48,7 @@ export default function PublicString(props) {
         string: null
       }
     }
-    const deleteTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', deleteTopicParams)
+    const deleteTopicRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/topics', deleteTopicParams)
     deleteTopicRes.status === 200 
       ? setUserState({...userState, topics: userState.topics.filter((topicObj) => topicObj.topic !== topicProp)})
       : console.log('delete failed')
@@ -68,7 +68,7 @@ export default function PublicString(props) {
           string: escapedString
         }
       }
-      const savedTopicRes = await API.post(process.env.apiGateway.NAME, '/topics', stringInit)
+      const savedTopicRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/topics', stringInit)
       if (savedTopicRes.status === 200) {
         setSelectedTopicState({...selectedTopicState, saved: "saved"})
         getUserData()

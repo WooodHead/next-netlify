@@ -10,7 +10,7 @@ export function turnBracketsToAlt(stringProp) {
         const afterStringIndex = matchedIndex + matchedLength
         const afterString = stringProp[afterStringIndex]
         const srcUrl = matchedString.match(/src=".+?"/)
-        const gifUrl = srcUrl[0].match(process.env.gif_cloudfront)
+        const gifUrl = srcUrl[0].match(process.env.NEXT_PUBLIC_GIF_CLOUDFRONT_cloudfront)
         if (gifUrl) {
           return mutableString
         } 
@@ -37,7 +37,7 @@ export function turnBracketsToAlt(stringProp) {
             }
           }
           const convertedBTOA = Buffer.from(JSON.stringify(newJson)).toString('base64')
-          const convertedUrl = process.env.img_cloudfront + "/" + convertedBTOA
+          const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + convertedBTOA
           if (altLength < 161) {
             const altString = stringProp.slice(altBeginning + 1, altEnd)
             const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
@@ -72,7 +72,7 @@ try {
       const afterStringIndex = matchedIndex + matchedLength
       const afterString = stringProp[afterStringIndex]
       const srcUrl = matchedString.match(/src=".+?"/)
-      const gifUrl = srcUrl[0].match(process.env.gif_cloudfront)
+      const gifUrl = srcUrl[0].match(process.env.NEXT_PUBLIC_GIF_CLOUDFRONT_cloudfront)
       if (gifUrl) {
         return mutableString
       }
@@ -99,7 +99,7 @@ try {
           }
         }
         const convertedBTOA = Buffer.from(JSON.stringify(newJson)).toString('base64')
-        const convertedUrl = process.env.img_cloudfront + "/" + convertedBTOA
+        const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + convertedBTOA
         if (altLength < 161) {
           const altString = stringProp.slice(altBeginning + 1, altEnd)
           const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)

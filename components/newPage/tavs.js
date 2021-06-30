@@ -20,7 +20,7 @@ export default function TAVS(props) {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: { deviceName: tavProp.TAVS, deviceBool: !tavsState[tavProp.TAVS] },
       }
-      await API.post(process.env.apiGateway.NAME, "/users/devices", myInit)
+      await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users/devices", myInit)
       props.getUserData()
     } catch (err) {
       console.log(err)

@@ -31,7 +31,7 @@ const OTcomponent = (props) => {
   const disconnectWithAPI = async () => {
     try {
       navigator.sendBeacon(
-        process.env.apiGateway.URL +
+        process.env.NEXT_PUBLIC_APIGATEWAY_URL +
         "/disconnectCall" +
         "?receiver=" + currentUser +
         "&sessionId=" + sessionId
@@ -64,9 +64,9 @@ const OTcomponent = (props) => {
   //           sessionId: sessionId
   //         }
   //       }
-  //       await API.post(process.env.apiGateway.NAME, "/userstatus/forceInactive", init)
+  //       await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/userstatus/forceInactive", init)
   //       navigator.sendBeacon(
-  //         process.env.apiGateway.URL +
+  //         process.env.NEXT_PUBLIC_APIGATEWAY_URL +
   //         "/disconnectCall" +
   //         "?receiver=" + currentUser +
   //         "&sessionId=" + sessionId
@@ -83,7 +83,7 @@ const OTcomponent = (props) => {
     event.preventDefault()
     event.returnValue = ""
     navigator.sendBeacon(
-      process.env.apiGateway.URL +
+      process.env.NEXT_PUBLIC_APIGATEWAY_URL +
       "/disconnectCall" +
       "?receiver=" + currentUser +
       "&sessionId=" + sessionId
@@ -101,7 +101,7 @@ const OTcomponent = (props) => {
           event.preventDefault()
           event.returnValue = ""
           navigator.sendBeacon(
-            process.env.apiGateway.URL +
+            process.env.NEXT_PUBLIC_APIGATEWAY_URL +
               "/disconnectCall" +
               "?receiver=" + currentUser +
               "&sessionId=" + session.id
@@ -116,7 +116,7 @@ const OTcomponent = (props) => {
       otSDK.disconnect()
       router.push(`/${currentUser}/review`)
       navigator.sendBeacon(
-        process.env.apiGateway.URL +
+        process.env.NEXT_PUBLIC_APIGATEWAY_URL +
           "/disconnectCall" +
           "?receiver=" + currentUser +
           "&sessionId=" + session.id
