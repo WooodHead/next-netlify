@@ -6,17 +6,12 @@ import dynamic from "next/dynamic"
 import urlBase64ToUint8Array from '../components/custom/url64to8array'
 import Footer from '../components/navbar/footer'
 import Navbar from '../components/navbar/navbar'
-const InitOT = dynamic(() => import('../components/phone/initOT'), { ssr: false })
+import Head from 'next/head'
+const MessageInitOT = dynamic(() => import('../components/phone/messageInitOT'), { ssr: false })
 
 const Phone = () => {
   const [state, setState] = useState({
     pageState: 'waiting',
-    TAVS: {
-      audio: null,
-      screen: null,
-      text: null,
-      video: null
-    },
     otToken: {
       Receiver: null,
       apikey: null,
@@ -26,8 +21,8 @@ const Phone = () => {
       token: null
     }
   })
-  
-  const checkAndReceiveCalls = async () => {
+
+  const checkForCalls = async () => {
     try {
       const userSession = await Auth.currentSession()
       const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
@@ -79,18 +74,9 @@ const Phone = () => {
         await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", myInit)
       }
 
-      const getSelfTavs = API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users/folders", authHeader)
-      const getOTsession = API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
-      const selfTavs = await getSelfTavs
-      const otSession = await getOTsession
+      const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
       setState({
         ...state,
-        TAVS: {
-          audio: selfTavs.Item.deviceInput.M.audio.BOOL,
-          screen: selfTavs.Item.deviceInput.M.screen.BOOL,
-          text: selfTavs.Item.deviceInput.M.text.BOOL,
-          video: selfTavs.Item.deviceInput.M.video.BOOL
-        },
         otToken: {
           Receiver: otSession.body.Item.Receiver.S,
           apikey: otSession.body.Item.apikey.S,
@@ -98,24 +84,24 @@ const Phone = () => {
           deviceInput: otSession.body.Item.deviceInput.S,
           sessionId: otSession.body.Item.sessionId.S !== 'null' ? otSession.body.Item.sessionId.S : null,
           token: otSession.body.Item.token.S
-        }})
+        }
+      })
       // audio.load()
+    } catch (err) {
+      err === 'No current user' ? setState({ ...state, pageState: 'no auth' }) : console.log("getUserInPhone", err)
+    }
+  }
 
-      navigator.serviceWorker.addEventListener("message", async (event) => {
-        console.log('MESSAGE', event)
-        if (event.data.message === "sessionCreated") {
-          // audio.play()
-          // const selfTavs = await getSelfTavs
-          // const getOTsession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
-          /* I think its necessary to get TAVS, otherwise state is updated with initial state, which is TAVS; all null */
+  const messageListener = async () => {
+    navigator.serviceWorker.addEventListener("message", async (event) => {
+      console.log('MESSAGE', event)
+      if (event.data.message === "sessionCreated") {
+        try {
+          const userSession = await Auth.currentSession()
+          const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
+          const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
           setState({
             ...state,
-            TAVS: {
-              audio: selfTavs.Item.deviceInput.M.audio.BOOL,
-              screen: selfTavs.Item.deviceInput.M.screen.BOOL,
-              text: selfTavs.Item.deviceInput.M.text.BOOL,
-              video: selfTavs.Item.deviceInput.M.video.BOOL
-            },
             otToken: {
               Receiver: otSession.body.Item.Receiver.S,
               apikey: otSession.body.Item.apikey.S,
@@ -125,25 +111,26 @@ const Phone = () => {
               token: otSession.body.Item.token.S
             }
           })
-        } else if (event.data.message === "callDisconnected") {
-          console.log('call disconnected from push')
-          setState({
-            ...state,
-            pageState: 'disconnected',
-            otToken: {
-              Receiver: null,
-              apikey: null,
-              caller: null,
-              deviceInput: null,
-              sessionId: null,
-              token: null
-            }
-          })
+        } catch (err) {
+          console.log(err)
         }
-      })
-    } catch (err) {
-      err === 'No current user' ? setState({...state, pageState: 'no auth'}) : console.log("getUserInPhone", err)
-    }
+
+      } else if (event.data.message === "callDisconnected") {
+        console.log('call disconnected from push')
+        setState({
+          ...state,
+          pageState: 'disconnected',
+          otToken: {
+            Receiver: null,
+            apikey: null,
+            caller: null,
+            deviceInput: null,
+            sessionId: null,
+            token: null
+          }
+        })
+      }
+    })
   }
 
   const acceptCall = async () => {
@@ -171,13 +158,14 @@ const Phone = () => {
       console.log("acceptCall err: ", err)
     }
   }
+
   const declineCall = async () => {
     const authenticatedUser = await Auth.currentAuthenticatedUser()
     navigator.sendBeacon(
       process.env.NEXT_PUBLIC_APIGATEWAY_URL +
-        "/disconnectCall" +
-        "?receiver=" + authenticatedUser.username +
-        "&sessionId=" + null
+      "/disconnectCall" +
+      "?receiver=" + authenticatedUser.username +
+      "&sessionId=" + null
     )
     setState({
       ...state,
@@ -194,7 +182,8 @@ const Phone = () => {
   }
 
   useEffect(() => {
-    checkAndReceiveCalls()
+    checkForCalls()
+    messageListener()
   }, [])
 
   const AcceptDecline = () => {
@@ -211,34 +200,38 @@ const Phone = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-1">
-      <Navbar />
-      <div className="mx-5 my-5">
-        {state.pageState === 'waiting' && state.otToken.sessionId 
-          ? <AcceptDecline /> 
-          : state.pageState === 'accepted'
-          ? <div><InitOT
-              tokenData={state.otToken}
-              allowedDevices={state.TAVS}
-            /></div>
-          : state.pageState === 'disconnected'
-          ? <div>caller disconnected, waiting</div>
-          : state.pageState === "no auth"
-          ? <div>You need to be logged in</div>
-          : <div>
-              <div className="text-lg font-medium">Waiting on calls</div>
-              <div className="mt-5 max-w-prose">You'll be e-mailed a link to open this phone when someone is trying to call you; 
-              you can receive notifications, and do not need this tab open; accept or decline the call after alerted</div>
-              <div>
-              </div>
-            </div>}
-      </div>
-      </div>
-      <Footer />
+    <>
+      <Head>
+        <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+      </Head>
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-1">
+          <Navbar />
+          <div className="mx-5 my-5">
+            {state.pageState === 'waiting' && state.otToken.sessionId
+              ? <AcceptDecline />
+              : state.pageState === 'accepted'
+                ? <div><MessageInitOT
+                  tokenData={state.otToken}
+                // allowedDevices={state.TAVS}
+                /></div>
+                : state.pageState === 'disconnected'
+                  ? <div>caller disconnected, waiting</div>
+                  : state.pageState === "no auth"
+                    ? <div>You need to be logged in</div>
+                    : <div>
+                      <div className="text-lg font-medium">Waiting on calls</div>
+                      <div className="mt-5 max-w-prose">You'll be e-mailed a link to open this phone when someone is trying to call you;
+                        you can receive notifications, and do not need this tab open; accept or decline the call after alerted</div>
+                      <div>
+                      </div>
+                    </div>}
+          </div>
+        </div>
+        <Footer />
 
-    </div>
-
+      </div>
+    </>
   )
 }
 

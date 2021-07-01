@@ -3,13 +3,16 @@ import React, { useRef, useState } from 'react'
 const TextComponent = props => {
 
   const textState = props.textState
+  const onSignalSend = e => props.onSignalSend(e)
+  const otherUser = props.otherUser
+  
   const signalInputRef = useRef('')
 
   const [typingState, setTypingState] = useState(false)
 
   const signalSend = e => {
     e.preventDefault()
-    props.onSignalSend(signalInputRef.current.value)
+    onSignalSend(signalInputRef.current.value)
     signalInputRef.current.value = ''
   }
 
@@ -17,15 +20,15 @@ const TextComponent = props => {
 
   const handleKeyPress = (e) => {
     /* prevents cognito Error every keystroke */
-    if (props.otherUser) {
+    if (otherUser) {
       if (typingTimer) { clearTimeout(typingTimer) }
       if (!typingState) {
         setTypingState(true)
-        props.onSignalSend('%t%yping')
+        onSignalSend('%t%yping')
       }
       typingTimer = setTimeout(() => {
         setTypingState(false)
-        props.onSignalSend('not%t%yping')
+        onSignalSend('not%t%yping')
       }, 2000)
     }
   }
@@ -34,8 +37,8 @@ const TextComponent = props => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
       /* prevents textmessage from being called every keystroke */
-      if (!props.otherUser) {
-        props.onSignalSend(signalInputRef.current.value)
+      if (!otherUser) {
+        onSignalSend(signalInputRef.current.value)
       }
       signalInputRef.current.value = ''
     }

@@ -67,8 +67,7 @@ const MessageComponent = (props) => {
           receiver: currentUser
         }
       }
-      const omg = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/textMessage', myInit)
-      console.log('omg', omg)
+      await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/textMessage', myInit)
     }
   }
 

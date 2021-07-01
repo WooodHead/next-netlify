@@ -22,30 +22,23 @@ function messageToClient(client, data) {
 self.addEventListener('push', function (event) {
   const webPushData = event.data.text();
 
-  if (webPushData === 'getTokboxAPI') {
+  if (webPushData !== 'callDisconnected') {
     /* title only works on desktop? */
-    const title = 'Recieving Talktree call';
+    const title = webPushData === "getTokboxAPI" ? 'Talktree Call' : 'Talktree Message';
     const options = {
-      body: 'click the notification to go to the accept/decline window',
+      body: webPushData === "getTokboxAPI" ? '' : `You received a message: ${webPushData}`,
       vibrate: [500, 250, 500, 250, 500, 250, 500]
     };
     self.registration.showNotification(title, options);
-    clients.matchAll().then(function (clientList) {
-      clientList.forEach(client => {
-        messageToClient(client, {
-          message: "sessionCreated"
-        });
-      });
-    });
-  } else if (webPushData === 'callDisconnected') {
-    clients.matchAll().then(function (clientList) {
-      clientList.forEach(client => {
-        messageToClient(client, {
-          message: "callDisconnected"
-        });
-      });
-    });
   }
+
+  clients.matchAll().then(function (clientList) {
+    clientList.forEach(client => {
+      messageToClient(client, {
+        message: webPushData === "callDisconnected" ? "callDisconnected" : webPushData === "getTokboxAPI" ? "sessionCreated" : webPushData
+      });
+    });
+  });
 });
 self.addEventListener('notificationclick', function (event) {
   event.notification.close();
