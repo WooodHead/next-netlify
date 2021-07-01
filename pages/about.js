@@ -17,7 +17,7 @@ export default function About() {
         to get found or give out your number.
         </div>
         <div className="mt-5">This website is in beta</div>
-        <div>email geoff@talktree.me or call <a href="/6779991/call" >talktree.me/6779991</a></div>
+        <div>email geoff@talktree.me or call <a href="/6779991/message" >talktree.me/6779991</a></div>
         <div className="mt-5">
           <button onClick={() => setState({ PP: false, TOS: !state.TOS })} >Terms of Service</button>
           <button onClick={() => setState({ TOS: false, PP: !state.PP })} >Privacy Policy</button>

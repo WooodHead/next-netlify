@@ -6,8 +6,8 @@ export default function UserCompId(props) {
   const user = props.user
 
   const openCallPhone = () => {
-    const devSite = `/${user.Username}/call`
-    const prodSite = `https://talktree.me/${user.Username}/call`
+    const devSite = `/${user.Username}/message`
+    const prodSite = `https://talktree.me/${user.Username}/message`
     const currentSite = process.env.NEXT_PUBLIC_STAGE === 'prod' ? prodSite : devSite
     window.open(
       currentSite,
