@@ -5,11 +5,18 @@ import ScreenComponent from '../tavs/screen'
 import TextComponent from '../tavs/text'
 import { useRouter } from 'next/router';
 import TextOnlyComponent from '../tavs/text'
-
+import PhoneButtons from '../[id]/message/phoneButtons'
 const MessageReceiver = props => {
 
   const session = props.otSession
-
+  const [state, setState] = useState({
+    audio: true,
+    video: false,
+    screen: false,
+    text: true,
+    mic: false,
+    otherUser: false
+  })
   const initialState = ''
   const [otherUserTyping, setOtherUserTyping] = useState(false)
   const reducer = (curState, action) => {
@@ -59,13 +66,8 @@ const MessageReceiver = props => {
   }, [])
 
     return (
+      <>
       <div  className="container-fluid" id="sessionStatus">
-        {/* Connected with {tokenDataProps.caller}
-          {{
-            "audio": <AudioComponent otSDK={otSDK} webphoneC={false} />,
-            "video": <VideoComponent audioOn={audioOn} otSDK={otSDK} webphoneC={false}/>,
-            "screen": <ScreenComponent audioOn={audioOn} otSDK={otSDK} webphoneC={false}/>
-          }[tokenDataProps.deviceInput]} */}
         <div id="publisher" ></div>
         <TextOnlyComponent 
           otherUser={true}
@@ -76,6 +78,8 @@ const MessageReceiver = props => {
       {otherUserTyping ? <div>other user is typing</div> : <br/>}
         <button className="mt-5" id="disconnect" onClick={() => disconnectButton()}>Disconnect</button>
       </div>
+      <PhoneButtons state={state} setState={setState} />
+      </>
     );
 
 }
