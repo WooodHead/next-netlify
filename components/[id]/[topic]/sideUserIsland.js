@@ -5,9 +5,10 @@ export default function UserIslandTopic(props) {
 
   const user = props.user
   const router = useRouter()
-  const openCallPhone = () => {
-    const devSite = `/${user.Username}/call`
-    const prodSite = `https://talktree.me/${user.Username}/call`
+
+  const openMessagePhone = () => {
+    const devSite = `/${user.Username}/message`
+    const prodSite = `https://talktree.me/${user.Username}/message`
     const currentSite = process.env.NEXT_PUBLIC_STAGE === 'prod' ? prodSite : devSite
     window.open(
       currentSite,
@@ -15,6 +16,7 @@ export default function UserIslandTopic(props) {
       "width=500,height=700"
     )
   }
+
   // const openReviewPhone = () => {
   //   const devSite = `/${user.Username}/review`
   //   const prodSite = `https://talktree.me/${user.Username}/review`
@@ -38,11 +40,11 @@ export default function UserIslandTopic(props) {
           <div className='mx-5 mb-3'>{user.TAVS}</div>
         </div>
 
-        <div className=" justify-center">
-          <button className="w-24" type="button" onClick={openCallPhone}>call</button>
+        <div className="justify-center ">
+          <button className="w-24" type="button" onClick={openMessagePhone}>call</button>
         </div>
         {user.ppm > 0
-          && <div className="text-md m-2">${user.ppm} / minute</div>
+          && <div className="m-2 text-md">${user.ppm} / minute</div>
         }
         <div className="max-w-xs my-3 text-xs" >
           {/* {user.publicString} */}
