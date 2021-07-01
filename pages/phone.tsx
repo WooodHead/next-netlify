@@ -7,7 +7,7 @@ import urlBase64ToUint8Array from '../components/custom/url64to8array'
 import Footer from '../components/navbar/footer'
 import Navbar from '../components/navbar/navbar'
 import Head from 'next/head'
-const MessageInitOT = dynamic(() => import('../components/phone/messageInitOT'), { ssr: false })
+const MessageInitOT = dynamic(() => import('../components/receiver/messageInitOT'), { ssr: false })
 
 const Phone = () => {
   const [state, setState] = useState({
