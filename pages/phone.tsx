@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
 import '../configureAmplify'
@@ -12,6 +12,7 @@ const MessageInitOT = dynamic(() => import('../components/receiver/messageInitOT
 const Phone = () => {
   const [state, setState] = useState({
     pageState: 'waiting',
+    // prevMessages: [],
     otToken: {
       Receiver: null,
       apikey: null,
@@ -21,6 +22,7 @@ const Phone = () => {
       token: null
     }
   })
+  const prevMessageRef = useRef('')
 
   const checkForCalls = async () => {
     try {
@@ -88,13 +90,12 @@ const Phone = () => {
       })
       // audio.load()
     } catch (err) {
-      err === 'No current user' ? setState({ ...state, pageState: 'no auth' }) : console.log("getUserInPhone", err)
+      err === 'No current user' ? setState({ ...state, pageState: 'no auth' }) : console.log("phoneErr", err)
     }
   }
 
   const messageListener = async () => {
     navigator.serviceWorker.addEventListener("message", async (event) => {
-      console.log('MESSAGE', event)
       if (event.data.message === "sessionCreated") {
         try {
           const userSession = await Auth.currentSession()
@@ -129,6 +130,9 @@ const Phone = () => {
             token: null
           }
         })
+      } else {
+        /* not using state refresh because that messes with accept/decline state */
+        prevMessageRef.current = prevMessageRef.current + `them: ${event.data.message} \n`
       }
     })
   }
@@ -202,7 +206,7 @@ const Phone = () => {
   return (
     <>
       <Head>
-        <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+        <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
       </Head>
       <div className="flex flex-col min-h-screen">
         <div className="flex-1">
@@ -212,6 +216,7 @@ const Phone = () => {
               ? <AcceptDecline />
               : state.pageState === 'accepted'
                 ? <div><MessageInitOT
+                  prevMessages={prevMessageRef.current}
                   tokenData={state.otToken}
                 // allowedDevices={state.TAVS}
                 /></div>

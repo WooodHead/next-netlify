@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useRouter } from 'next/router'
-// import AudioComponent from '../../tavs/audio'
-// import VideoComponent from '../../tavs/video'
-// import ScreenComponent from '../../tavs/screen'
-// import TextComponent from '../../tavs/text'
-import TextOnlyComponent from '../../tavs/textOnly'
+import TextOnlyComponent from '../../tavs/messenger/textOnly'
 import PhoneButtons from './phoneButtons'
 import API from '@aws-amplify/api'
+import MicComponent from '../../tavs/messenger/mic';
 
 const MessageComponent = (props) => {
   const [state, setState] = useState({
@@ -17,15 +14,14 @@ const MessageComponent = (props) => {
     mic: false,
     otherUser: false
   })
-  // const [otherConnection, setOtherConnection] = useState(false);
   const [otherUserTyping, setOtherUserTyping] = useState(false)
 
-  const initialState = ''
+  const initialState = "User hasn't connected yet, try sending a message \n"
   const reducer = (curState, action) => {
     return curState + action.data + "\n"
   }
   const [textState, dispatchTextState] = useReducer(reducer, initialState)
-
+  const publisherRef = useRef()
   const currentUser = props.targetUser
   const session = props.otSession
   
@@ -82,6 +78,21 @@ const MessageComponent = (props) => {
     )
   }
 
+  const publishMic = () => {
+    const pubOptions = {
+      insertMode: 'append',
+      showControls: false,
+      width: 80,
+      height: 70,
+      videoSource: null,
+    }
+    publisherRef.current = session.publish('publisher', pubOptions)
+}
+const unPublish = () => {
+  console.log('unpublish,', publisherRef.current)
+  session.unpublish(publisherRef.current)
+}
+
   useEffect(() => {
     session.on('connectionCreated', (connectionEvent) => {    
       const connectionId = connectionEvent.connection.id
@@ -99,7 +110,13 @@ const MessageComponent = (props) => {
           )
         }
         setState({...state, otherUser: true})
+        dispatchTextState({ data: `${currentUser} connected`})
       }
+    })
+    session.on('streamCreated', ({ stream }) => {
+      session.subscribe(stream, "subscriber", {
+        width: 230, height: 200, insertMode: 'append',
+      })
     })
     session.on('connectionDestroyed', () => {
       console.log('connectionDestroyed')
@@ -134,15 +151,16 @@ const MessageComponent = (props) => {
 
       return (
         <div className="m-5">
+          <div id="subscriber" ></div>
           {state.text && <TextOnlyComponent
             textState={textState}
             onSignalSend={onSignalSend}
             otherUser={state.otherUser}
           />}
-
-
+          <div id="publisher"></div>
+          {/* <div>{state.mic && <MicComp />}</div> */}
           {otherUserTyping ? <div>other user is typing</div> : <br />}
-          <PhoneButtons state={state} setState={setState}/>
+          <PhoneButtons publishMic={publishMic} unPublish={unPublish} session={session} state={state} setState={setState}/>
           <button className="m-5 mt-10" id="disconnect" onClick={() => disconnectWithAPI()}>Disconnect</button>
         </div>
       )

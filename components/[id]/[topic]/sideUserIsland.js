@@ -41,7 +41,7 @@ export default function UserIslandTopic(props) {
         </div>
 
         <div className="justify-center ">
-          <button className="w-24" type="button" onClick={openMessagePhone}>call</button>
+          <button className="w-24" type="button" onClick={openMessagePhone}>message</button>
         </div>
         {user.ppm > 0
           && <div className="m-2 text-md">${user.ppm} / minute</div>

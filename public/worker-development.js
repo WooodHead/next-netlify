@@ -60,5 +60,6 @@ self.addEventListener('notificationclick', function (event) {
   });
   event.waitUntil(promiseChain);
 });
+self.__WB_DISABLE_DEV_LOGS = true;
 /******/ })()
 ;

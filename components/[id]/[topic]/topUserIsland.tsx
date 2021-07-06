@@ -23,7 +23,7 @@ const UserComponentTop = (props) => {
         <h3 className='mx-5 mt-5'>{user.Username}</h3>
         <div className='mx-5 mb-3'>{user.TAVS}</div>
         {user.ppm > 0 && <div className='mx-5 mb-3'>{'$' + user.ppm}</div>}
-        <button type="button" onClick={openMessagePhone}>call</button>
+        <button type="button" onClick={openMessagePhone}>message</button>
         {/* {user.receiver && <button className="mt-3" type="button" onClick={openReviewPhone}>donate</button>} */}
         {user.ppm > 0 && <div className="m-2 text-md">${user.ppm} / minute</div>}
       </div>

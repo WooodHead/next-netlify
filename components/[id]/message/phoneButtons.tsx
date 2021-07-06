@@ -3,7 +3,14 @@ import clsx from 'clsx'
 const PhoneButtons = props => {
   const state = props.state
   const setState = e => props.setState(e)
-  console.log({...state})
+
+  const unpublish = () => props.unPublish()
+
+  const pressMicButton = () => {
+    state.mic ? unpublish() : props.publishMic()
+    setState({...state, mic: !state.mic})
+  }
+
   return (
     <div className="flex">
           <div onClick={() => setState({...state, text: !state.text})}
@@ -14,7 +21,7 @@ const PhoneButtons = props => {
               "focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
             )}>
           </div>
-          <div onClick={() => setState({...state, mic: !state.mic})}
+          <div onClick={pressMicButton}
             className={clsx(
               state.mic ? "bg-mic" : "bg-micMuted",
               "w-10 h-10 m-5 bg-gray-200 bg-center bg-no-repeat rounded shadow-md",

@@ -13,6 +13,7 @@ const MessageInitOT = props => {
   if (state.session) {
     return (
       <MessageReceiver
+        prevMessages={props.prevMessages}
         otSession={state.session}
       />
     )
