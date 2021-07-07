@@ -67,6 +67,7 @@ export default function Edit(props) {
       try {
         const fileKey:string = uuidv4() + fileType
         const putS3:any = await Storage.put(fileKey, file)
+        console.log('@@', putS3)
         // const s3res = await putS3
         const jsonToUrl = {
           "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
@@ -85,7 +86,7 @@ export default function Edit(props) {
         }
         const userSession = await Auth.currentSession()
         const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-        const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + converting
+        const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + converting
         const stringInit = {
           headers: { Authorization: userSession.getIdToken().getJwtToken() },
           body: {

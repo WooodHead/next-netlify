@@ -66,25 +66,22 @@ export default function BlogEdit(props) {
       } else {
         try {
           const putS3 = Storage.put(uuidv4() + fileType[0], file)
-          console.log(file, fileType)
-          console.log(Storage)
           const s3res = await putS3
-          console.log('s3 res', s3res)
-          // const jsonToUrl = {
-          //   "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-          //   "key": `public/${s3res.key}`,
-          //   "edits": {
-          //     "resize": {
-          //       "width": 900,
-          //       "height": 675,
-          //       "fit": "cover"
-          //     }
-          //   }
-          // }
-          // const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-          // const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + converting
-          // editor.insertEmbed(range.index, 'image', convertedUrl)
-          // editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
+          const jsonToUrl = {
+            "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+            "key": `public/${s3res.key}`,
+            "edits": {
+              "resize": {
+                "width": 900,
+                "height": 675,
+                "fit": "cover"
+              }
+            }
+          }
+          const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+          const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + converting
+          editor.insertEmbed(range.index, 'image', convertedUrl)
+          editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
         } catch (err) {
           console.log('storage err', err)
         }
