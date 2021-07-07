@@ -22,6 +22,7 @@ const MessageComponent = (props) => {
   }
   const [textState, dispatchTextState] = useReducer(reducer, initialState)
   const publisherRef = useRef()
+  const micPublisherRef = useRef()
   const currentUser = props.targetUser
   const session = props.otSession
   
@@ -78,20 +79,24 @@ const MessageComponent = (props) => {
     )
   }
 
-  const publishMic = async () => {
+  const publishMic = () => {
       // OT.getDevices((devices) => {
       //   console.log("OT DEVICES", devices)
       // })
-      const userMedia = await OT.getUserMedia({ audioSource: true})
+      // const userMedia = await OT.getUserMedia({ audioSource: true})
 
-      // const pubOptions = {
-      //   insertMode: 'append',
-      //   showControls: false,
-      //   width: 80,
-      //   height: 70,
-      //   videoSource: null,
-      // }
-      // publisherRef.current = session.publish('publisher', pubOptions)
+      const pubOptions = {
+        insertDefaultUI: false,
+        // insertMode: 'append',
+        // showControls: false,
+        // width: 1,
+        // height: 1,
+        videoSource: null,
+      }
+      micPublisherRef.current = session.publish('micPublisher', pubOptions)
+  }
+  const unPublishMic = () => {
+    session.unpublish(micPublisherRef.current)
   }
   const unPublish = () => {
     console.log('unpublish,', publisherRef.current)
@@ -103,30 +108,12 @@ const MessageComponent = (props) => {
       showControls: false,
       width: 80,
       height: 70,
+      audioSource: null
       // videoSource: null,
     }
     publisherRef.current = session.publish('publisher', pubOptions)
   }
   const publishScreen = async () => {
-    // this did not work
-    // Promise.all([
-    //   OT.getUserMedia({
-    //     videoSource: 'screen'
-    //   }),
-    //   (state.mic) ? OT.getUserMedia({
-    //     videoSource: null
-    //   }) : null
-    // ])
-    // .then(([screenStream, micStream]) => {
-    //   console.log('screenStream', screenStream)
-    //   const pubOptions = {
-    //     insertMode: 'append',
-    //     width: '100%',
-    //     height: '100%',
-    //     videoSource: screenStream.getVideoTracks()[0],
-    //   }
-    //   publisherRef.current = session.publish('publisher', pubOptions) 
-    // }).catch((err) => console.log(err))
     const userMedia = await OT.getUserMedia({ videoSource: 'screen' })
     const pubOptions = {
       audioSource: null,
@@ -163,17 +150,18 @@ const MessageComponent = (props) => {
     session.on('streamCreated', ({ stream }) => {
       if (stream.hasVideo) {
         const subscriberOptions = {
-          width: 230,
-          height: 200,
+          width: 500,
+          height: 400,
           insertMode: 'append'
         }
         session.subscribe(stream, "subscriber", subscriberOptions)
       } else {
         const subscriberOptions = {
-          width: 1,
-          height: 1
+          insertDefaultUI: false
+          // width: 1,
+          // height: 1
         }
-        session.subscribe(stream, "micSubscriber", subscriberOptions)
+        session.subscribe(stream, subscriberOptions)
       }
     })
     session.on('connectionDestroyed', () => {
@@ -209,16 +197,17 @@ const MessageComponent = (props) => {
 
       return (
         <div className="m-5">
-          <div id="subscriber" ></div>
+          <div id="subscriber" className="border resize" ></div>
           {state.text && <TextOnlyComponent
             textState={textState}
             onSignalSend={onSignalSend}
             otherUser={state.otherUser}
           />}
-          <div id="publisher"></div>
+          <div id="publisher" ></div>
           {/* <div>{state.mic && <MicComp />}</div> */}
           {otherUserTyping ? <div>other user is typing</div> : <br />}
           <PhoneButtons 
+            unPublishMic={unPublishMic}
             publishScreen={publishScreen}
             publishVideo={publishVideo}
             publishMic={publishMic} 
@@ -228,6 +217,7 @@ const MessageComponent = (props) => {
             setState={setState}/>
           <button className="m-5 mt-10" id="disconnect" onClick={() => disconnectWithAPI()}>Disconnect</button>
             <div id="micSubscriber" ></div>
+            <div id="micPublisher" ></div>
         </div>
       )
 

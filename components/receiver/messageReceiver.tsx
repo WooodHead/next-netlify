@@ -21,7 +21,7 @@ const MessageReceiver = props => {
   })
   const initialState = props.prevMessages
   const publisherRef = useRef()
-
+  const micPublisherRef = useRef()
   const [otherUserTyping, setOtherUserTyping] = useState(false)
   const reducer = (curState, action) => {
     return curState + action.data + "\n"
@@ -45,9 +45,23 @@ const MessageReceiver = props => {
 
   useEffect(() => {
     session.on('streamCreated', ({ stream }) => {
-      session.subscribe(stream, "subscriber", {
-        width: 230, height: 200, insertMode: 'append', showControls: false,
-      })
+      if (stream.hasVideo) {
+        const subscriberOptions = {
+          width: 230,
+          height: 200,
+          insertMode: 'append'
+        }
+        session.subscribe(stream, "subscriber", subscriberOptions)
+      } else {
+        const subscriberOptions = {
+          width: 1,
+          height: 1
+        }
+        session.subscribe(stream, "micSubscriber", subscriberOptions)
+      }
+      // session.subscribe(stream, "subscriber", {
+      //   width: 230, height: 200, insertMode: 'append', showControls: false,
+      // })
     })
     session.on('signal', (event) => {
       const myConnectionId = session.connection.id
@@ -78,14 +92,17 @@ const MessageReceiver = props => {
     const pubOptions = {
       insertMode: 'append',
       // showControls: false,
-      width: 80,
-      height: 70,
+      width: 1,
+      height: 1,
       videoSource: null,
     }
-    publisherRef.current = session.publish('publisher', pubOptions)
+    micPublisherRef.current = session.publish('micPublisher', pubOptions)
   }
   const unPublish = () => {
     session.unpublish(publisherRef.current)
+  }
+  const unPublishMic = () => {
+    session.unpublish(micPublisherRef.current)
   }
   const publishVideo = () => {
     const pubOptions = {
@@ -93,13 +110,14 @@ const MessageReceiver = props => {
       showControls: false,
       width: 80,
       height: 70,
+      audioSource: null
     }
     publisherRef.current = session.publish('publisher', pubOptions)
   }
   const publishScreen = async () => {
     const userMedia = await OT.getUserMedia({ videoSource: 'screen' })
     const pubOptions = {
-      publishAudio: state.mic,
+      audioSource: null,
       insertMode: 'append',
       showControls: false,
       width: 80,
@@ -111,8 +129,8 @@ const MessageReceiver = props => {
 
     return (
       <>
-      <div  className="container-fluid">
-        <div id="subscriber" ></div>
+      <div >
+        <div id="subscriber" className="border resize h-3/4" ></div>
         {state.text && <TextOnlyComponent 
           otherUser={true}
           textState={textState}
@@ -129,8 +147,12 @@ const MessageReceiver = props => {
       state={state} 
       setState={setState} 
       unPublish={unPublish} 
-      publishMic={publishMic} />
+      publishMic={publishMic} 
+      unPublishMic={unPublishMic}
+      />
       <button className="mt-5" id="disconnect" onClick={() => disconnectButton()}>Disconnect</button>
+      <div id="micSubscriber" ></div>
+      <div id="micPublisher" ></div>
       </>
     )
 

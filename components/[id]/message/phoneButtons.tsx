@@ -2,28 +2,41 @@ import clsx from 'clsx'
 
 const PhoneButtons = props => {
   const state = props.state
-  const setState = e => props.setState(e)
+  const setState = e => props.setState({...state, ...e})
   const publishMic = () => props.publishMic()
   const publishVideo = () => props.publishVideo()
   const publishScreen = () => props.publishScreen()
   const unpublish = () => props.unPublish()
+  const unPublishMic = () => props.unPublishMic()
 
   const pressMicButton = () => {
-    // i need to not unpublish when video on/etc
-    state.mic ? unpublish() : publishMic()
-    setState({...state, mic: !state.mic})
+    state.mic ? unPublishMic() : publishMic()
+    setState({mic: !state.mic})
   }
   const pressVideoButton = () => {
-    state.video ? unpublish() : publishVideo(), setState({...state, mic: true, video: true})
+    console.log(state)
+    if (state.screen) {
+      unpublish()
+      setState({screen: false})
+      // publishVideo()
+    }
+    setState({video: !state.video})
+    state.video ? unpublish() : publishVideo()
+    
   }
   const pressScreenButton = () => {
+    if (state.video) {
+      unpublish() 
+      setState({video: false})
+      // publishScreen()
+    }
     state.screen ? unpublish() : publishScreen()
-    setState({...state, screen: !state.screen})
+    setState({screen: !state.screen})
   }
 
   return (
     <div className="flex">
-          <div onClick={() => setState({...state, text: !state.text})}
+          <div onClick={() => setState({text: !state.text})}
             className={clsx(
               "bg-text",
               "w-10 h-10 m-5 bg-gray-200 bg-center bg-no-repeat rounded shadow-md",
@@ -33,7 +46,7 @@ const PhoneButtons = props => {
           </div>
           <div onClick={pressMicButton}
             className={clsx(
-              state.mic ? "bg-mic" : "bg-micMuted",
+              state.mic ? "bg-micMuted" : "bg-mic",
               "w-10 h-10 m-5 bg-gray-200 bg-center bg-no-repeat rounded shadow-md",
               "cursor-pointer hover:bg-gray-400",
               "focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
@@ -49,7 +62,7 @@ const PhoneButtons = props => {
           </div> */}
           <div onClick={pressVideoButton}
             className={clsx(
-              state.video ? "bg-video" : "bg-noVideo",
+              state.video ? "bg-noVideo" : "bg-video",
               "w-10 h-10 m-5 bg-gray-200 bg-center bg-no-repeat rounded shadow-md",
               "cursor-pointer hover:bg-gray-400",
               "focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
