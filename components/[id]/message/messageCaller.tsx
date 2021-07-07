@@ -78,20 +78,67 @@ const MessageComponent = (props) => {
     )
   }
 
-  const publishMic = () => {
+  const publishMic = async () => {
+      // OT.getDevices((devices) => {
+      //   console.log("OT DEVICES", devices)
+      // })
+      const userMedia = await OT.getUserMedia({ audioSource: true})
+
+      // const pubOptions = {
+      //   insertMode: 'append',
+      //   showControls: false,
+      //   width: 80,
+      //   height: 70,
+      //   videoSource: null,
+      // }
+      // publisherRef.current = session.publish('publisher', pubOptions)
+  }
+  const unPublish = () => {
+    console.log('unpublish,', publisherRef.current)
+    session.unpublish(publisherRef.current)
+  }
+  const publishVideo = () => {
     const pubOptions = {
       insertMode: 'append',
       showControls: false,
       width: 80,
       height: 70,
-      videoSource: null,
+      // videoSource: null,
     }
     publisherRef.current = session.publish('publisher', pubOptions)
-}
-const unPublish = () => {
-  console.log('unpublish,', publisherRef.current)
-  session.unpublish(publisherRef.current)
-}
+  }
+  const publishScreen = async () => {
+    // this did not work
+    // Promise.all([
+    //   OT.getUserMedia({
+    //     videoSource: 'screen'
+    //   }),
+    //   (state.mic) ? OT.getUserMedia({
+    //     videoSource: null
+    //   }) : null
+    // ])
+    // .then(([screenStream, micStream]) => {
+    //   console.log('screenStream', screenStream)
+    //   const pubOptions = {
+    //     insertMode: 'append',
+    //     width: '100%',
+    //     height: '100%',
+    //     videoSource: screenStream.getVideoTracks()[0],
+    //   }
+    //   publisherRef.current = session.publish('publisher', pubOptions) 
+    // }).catch((err) => console.log(err))
+    const userMedia = await OT.getUserMedia({ videoSource: 'screen' })
+    const pubOptions = {
+      audioSource: null,
+      // publishAudio: state.mic,
+      insertMode: 'append',
+      showControls: false,
+      width: 80,
+      height: 70,
+      videoSource: userMedia.getVideoTracks()[0],
+    }
+    publisherRef.current = session.publish('publisher', pubOptions)
+  }
 
   useEffect(() => {
     session.on('connectionCreated', (connectionEvent) => {    
@@ -114,9 +161,20 @@ const unPublish = () => {
       }
     })
     session.on('streamCreated', ({ stream }) => {
-      session.subscribe(stream, "subscriber", {
-        width: 230, height: 200, insertMode: 'append',
-      })
+      if (stream.hasVideo) {
+        const subscriberOptions = {
+          width: 230,
+          height: 200,
+          insertMode: 'append'
+        }
+        session.subscribe(stream, "subscriber", subscriberOptions)
+      } else {
+        const subscriberOptions = {
+          width: 1,
+          height: 1
+        }
+        session.subscribe(stream, "micSubscriber", subscriberOptions)
+      }
     })
     session.on('connectionDestroyed', () => {
       console.log('connectionDestroyed')
@@ -160,8 +218,16 @@ const unPublish = () => {
           <div id="publisher"></div>
           {/* <div>{state.mic && <MicComp />}</div> */}
           {otherUserTyping ? <div>other user is typing</div> : <br />}
-          <PhoneButtons publishMic={publishMic} unPublish={unPublish} session={session} state={state} setState={setState}/>
+          <PhoneButtons 
+            publishScreen={publishScreen}
+            publishVideo={publishVideo}
+            publishMic={publishMic} 
+            unPublish={unPublish} 
+            session={session} 
+            state={state} 
+            setState={setState}/>
           <button className="m-5 mt-10" id="disconnect" onClick={() => disconnectWithAPI()}>Disconnect</button>
+            <div id="micSubscriber" ></div>
         </div>
       )
 

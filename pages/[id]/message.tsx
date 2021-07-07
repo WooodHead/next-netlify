@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic'
 // import MessageOtComponent from "../../components/[id]/message/messageComponent"
 
 const DynamicMessageComponent = dynamic(
-  () => import('../../components/[id]/message/messageOtComponent'),
+  () => import('../../components/[id]/message/messageOtCaller'),
   { ssr: false }
 )
 

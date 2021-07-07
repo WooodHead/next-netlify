@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import API from '@aws-amplify/api';
 import '../../../configureAmplify'
-import MessageComponent from './messageComponent'
+import MessageComponent from './messageCaller'
 import CustomSpinner from '../../custom/spinner';
 
 const MessageOtComponent = (props) => {

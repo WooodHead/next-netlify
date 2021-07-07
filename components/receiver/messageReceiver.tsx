@@ -46,7 +46,7 @@ const MessageReceiver = props => {
   useEffect(() => {
     session.on('streamCreated', ({ stream }) => {
       session.subscribe(stream, "subscriber", {
-        width: 230, height: 200, insertMode: 'append',
+        width: 230, height: 200, insertMode: 'append', showControls: false,
       })
     })
     session.on('signal', (event) => {
@@ -74,25 +74,44 @@ const MessageReceiver = props => {
 
   }, [])
 
-  // let publisher
   const publishMic = () => {
-      const pubOptions = {
-        insertMode: 'append',
-        showControls: false,
-        width: 80,
-        height: 70,
-        videoSource: null,
-      }
-      publisherRef.current = session.publish('publisher', pubOptions)
+    const pubOptions = {
+      insertMode: 'append',
+      // showControls: false,
+      width: 80,
+      height: 70,
+      videoSource: null,
+    }
+    publisherRef.current = session.publish('publisher', pubOptions)
   }
   const unPublish = () => {
-    console.log('unpublish,', publisherRef.current)
     session.unpublish(publisherRef.current)
+  }
+  const publishVideo = () => {
+    const pubOptions = {
+      insertMode: 'append',
+      showControls: false,
+      width: 80,
+      height: 70,
+    }
+    publisherRef.current = session.publish('publisher', pubOptions)
+  }
+  const publishScreen = async () => {
+    const userMedia = await OT.getUserMedia({ videoSource: 'screen' })
+    const pubOptions = {
+      publishAudio: state.mic,
+      insertMode: 'append',
+      showControls: false,
+      width: 80,
+      height: 70,
+      videoSource: userMedia.getVideoTracks()[0],
+    }
+    publisherRef.current = session.publish('publisher', pubOptions)
   }
 
     return (
       <>
-      <div  className="container-fluid" id="sessionStatus">
+      <div  className="container-fluid">
         <div id="subscriber" ></div>
         {state.text && <TextOnlyComponent 
           otherUser={true}
@@ -100,13 +119,20 @@ const MessageReceiver = props => {
           onSignalSend={onSignalSend}
           session={session}
         />}
-        <div><div id="publisher" ><div></div></div></div>
+        <div id="publisher" ></div>
       {otherUserTyping ? <div>other user is typing</div> : <br/>}
-        <button className="mt-5" id="disconnect" onClick={() => disconnectButton()}>Disconnect</button>
+        
       </div>
-      <PhoneButtons state={state} setState={setState} unPublish={unPublish} publishMic={publishMic} />
+      <PhoneButtons 
+      publishScreen={publishScreen}
+      publishVideo={publishVideo}
+      state={state} 
+      setState={setState} 
+      unPublish={unPublish} 
+      publishMic={publishMic} />
+      <button className="mt-5" id="disconnect" onClick={() => disconnectButton()}>Disconnect</button>
       </>
-    );
+    )
 
 }
 

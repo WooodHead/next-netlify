@@ -9,7 +9,6 @@ const MessageInitOT = props => {
   })
 
   const tokenDataProps = props.tokenData
-  console.log(tokenDataProps)
   if (state.session) {
     return (
       <MessageReceiver
