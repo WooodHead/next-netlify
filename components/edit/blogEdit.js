@@ -57,7 +57,7 @@ export default function BlogEdit(props) {
         try {
           const putS3 = Storage.put(uuidv4() + fileType, file)
           const s3res = await putS3
-          const cloudfrontUrl = process.env.NEXT_PUBLIC_GIF_CLOUDFRONT_cloudfront + "/" + s3res.key
+          const cloudfrontUrl = process.env.NEXT_PUBLIC_GIF_CLOUDFRONT + "/" + s3res.key
           editor.insertEmbed(range.index, 'image', cloudfrontUrl)
           editor.insertText(range.index + 1, true)
         } catch (err) {
@@ -65,23 +65,26 @@ export default function BlogEdit(props) {
         }
       } else {
         try {
-          const putS3 = Storage.put(uuidv4() + fileType, file)
+          const putS3 = Storage.put(uuidv4() + fileType[0], file)
+          console.log(file, fileType)
+          console.log(Storage)
           const s3res = await putS3
-          const jsonToUrl = {
-            "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-            "key": `public/${s3res.key}`,
-            "edits": {
-              "resize": {
-                "width": 900,
-                "height": 675,
-                "fit": "cover"
-              }
-            }
-          }
-          const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-          const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + converting
-          editor.insertEmbed(range.index, 'image', convertedUrl)
-          editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
+          console.log('s3 res', s3res)
+          // const jsonToUrl = {
+          //   "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+          //   "key": `public/${s3res.key}`,
+          //   "edits": {
+          //     "resize": {
+          //       "width": 900,
+          //       "height": 675,
+          //       "fit": "cover"
+          //     }
+          //   }
+          // }
+          // const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+          // const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT_cloudfront + "/" + converting
+          // editor.insertEmbed(range.index, 'image', convertedUrl)
+          // editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
         } catch (err) {
           console.log('storage err', err)
         }
@@ -185,9 +188,9 @@ export default function BlogEdit(props) {
       <div className="h-full">
         {/* <div className=""> */}
           {/* <div className="flex-1"> */}
-          <div className='flex h-5/6 justify-center'>
+          <div className='flex justify-center h-5/6'>
             <ReactQuill
-              className="m-5 h-5/6 flex-1 max-w-5xl max-w-80"
+              className="flex-1 max-w-5xl m-5 h-5/6 max-w-80"
               forwardedRef={quillRef}
               modules={modules}
               value={selectedTopicState.quill}
@@ -196,7 +199,7 @@ export default function BlogEdit(props) {
           {/* </div> */}
         {/* </div> */}
 
-        <div className="justify-center flex mx-10 flex-row h-8">
+        <div className="flex flex-row justify-center h-8 mx-10">
             <button className="mr-10" onClick={() => saveTopicString(false)}>save and publish</button>
             <button className="mr-10" onClick={() => saveTopicString(true)}>save as draft</button>
             {selectedTopicState.saved === "saving" && <CustomSpinner />}
