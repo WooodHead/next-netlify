@@ -13,14 +13,9 @@ function messageToClient(client, data) {
   })
 }
 
-// self.addEventListener('install', event => {
-//   console.log("SW INSTALLED")
-// })
-
 self.addEventListener('push', function (event) {
   const webPushData = event.data.text()
   if (webPushData !== 'callDisconnected') {
-    /* title only works on desktop? */
     const title = webPushData === "getTokboxAPI" ? 'Talktree Call' : 'Talktree Message'
     const options = {
       body: webPushData === "getTokboxAPI" ? '' : `You received a message: ${webPushData}`,
@@ -42,20 +37,20 @@ self.addEventListener('push', function (event) {
 
 self.addEventListener('notificationclick', function (event) {
   event.notification.close()
-  /* too much work to get env variable in sw */
   const devAddress = 'https://dev.talktree.me/phone'
   const prodAddress = 'https://talktree.me/phone'
   let matchingClient = null
-  const promiseChain = clients.matchAll().then(function (clientList) {
-    clientList.forEach((client) => {
-      if ((devAddress === client.url) || (prodAddress === client.url)) {
-        matchingClient = client
-      }
-      if (matchingClient) {
-        return matchingClient.focus()
-      }
-    })
-  })
+  clients.openWindow(prodAddress)
+  // const promiseChain = clients.matchAll().then(function (clientList) {
+  //   clientList.forEach((client) => {
+  //     if ((devAddress === client.url) || (prodAddress === client.url)) {
+  //       matchingClient = client
+  //     }
+  //     if (matchingClient) {
+  //       return matchingClient.focus()
+  //     }
+  //   })
+  // })
   event.waitUntil(promiseChain)
 })
 
