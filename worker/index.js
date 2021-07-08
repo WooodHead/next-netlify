@@ -36,11 +36,12 @@ self.addEventListener('push', function (event) {
 })
 
 self.addEventListener('notificationclick', function (event) {
-  event.notification.close()
+  
   const devAddress = 'https://dev.talktree.me/phone'
   const prodAddress = 'https://talktree.me/phone'
   let matchingClient = null
   clients.openWindow(prodAddress)
+  event.notification.close()
   // const promiseChain = clients.matchAll().then(function (clientList) {
   //   clientList.forEach((client) => {
   //     if ((devAddress === client.url) || (prodAddress === client.url)) {
