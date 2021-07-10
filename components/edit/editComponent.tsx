@@ -17,7 +17,7 @@ export default function Edit(props) {
   const setPublicStringState = (e) => { props.setPublicStringState(e) }
   const userState = props.userState
   const setUserState = (e) => { props.setUserState(e) }
-  const getUserData = () => { props.getUserData()}
+  const getUserData = () => { props.getUserData() }
   const setSelectedTopicState = (stateProps) => props.setSelectedTopicState(stateProps)
   const selectedTopicState = props.selectedTopicState
   const setTavsState = (e) => { props.setTavsState(e) }
@@ -62,47 +62,47 @@ export default function Edit(props) {
     /* THIS IS FOR USER IMAGE */
     setLoadingImageState(true)
     // I should add an "only this type of image", serverless image handler wont return anything not correct
-      const file = event.target.files[0]
-      const fileType = file.name.match(/\.[0-9a-z]+$/i)
-      try {
-        const fileKey:string = uuidv4() + fileType
-        const putS3:any = await Storage.put(fileKey, file)
-        console.log('@@', putS3)
-        // const s3res = await putS3
-        const jsonToUrl = {
-          "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-          "key": `public/${putS3.key}`,
-          "edits": {
-            smartCrop: {
-              padding: 240
-            },
-            // roundCrop: true,
-            "resize": {
-              "width": 100,
-              "height": 100,
-              "fit": "cover"
-            }
+    const file = event.target.files[0]
+    const fileType = file.name.match(/\.[0-9a-z]+$/i)
+    try {
+      const fileKey: string = uuidv4() + fileType
+      const putS3: any = await Storage.put(fileKey, file)
+      console.log('@@', putS3)
+      // const s3res = await putS3
+      const jsonToUrl = {
+        "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+        "key": `public/${putS3.key}`,
+        "edits": {
+          smartCrop: {
+            padding: 240
+          },
+          // roundCrop: true,
+          "resize": {
+            "width": 100,
+            "height": 100,
+            "fit": "cover"
           }
         }
-        const userSession = await Auth.currentSession()
-        const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
-        const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + converting
-        const stringInit = {
-          headers: { Authorization: userSession.getIdToken().getJwtToken() },
-          body: {
-            stringType: 'urlString',
-            string: convertedUrl,
-            accessToken: userSession.getAccessToken().getJwtToken()
-          }
-        }
-        const saveUrl = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveStrings', stringInit)
-        setUserState({...userState, image: convertedUrl })
-        getUserData()
-        setLoadingImageState(false)
-      } catch (err) {
-        console.log('storage err', err)
-        setLoadingImageState(false)
       }
+      const userSession = await Auth.currentSession()
+      const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
+      const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + converting
+      const stringInit = {
+        headers: { Authorization: userSession.getIdToken().getJwtToken() },
+        body: {
+          stringType: 'urlString',
+          string: convertedUrl,
+          accessToken: userSession.getAccessToken().getJwtToken()
+        }
+      }
+      const saveUrl = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveStrings', stringInit)
+      setUserState({ ...userState, image: convertedUrl })
+      getUserData()
+      setLoadingImageState(false)
+    } catch (err) {
+      console.log('storage err', err)
+      setLoadingImageState(false)
+    }
   }
 
   return (
@@ -110,27 +110,44 @@ export default function Edit(props) {
       <NavbarComp />
 
       <div className="mx-5">
+        <div className="my-5 bg-gray-100">
+          <div className="flex flex-row">
+            <div className="flex flex-col mx-5 my-5">
+              <img width="100" height="100" src={userState.image} ></img>
+              <h3 className='mx-5 my-5'>{userState.Username}</h3>
+              <div>
+                <input type="file" onChange={(e) => imageHandler(e)} ></input>
+                {loadingImageState && <CustomSpinner />}
+              </div>
+              {userState.TAVS}
+              <EditTAVScomp
+                userState={userState}
+                tavsState={tavsState}
+                setTavsState={setTavsState}
+                getUserData={getUserData} />
+            </div>
 
-        <div className="flex flex-row my-5 bg-gray-100">
-          <div className="flex flex-col mx-5 my-5">
-            <img width="100" height="100" src={userState.image} ></img>
-            <h3 className='mx-5 my-5'>{userState.Username}</h3>
-            <div>
-            <input type="file" onChange={(e) => imageHandler(e)} ></input>
-            {loadingImageState && <CustomSpinner />}
+            <div className="flex-col hidden md:flex lg:flex xl:flex 2xl:flex">
+              <PublicString
+                publicStringState={publicStringState}
+                setPublicStringState={setPublicStringState}
+              />
+              {userState.topics.map((topicObj) =>
+                <div key={topicObj.title} >
+                  <button className={topicObj.draft ? "bg-gray-300" : ""} onClick={() => selectTopic(topicObj)}>
+                    <a>{topicObj.title}</a>
+                  </button>
+                </div>
+              )}
+            </div>
+
+
           </div>
-            {userState.TAVS}
-            <EditTAVScomp
-              userState={userState}
-              tavsState={tavsState}
-              setTavsState={setTavsState}
-              getUserData={getUserData} />
-          </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col md:hidden">
           <PublicString
             publicStringState={publicStringState}
-            setPublicStringState={setPublicStringState} 
-            />
+            setPublicStringState={setPublicStringState}
+          />
           {userState.topics.map((topicObj) =>
             <div key={topicObj.title} >
               <button className={topicObj.draft ? "bg-gray-300" : ""} onClick={() => selectTopic(topicObj)}>
@@ -138,8 +155,11 @@ export default function Edit(props) {
               </button>
             </div>
           )}
-          </div>
         </div>
+        </div>
+
+
+
 
         <div className="my-5 bg-gray-100">
           <TopicComponent
@@ -153,7 +173,7 @@ export default function Edit(props) {
           {errorState}
         </div>
 
-        
+
       </div>
     </>
   )

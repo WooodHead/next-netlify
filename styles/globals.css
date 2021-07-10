@@ -15,5 +15,5 @@
   @apply w-screen lg:w-full xl:w-full 2xl:w-full;
 }
 /* img {
-  @apply object-contain
+  @apply w-screen lg:w-full xl:w-full 2xl:w-full
 } */
