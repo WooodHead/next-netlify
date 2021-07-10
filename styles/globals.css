@@ -9,21 +9,11 @@
   textarea {
     @apply bg-opacity-100 shadow-md;
   };
-  pre {
-    @apply w-screen md:w-full overflow-auto;
-  };
 };
 
-/* .ql-syntax {
-  border-radius: 3px;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  padding: 5px 10px;
+.ql-syntax {
+  @apply w-screen lg:w-full xl:w-full 2xl:w-full;
+}
+/* img {
+  @apply object-contain
 } */
-
-
-/* code {
-  font-size: 50%;
-  padding: 2px 4px;
-} */
-

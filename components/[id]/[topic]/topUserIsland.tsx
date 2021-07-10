@@ -14,6 +14,7 @@ const UserComponentTop = (props) => {
   
   const user = props.user
   return (
+    <>
     <div className="flex m-5 mb-10 md:hidden">
       <div className="flex-shrink-0">
         { user.image && <img src={user.image} ></img>}
@@ -27,10 +28,12 @@ const UserComponentTop = (props) => {
         {/* {user.receiver && <button className="mt-3" type="button" onClick={openReviewPhone}>donate</button>} */}
         {user.ppm > 0 && <div className="m-2 text-md">${user.ppm} / minute</div>}
       </div>
-      <div>
-        {user.publicString}
-      </div>
+
     </div>
+          {/* <div>
+          {user.publicString}
+        </div> */}
+        </>
   )
 }
 export default UserComponentTop

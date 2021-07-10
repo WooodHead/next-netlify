@@ -59,7 +59,7 @@ export async function getStaticProps({ params }) {
         const description = h2Tag ? h2Tag[1] : null
         const wholeImgTag = topicString.match(/<img.+?src=".+?cloudfront.net\/(.+?)"/)
         const wholeURL = wholeImgTag ? wholeImgTag[0].match(/https.+?cloudfront.net\/(.+?)"/) : null
-        const isGif = wholeImgTag[0].match(/gif/)
+        const isGif = wholeImgTag ? wholeImgTag[0].match(/gif/) : true
         let firstImage = null
         if (!isGif) {
           const imgSrc = wholeImgTag ? wholeImgTag[1] : null

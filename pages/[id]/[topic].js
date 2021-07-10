@@ -41,11 +41,11 @@ export default function Topic({ user, topic }) {
       <NavbarComp />
       <div className="bg-gray-100">
 
-        <div className="my-5 w-screen">
+        <div className="w-screen my-5">
           <div className="flex flex-row">
 
-            <div className="flex flex-1 justify-center">
-              <div className="hidden md:flex lg:flex xl:flex mt-10 mr-2 2xl:flex justify-center">
+            <div className="flex justify-center flex-1">
+              <div className="justify-center hidden mt-10 mr-2 md:flex lg:flex xl:flex 2xl:flex">
                 <SideUserIsland user={user} />
               </div>
             </div>
@@ -55,13 +55,13 @@ export default function Topic({ user, topic }) {
               <div className="my-5" >
                 <div className="my-5">
                   <div
-                    className="prose sm:prose prose-sm"
+                    className="prose-sm prose sm:prose"
                     dangerouslySetInnerHTML={{ __html: topic.string }}
                   ></div>
-                  <div className="justify-center flex">
+                  <div className="flex justify-center">
                     < CommentComp user={user} />
                   </div>
-                  <div className="flex my-3 justify-center text-xs">last updated: {dateString} </div>
+                  <div className="flex justify-center my-3 text-xs">last updated: {dateString} </div>
                 </div>
               </div>
             </div>
@@ -135,7 +135,7 @@ export async function getStaticProps({ params }) {
     // add height and width elements to img
     if (string) {
       // const stringWithResize = string.replace(/<img/g, "<img className='w-100% h-100%'") shits w-full not 100 lol
-      // const constWithPreChanged = string.replace(/<pre/g, "<pre className='max-w-screen overflow-auto'")
+      // const constWithPreChanged = string.replace(/<pre/g, "<pre className='overflow-auto max-w-screen'")
       const topicId = topicObj.topicId
       const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
       if (title === params?.topic) {
