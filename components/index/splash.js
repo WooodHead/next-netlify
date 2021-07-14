@@ -33,7 +33,7 @@ export default function SplashPage() {
         <meta name="twitter:image" content="https://talktree.me/1200x630.png" />
       </Head>
       <div className="mx-20 my-5">
-        <h1 className="text-5xl my-10">Talk to an expert immediately</h1>
+        <h1 className="my-10 text-5xl">Talk to an expert immediately</h1>
 
         <div className="text-2xl">Talktree is a platform for experts to pick up your call when you need it</div>
         <div className="mt-10 mb-5">Select one of the available experts in the Users tab</div>
@@ -42,15 +42,15 @@ export default function SplashPage() {
       </div>
 
         <div><img src="/callButtonPPM.png" alt="Talktree call menu"></img></div>
-        <div className="mb-5 mt-10">Select how you'd like to talk with them</div>
+        <div className="mt-10 mb-5">Select how you'd like to talk with them</div>
         <img src="/17ppm.png" ></img>
         {/* <div>Talk for as little or as long as you'd like</div>
       <div><img src="screenChat.png" ></img></div> */}
-        <div className="mt-14 mb-5 text-5xl">Want to be an expert?</div>
+        <div className="mb-5 text-5xl mt-14">Want to be an expert?</div>
         <span className="underline" ><Link href="/signIn">Sign up</Link></span>
         <span> - That's it, you can now start receiving calls</span>
         <div className="mt-5"><img src="/phone.png" alt="Talktree phone receiver" ></img></div>
-        <div className="mb-5 mt-3">You'll get an e-mail to open your phone when someone is calling you, alternatively if you open the web phone you can receieve notifications</div>
+        <div className="mt-3 mb-5">You'll get an e-mail to open your phone when someone is calling you, alternatively if you open the web phone you can receieve notifications</div>
         <h2 className="mt-10 mb-3">Nobody wants to call? Start blogging with our SEO optimized editor and get found on Google</h2>
         <div><img src="/editor.png" alt="Talktree blog editor"></img></div>
         <div className="mt-10 mb-3">Create or connect your Stripe account and charge by the minute</div>
@@ -61,8 +61,8 @@ export default function SplashPage() {
           <input type="text" ref={emailRef} className="border"></input>
         </form>
         <div className="mt-10 mb-20">
-          <Link className="" href="/6779991/How-to-upload-images-to-S3-using-Quill,-React,-and-Amplify">
-            <button>check out my page / give me a call</button>
+          <Link className="" href="/geoff-young">
+            <button>check out my page</button>
           </Link>
         </div>
         <img src="/favicon512.png"></img>
