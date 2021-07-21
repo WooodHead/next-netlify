@@ -34,13 +34,11 @@ export default function SplashPage() {
       </Head>
       <div className="mx-20 my-5">
         <h1 className="my-10 text-5xl">Talk to an expert immediately</h1>
-
         <div className="text-2xl">Talktree is a platform for experts to pick up your call when you need it</div>
         <div className="mt-10 mb-5">Select one of the available experts in the Users tab</div>
         <img width="" src="/with677.png" alt="Talktree example users list"></img>
         <div className="mt-10 mb-5">Press call to open the call options
       </div>
-
         <div><img src="/callButtonPPM.png" alt="Talktree call menu"></img></div>
         <div className="mt-10 mb-5">Select how you'd like to talk with them</div>
         <img src="/17ppm.png" ></img>
@@ -56,10 +54,10 @@ export default function SplashPage() {
         <div className="mt-10 mb-3">Create or connect your Stripe account and charge by the minute</div>
         <div><img src="/settings.png" ></img></div>
         <div className="mt-3" >Don't want people to see or hear you? Uncheck your contact options</div>
-        <div className="mt-10">This website is still in Beta, want to know when it's updated? Leave your e-mail</div>
+        {/* <div className="mt-10">This website is still in Beta, want to know when it's updated? Leave your e-mail</div>
         <form onSubmit={emailUpdatesHandler} >
           <input type="text" ref={emailRef} className="border"></input>
-        </form>
+        </form> */}
         <div className="mt-10 mb-20">
           <Link className="" href="/geoff-young">
             <button>check out my page</button>

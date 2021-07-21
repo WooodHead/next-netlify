@@ -14,6 +14,15 @@
 .ql-syntax {
   @apply w-screen lg:w-full xl:w-full 2xl:w-full;
 }
+code {
+  @apply p-1 bg-gray-200;
+}
 /* img {
+  @apply justify-center;
+} */
+p img{ 
+  @apply block m-auto;
+}
+/* p img {
   @apply w-screen lg:w-full xl:w-full 2xl:w-full
 } */
