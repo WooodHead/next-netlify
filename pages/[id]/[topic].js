@@ -45,7 +45,7 @@ export default function Topic({ user, topic }) {
           <div className="flex flex-row">
 
             <div className="flex justify-center flex-1">
-              <div className="justify-center hidden mt-10 mr-2 md:flex lg:flex xl:flex 2xl:flex">
+              <div className="flex justify-center mt-10">
                 <SideUserIsland user={user} />
               </div>
             </div>

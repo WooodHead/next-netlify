@@ -32,8 +32,8 @@ export default function UserIslandTopic(props) {
   }
 
   return (
-    <div>
-      <div className="">
+    <div className="hidden md:flex lg:flex xl:flex 2xl:flex">
+      <div >
         <div onClick={goToUserPage} className="cursor-pointer">
           { user.image && <img width="100" height="100" src={user.image} ></img>}
           <h3 className='mx-5 mt-5 '>{user.Username}</h3>

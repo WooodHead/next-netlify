@@ -58,12 +58,11 @@ const AccountSettings = props => {
     signOut()
   }
 
-
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-1">
       <Navbar />
-        <div className="container-fluid ml-3">
+        <div className="ml-3 container-fluid">
         <div className="row">
         {/* <div className="ml-3 mr-3">
           <Link to="/account/billing">Billing</Link>
@@ -108,7 +107,7 @@ const AccountSettings = props => {
         </div>
         </div>
 
-        <div className="row container-fluid mt-2">
+        <div className="mt-2 row container-fluid">
           <button onClick={submitNewPass} >submit</button>
           {newPassState === "submitting" ? <CustomSpinner /> : 
             newPassState === "accepted" ? ' ✔️' : 
