@@ -40,11 +40,10 @@ export default function Topic({ user, topic }) {
       </Head>
       <NavbarComp />
       <div className="bg-gray-100">
+        <div className="my-5">
+          <div className="flex">
 
-        <div className="w-screen my-5">
-          <div className="flex flex-row">
-
-            <div className="flex justify-center flex-1">
+            <div className="flex-1" >
               <div className="flex justify-center mt-10">
                 <SideUserIsland user={user} />
               </div>
@@ -52,7 +51,7 @@ export default function Topic({ user, topic }) {
 
             <div className="mx-5">
               <TopUserIsland user={user} />
-              <div className="my-5" >
+              <div className="my-5">
                 <div className="my-5">
                   <div
                     className="prose-sm prose sm:prose"
@@ -66,9 +65,9 @@ export default function Topic({ user, topic }) {
               </div>
             </div>
             
-            <div className="flex flex-1">
-              {/* this is the empty right column */}
+            <div className="flex-1">
             </div>
+            
           </div>
         </div>
 
