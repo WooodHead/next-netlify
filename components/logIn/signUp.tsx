@@ -96,16 +96,16 @@ const SignUp = props => {
       <div className="container">
         <span>By continuing, you agree to our </span>
         <span className="text-blue-500" >
-          <Link href="/about">User Agreement</Link>
+          <Link href="/about/tos">User Agreement</Link>
         </span>
         <span> and </span>
         <span className="text-blue-500">
-          <Link href="/about">Privacy Policy</Link>
+          <Link href="/about/privacy">Privacy Policy</Link>
         </span>
         <span>
           .
         </span>
-        {!submitAccountState ? <div className="m-5"><div className="mb-5 mt-5">
+        {!submitAccountState ? <div className="m-5"><div className="mt-5 mb-5">
           Username
             <div >
             <input
@@ -152,7 +152,7 @@ const SignUp = props => {
             <button disabled={(errState === "accepted")} onClick={userAddHandler}>Submit</button>
             {(errState === "accepted") && ' ✔️'}
             {submitAccountState && <CustomSpinner />}
-          </div></div> : <div className="column m-5">
+          </div></div> : <div className="m-5 column">
 
           <div className="mb-2">We sent a confirmation code to your email</div>
           <div className="mb-3">
@@ -166,7 +166,7 @@ const SignUp = props => {
 
         </div>}
         <div className="mt-10">
-          Already have an account? <span className=" cursor-pointer text-blue-500" onClick={() => setModalState('Login')}>LOG IN</span>
+          Already have an account? <span className="text-blue-500 cursor-pointer " onClick={() => setModalState('Login')}>LOG IN</span>
         </div>
       </div>
     )
