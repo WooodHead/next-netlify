@@ -6,9 +6,11 @@ export default function AboutComp() {
     <>
     <NavbarComp />
       <div className="m-10">
-        <div className="max-w-prose">This site combines blogging with direct communication. 
-        Sign up, receive calls via push notifications, and charge a price as low as $0.17/per minute to talk to you; 
-        text, audio, video, or screensharing.
+        <div className="max-w-prose">
+        Talktree is a platform for on demand communication. 
+        Users can make and receive messages through the web app.
+        Text, audio, video, and screenshare.
+        Create an account and charge a price as low as $0.17/per minute to talk to you.
         </div>
         <div className="mt-5">This website is in beta</div>
         <div>Email geoff@Talktree.me or <a href="/geoff-young" >Talktree.me/geoff-young</a></div>

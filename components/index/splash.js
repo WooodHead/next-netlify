@@ -7,18 +7,18 @@ import { useRef } from 'react'
 export default function SplashPage() {
   const emailRef = useRef()
 
-  const emailUpdatesHandler = async (e) => {
-    e.preventDefault()
-    const submitEmailParams = {
-      body: { receiver: '6779991', comment: '' + emailRef.current.value, topic: 'email' },
-    }
-    try {
-      await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/leaveComment', submitEmailParams)
-      emailRef.current.value = ''
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // const emailUpdatesHandler = async (e) => {
+  //   e.preventDefault()
+  //   const submitEmailParams = {
+  //     body: { receiver: '6779991', comment: '' + emailRef.current.value, topic: 'email' },
+  //   }
+  //   try {
+  //     await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/leaveComment', submitEmailParams)
+  //     emailRef.current.value = ''
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   return (
     <>
