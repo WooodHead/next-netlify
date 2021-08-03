@@ -43,11 +43,11 @@ const LogIn = props => {
     <>
       <span>By continuing, you agree to our </span>
       <span className="text-blue-500" >
-        <Link href="/about/tos">User Agreement</Link>
+        <Link href="/about/tos"><a>User Agreement</a></Link>
       </span>
       <span> and </span>
       <span className="text-blue-500">
-        <Link href="/about/privacy">Privacy Policy</Link>
+        <Link href="/about/privacy"><a>Privacy Policy</a></Link>
       </span>
       <span>
         .

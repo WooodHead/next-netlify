@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import '../configureAmplify'
 import NavbarComp from '../components/navbar/navbar'
 import Footer from '../components/navbar/footer'
+
 const Users = ({ allUsers }) => {
   const router = useRouter()
 
@@ -27,12 +28,13 @@ const Users = ({ allUsers }) => {
                   <Link
                     className=""
                     href={"/" + user.Username}
+                    passHref
                   >
-                    <a className="flex overflow-auto flex-row">
-                      <div>
+                    <div className="flex flex-row overflow-auto">
+
                         <div className="flex flex-col w-20">
                           <div>
-                          {user.Username}
+                          <a>{user.Username}</a>
                           </div>
                           <div>
                           {user.TAVS}
@@ -46,10 +48,10 @@ const Users = ({ allUsers }) => {
                             </div>
                           )
                           }</div> */}
-                      </div>
+
                       <div className="ml-2" dangerouslySetInnerHTML={{ __html: user.publicString }}>
                       </div>
-                    </a>
+                    </div>
                   </Link>
                 </div>
               </div>

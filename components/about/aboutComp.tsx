@@ -15,12 +15,20 @@ export default function AboutComp() {
         <div className="mt-5">This website is in beta</div>
         <div>Email geoff@Talktree.me or <a href="/geoff-young" >Talktree.me/geoff-young</a></div>
         <div className="mt-5">
+          
+          <Link href="tos">
           <button className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
-          <Link href="tos">Terms of Service</Link>
-          </button>
+            Terms of Service
+            </button>
+          </Link>
+          
+          
+          <Link href="privacy">
           <button className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 " >
-          <Link href="privacy">Privacy Policy</Link>
-          </button>
+            Privacy Policy
+            </button>
+            </Link>
+          
         </div>
       </div>
       </>
