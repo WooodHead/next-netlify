@@ -32,7 +32,7 @@ const Users = ({ allUsers }) => {
                   <Link
                     className=""
                     href={"/" + user.Username}
-                    passHref
+                    // passHref
                   >
                     <a>{user.Username}</a>
                   </Link>
