@@ -13,6 +13,9 @@ const Users = ({ allUsers }) => {
   //   const titleIfExists = userObjProp.topics[0] ? userObjProp.topics[0].title.S : ''
   //   // router.push(`/${userObjProp.Username + "/" + titleIfExists}`)
   // }
+  const clickUser = (usernameProp) => {
+    router.push(usernameProp)
+  }
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -21,7 +24,8 @@ const Users = ({ allUsers }) => {
           {allUsers.map((user) => {
             return (
               <div
-                className="flex mx-5 my-5 bg-gray-100 hover:bg-gray-200"
+                className="flex mx-5 my-5 bg-gray-100 cursor-pointer hover:bg-gray-200"
+                onClick={() => clickUser(user.Username)} 
                 key={user.Username}
               >
                 <div className="mx-5 my-2">
@@ -30,29 +34,30 @@ const Users = ({ allUsers }) => {
                     href={"/" + user.Username}
                     passHref
                   >
-                    <div className="flex flex-row overflow-auto">
-
-                        <div className="flex flex-col w-20">
-                          <div>
-                          <a>{user.Username}</a>
-                          </div>
-                          <div>
-                          {user.TAVS}
-                          </div>
-                        </div>
-
-                        {/* <div className="flex flex-col flex-wrap max-h-20">
-                          {user.topics.map((topicObj) =>
-                            <div className="mx-5" key={topicObj.topicId} >
-                              {topicObj.title.S.replace(/-/g, ' ')}
-                            </div>
-                          )
-                          }</div> */}
-
-                      <div className="ml-2" dangerouslySetInnerHTML={{ __html: user.publicString }}>
+                    <a>{user.Username}</a>
+                  </Link>
+                  <div 
+                    
+                    className="flex flex-row overflow-auto"
+                  >
+                    
+                    <div className="flex flex-col w-20">
+                      <div>
+                        {user.TAVS}
                       </div>
                     </div>
-                  </Link>
+
+                    {/* <div className="flex flex-col flex-wrap max-h-20">
+                      {user.topics.map((topicObj) =>
+                        <div className="mx-5" key={topicObj.topicId} >
+                          {topicObj.title.S.replace(/-/g, ' ')}
+                        </div>
+                      )
+                      }</div> */}
+
+                    <div className="ml-2" dangerouslySetInnerHTML={{ __html: user.publicString }}>
+                    </div>
+                  </div>
                 </div>
               </div>
             )
@@ -60,7 +65,6 @@ const Users = ({ allUsers }) => {
         </div>
         <Footer />
       </div>
-
     </>
   )
 }
