@@ -27,9 +27,9 @@ export default function Topic({ user, topic }) {
     const year = lastSaveDate.getFullYear()
     dateString = '' + monthNames[month] + ' ' + day + ' ' + year
   }
-  
+  console.log("TOPIC", topic)
   return (
-    user ? <>
+    user && topic.title ? <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
