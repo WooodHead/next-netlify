@@ -9,6 +9,7 @@ import CommentComp from '../../components/[id]/[topic]/commentComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 import SideUserIsland from '../../components/[id]/[topic]/sideUserIsland'
 import TopUserIsland from '../../components/[id]/[topic]/topUserIsland'
+import ErrorPage from 'next/error'
 
 export default function Topic({ user, topic }) {
   const userOnboarded = user.receiver
