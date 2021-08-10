@@ -9,7 +9,7 @@ import ErrorPage from 'next/error'
 export default function User({ user }) {
 
   const description = user.publicString
-  user ?
+  return user ?
 
     <>
       <Head>
