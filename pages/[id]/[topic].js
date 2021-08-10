@@ -26,9 +26,9 @@ export default function Topic({ user, topic }) {
     const year = lastSaveDate.getFullYear()
     dateString = '' + monthNames[month] + ' ' + day + ' ' + year
   }
-
+  
   return (
-    <>
+    user ? <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -72,7 +72,7 @@ export default function Topic({ user, topic }) {
         </div>
 
       </div>
-    </>
+    </> : <><ErrorPage statusCode={404} /></>
   )
 }
 
