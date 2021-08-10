@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import React from 'react'
 import SideUserIsland from './[topic]/sideUserIsland'
 import TopUserIsland from './[topic]/topUserIsland'
@@ -7,6 +7,7 @@ import TopUserIsland from './[topic]/topUserIsland'
 export default function UserCompId(props) {
 
   const user = props.user
+  const router = useRouter()
   const topicClick = (urlProp) => {
     router.push(urlProp)
   }

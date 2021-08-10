@@ -1,7 +1,9 @@
 import NavbarComp from "../navbar/navbar"
 import Link from 'next/link'
+import { useRouter } from "next/router"
 
 export default function AboutComp() {
+  const router = useRouter()
   return (
     <>
     <NavbarComp />
@@ -16,11 +18,11 @@ export default function AboutComp() {
         <div>Email geoff@Talktree.me or <a href="/geoff-young" >Talktree.me/geoff-young</a></div>
         <div className="mt-5">
           
-          <Link href="tos">
-          <button className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
-            Terms of Service
+          
+          <button onClick={() => router.push("tos")}className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
+          <Link href="tos"><a>Terms of Service</a></Link>
             </button>
-          </Link>
+          
           
           
           <Link href="privacy">
