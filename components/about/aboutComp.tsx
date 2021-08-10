@@ -23,8 +23,6 @@ export default function AboutComp() {
           <Link href="tos"><a>Terms of Service</a></Link>
             </button>
           
-          
-          
           <Link href="privacy">
           <button className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 " >
             Privacy Policy

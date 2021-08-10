@@ -4,12 +4,13 @@ import '../configureAmplify'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'
-import { stringify } from 'postcss'
+import ErrorPage from 'next/error'
 
 export default function User({ user }) {
 
   const description = user.publicString
-  return (
+  user ?
+
     <>
       <Head>
         <title>{user.Username}</title>
@@ -21,8 +22,8 @@ export default function User({ user }) {
       </Head>
       <NavbarComp />
       <UserComp user={user} />
-    </>
-  )
+   </>
+   : <><ErrorPage statusCode={404}/></>
 }
 
 export async function getStaticPaths() {
