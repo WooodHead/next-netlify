@@ -39,7 +39,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-
   const specificUserInit = { headers: { Authorization: params.id } }
   const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
   const userRes = getUserRes.Item

@@ -27,9 +27,9 @@ export default function Topic({ user, topic }) {
     const year = lastSaveDate.getFullYear()
     dateString = '' + monthNames[month] + ' ' + day + ' ' + year
   }
-  console.log("TOPIC", topic)
+
   return (
-    user && topic.title ? <>
+<>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -73,7 +73,7 @@ export default function Topic({ user, topic }) {
         </div>
 
       </div>
-    </> : <><ErrorPage statusCode={404} /></>
+    </>
   )
 }
 
@@ -100,64 +100,70 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  let topic = {}
-  const specificUserInit = { headers: { Authorization: params.id } }
-  const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
-  const userRes = getUserRes.Item
-
-  const TAVS = []
-  userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
-  userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
-  userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
-  userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
-  const topicsArray = []
-  for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
-    if (!topicObj.M.draft.BOOL) {
-      topicsArray.push({ ...topicObj.M, topicId: key })
-    }
-  }
-  const user = {
-    Username: userRes.Username.S,
-    active: userRes.active.BOOL,
-    busy: userRes.busy.BOOL,
-    folders: userRes.folders?.SS || [],
-    TAVS: TAVS,
-    ppm: userRes.ppm.N,
-    ratingAv: userRes.ratingAv?.S || null,
-    publicString: userRes.publicString?.S || null,
-    topics: topicsArray || null,
-    receiver: userRes.receiver.BOOL,
-    image: userRes.urlString?.S || null,
-  }
-  user.topics.forEach(async (topicObj) => {
-    const title = topicObj.title.S
-    const string = turnBracketsToAlt(topicObj.string.S)
-    // add height and width elements to img
-    if (string) {
-      // const stringWithResize = string.replace(/<img/g, "<img className='w-100% h-100%'") shits w-full not 100 lol
-      // const constWithPreChanged = string.replace(/<pre/g, "<pre className='overflow-auto max-w-screen'")
-      const topicId = topicObj.topicId
-      const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
-      if (title === params?.topic) {
-        const titleWithSpaces = title.replace(/-/g, ' ')
-        const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
-        const description = h2Tag ? h2Tag[1] : null
-        const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
-        const imgSrc = wholeImgTag ? wholeImgTag[1] : null
-        topic = {
-          topicId: topicId,
-          title: titleWithSpaces,
-          string: string,
-          description: description,
-          firstImage: imgSrc,
-          lastSave: lastSave,
-        }
+  try {
+    let topic = {}
+    const specificUserInit = { headers: { Authorization: params.id } }
+    const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
+    const userRes = getUserRes.Item
+  
+    const TAVS = []
+    userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
+    userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
+    userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
+    userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
+    const topicsArray = []
+    for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
+      if (!topicObj.M.draft.BOOL) {
+        topicsArray.push({ ...topicObj.M, topicId: key })
       }
     }
-  })
-
-  return {
-    props: { user: user, topic: topic },
-    revalidate: 1
+    const user = {
+      Username: userRes.Username.S,
+      active: userRes.active.BOOL,
+      busy: userRes.busy.BOOL,
+      folders: userRes.folders?.SS || [],
+      TAVS: TAVS,
+      ppm: userRes.ppm.N,
+      ratingAv: userRes.ratingAv?.S || null,
+      publicString: userRes.publicString?.S || null,
+      topics: topicsArray || null,
+      receiver: userRes.receiver.BOOL,
+      image: userRes.urlString?.S || null,
+    }
+    user.topics.forEach(async (topicObj) => {
+      const title = topicObj.title.S
+      const string = turnBracketsToAlt(topicObj.string.S)
+      // add height and width elements to img
+      if (string) {
+        // const stringWithResize = string.replace(/<img/g, "<img className='w-100% h-100%'") shits w-full not 100 lol
+        // const constWithPreChanged = string.replace(/<pre/g, "<pre className='overflow-auto max-w-screen'")
+        const topicId = topicObj.topicId
+        const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
+        if (title === params?.topic) {
+          const titleWithSpaces = title.replace(/-/g, ' ')
+          const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
+          const description = h2Tag ? h2Tag[1] : null
+          const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
+          const imgSrc = wholeImgTag ? wholeImgTag[1] : null
+          topic = {
+            topicId: topicId,
+            title: titleWithSpaces,
+            string: string,
+            description: description,
+            firstImage: imgSrc,
+            lastSave: lastSave,
+          }
+        }
+      }
+    })
+  
+    return {
+      props: { user: user, topic: topic },
+      revalidate: 1
+    }
+  } catch (err) {
+    console.log(err)
+    return { notFound: true }
   }
+
 }
