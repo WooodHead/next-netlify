@@ -73,7 +73,6 @@ export default function EditComponent(props) {
         Username: getUserRes.Item.Username.S,
         active: getUserRes.Item.active.BOOL,
         busy: getUserRes.Item.busy.BOOL,
-        // folders: getUserRes.Item.folders?.SS || [],
         TAVS: TAVS,
         ppm: getUserRes.Item.ppm.N,
         ratingAv: getUserRes.Item.ratingAv?.S || null,

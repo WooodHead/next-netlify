@@ -85,12 +85,10 @@ export async function getStaticProps() {
     userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
     userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
     userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
-    const firstSixFolders = userRes.folders?.SS.slice(0, 6) || []
     newAllUsers.push({
       Username: userRes.Username.S,
       active: userRes.active.BOOL,
       busy: userRes.busy.BOOL,
-      folders: firstSixFolders || [],
       TAVS: TAVS,
       ppm: userRes.ppm.N,
       ratingAv: userRes.ratingAv?.S || null,

@@ -89,7 +89,6 @@ export async function getStaticProps({ params }) {
     Username: userRes.Username.S,
     active: userRes.active.BOOL,
     busy: userRes.busy.BOOL,
-    folders: userRes.folders?.SS || [],
     ppm: userRes.ppm.N,
     TAVS: TAVS,
     ratingAv: userRes.ratingAv?.S || null,

@@ -8,7 +8,7 @@ export default function Tos() {
     <div className="mx-10">
       <div className="mt-3 text-lg font-semibold">Terms of Service</div>
       <div className="mtb-1">
-      Last updated: July 29, 2021
+      Last updated: Aug 13, 2021
       </div>
       <div className="mt-3 text-lg" >Acceptance of Terms of Service</div>
       <div>By using the Talktree platform, you agree to the following Terms of Service and Privacy Policy, if you do not agree to
@@ -26,8 +26,8 @@ export default function Tos() {
       at your own risk. ANY PAID COMMUNICATION IS SUBJECT TO STRIPE'S RESTRICTED BUSINESSES, https://stripe.com/restricted-businesses.
       Failure to comply with these rules will result in suspension or deactivation of the user account.
       </div>
-      <div className="mt-3 text-lg">Folders</div>
-      <div>All submitted folders / topics can be removed by Talktree at any time for any reason</div>
+      <div className="mt-3 text-lg">Topics / Posts</div>
+      <div>All submitted topics can be removed by Talktree at any time for any reason</div>
       <div className="mt-3 text-lg">Payments and Billing</div>
       <div>All prices denoted in USD. Users are responsible for the payment of all charges in connection with paid calls. The calculation of charges is dependent on the
         agreed upon price per minute, multiplied by the amount of minutes, with seconds rounded up to the nearest minute. E.G. A call lasting
