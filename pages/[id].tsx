@@ -52,6 +52,7 @@ export async function getStaticProps({ params }) {
     for (const [key, topicObj] of Object.entries(userRes.topics.M) as [key:string, topicObj:any]) {
       if (!topicObj.M.draft.BOOL) {
         const title = topicObj.M.title.S
+        const titleURL = topicObj.M.titleURL?.S || null
         const topicString = topicObj.M.string.S
         const lastSave = topicObj.M.lastSave ? topicObj.M.lastSave.S : null
         // const titleWithSpaces = title.replace(/-/g, ' ')
@@ -77,6 +78,7 @@ export async function getStaticProps({ params }) {
         topicsArray.push({
           topicId: key,
           title: title,
+          titleURL: titleURL,
           // string: topicString,
           description: description,
           firstImage: firstImage,

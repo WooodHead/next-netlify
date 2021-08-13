@@ -85,14 +85,15 @@ export async function getStaticPaths() {
     if (user.topics) {
       for (const [uuidKey, topicObj] of Object.entries(user.topics.M)) {
         if (!topicObj.M.draft.BOOL) {
-          paths.push({ params: { id: user.Username.S, topic: topicObj.M.title.S } })
+          const topicURL = topicObj.M.titleURL ? topicObj.M.titleURL.S : topicObj.M.title.S.replace(/ /g, '-')
+          // topicURL is conditional to be backwards compatible when the titleURL didn't exist
+          paths.push({ params: { id: user.Username.S, topic: topicURL } })
         }
       }
     } else {
       paths.push({ params: { id: user.Username.S, topic: "" } })
     }
   })
-
   return {
     paths: paths,
     fallback: "blocking"
@@ -131,6 +132,7 @@ export async function getStaticProps({ params }) {
     }
     user.topics.forEach(async (topicObj) => {
       const title = topicObj.title.S
+      const titleURL = topicObj.titleURL?.S || null
       const string = turnBracketsToAlt(topicObj.string.S)
       // add height and width elements to img
       if (string) {
@@ -138,15 +140,17 @@ export async function getStaticProps({ params }) {
         // const constWithPreChanged = string.replace(/<pre/g, "<pre className='overflow-auto max-w-screen'")
         const topicId = topicObj.topicId
         const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
-        if (title === params?.topic) {
-          const titleWithSpaces = title.replace(/-/g, ' ')
+
+        if (title === params?.topic || titleURL === params?.topic) {
+          // const titleWithSpaces = title.replace(/-/g, ' ')
           const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
           const description = h2Tag ? h2Tag[1] : null
           const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
           const imgSrc = wholeImgTag ? wholeImgTag[1] : null
           topic = {
             topicId: topicId,
-            title: titleWithSpaces,
+            title: title,
+            titleURL: titleURL,
             string: string,
             description: description,
             firstImage: imgSrc,
@@ -155,7 +159,6 @@ export async function getStaticProps({ params }) {
         }
       }
     })
-  
     return {
       props: { user: user, topic: topic },
       revalidate: 1

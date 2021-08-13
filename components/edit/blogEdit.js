@@ -20,7 +20,6 @@ const ReactQuill = dynamic(
   { ssr: false }
 )
 
-
 export default function BlogEdit(props) {
 
   const quillRef = useRef()
@@ -101,13 +100,13 @@ export default function BlogEdit(props) {
     if (firstHeading1.length > 60) {
       firstHeading1 = firstHeading1.slice(0, 60)
     }
-    const noSpacesTopic = firstHeading1.replaceAll(' ', '-')
-
+    
+    const sanitizedTitle = firstHeading1.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+    const noSpacesTopic = sanitizedTitle.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving' })
 
     try {
       const userSession = await Auth.currentSession()
-      console.log(userSession)
       const now = new Date()
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
@@ -117,7 +116,8 @@ export default function BlogEdit(props) {
           string: selectedTopicState.quill,
           accessToken: userSession.accessToken.jwtToken,
           topicObj: {
-            title: { S: noSpacesTopic },
+            title: { S: firstHeading1 },
+            titleURL: { S: noSpacesTopic },
             string: { S: selectedTopicState.quill },
             draft: { BOOL: isDraftProp },
             lastSave: { S: "" + now.getTime() }

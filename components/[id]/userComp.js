@@ -9,7 +9,7 @@ export default function UserCompId(props) {
   const user = props.user
   const router = useRouter()
   const topicClick = (urlProp) => {
-    router.push(urlProp)
+    router.push("/" + user.Username + "/" + urlProp)
   }
   return (
     <div className="">
@@ -23,19 +23,22 @@ export default function UserCompId(props) {
           <div className="bg-gray-100" >
             <TopUserIsland user={user} />
             {(user.topics).map((topicObj) => (
-
               <div
                 key={topicObj.topicId}
                 className="px-2 py-1 mx-2 my-3 rounded shadow-md cursor-pointer max-w-prose-lg hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
-                onClick={() => topicClick("/" + user.Username + "/" + topicObj.title)}
+                onClick={() => topicClick(topicObj.titleURL ? topicObj.titleURL : topicObj.title)}
               >
                 <div className="flex flex-row">
                   <div className="flex-shrink-0">
                     <img src={topicObj.firstImage}></img>
                   </div>
                   <div className="flex-col ml-3 ">
-                    <Link href={"/" + user.Username + "/" + topicObj.title}>
-                      <a className="font-semibold sm:text-2xl">{topicObj.title.replace(/-/g, ' ')}</a>
+                    <Link href={
+                      topicObj.titleURL 
+                      ? "/" + user.Username + "/" + topicObj.titleURL 
+                      : "/" + user.Username + "/" + topicObj.title
+                    }>
+                      <a className="font-semibold sm:text-2xl">{topicObj.title}</a>
                     </Link>
 
                     <div className="">{topicObj.description}</div>
