@@ -15,9 +15,18 @@ const Message = ({ user }) => {
   const id = user.Username
 
   useEffect(() => {
+
+    let timeStart
+    window.addEventListener('onload', function() {
+      const date = new Date()
+      timeStart = date.getTime()
+    })
     window.addEventListener('beforeunload', function() { 
+      const date =  new Date()
+      const timeEnd = date.getTime()
+      const timeDifference = timeEnd - timeStart
     //@ts-ignore
-    window && window.dataLayer && window.dataLayer.push({ event: 'beforeunload'}) })
+    window && window.dataLayer && window.dataLayer.push({ event: 'beforeunload', lengthOfTime: timeDifference}) })
   }, [])
 
   return (
@@ -25,10 +34,6 @@ const Message = ({ user }) => {
       <Head>
         <meta name="robots" content="noindex, nofollow" />
         <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
-        {/* <script dangerouslySetInnerHTML={{
-          __html: `window.addEventListener('beforeunload', function() { 
-            window.dataLayer.push({ event: 'beforeunload'});`
-        }}></script> */}
       </Head>
       <DynamicMessageComponent
         targetUser={id}
