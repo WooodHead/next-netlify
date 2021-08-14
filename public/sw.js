@@ -95,7 +95,7 @@ define("./sw.js",['./workbox-6b19f60b'], function (workbox) { 'use strict';
   * See https://goo.gl/2aRDsh
   */
 
-  importScripts("fallback-development.js", "worker-development.js");
+  importScripts("worker-development.js", "fallback-development.js");
   self.skipWaiting();
   workbox.clientsClaim();
   workbox.registerRoute("/", new workbox.NetworkFirst({

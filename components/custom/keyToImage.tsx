@@ -19,6 +19,7 @@ export function turnBracketsToAlt(stringProp) {
 
         if (afterString === '[') {
           const addressArray = srcUrl ? srcUrl[0]?.split('/') : null
+          console.log(addressArray)
           const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
           const altBeginning = stringProp.indexOf('[', afterStringIndex)
           const altEnd = stringProp.indexOf(';', afterStringIndex)
@@ -40,7 +41,8 @@ export function turnBracketsToAlt(stringProp) {
             }
           }
           const convertedBTOA = Buffer.from(JSON.stringify(newJson)).toString('base64')
-          const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + convertedBTOA
+          // const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + convertedBTOA
+          const convertedUrl = "https://" + addressArray[2] +"/" + convertedBTOA
           if (altLength < 161) {
             const altString = stringProp.slice(altBeginning + 1, altEnd)
             const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
@@ -102,7 +104,8 @@ try {
           }
         }
         const convertedBTOA = Buffer.from(JSON.stringify(newJson)).toString('base64')
-        const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + convertedBTOA
+        // const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + convertedBTOA
+        const convertedUrl = "https://" + addressArray[2] +"/" + convertedBTOA
         if (altLength < 161) {
           const altString = stringProp.slice(altBeginning + 1, altEnd)
           const allBrackets = stringProp.slice(altBeginning + 1, bracketEnd)
