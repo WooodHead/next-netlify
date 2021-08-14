@@ -16,11 +16,8 @@ const Message = ({ user }) => {
 
   useEffect(() => {
 
-    let timeStart
-    window.addEventListener('onload', function() {
-      const date = new Date()
-      timeStart = date.getTime()
-    })
+    const date = new Date()
+    const timeStart = date.getTime()
     window.addEventListener('beforeunload', function() { 
       const date =  new Date()
       const timeEnd = date.getTime()
