@@ -1,35 +1,20 @@
 import React from 'react'
 import API from '@aws-amplify/api'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
-// import UserComp from '../../components/[id]/userComp'
-import CommentComp from '../../components/[id]/[topic]/commentComp'
+import TopicComp from '../../components/[id]/[topic]/topicComp'
+
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
-import SideUserIsland from '../../components/[id]/[topic]/sideUserIsland'
-import TopUserIsland from '../../components/[id]/[topic]/topUserIsland'
-import ErrorPage from 'next/error'
+
 
 export default function Topic({ user, topic }) {
-  const userOnboarded = user.receiver
   const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
-  let dateString = ''
-
-  if (topic.lastSave) {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"]
-    const lastSaveDate = new Date(JSON.parse(topic.lastSave))
-    const day = lastSaveDate.getDate()
-    const month = lastSaveDate.getMonth()
-    const year = lastSaveDate.getFullYear()
-    dateString = '' + monthNames[month] + ' ' + day + ' ' + year
-  }
 
   return (
-<>
+    <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -40,39 +25,7 @@ export default function Topic({ user, topic }) {
         <meta property="og:image" content={firstImgAddress}></meta>
       </Head>
       <NavbarComp />
-      <div className="bg-gray-100">
-        <div className="my-5">
-          <div className="flex">
-
-            <div className="flex-1" >
-              <div className="flex justify-center mt-10">
-                <SideUserIsland user={user} />
-              </div>
-            </div>
-
-            <div className="mx-5">
-              <TopUserIsland user={user} />
-              <div className="my-5">
-                <div className="my-5">
-                  <div
-                    className="prose-sm prose sm:prose"
-                    dangerouslySetInnerHTML={{ __html: topic.string }}
-                  ></div>
-                  <div className="flex justify-center">
-                    < CommentComp user={user} />
-                  </div>
-                  <div className="flex justify-center my-3 text-xs">last updated: {dateString} </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex-1">
-            </div>
-            
-          </div>
-        </div>
-
-      </div>
+      <TopicComp user={user} topic={topic} />
     </>
   )
 }
