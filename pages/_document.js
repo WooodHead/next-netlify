@@ -17,8 +17,6 @@ class MyDocument extends Document {
           <meta name='description' content={"On demand expertise"} />
           <meta name='format-detection' content='telephone=no' />
           <meta name='mobile-web-app-capable' content='yes' />
-          <script dangerouslySetInnerHTML={{ __html: `dataLayer = [];`}}>
-          </script>
           <script dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

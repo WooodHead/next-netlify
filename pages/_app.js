@@ -1,11 +1,13 @@
 import "tailwindcss/tailwind.css"
 import '../styles/globals.css'
 // import { useEffect } from 'react'
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 // import * as ga from '../lib/index'
+// import Router from 'next/router'
+import GTMPageView from '../utils/gtm'
 
 function Application({ Component, pageProps }) {
-  // const router = useRouter()
+  const router = useRouter()
 
   // useEffect(() => {
   //   const handleRouteChange = (url) => {
@@ -21,6 +23,14 @@ function Application({ Component, pageProps }) {
   //     router.events.off('routeChangeComplete', handleRouteChange)
   //   }
   // }, [router.events])
+
+//   useEffect(() => {
+//     const handleRouteChange = (url) => GTMPageView(url);
+//     router.events.on('routeChangeComplete', handleRouteChange);
+//     return () => {
+//         router.events.off('routeChangeComplete', handleRouteChange);
+//     };
+// }, []);
   
   return <Component {...pageProps} />
 }

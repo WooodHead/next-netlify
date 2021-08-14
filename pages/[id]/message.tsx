@@ -14,18 +14,21 @@ const Message = ({ user }) => {
 
   const id = user.Username
 
-  // useEffect(() => { window.addEventListener('beforeunload', function() { 
-  //   window.dataLayer.push({ event: 'beforeunload'}) })}, [])
+  useEffect(() => {
+    window.addEventListener('beforeunload', function() { 
+    //@ts-ignore
+    window && window.dataLayer && window.dataLayer.push({ event: 'beforeunload'}) })
+  }, [])
 
   return (
     <div>
       <Head>
         <meta name="robots" content="noindex, nofollow" />
         <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
-        <script dangerouslySetInnerHTML={{
+        {/* <script dangerouslySetInnerHTML={{
           __html: `window.addEventListener('beforeunload', function() { 
             window.dataLayer.push({ event: 'beforeunload'});`
-        }}></script>
+        }}></script> */}
       </Head>
       <DynamicMessageComponent
         targetUser={id}
