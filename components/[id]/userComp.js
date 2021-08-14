@@ -25,7 +25,7 @@ export default function UserCompId(props) {
 
               <div
                 key={topicObj.topicId}
-                className="max-w-3xl px-2 py-1 my-3 rounded shadow-md cursor-pointer mx-7 hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
+                className="max-w-3xl px-2 py-1 mx-5 my-3 rounded shadow-md cursor-pointer hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
                 onClick={() => topicClick(topicObj.titleURL ? topicObj.titleURL : topicObj.title)}
               >
                 <div className="flex flex-row">
