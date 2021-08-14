@@ -14,6 +14,9 @@ const Message = ({ user }) => {
 
   const id = user.Username
 
+  useEffect(() => { window.addEventListener('beforeunload', function() { 
+    window.dataLayer.push({ event: 'beforeunload'}) })}, [])
+
   return (
     <div>
       <Head>
@@ -22,10 +25,7 @@ const Message = ({ user }) => {
         <script dangerouslySetInnerHTML={{
           __html: `window.addEventListener('beforeunload', function() { 
             window.dataLayer.push({ event: 'beforeunload'});`
-        }}>
-
-  });
-</script>
+        }}></script>
       </Head>
       <DynamicMessageComponent
         targetUser={id}
