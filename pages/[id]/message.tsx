@@ -21,7 +21,7 @@ const Message = ({ user }) => {
     window.addEventListener('beforeunload', function() { 
       const date =  new Date()
       const timeEnd = date.getTime()
-      const timeDifference = timeEnd - timeStart
+      const timeDifference = (timeEnd - timeStart) * .001
     //@ts-ignore
     window && window.dataLayer && window.dataLayer.push({ event: 'beforeunload', lengthOfTime: timeDifference}) })
   }, [])
