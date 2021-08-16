@@ -60,7 +60,8 @@ export default function SplashPage() {
         </form> */}
         <div className="mt-10 mb-20">
           <Link className="" href="/geoff-young">
-            <button>check out my page</button>
+            <a className="px-2 py-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
+            >check out my page</a>
           </Link>
         </div>
         <img src="/favicon512.png"></img>
