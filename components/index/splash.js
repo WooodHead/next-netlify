@@ -45,7 +45,7 @@ export default function SplashPage() {
         {/* <div>Talk for as little or as long as you'd like</div>
       <div><img src="screenChat.png" ></img></div> */}
         <div className="mb-5 text-5xl mt-14">Want to be an expert?</div>
-        <span className="underline" ><Link href="/signIn">Sign up</Link></span>
+        {/* <span className="underline" ><Link href="/signIn">Sign up</Link></span> */}
         <span> - That's it, you can now start receiving calls</span>
         <div className="mt-5"><img src="/phone.png" alt="Talktree phone receiver" ></img></div>
         <div className="mt-3 mb-5">You'll get an e-mail to open your phone when someone is calling you, alternatively if you open the web phone you can receieve notifications</div>
