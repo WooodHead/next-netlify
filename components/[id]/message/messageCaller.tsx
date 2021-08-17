@@ -3,7 +3,8 @@ import { useRouter } from 'next/router'
 import TextOnlyComponent from '../../tavs/messenger/textOnly'
 import PhoneButtons from './phoneButtons'
 import API from '@aws-amplify/api'
-import MicComponent from '../../tavs/messenger/mic';
+
+declare var OT
 
 const MessageComponent = (props) => {
   const [state, setState] = useState({

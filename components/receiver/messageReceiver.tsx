@@ -1,12 +1,9 @@
 import React, { useEffect, useState, useRef, useReducer } from 'react';
-import AudioComponent from '../tavs/audio'
-import VideoComponent from '../tavs/video'
-import ScreenComponent from '../tavs/screen'
-import TextComponent from '../tavs/text'
 import { useRouter } from 'next/router';
-import TextOnlyComponent from '../tavs/text'
+import TextOnlyComponent from '../tavs/messenger/textOnly'
 import PhoneButtons from '../[id]/message/phoneButtons'
-import MicComponent from '../tavs/messenger/mic';
+
+declare var OT
 
 const MessageReceiver = props => {
   const session = props.otSession
@@ -103,6 +100,7 @@ const MessageReceiver = props => {
   const unPublishMic = () => {
     session.unpublish(micPublisherRef.current)
   }
+
   const publishVideo = () => {
     const pubOptions = {
       insertMode: 'append',

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 // import TAVSparent from './tavsParent'
 import MessageReceiver from './messageReceiver'
 import CustomSpinner from '../custom/spinner'
+declare var OT
 
 const MessageInitOT = props => {
   const [state, setState] = useState({

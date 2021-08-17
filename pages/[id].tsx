@@ -20,7 +20,7 @@ export interface User {
   [key: string]: any
 }
 
-export default function User({ ...user }: User) {
+export default function User({ user }: User) {
 
   const description = user.publicString
   return user ?

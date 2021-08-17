@@ -3,6 +3,7 @@ import API from '@aws-amplify/api';
 import '../../../configureAmplify'
 import MessageComponent from './messageCaller'
 import CustomSpinner from '../../custom/spinner';
+declare var OT
 
 const MessageOtComponent = (props) => {
 
