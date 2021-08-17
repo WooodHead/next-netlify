@@ -6,7 +6,21 @@ import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'
 import ErrorPage from 'next/error'
 
-export default function User({ user }) {
+export interface User {
+  Username: string
+  active: boolean
+  busy: boolean
+  ppm: number
+  TAVS: string[]
+  publicString: string
+  topicString: string
+  topics: any[]
+  receiver: boolean
+  image: string
+  [key: string]: any
+}
+
+export default function User({ ...user }: User) {
 
   const description = user.publicString
   return user ?
@@ -73,7 +87,7 @@ export async function getStaticProps({ params }) {
           firstImage = wholeURL[0].replace(/(https:.+?cloudfront.net\/).+?"/, function(a, b) {
             return b + reverted
           })
-        } 
+        }
 
         topicsArray.push({
           topicId: key,
@@ -93,7 +107,7 @@ export async function getStaticProps({ params }) {
     busy: userRes.busy.BOOL,
     ppm: userRes.ppm.N,
     TAVS: TAVS,
-    ratingAv: userRes.ratingAv?.S || null,
+    // ratingAv: userRes.ratingAv?.S || null,
     publicString: userRes.publicString?.S || null,
     topicString: userRes.topicString?.S || null,
     topics: topicsArray || null,

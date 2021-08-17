@@ -33,7 +33,7 @@ export default function CommentComp (props) {
   return (
     <div className="flex flex-col">
       <div className="flex justify-center mt-10 text-lg font-bold" >Still need help?</div>
-      {userActive ? <div>🟢 I'm online</div> : <div>🔴 I'm offline</div>}
+      {userActive ? <div><span className="text-xs">🟢</span> I'm available</div> : <div>🔴 I'm offline</div>}
       <div className="flex justify-center mt-3 mb-2">
           <button className="w-24 mb-12" type="button" onClick={openMessagePhone}>Message me</button>
         </div>

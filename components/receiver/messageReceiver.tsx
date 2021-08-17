@@ -9,7 +9,6 @@ import PhoneButtons from '../[id]/message/phoneButtons'
 import MicComponent from '../tavs/messenger/mic';
 
 const MessageReceiver = props => {
-
   const session = props.otSession
   const [state, setState] = useState({
     audio: true,

@@ -3,8 +3,21 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import SideUserIsland from './[topic]/sideUserIsland'
 import TopUserIsland from './[topic]/topUserIsland'
+import { User } from '../../pages/[id]'
 
 export default function UserCompId(props) {
+  // : { user: {
+  //   Username: string,
+  //   active: boolean,
+  //   busy: boolean,
+  //   ppm: number,
+  //   TAVS: string[],
+  //   publicString: string,
+  //   topicString: string,
+  //   topics: any[],
+  //   receiver: boolean,
+  //   image: string
+  // }}
 
   const user = props.user
   const router = useRouter()
@@ -22,7 +35,6 @@ export default function UserCompId(props) {
           <div className="bg-gray-100">
             <TopUserIsland user={user} />
             {(user.topics).map((topicObj) => (
-
               <div
                 key={topicObj.topicId}
                 className="max-w-3xl px-2 py-1 my-3 rounded shadow-md cursor-pointer mx-7 hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"

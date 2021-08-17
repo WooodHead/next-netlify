@@ -9,12 +9,13 @@ import Navbar from '../components/navbar/navbar'
 import Footer from '../components/navbar/footer'
 const AccountSettings = props => {
 
-  const oldPassRef = useRef()
-  const newPassRef = useRef()
+  const oldPassRef = useRef(null)
+
+  const newPassRef = useRef(null)
 
   const [hiddenOldState, setHiddenOldState] = useState(true)
   const [hiddenNewState, setHiddenNewState] = useState(true)
-  const [newPassState, setNewPassState] = useState(false)
+  const [newPassState, setNewPassState] = useState(null)
   const [yesDisable, setYesDisable] = useState(false)
   // const [serverMessageState, setServerMessageState] = useState(false)
 
