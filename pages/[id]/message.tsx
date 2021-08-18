@@ -11,7 +11,6 @@ const DynamicMessageComponent = dynamic(
 )
 
 const Message = ({ user }) => {
-
   const id = user.Username
 
   useEffect(() => {

@@ -4,18 +4,23 @@ import Head from 'next/head'
 import '../../configureAmplify'
 import NavbarComp from '../../components/navbar/navbar'
 import TopicComp from '../../components/[id]/[topic]/topicComp'
-
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
-
+import ErrorPage from 'next/error'
+import { useRouter } from 'next/router'
 
 export default function Topic({ user, topic }) {
+  // const router = useRouter()
+  // if (router.isFallback) {
+  //   return <div>Loading...</div>
+  // }
+
   const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
 
   return (
     <>
-      <Head>
+       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -26,6 +31,7 @@ export default function Topic({ user, topic }) {
       </Head>
       <NavbarComp />
       <TopicComp user={user} topic={topic} />
+      
     </>
   )
 }
@@ -112,10 +118,10 @@ export async function getStaticProps({ params }) {
         }
       }
     })
-    return {
+    return topic.topicId ? {
       props: { user: user, topic: topic },
-      revalidate: 1
-    }
+      revalidate: 1 } 
+    : { notFound: true}
   } catch (err) {
     console.log(err)
     return { notFound: true }

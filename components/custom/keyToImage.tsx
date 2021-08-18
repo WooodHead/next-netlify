@@ -19,7 +19,6 @@ export function turnBracketsToAlt(stringProp) {
 
         if (afterString === '[') {
           const addressArray = srcUrl ? srcUrl[0]?.split('/') : null
-          console.log(addressArray)
           const convertedAtob = addressArray ? JSON.parse(Buffer.from(addressArray[3], 'base64').toString()) : null
           const altBeginning = stringProp.indexOf('[', afterStringIndex)
           const altEnd = stringProp.indexOf(';', afterStringIndex)
