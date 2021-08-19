@@ -110,15 +110,31 @@ export default function BlogEdit(props) {
       const now = new Date()
 
       //get first image
-      let firstImage
+      let firstImage = ''
       let description
       const string = turnBracketsToAlt(selectedTopicState.quill)
       if (string) {
         const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
         description = h2Tag ? h2Tag[1] : null
+
         const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
-        firstImage = wholeImgTag ? wholeImgTag[1] : null
+        const ImgTag = string.match(/<img.+?src=".+?cloudfront.net\/(.+?)"/)
+        const wholeURL = wholeImgTag ? wholeImgTag[0].match(/https.+?cloudfront.net\/(.+?)"/) : null
+        const isGif = wholeImgTag ? wholeImgTag[0].match(/gif/) : true
+          if (!isGif) {
+            const imgSrc = ImgTag ? ImgTag[1] : null
+            const atob = a => Buffer.from(a, 'base64').toString('binary')
+            const btoa = b => Buffer.from(b).toString('base64')
+            const converted = JSON.parse(atob(imgSrc))
+            converted.edits.resize.width = 100
+            converted.edits.resize.height = 100
+            const reverted = btoa(JSON.stringify(converted))
+            firstImage = wholeURL[0].replace(/(https:.+?cloudfront.net\/).+?"/, function(a, b) {
+              return b + reverted
+            })
+          }
       }
+      
 
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
@@ -133,8 +149,8 @@ export default function BlogEdit(props) {
             string: { S: selectedTopicState.quill },
             draft: { BOOL: isDraftProp },
             lastSave: { S: "" + now.getTime() },
-            firstImage: { S: firstImage },
-            description: { S: description }
+            description: { S: description },
+            firstImage: { S: firstImage }
           }
         }
       }

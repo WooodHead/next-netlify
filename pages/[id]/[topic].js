@@ -99,20 +99,17 @@ export async function getStaticProps({ params }) {
         // const constWithPreChanged = string.replace(/<pre/g, "<pre className='overflow-auto max-w-screen'")
         const topicId = topicObj.topicId
         const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
+        const firstImage = topicObj.firstImage ? topicObj.firstImage.S : null
+        const description = topicObj.description ? topicObj.description.S : null
 
         if (title === params?.topic || titleURL === params?.topic) {
-          // const titleWithSpaces = title.replace(/-/g, ' ')
-          const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
-          const description = h2Tag ? h2Tag[1] : null
-          const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
-          const imgSrc = wholeImgTag ? wholeImgTag[1] : null
           topic = {
             topicId: topicId,
             title: title,
             titleURL: titleURL,
             string: string,
             description: description,
-            firstImage: imgSrc,
+            firstImage: firstImage,
             lastSave: lastSave,
           }
         }

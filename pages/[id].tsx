@@ -5,6 +5,7 @@ import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'
 import ErrorPage from 'next/error'
+import { getAmplifyUserAgent } from '@aws-amplify/core'
 
 export interface User {
   Username: string
@@ -53,69 +54,75 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   try {
-    const specificUserInit = { headers: { Authorization: params.id } }
-    const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
-    const userRes = getUserRes.Item
+    console.log(params.id)
+    const getUserInit = { body: { username: params.id } }
+    const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
+    console.log("getUser", getUser)
+    // const specificUserInit = { headers: { Authorization: params.id } }
+    // const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
+    // const userRes = getUserRes.Item
     const TAVS = []
-    userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
-    userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
-    userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
-    userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
-    const topicsArray = []
-    if (userRes.topics) {
-      for (const [key, topicObj] of Object.entries(userRes.topics.M) as [key:string, topicObj:any]) {
-        if (!topicObj.M.draft.BOOL) {
-          const title = topicObj.M.title.S
-          const titleURL = topicObj.M.titleURL?.S || null
-          const topicString = topicObj.M.string.S
-          const lastSave = topicObj.M.lastSave ? topicObj.M.lastSave.S : null
+    getUser.deviceInput.text && TAVS.push("📝")
+    getUser.deviceInput.audio && TAVS.push("📞")
+    getUser.deviceInput.video && TAVS.push("📹")
+    getUser.deviceInput.screen && TAVS.push("💻")
+    // userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
+    // userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
+    // userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
+    // userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
+    // const topicsArray = []
+    // if (userRes.topics) {
+      // for (const [key, topicObj] of Object.entries(userRes.topics.M) as [key:string, topicObj:any]) {
+        // if (!topicObj.M.draft.BOOL) {
+          // const title = topicObj.M.title.S
+          // const titleURL = topicObj.M.titleURL?.S || null
+          // const topicString = topicObj.M.string.S
+          // const lastSave = topicObj.M.lastSave ? topicObj.M.lastSave.S : null
           // const titleWithSpaces = title.replace(/-/g, ' ')
-          const h2Tag = topicString.match(/<h2>(.+?)<\/h2>/)
-          const description = h2Tag ? h2Tag[1] : null
-          const wholeImgTag = topicString.match(/<img.+?src=".+?cloudfront.net\/(.+?)"/)
-          const wholeURL = wholeImgTag ? wholeImgTag[0].match(/https.+?cloudfront.net\/(.+?)"/) : null
-          const isGif = wholeImgTag ? wholeImgTag[0].match(/gif/) : true
-          let firstImage = null
-          if (!isGif) {
-            const imgSrc = wholeImgTag ? wholeImgTag[1] : null
-            const atob = a => Buffer.from(a, 'base64').toString('binary')
-            const btoa = b => Buffer.from(b).toString('base64')
-            const converted = JSON.parse(atob(imgSrc))
-            converted.edits.resize.width = 100
-            converted.edits.resize.height = 100
-            const reverted = btoa(JSON.stringify(converted))
-            firstImage = wholeURL[0].replace(/(https:.+?cloudfront.net\/).+?"/, function(a, b) {
-              return b + reverted
-            })
-          }
+          // const h2Tag = topicString.match(/<h2>(.+?)<\/h2>/)
+          // const description = h2Tag ? h2Tag[1] : null
+          // const wholeImgTag = topicString.match(/<img.+?src=".+?cloudfront.net\/(.+?)"/)
+          // const wholeURL = wholeImgTag ? wholeImgTag[0].match(/https.+?cloudfront.net\/(.+?)"/) : null
+          // const isGif = wholeImgTag ? wholeImgTag[0].match(/gif/) : true
+          // let firstImage = null
+          // if (!isGif) {
+          //   const imgSrc = wholeImgTag ? wholeImgTag[1] : null
+          //   const atob = a => Buffer.from(a, 'base64').toString('binary')
+          //   const btoa = b => Buffer.from(b).toString('base64')
+          //   const converted = JSON.parse(atob(imgSrc))
+          //   converted.edits.resize.width = 100
+          //   converted.edits.resize.height = 100
+          //   const reverted = btoa(JSON.stringify(converted))
+          //   firstImage = wholeURL[0].replace(/(https:.+?cloudfront.net\/).+?"/, function(a, b) {
+          //     return b + reverted
+          //   })
+          // }
   
-          topicsArray.push({
-            topicId: key,
-            title: title,
-            titleURL: titleURL,
-            // string: topicString,
-            description: description,
-            firstImage: firstImage,
-            lastSave: lastSave,
-          })
-        }
-      }
-    }
+          // topicsArray.push({
+          //   topicId: key,
+          //   title: title,
+          //   titleURL: titleURL,
+          //   // string: topicString,
+          //   description: description,
+          //   firstImage: firstImage,
+          //   lastSave: lastSave,
+          // })
+        // }
+      // }
+    // }
     const user = {
-      Username: userRes.Username.S,
-      active: userRes.active.BOOL,
-      busy: userRes.busy.BOOL,
-      ppm: userRes.ppm.N,
+      Username: getUser.username,
+      active: getUser.active,
+      busy: getUser.busy,
+      ppm: getUser.ppm,
       TAVS: TAVS,
-      // ratingAv: userRes.ratingAv?.S || null,
-      publicString: userRes.publicString?.S || null,
-      topicString: userRes.topicString?.S || null,
-      topics: topicsArray || null,
-      receiver: userRes.receiver.BOOL,
-      image: userRes.urlString?.S || null,
+      publicString: getUser.publicString,
+      topics: getUser.topics,
+      receiver: getUser.receiver,
+      image: getUser.userImg,
     }
   
-    return userRes.Username ? { props: { user: user }, revalidate: 1 } : { notFound: true}
+    return getUser.username ? { props: { user: user }, revalidate: 1 } : { notFound: true}
   } catch (err) {
     console.log(err)
     return { notFound: true }
