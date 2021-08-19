@@ -10,7 +10,7 @@ export default function FourOhFour() {
   const [state, setState] = useState({
     username: '',
     // topicTitleArray: [],
-    recommendedTopic: '',
+    recommendedTopic: {},
     topics: []
   })
   const router = useRouter()
@@ -38,9 +38,15 @@ export default function FourOhFour() {
         }
         const bestMatch = badTopic ? stringSimilarity.findBestMatch(badTopic[1], topicTitlesList) : null
         for (const [key, properties] of Object.entries(getUserRes.Item.topics.M)) {
-          console.log('propr', properties)
+          console.log(properties)
           if (properties.M.title.S === bestMatch.bestMatch.target) {
-            recommendedTopic = properties.M
+            recommendedTopic = {
+              // draft: properties.M.draft.BOOL,
+              // lastSave: properties.M.lastSave.S,
+              // string: properties.M.string.S,
+              title: properties.M.title.S
+            }
+            console.log('recommendedTopic', recommendedTopic)
           }
         }
         setState({
@@ -53,12 +59,12 @@ export default function FourOhFour() {
       } catch (err) {
         console.log(err)
       }
-
     }
     
     getAssumedUser()
   }, [])
   console.log(state)
+  
   return <>
     <NavbarComp />
     <div className="flex flex-col">
@@ -66,15 +72,16 @@ export default function FourOhFour() {
       <div className="flex justify-center my-8">Maybe the page moved:</div>
       {/* <div 
         className="max-w-3xl px-2 py-1 my-3 rounded shadow-md cursor-pointer mx-7 hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
-        onClick={() => topicClick(state.recommendedTopic.titleURL.S ? state.recommendedTopic.titleURL.S : state.recommendedTopic.title)}>
+        onClick={() => topicClick(state.recommendedTopic.titleURL.S ? state.recommendedTopic.titleURL.S : state.recommendedTopic.title.S)}>
         <div className="flex flex-row">
           <div className="flex-shrink-0">
             <img src={state.recommendedTopic}></img>
           </div>
           <div className="flex-col ml-3 ">
             <Link href={state.recommendedTopic.titleURL.S
-              ? "/" + user.Username + "/" + state.recommendedTopic.titleURL.S
-              : "/" + user.Username + "/" + state.recommendedTopic.title.S}>
+              ? "/" + state.username + "/" + state.recommendedTopic.titleURL.S
+              : "/" + state.username + "/" + state.recommendedTopic.title.S}
+            >
               <a className="font-semibold sm:text-2xl">{state.recommendedTopic.title.S}</a>
             </Link>
 
