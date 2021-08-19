@@ -9,40 +9,80 @@ import stringSimilarity from 'string-similarity'
 export default function FourOhFour() {
   const [state, setState] = useState({
     username: '',
-    topics: '',
-    bestMatch: ''
+    // topicTitleArray: [],
+    recommendedTopic: '',
+    topics: []
   })
   const router = useRouter()
-  
-  useEffect(() =>{
-    const getAssumedUser = async () => { 
-      const idMaybe = router.asPath.match(/\/(.+?)\//)
-      const badTopic = router.asPath.match(/\/.+\/(.+)/)
+  const topicClick = (urlProp) => {
+    router.push("/" + user.Username + "/" + urlProp)
+  }
 
-      const specificUserInit = { headers: { Authorization: idMaybe[1] } }
-      const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
-      const topicList = []
-      for (const [key, properties] of Object.entries(getUserRes.Item.topics.M)) {
-        if (!properties.M.draft.BOOL) {
-        topicList.push(properties.M.title.S)
+  useEffect(() => {
+    // router format
+    const getAssumedUser = async () => {
+      try {
+        const idMaybe = router.asPath.match(/\/(.+?)\//) || router.asPath.match(/\/(.+)/)
+        const badTopic = router.asPath.match(/\/.+\/(.+)/) || [null, null]
+        const specificUserInit = { headers: { Authorization: idMaybe[1] } }
+
+        const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
+        const topicTitlesList = []
+        const topicsList = []
+        let recommendedTopic
+        for (const [key, properties] of Object.entries(getUserRes.Item.topics.M)) {
+          if (!properties.M.draft.BOOL) {
+            topicTitlesList.push(properties.M.title.S)
+            topicsList.push(properties.M)
+          }
         }
+        const bestMatch = badTopic ? stringSimilarity.findBestMatch(badTopic[1], topicTitlesList) : null
+        for (const [key, properties] of Object.entries(getUserRes.Item.topics.M)) {
+          console.log('propr', properties)
+          if (properties.M.title.S === bestMatch.bestMatch.target) {
+            recommendedTopic = properties.M
+          }
+        }
+        setState({
+          ...state,
+          username: getUserRes.Item.Username.S,
+          // topicTitleArray: topicTitlesList,
+          recommendedTopic: recommendedTopic,
+          topics: topicsList
+        })
+      } catch (err) {
+        console.log(err)
       }
-      const bestMatch = stringSimilarity.findBestMatch(badTopic[1], topicList)
-      console.log('bestmatch', bestMatch.bestMatch.target)
-      console.log('badtopic', badTopic[1])
-      setState({...state, 
-        username: getUserRes.Item.Username.S,
-        topics: topicList,
-        bestMatch: bestMatch.bestMatch.target
-      })
-    }
 
+    }
+    
     getAssumedUser()
   }, [])
-  
+  console.log(state)
   return <>
     <NavbarComp />
-    <div className="flex justify-center text-2xl">404 - Page Not Found</div>
-    <div>Maybe you meant to visit talktree.me/{state.username}/{state.bestMatch}</div>
+    <div className="flex flex-col">
+      <div className="flex justify-center text-3xl my-44">404 - Page Not Found</div>
+      <div className="flex justify-center my-8">Maybe the page moved:</div>
+      {/* <div 
+        className="max-w-3xl px-2 py-1 my-3 rounded shadow-md cursor-pointer mx-7 hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
+        onClick={() => topicClick(state.recommendedTopic.titleURL.S ? state.recommendedTopic.titleURL.S : state.recommendedTopic.title)}>
+        <div className="flex flex-row">
+          <div className="flex-shrink-0">
+            <img src={state.recommendedTopic}></img>
+          </div>
+          <div className="flex-col ml-3 ">
+            <Link href={state.recommendedTopic.titleURL.S
+              ? "/" + user.Username + "/" + state.recommendedTopic.titleURL.S
+              : "/" + user.Username + "/" + state.recommendedTopic.title.S}>
+              <a className="font-semibold sm:text-2xl">{state.recommendedTopic.title.S}</a>
+            </Link>
+
+            <div>{topicObj.description}</div>
+          </div>
+        </div>
+      </div> */}
+    </div>
+
   </>
 }
