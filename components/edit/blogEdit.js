@@ -100,7 +100,7 @@ export default function BlogEdit(props) {
     if (firstHeading1.length > 60) {
       firstHeading1 = firstHeading1.slice(0, 60)
     }
-    
+
     const sanitizedTitle = firstHeading1.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
     const noSpacesTopic = sanitizedTitle.replaceAll(' ', '-')
     setSelectedTopicState({ ...selectedTopicState, saved: 'saving' })
@@ -108,6 +108,18 @@ export default function BlogEdit(props) {
     try {
       const userSession = await Auth.currentSession()
       const now = new Date()
+
+      //get first image
+      let firstImage
+      let description
+      const string = turnBracketsToAlt(selectedTopicState.quill)
+      if (string) {
+        const h2Tag = string.match(/<h2>(.+?)<\/h2>/)
+        description = h2Tag ? h2Tag[1] : null
+        const wholeImgTag = string.match(/<img.+?src="(.+?)"/)
+        firstImage = wholeImgTag ? wholeImgTag[1] : null
+      }
+
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
         body: {
@@ -120,7 +132,9 @@ export default function BlogEdit(props) {
             titleURL: { S: noSpacesTopic },
             string: { S: selectedTopicState.quill },
             draft: { BOOL: isDraftProp },
-            lastSave: { S: "" + now.getTime() }
+            lastSave: { S: "" + now.getTime() },
+            firstImage: { S: firstImage },
+            description: { S: description }
           }
         }
       }
@@ -167,7 +181,7 @@ export default function BlogEdit(props) {
     // syntax: true,
     toolbar: {
       container: [
-        [{ 'header': 1},{ 'header': 2}, 'code'],
+        [{ 'header': 1 }, { 'header': 2 }, 'code'],
         ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
         [{ 'list': 'bullet' }],
         ['link', 'image'],
@@ -181,28 +195,28 @@ export default function BlogEdit(props) {
 
   return (
     <div className="flex flex-col flex-auto h-screen">
-      <Navbar className="h-8"/>
+      <Navbar className="h-8" />
       <div className="h-full">
         {/* <div className=""> */}
-          {/* <div className="flex-1"> */}
-          <div className='flex justify-center h-5/6'>
-            <ReactQuill
-              className="flex-1 max-w-5xl m-5 h-5/6 max-w-80"
-              forwardedRef={quillRef}
-              modules={modules}
-              value={selectedTopicState.quill}
-              onChange={topicTypingFn} />
-          </div>
-          {/* </div> */}
+        {/* <div className="flex-1"> */}
+        <div className='flex justify-center h-5/6'>
+          <ReactQuill
+            className="flex-1 max-w-5xl m-5 h-5/6 max-w-80"
+            forwardedRef={quillRef}
+            modules={modules}
+            value={selectedTopicState.quill}
+            onChange={topicTypingFn} />
+        </div>
+        {/* </div> */}
         {/* </div> */}
 
         <div className="flex flex-row justify-center h-8 mx-10">
-            <button className="mr-10" onClick={() => saveTopicString(false)}>save and publish</button>
-            <button className="mr-10" onClick={() => saveTopicString(true)}>save as draft</button>
-            {selectedTopicState.saved === "saving" && <CustomSpinner />}
-            {selectedTopicState.saved === "saved" && <div className="">saved</div>}
-            <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
-            <button className="mr-10" onClick={() => deleteTopic()}>delete</button>
+          <button className="mr-10" onClick={() => saveTopicString(false)}>save and publish</button>
+          <button className="mr-10" onClick={() => saveTopicString(true)}>save as draft</button>
+          {selectedTopicState.saved === "saving" && <CustomSpinner />}
+          {selectedTopicState.saved === "saved" && <div className="">saved</div>}
+          <button className="mr-10" onClick={onCloseTopicEdit} >close</button>
+          <button className="mr-10" onClick={() => deleteTopic()}>delete</button>
         </div>
       </div>
     </div>
