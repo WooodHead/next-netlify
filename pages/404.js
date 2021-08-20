@@ -5,13 +5,15 @@ import { useEffect, useState } from 'react'
 import '../configureAmplify'
 import NavbarComp from '../components/navbar/navbar'
 import stringSimilarity from 'string-similarity'
+import CustomSpinner from '../components/custom/spinner'
 
 export default function FourOhFour() {
   const [state, setState] = useState({
     username: '',
     // topicTitleArray: [],
     recommendedTopic: {},
-    topics: []
+    topics: [],
+    loading: true
   })
   const router = useRouter()
   const topicClick = (urlProp) => {
@@ -54,7 +56,8 @@ export default function FourOhFour() {
           username: getUserRes.Item.Username.S,
           // topicTitleArray: topicTitlesList,
           recommendedTopic: recommendedTopic,
-          topics: topicsList
+          topics: topicsList,
+          loading: false
         })
       } catch (err) {
         console.log(err)
@@ -70,6 +73,7 @@ export default function FourOhFour() {
     <div className="flex flex-col">
       <div className="flex justify-center text-3xl my-44">404 - Page Not Found</div>
       <div className="flex justify-center my-8">Maybe the page moved:</div>
+      {state.loading ? <CustomSpinner />: <div></div>}
       {/* <div 
         className="max-w-3xl px-2 py-1 my-3 rounded shadow-md cursor-pointer mx-7 hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
         onClick={() => topicClick(state.recommendedTopic.titleURL.S ? state.recommendedTopic.titleURL.S : state.recommendedTopic.title.S)}>

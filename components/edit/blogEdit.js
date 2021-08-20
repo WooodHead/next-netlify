@@ -134,7 +134,6 @@ export default function BlogEdit(props) {
             })
           }
       }
-      
 
       const stringInit = {
         headers: { Authorization: userSession.idToken.jwtToken },
