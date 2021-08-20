@@ -42,7 +42,9 @@ export default function UserCompId(props) {
               >
                 <div className="flex flex-row">
                   <div className="flex-shrink-0">
-                    <img src={topicObj.firstImage}></img>
+                    {topicObj.firstImage 
+                    && <img width={100} height={100} src={topicObj.firstImage}></img>
+                    }
                   </div>
                   <div className="flex-col ml-3 ">
                     <Link href={topicObj.titleURL 

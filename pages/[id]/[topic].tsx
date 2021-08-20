@@ -78,46 +78,8 @@ export async function getStaticProps({ params }) {
       receiver: getUser.receiver,
       image: getUser.userImg,
     }
-
     let topic
-    // const specificUserInit = { headers: { Authorization: params.id } }
-    // const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", specificUserInit)
-    // const userRes = getUserRes.Item
-
-    // const TAVS = []
-    // userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
-    // userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
-    // userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
-    // userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
-    // const topicsArray = []
-    // for (const [key, topicObj] of Object.entries(userRes.topics?.M)) {
-    //   if (!topicObj.M.draft.BOOL) {
-    //     topicsArray.push({ ...topicObj.M, topicId: key })
-    //   }
-    // }
-    // const user = {
-    //   Username: userRes.Username.S,
-    //   active: userRes.active.BOOL,
-    //   busy: userRes.busy.BOOL,
-    //   TAVS: TAVS,
-    //   ppm: userRes.ppm.N,
-    //   ratingAv: userRes.ratingAv?.S || null,
-    //   publicString: userRes.publicString?.S || null,
-    //   topics: topicsArray || null,
-    //   receiver: userRes.receiver.BOOL,
-    //   image: userRes.urlString?.S || null,
-    // }
     getUser.topics.forEach(async (topicObj) => {
-      // const title = topicObj.title.S
-      // const titleURL = topicObj.titleURL?.S || null
-      // const string = turnBracketsToAlt(topicObj.string.S)
-      // add height and width elements to img
-      // if (string) {
-      // const topicId = topicObj.topicId
-      // const lastSave = topicObj.lastSave ? topicObj.lastSave.S : null
-      // const firstImage = topicObj.firstImage ? topicObj.firstImage.S : null
-      // const description = topicObj.description ? topicObj.description.S : null
-
       if (topicObj.title === params?.topic || topicObj.titleURL === params?.topic) {
         topic = {
           topicId: topicObj.topicId,
@@ -129,7 +91,6 @@ export async function getStaticProps({ params }) {
           lastSave: topicObj.lastSave,
         }
       }
-      // }
     })
     return topic.topicId ? {
       props: { user: user, topic: topic },
