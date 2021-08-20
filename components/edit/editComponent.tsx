@@ -107,7 +107,7 @@ export default function Edit(props) {
 
   return (
     <>
-      <NavbarComp />
+      {/* <NavbarComp /> */}
 
       <div className="mx-5">
         <div className="my-5 bg-gray-100">

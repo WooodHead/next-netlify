@@ -85,7 +85,7 @@ export async function getStaticProps({ params }) {
           topicId: topicObj.topicId,
           title: topicObj.title,
           titleURL: topicObj.titleURL,
-          string: topicObj.string,
+          string: turnBracketsToAlt(topicObj.string),
           description: topicObj.description,
           firstImage: topicObj.firstImage,
           lastSave: topicObj.lastSave,

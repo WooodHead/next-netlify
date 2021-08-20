@@ -210,7 +210,7 @@ export default function BlogEdit(props) {
 
   return (
     <div className="flex flex-col flex-auto h-screen">
-      <Navbar className="h-8" />
+      {/* <Navbar className="h-8" /> */}
       <div className="h-full">
         {/* <div className=""> */}
         {/* <div className="flex-1"> */}
