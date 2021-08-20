@@ -210,7 +210,7 @@ const Phone = () => {
       </Head>
       <div className="flex flex-col min-h-screen">
         <div className="flex-1">
-          <Navbar />
+          {/* <Navbar /> */}
           <div className="mx-5 my-5">
             {state.pageState === 'waiting' && state.otToken.sessionId
               ? <AcceptDecline />

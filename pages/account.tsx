@@ -62,7 +62,7 @@ const AccountSettings = props => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-1">
-      <Navbar />
+      {/* <Navbar /> */}
         <div className="ml-3 container-fluid">
         <div className="row">
         {/* <div className="ml-3 mr-3">

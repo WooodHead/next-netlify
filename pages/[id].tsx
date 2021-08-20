@@ -4,8 +4,6 @@ import '../configureAmplify'
 import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'
-import ErrorPage from 'next/error'
-import { getAmplifyUserAgent } from '@aws-amplify/core'
 
 export interface User {
   Username: string
@@ -34,7 +32,7 @@ export default function User({ user }: User) {
         <meta property="og:image" content="/favicon512"></meta>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <NavbarComp />
+      {/* <NavbarComp /> */}
       <UserComp user={user} />
    </>
   )

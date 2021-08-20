@@ -4,6 +4,7 @@ import '../styles/globals.css'
 import { useRouter } from 'next/router'
 // import * as ga from '../lib/index'
 // import Router from 'next/router'
+import NavbarComp from "../components/navbar/navbar"
 
 function Application({ Component, pageProps }) {
   const router = useRouter()
@@ -30,8 +31,10 @@ function Application({ Component, pageProps }) {
 //         router.events.off('routeChangeComplete', handleRouteChange);
 //     };
 // }, []);
-  
-  return <Component {...pageProps} />
+
+  return (router.pathname === "/[id]/review" || router.pathname ==="/[id]/message")
+  ? <Component {...pageProps} />
+    : <>< NavbarComp /><Component {...pageProps} /></> 
 }
 
 export default Application

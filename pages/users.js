@@ -14,7 +14,7 @@ const Users = ({ allUsers }) => {
   return (
     <>
       <div className="flex flex-col min-h-screen">
-        <NavbarComp />
+        {/* <NavbarComp /> */}
         <div className="flex-1">
           {allUsers.map((user) => {
             return (

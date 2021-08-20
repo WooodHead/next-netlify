@@ -6,7 +6,7 @@ export default function AboutComp() {
   const router = useRouter()
   return (
     <>
-      <NavbarComp />
+      {/* <NavbarComp /> */}
       <div className="m-10">
         <div className="max-w-prose">
           Talktree is a platform for on demand communication.

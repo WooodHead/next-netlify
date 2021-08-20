@@ -49,8 +49,7 @@ export default function FourOhFour() {
           }
         })
         
-        setState({
-          ...state,
+        setState({...state,
           username: getUser.username,
           recommendedTopic: recommendedTopic,
           topics: getUser.topics,
@@ -70,7 +69,7 @@ export default function FourOhFour() {
 
   
   return <>
-    <NavbarComp />
+    {/* <NavbarComp /> */}
     <div className="flex flex-col">
       <div className="flex justify-center text-3xl my-44">404 - Page Not Found</div>
       <div className="flex justify-center my-8">Maybe the page moved:</div>
