@@ -22,8 +22,14 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
-            // color: '#432342',
             maxWidth: '85ch',
+            /* this removes backticks added in to my prose code */
+            'code::before': {
+              content: '""'
+            },
+            'code::after': {
+              content: '""'
+            }
             // a: {
             //   color: '#3182ce',
             //   '&:hover': {

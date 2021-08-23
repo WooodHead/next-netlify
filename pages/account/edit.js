@@ -60,7 +60,6 @@ export default function EditParent(props) {
       }
       const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", getUserInit)
       const topicsArray = []
-      
       for (const topicKey in getUserRes.Item.topics.M) {
         const title = getUserRes.Item.topics.M[topicKey].M.title.S
         const titleWithSpaces = title.replaceAll('-', ' ')
@@ -102,6 +101,7 @@ export default function EditParent(props) {
         screen: deviceInputRes.screen.BOOL
       })
       const sanitizedString = DOMPurify.sanitize(getUserRes.Item.publicString?.S)
+
       const pubString = {
         ...publicStringState, 
         string: sanitizedString, 
