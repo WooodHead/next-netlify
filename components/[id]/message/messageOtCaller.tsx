@@ -7,37 +7,50 @@ declare var OT
 
 const MessageOtComponent = (props) => {
 
-  const [sessionState, setSessionState] = useState(null)
+  const [state, setState] = useState({
+    busy: false,
+    otSession: null,
+    apiHit: false
+  })
   const targetUser = props.targetUser
 
-  if (!sessionState) {
+  if (!state.apiHit) {
     (async () => {
       let myInit = {
         body: {
           name: targetUser,
-          deviceInput: 'text',
+          // deviceInput: 'text',
         }
       }
       const createSessionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/createSession2', myInit)
-      const otSession = OT.initSession(createSessionRes.apikey, createSessionRes.SessionId)
-      setSessionState(otSession)
-      otSession.connect(createSessionRes.token, function(err){
-        if (err) { console.log(err)}
-      })
+      console.log(createSessionRes)
+      if (createSessionRes.busy) {
+        setState({...state, busy: true, apiHit: true })
+      } else {
+        const otSession = OT.initSession(createSessionRes.apikey, createSessionRes.SessionId)
+        setState({...state, otSession: otSession, apiHit: true})
+        otSession.connect(createSessionRes.token, function(err){
+          if (err) { console.log(err)}
+        })
+      }
     })()
   }
 
-  if (sessionState) {
+  if (state.otSession) {
       return (
         <div className="flex flex-col items-center">
           <div>
             <MessageComponent 
               targetUser={targetUser}
-              otSession={sessionState}
+              otSession={state.otSession}
             />
             </div>
         </div>
       )
+  } else if (state.busy) {
+    return (
+      <div className="flex justify-center my-20">User is busy</div>
+    )
   } else {
     return (
       <div className="flex justify-center m-40"><CustomSpinner /></div>
