@@ -16,7 +16,7 @@ export default function FourOhFour() {
   })
   const router = useRouter()
   const topicClick = (urlProp) => {
-    router.push("/" + user.Username + "/" + urlProp)
+    router.push("/" + state.username + "/" + urlProp)
   }
 
   useEffect(() => {

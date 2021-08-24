@@ -31,6 +31,7 @@ export default function BlogEdit(props) {
     setSelectedTopicState({ quill: e, saved: false })
   }
   const selectedTopicState = props.selectedTopicState
+  // const [loadingImageState, setLoadingImageState] = useState(false)
 
   const onCloseTopicEdit = async () => {
     try {
@@ -43,6 +44,7 @@ export default function BlogEdit(props) {
   }
 
   const imageHandler = async () => {
+    // setLoadingImageState(true)
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.click()
@@ -101,6 +103,7 @@ export default function BlogEdit(props) {
           console.log('storage err', err)
         }
       }
+      // setLoadingImageState(false)
     }
   }
 
