@@ -43,7 +43,7 @@ const MessageComponent = (props) => {
       console.log(err)
     }
     session.disconnect()
-    router.push(`/${currentUser}/review`)
+    router.replace(`/${currentUser}/review`)
   }
 
   const onSignalSend = async signalInputRefProp => {
@@ -168,7 +168,7 @@ const MessageComponent = (props) => {
     session.on('connectionDestroyed', () => {
       console.log('connectionDestroyed')
       session.disconnect()
-      router.push(`/${currentUser}/review`)
+      router.replace(`/${currentUser}/review`)
       navigator.sendBeacon(
         process.env.NEXT_PUBLIC_APIGATEWAY_URL +
           "/disconnectCall" +
