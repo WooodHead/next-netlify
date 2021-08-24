@@ -10,7 +10,9 @@
     @apply bg-opacity-100 shadow-md;
   };
 };
-
+/* pre {
+  @apply bg-green-900
+} */
 .ql-syntax {
   @apply w-screen lg:w-full xl:w-full 2xl:w-full;
 }

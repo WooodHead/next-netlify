@@ -49,6 +49,22 @@ export default function BlogEdit(props) {
     input.onchange = async () => {
       const editor = quillRef.current.getEditor()
       const file = input.files[0]
+
+      const getHeightAndWidthFromDataUrl = dataURL => new Promise(resolve => {
+        const img = new Image()
+        img.onload = () => {
+          resolve({
+            height: img.height,
+            width: img.width
+          })
+        }
+        img.src = dataURL
+      })
+      const fileAsDataURL = window.URL.createObjectURL(file)
+      const dimensions = await getHeightAndWidthFromDataUrl(fileAsDataURL)
+      const imgWidth = dimensions.width
+      const imgHeight = dimensions.height
+      
       const range = editor.getSelection(true)
       editor.setSelection(range.index + 1)
       const fileType = file.name.match(/\.[0-9a-z]+$/i)
@@ -71,8 +87,8 @@ export default function BlogEdit(props) {
             "key": `public/${s3res.key}`,
             "edits": {
               "resize": {
-                "width": 900,
-                "height": 675,
+                "width": imgWidth,
+                "height": imgHeight,
                 "fit": "cover"
               }
             }
@@ -80,7 +96,7 @@ export default function BlogEdit(props) {
           const converting = Buffer.from(JSON.stringify(jsonToUrl)).toString('base64')
           const convertedUrl = process.env.NEXT_PUBLIC_IMG_CLOUDFRONT + "/" + converting
           editor.insertEmbed(range.index, 'image', convertedUrl)
-          editor.insertText(range.index + 1, '[alt tag; h:675, w:900]', true)
+          editor.insertText(range.index + 1, `[alt tag; h:${imgHeight}, w:${imgWidth}]`, true)
         } catch (err) {
           console.log('storage err', err)
         }

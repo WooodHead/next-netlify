@@ -29,7 +29,10 @@ module.exports = {
             },
             'code::after': {
               content: '""'
-            }
+            },
+            // pre: {
+            //   backgroundColor: '#3182ce'
+            // }
             // a: {
             //   color: '#3182ce',
             //   '&:hover': {

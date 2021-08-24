@@ -127,8 +127,8 @@ export default function EditParent(props) {
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
     </Head> */}
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-1 ">
+    {/* <div className="flex flex-col min-h-screen">
+      <div className="flex-1 "> */}
       {selectedTopicState.editing 
       ? <BlogEdit 
           setSelectedTopicState={(e) => setSelectedTopic(e)}
@@ -152,9 +152,9 @@ export default function EditParent(props) {
           setTavsState={setTavsStateFn}
           tavsState={tavsState}
           />}
-      </div>
+      {/* </div>
       <Footer />
-    </div>
+    </div> */}
 
     </>
   )
