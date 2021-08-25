@@ -54,23 +54,22 @@ const Users = ({ allUsers }) => {
 
 export async function getStaticProps() {
   const newAllUsers = []
-  const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
-  console.log(getAllUsersRes.body.Items)
-  getAllUsersRes.body.Items.forEach((userRes) => {
+  // const allUsersInit = { body: { Authorization: "all" } }
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers")
+  console.log(getAllUsersRes)
+  getAllUsersRes.body.forEach((userRes) => {
     const TAVS = []
-    userRes.deviceInput.M.text.BOOL && TAVS.push("📝")
-    userRes.deviceInput.M.audio.BOOL && TAVS.push("📞")
-    userRes.deviceInput.M.video.BOOL && TAVS.push("📹")
-    userRes.deviceInput.M.screen.BOOL && TAVS.push("💻")
+    userRes.deviceInput.text && TAVS.push("📝")
+    userRes.deviceInput.audio && TAVS.push("📞")
+    userRes.deviceInput.video && TAVS.push("📹")
+    userRes.deviceInput.screen && TAVS.push("💻")
     newAllUsers.push({
-      Username: userRes.Username.S,
-      active: userRes.active.BOOL,
-      busy: userRes.busy.BOOL,
+      Username: userRes.username,
+      active: userRes.active,
+      busy: userRes.busy,
       TAVS: TAVS,
-      ppm: userRes.ppm.N,
-      ratingAv: userRes.ratingAv?.S || null,
-      publicString: userRes.publicString?.S || null,
+      ppm: userRes.ppm,
+      publicString: userRes.publicString,
     })
   })
   return { props: { allUsers: newAllUsers }, revalidate: 1 }

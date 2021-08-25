@@ -65,7 +65,7 @@ export default function PPM(props) {
     try {
       const updatedAvailability = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/updateUserInactive", 
         updateUserInit )
-      console.log("RES", updatedAvailability)
+        setUserAvailable(!userAvailable)
     } catch (err) {
       console.log(err)
     }
@@ -96,7 +96,7 @@ export default function PPM(props) {
         (noReciever) ?  <div style={{color: "red"}}>{" "} you must set up how you get paid  </div>
         : valueTooSmall ? <div>{" "} minimum price is $0.17</div> : <div>{" "} your price per minute</div>}
       </div>
-      <input type="checkbox" onChange={goActiveHandler} className=""></input> Available
+      <input type="checkbox" checked={userAvailable} onChange={goActiveHandler} className=""></input> Available
     </div>
   )
 }

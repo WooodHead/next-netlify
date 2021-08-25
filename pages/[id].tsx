@@ -40,9 +40,9 @@ export default function User({ user }: User) {
 
 export async function getStaticPaths() {
   const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
-  const paths = getAllUsersRes.body.Items.map(user => {
-    return { params: { id: user.Username.S } }
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", allUsersInit)
+  const paths = getAllUsersRes.body.map(user => {
+    return { params: { id: user.username } }
   })
   return {
     paths,
