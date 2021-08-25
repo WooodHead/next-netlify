@@ -13,6 +13,8 @@ export default function PPM(props) {
   const [ppmDenied, setPPMdenied] = useState(false)
   const [noReciever, setNoReciever] = useState(false)
   const [valueTooSmall, setValueTooSmall] = useState(false)
+  const [userAvailable, setUserAvailable] = useState(userState.active)
+
   // const reciever = props.receiver
 
   const getUserData = () => props.getUserData()
@@ -37,7 +39,6 @@ export default function PPM(props) {
           headers: { Authorization: userSession.idToken.jwtToken },
           body: { PPMnum: "" + ppmState }
         }
-        console.log('my init', myInit)
         setPPMloading(true)
         const PPMres = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/setPPM", myInit)
         PPMres.statusCode === 500 ? setPPMdenied(true) : setPPMdenied(false), getUserData()
@@ -55,8 +56,26 @@ export default function PPM(props) {
     }
   }
 
+  const goActiveHandler = async () => {
+    const userSession = await Auth.currentSession()
+    const accessToken = userSession.getIdToken().getJwtToken()
+    const updateUserInit = { 
+      headers: { Authorization: accessToken },
+      body: { available: !userAvailable} }
+    try {
+      const updatedAvailability = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/updateUserInactive", 
+        updateUserInit )
+      console.log("RES", updatedAvailability)
+    } catch (err) {
+      console.log(err)
+    }
+
+    // navigator.sendBeacon(process.env.NEXT_PUBLIC_APIGATEWAY_URL + "/userstatus?accessToken=" + accessToken)
+    // updatedAvailability.statusCode === 200 ? setUserAvailable()
+  }
+
   return (
-    <div className="row ml-0 mt-1" >
+    <div className="mt-1 ml-0 row" >
       {/* <button onClick={submitPPM}>submit</button> */}
       <form onSubmit={submitPPM}>$ 
        <input
@@ -69,7 +88,7 @@ export default function PPM(props) {
          defaultValue={userState.ppm}
        />
       </form>
-      <div className="row ml-2 mt-2">
+      <div className="mt-2 ml-2 row">
       {ppmLoading && <CustomSpinner/>}
       
       {ppmDenied ? 
@@ -77,6 +96,7 @@ export default function PPM(props) {
         (noReciever) ?  <div style={{color: "red"}}>{" "} you must set up how you get paid  </div>
         : valueTooSmall ? <div>{" "} minimum price is $0.17</div> : <div>{" "} your price per minute</div>}
       </div>
+      <input type="checkbox" onChange={goActiveHandler} className=""></input> Available
     </div>
   )
 }

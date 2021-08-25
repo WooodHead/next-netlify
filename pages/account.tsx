@@ -19,7 +19,7 @@ const AccountSettings = props => {
   const [yesDisable, setYesDisable] = useState(false)
   // const [serverMessageState, setServerMessageState] = useState(false)
 
-  let history = useRouter()
+  const router = useRouter()
 
   const nullCognito = {
     accessToken: { jwtToken: null },
@@ -42,7 +42,8 @@ const AccountSettings = props => {
   
   const signOut = () => {
     Auth.signOut()
-    history.push("/users")
+    router.push("/users")
+    router.reload()
   }
 
   const disableAccount = async () => {
