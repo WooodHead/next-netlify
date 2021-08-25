@@ -37,19 +37,19 @@ export default function Topic({ user, topic }) {
 }
 
 export async function getStaticPaths() {
-  const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
   const paths = []
 
-  getAllUsersRes.body.Items.forEach(user => {
-    if (Object.keys(user.topics.M).length) {
-      for (const [topicId, topicObj] of Object.entries(user.topics.M) as [topicObj: any]) {
-        const topicURL = topicObj.M.titleURL ? topicObj.M.titleURL.S : topicObj.M.title.S.replace(/ /g, '-')
-        const params = { id: user.Username.S, topic: topicURL }
+  getAllUsersRes.forEach(userObj => {
+    if (userObj.topics.length) {
+      userObj.topics.forEach(topicObj => {
+        const topicURL = topicObj.titleURL ? topicObj.titleURL : topicObj.title.replace(/ /g, '-')
+        const params = { id: userObj.username, topic: topicURL }
         paths.push({ params: params })
-      }
+      })
+
     } else {
-      paths.push({ params: { id: user.Username.S, topic: "" } })
+      paths.push({ params: { id: userObj.username, topic: "" } })
     }
   })
   return {
