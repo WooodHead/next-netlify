@@ -82,7 +82,7 @@ export default function EditParent(props) {
         publicString: getSelfRes.publicString,
         receiver: getSelfRes.receiver,
         topics: topicsArray,
-        image: getSelfRes.firstImage
+        image: getSelfRes.userImg
       }
       setUserState(user)
       setTavsState({ ...tavsState, ...deviceInputRes })
