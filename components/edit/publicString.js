@@ -15,10 +15,11 @@ export default function PublicString(props) {
   // }
   const onClosePublicEdit = async () => {
     try {
-      const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = { headers: { Authorization: userSession.username } }
-      const getAllUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", getUserInit)
-      const userResString = getAllUserRes.Item.publicString.S
+      const userSession = await Auth.currentSession()
+      const idToken = userSession.getIdToken().getJwtToken()
+      const getUserInit = { headers: { Authorization: idToken } }
+      const getSelf = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSelfUser", getUserInit)
+      const userResString = getSelf.publicString
       setPublicStringState({ string: userResString, editing: false, saved: false })
     } catch (err) {
       setPublicStringState({ editing: false, saved: false })

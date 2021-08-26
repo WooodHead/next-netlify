@@ -23,7 +23,6 @@ const MessageOtComponent = (props) => {
         }
       }
       const createSessionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/createSession2', myInit)
-      console.log(createSessionRes)
       if (createSessionRes.busy) {
         setState({...state, busy: true, apiHit: true })
       } else {

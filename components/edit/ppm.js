@@ -29,7 +29,7 @@ export default function PPM(props) {
       setPPMstate(eventNumber.currentTarget.value)
     }
   }
-  //userState.receiver - does that exist?
+
   const submitPPM = async e => {
     e.preventDefault()
     try {
@@ -65,13 +65,11 @@ export default function PPM(props) {
     try {
       const updatedAvailability = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/updateUserInactive", 
         updateUserInit )
-        setUserAvailable(!userAvailable)
+        setUserAvailable(updatedAvailability.available)
     } catch (err) {
       console.log(err)
     }
 
-    // navigator.sendBeacon(process.env.NEXT_PUBLIC_APIGATEWAY_URL + "/userstatus?accessToken=" + accessToken)
-    // updatedAvailability.statusCode === 200 ? setUserAvailable()
   }
 
   return (

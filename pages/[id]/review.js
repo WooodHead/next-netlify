@@ -131,7 +131,6 @@ const ReviewParent = props => {
         setPaymentState={setPayment}
         paymentState={paymentState}
         elements={elementState}
-        
       />
      
       {(paymentState === 'Csucceeded') && 

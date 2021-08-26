@@ -7,7 +7,7 @@ import DOMPurify from 'dompurify';
 import EditComponent from '../../components/edit/editComponent'
 import BlogEdit from '../../components/edit/blogEdit'
 // import { turnBracketsToAlt } from "../../components/custom/keyToImage"
-import Footer from '../../components/navbar/footer'
+// import Footer from '../../components/navbar/footer'
 import { pullBracketData } from '../../components/custom/keyToImage'
 // import Head from 'next/head'
 
@@ -52,55 +52,41 @@ export default function EditParent(props) {
 
   const getUserData = async () => {
     try {
-      const userSession = await Auth.currentAuthenticatedUser()
-      const getUserInit = {
-        headers: {
-          Authorization: userSession.username
-        }
-      }
-      const getUserRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", getUserInit)
+      const userSession = await Auth.currentSession()
+      const idToken = userSession.getIdToken().getJwtToken()
+      const getSelfInit = { headers: { Authorization: idToken } }
+      const getSelfRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSelfUser", getSelfInit)
       const topicsArray = []
-      for (const topicKey in getUserRes.Item.topics.M) {
-        const title = getUserRes.Item.topics.M[topicKey].M.title.S
-        const titleWithSpaces = title.replaceAll('-', ' ')
-        // const stringWithAltTags = turnBracketsToAlt(getUserRes.Item.topics.M[topicKey].M.string.S)
-        const stringWithBracketData = pullBracketData(getUserRes.Item.topics.M[topicKey].M.string.S)
-        const lastSave = getUserRes.Item.topics.M[topicKey].M.lastSave ? getUserRes.Item.topics.M[topicKey].M.lastSave.S : null
+      getSelfRes.topics.forEach(topicObj => {
+        const stringWithBracketData = pullBracketData(topicObj.string)
         topicsArray.push({
-          topicId: topicKey,
-          title: titleWithSpaces,
+          topicId: topicObj.topicId,
+          title: topicObj.title,
           string: stringWithBracketData,
-          draft: getUserRes.Item.topics.M[topicKey].M.draft.BOOL,
-          lastSave: lastSave
+          draft: topicObj.draft,
+          lastSave: topicObj.lastSave
         })
-      }
+      })
       const TAVS = []
-      const deviceInputRes = getUserRes.Item.deviceInput.M
-      deviceInputRes.text.BOOL && TAVS.push("📝")
-      deviceInputRes.audio.BOOL && TAVS.push("📞")
-      deviceInputRes.video.BOOL && TAVS.push("📹")
-      deviceInputRes.screen.BOOL && TAVS.push("💻")
+      const deviceInputRes = getSelfRes.deviceInput
+      deviceInputRes.text && TAVS.push("📝")
+      deviceInputRes.audio && TAVS.push("📞")
+      deviceInputRes.video && TAVS.push("📹")
+      deviceInputRes.screen && TAVS.push("💻")
       const user = {
-        Username: getUserRes.Item.Username.S,
-        active: getUserRes.Item.active.BOOL,
-        busy: getUserRes.Item.busy.BOOL,
+        Username: getSelfRes.username,
+        active: getSelfRes.active,
+        busy: getSelfRes.busy,
         TAVS: TAVS,
-        ppm: getUserRes.Item.ppm.N,
-        ratingAv: getUserRes.Item.ratingAv?.S || null,
-        publicString: getUserRes.Item.publicString?.S || null,
-        receiver: getUserRes.Item.receiver.BOOL,
+        ppm: getSelfRes.ppm,
+        publicString: getSelfRes.publicString,
+        receiver: getSelfRes.receiver,
         topics: topicsArray,
-        image: getUserRes.Item.urlString?.S
+        image: getSelfRes.firstImage
       }
       setUserState(user)
-      setTavsState({
-        ...tavsState, 
-        text: deviceInputRes.text.BOOL,
-        audio: deviceInputRes.audio.BOOL,
-        video: deviceInputRes.video.BOOL,
-        screen: deviceInputRes.screen.BOOL
-      })
-      const sanitizedString = DOMPurify.sanitize(getUserRes.Item.publicString?.S)
+      setTavsState({ ...tavsState, ...deviceInputRes })
+      const sanitizedString = DOMPurify.sanitize(getSelfRes.publicString)
 
       const pubString = {
         ...publicStringState, 
