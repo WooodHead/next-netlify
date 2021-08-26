@@ -22,8 +22,15 @@ const ReviewParent = props => {
   const [stripeState, setStripeState] = useState()
   const [elementState, setElementState] = useState()
   const tipAmountRef = useRef(1.00)
+  const [userState, setUserState] = useState({
+    username: null,
+    active: null,
+    busy: null,
+    ppm: null,
+    receiver: null
+  })
 
-  const receiver = props.user.Username
+  // const receiver = props.user.Username
 
 
   const setPayment = (paymentProp) => {
@@ -49,27 +56,47 @@ const ReviewParent = props => {
     }
   }
 
+  const getUserFromURL = async () => {
+    try {
+      const idMaybe = window.location.pathname.match(/\/(.+?)\//) || router.asPath.match(/\/(.+)/)
+      const getUserInit = { body: { username: idMaybe[1] } }
+      const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
+      setUserState({
+        username: getUser.username,
+        active: getUser.active,
+        busy: getUser.busy,
+        ppm: getUser.ppm,
+
+      })
+      return getUser.username
+    } catch (err) {
+      console.log(err)
+      setUserState({ ...state, username: '' })
+    }
+  }
+  
+
   useEffect(() => {
     (async () => {
+      const username = await getUserFromURL()
       let stripeAccount
       try {
         /* get user receiver */
         const amountInputDOM = document.getElementById("amountInput")
         // const getUserParams = { headers: { Authorization: receiver } }
-        const getReceiverParams = { body: { receiver: receiver } } 
-        // const getUser = await API.get(config.apiGateway.NAME, '/users', getUserParams)
-        const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getReceiver', getReceiverParams)
-        if (getUser.body?.onBoarding !== 'finished') {
+        const getReceiverParams = { body: { receiver: username } } 
+        const getReceiver = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getReceiver', getReceiverParams)
+        if (getReceiver.body?.onBoarding !== 'finished') {
           setPaymentState('noReceiver'); amountInputDOM.disabled = true 
         }
-          stripeAccount = getUser.body.account
+          stripeAccount = getReceiver.body.account
         // }
       } catch (err) {
         console.log('couldnt get user')
       }
       try {
         /* load stripe */
-        const stripe = await loadStripe(process.env.STRIPE_KEY, { stripeAccount: stripeAccount })
+        const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY, { stripeAccount: stripeAccount })
   
         setStripeState(stripe)
         try {
@@ -77,7 +104,7 @@ const ReviewParent = props => {
             country: 'US',
             currency: 'usd',
             total: {
-              label: `tipping user ${receiver}`,
+              label: `tipping user ${username}`,
               amount: tipAmountRef.current.value * 100
             },
           })
@@ -109,7 +136,7 @@ const ReviewParent = props => {
     <meta name="robots" content="noindex, nofollow" />
     </Head>
     <div className="container m-5">
-      <Rating receiver={receiver}/>
+      <Rating receiver={userState.username}/>
       <div>
       <div className="mt-8 text-xl ">Leave a tip</div>
       <div className="mt-3">Amount</div>
@@ -147,7 +174,7 @@ const ReviewParent = props => {
       }
       {(paymentState === 'card') && 
         <CardTip
-          receiver={receiver} 
+          receiver={userState.username} 
           stripeState={stripeState}
           amount={tipAmountRef.current.value} 
           callerNumberState={callerNumberState}
@@ -176,33 +203,33 @@ const ReviewParent = props => {
 
 export default ReviewParent;
 
-export async function getStaticPaths() {
-  const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
-  const paths = getAllUsersRes.body.Items.map(user => {
-    return { params: { id: user.Username.S } }
-  })
-  return {
-    paths,
-    fallback: false
-  }
-}
+// export async function getStaticPaths() {
+//   const allUsersInit = { headers: { Authorization: "all" } }
+//   const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
+//   const paths = getAllUsersRes.body.Items.map(user => {
+//     return { params: { id: user.Username.S } }
+//   })
+//   return {
+//     paths,
+//     fallback: false
+//   }
+// }
 
-export async function getStaticProps({ params }) {
-  let user
-  const allUsersInit = { headers: { Authorization: "all" } }
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
-  getAllUsersRes.body.Items.forEach((userRes) => {
-    if (userRes.Username.S === params.id) {
-      user = {
-        Username: userRes.Username.S,
-        active: userRes.active.BOOL,
-        busy: userRes.busy.BOOL,
-        ppm: userRes.ppm.N,
-        ratingAv: userRes.ratingAv?.S || null,
-        publicString: userRes.publicString?.S || null
-      }
-    }
-  })
-  return { props: { user: user } }
-}
+// export async function getStaticProps({ params }) {
+//   let user
+//   const allUsersInit = { headers: { Authorization: "all" } }
+//   const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/users", allUsersInit)
+//   getAllUsersRes.body.Items.forEach((userRes) => {
+//     if (userRes.Username.S === params.id) {
+//       user = {
+//         Username: userRes.Username.S,
+//         active: userRes.active.BOOL,
+//         busy: userRes.busy.BOOL,
+//         ppm: userRes.ppm.N,
+//         ratingAv: userRes.ratingAv?.S || null,
+//         publicString: userRes.publicString?.S || null
+//       }
+//     }
+//   })
+//   return { props: { user: user } }
+// }
