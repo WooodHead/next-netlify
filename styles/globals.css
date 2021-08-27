@@ -26,7 +26,7 @@ p img{
   @apply block m-auto;
 }
 blockquote{
-  @apply opacity-0 not-italic
+  @apply bg-opacity-0;
 }
 /* p img {
   @apply w-screen lg:w-full xl:w-full 2xl:w-full
