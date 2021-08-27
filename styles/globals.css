@@ -25,7 +25,7 @@ code {
 p img{ 
   @apply block m-auto;
 }
-blockquote{
+blockquote span{
   @apply bg-opacity-0;
 }
 /* p img {
