@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import NavbarComp from '../components/navbar/navbar'
+// import NavbarComp from '../components/navbar/navbar'
 import SplashComp from '../components/index/splash'
-import FooterComp from '../components/navbar/footer'
+// import FooterComp from '../components/navbar/footer'
 export default function Home() {
 
   return (
@@ -20,7 +20,7 @@ export default function Home() {
           {/* <NavbarComp /> */}
           <SplashComp />
         </div>
-        <FooterComp />
+        {/* <FooterComp /> */}
       </div>
     </div>
   )

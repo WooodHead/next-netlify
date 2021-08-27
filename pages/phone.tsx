@@ -4,8 +4,8 @@ import Auth from '@aws-amplify/auth'
 import '../configureAmplify'
 import dynamic from "next/dynamic"
 import urlBase64ToUint8Array from '../components/custom/url64to8array'
-import Footer from '../components/navbar/footer'
-import Navbar from '../components/navbar/navbar'
+// import Footer from '../components/navbar/footer'
+// import Navbar from '../components/navbar/navbar'
 import Head from 'next/head'
 const MessageInitOT = dynamic(() => import('../components/receiver/messageOtReceiver'), { ssr: false })
 
@@ -192,7 +192,7 @@ const Phone = () => {
                     </div>}
           </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
 
       </div>
     </>

@@ -46,7 +46,7 @@ const Users = ({ allUsers }) => {
             )
           })}
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   )

@@ -5,8 +5,8 @@ import Auth from '@aws-amplify/auth'
 import { useRouter } from 'next/router'
 import CustomSpinner from "../components/custom/spinner"
 import '../configureAmplify'
-import Navbar from '../components/navbar/navbar'
-import Footer from '../components/navbar/footer'
+// import Navbar from '../components/navbar/navbar'
+// import Footer from '../components/navbar/footer'
 const AccountSettings = props => {
 
   const oldPassRef = useRef(null)
@@ -139,7 +139,7 @@ const AccountSettings = props => {
       </div>
       </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
       
     </div>
   )

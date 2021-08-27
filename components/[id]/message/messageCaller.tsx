@@ -19,6 +19,7 @@ const MessageComponent = (props) => {
 
   const initialState = "User hasn't connected yet, try sending a message \n"
   const reducer = (curState, action) => {
+
     return curState + action.data + "\n"
   }
   const [textState, dispatchTextState] = useReducer(reducer, initialState)
