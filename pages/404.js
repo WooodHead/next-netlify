@@ -24,7 +24,6 @@ export default function FourOhFour() {
       try {
         const idMaybe = router.asPath.match(/\/(.+?)\//) || router.asPath.match(/\/(.+)/)
         const badTopic = router.asPath.match(/\/.+\/(.+)/) || [null, null]
-
         const getUserInit = { body: { username: idMaybe[1] } }
         const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
         const topicTitlesList = []

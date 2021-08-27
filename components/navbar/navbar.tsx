@@ -28,15 +28,15 @@ const NavbarComp = props => {
         </Link>
       </div>
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
-        <Link href="/account/edit">
-          <a>{usernameState ? "Your page" : "Create a page"}</a>
+        <Link href={usernameState ? "/account/edit" : "/about"}>
+          <a>{usernameState ? "Your page" : "What is talktree?"}</a>
         </Link>
       </div>
-      <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
+      {usernameState && <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
         <Link href="/phone">
           <a>Phone</a>
         </Link>
-      </div>
+      </div>}
       {usernameState
         ? <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
             <Link href="/account">

@@ -23,9 +23,12 @@ const Message = () => {
 
   const router = useRouter()
   
-  const getUserFromURL = async () => {
+
+  useEffect(() => {
+    const getUserFromURL = async () => {
       try {
-        const idMaybe = window.location.pathname.match(/\/(.+?)\//) || router.asPath.match(/\/(.+)/)
+        console.log(router)
+        const idMaybe = window.location.pathname.match(/\/(.+?)\//) || window.location.pathname.match(/\/(.+)/)
         const getUserInit = { body: { username: idMaybe[1] } }
         const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
         setState({
@@ -40,7 +43,6 @@ const Message = () => {
     }
   }
 
-  useEffect(() => {
     getUserFromURL()
     const date = new Date()
     const timeStart = date.getTime()
