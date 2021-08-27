@@ -10,17 +10,17 @@ import Head from 'next/head'
 const MessageInitOT = dynamic(() => import('../components/receiver/messageOtReceiver'), { ssr: false })
 
 const Phone = () => {
+  const nullOTobj = {
+    Receiver: null,
+    apikey: null,
+    caller: null,
+    deviceInput: null,
+    sessionId: null,
+    token: null
+  }
   const [state, setState] = useState({
     pageState: 'waiting',
-    // prevMessages: [],
-    otToken: {
-      Receiver: null,
-      apikey: null,
-      caller: null,
-      deviceInput: null,
-      sessionId: null,
-      token: null
-    }
+    otToken: nullOTobj
   })
   const prevMessageRef = useRef('')
 
@@ -76,18 +76,8 @@ const Phone = () => {
         await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", myInit)
       }
 
-      const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
-      setState({
-        ...state,
-        otToken: {
-          Receiver: otSession.body.Item.Receiver.S,
-          apikey: otSession.body.Item.apikey.S,
-          caller: otSession.body.Item.caller.S,
-          deviceInput: otSession.body.Item.deviceInput.S,
-          sessionId: otSession.body.Item.sessionId.S !== 'null' ? otSession.body.Item.sessionId.S : null,
-          token: otSession.body.Item.token.S
-        }
-      })
+      const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSession", authHeader)
+      setState({...state, otToken: {...otSession } })
       // audio.load()
     } catch (err) {
       err === 'No current user' ? setState({ ...state, pageState: 'no auth' }) : console.log("phoneErr", err)
@@ -100,18 +90,8 @@ const Phone = () => {
         try {
           const userSession = await Auth.currentSession()
           const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
-          const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
-          setState({
-            ...state,
-            otToken: {
-              Receiver: otSession.body.Item.Receiver.S,
-              apikey: otSession.body.Item.apikey.S,
-              caller: otSession.body.Item.caller.S,
-              deviceInput: otSession.body.Item.deviceInput.S,
-              sessionId: otSession.body.Item.sessionId.S,
-              token: otSession.body.Item.token.S
-            }
-          })
+          const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSession", authHeader)
+          setState({...state, otToken: {...otSession } })
         } catch (err) {
           console.log(err)
         }
@@ -121,14 +101,7 @@ const Phone = () => {
         setState({
           ...state,
           pageState: 'disconnected',
-          otToken: {
-            Receiver: null,
-            apikey: null,
-            caller: null,
-            deviceInput: null,
-            sessionId: null,
-            token: null
-          }
+          otToken: nullOTobj
         })
       } else {
         /* not using state refresh because that messes with accept/decline state */
@@ -142,20 +115,13 @@ const Phone = () => {
       setState({ ...state, pageState: 'accepted' })
       const userSession = await Auth.currentSession()
       const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
-      const getOTsession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/tokbox", authHeader)
+      const getOTsession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSession", authHeader)
       /* check to see if the caller didn't disconnect, if they didn't use the already existing OT state */
-      if (getOTsession.body.Item.sessionId.S === 'null') {
+      if (getOTsession.sessionId === 'null') {
         setState({
           ...state,
           pageState: 'disconnected',
-          otToken: {
-            Receiver: null,
-            apikey: null,
-            caller: null,
-            deviceInput: null,
-            sessionId: null,
-            token: null
-          }
+          otToken: nullOTobj
         })
       }
     } catch (err) {
@@ -174,14 +140,7 @@ const Phone = () => {
     setState({
       ...state,
       pageState: 'waiting',
-      otToken: {
-        Receiver: null,
-        apikey: null,
-        caller: null,
-        deviceInput: null,
-        sessionId: null,
-        token: null
-      }
+      otToken: nullOTobj
     })
   }
 
