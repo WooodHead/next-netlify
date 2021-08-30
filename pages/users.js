@@ -21,7 +21,7 @@ const Users = ({ allUsers }) => {
                 onClick={() => clickUser(user.Username)} 
                 key={user.Username}
               >
-                <img src={user.image} className="p-2"></img>
+                {/* <img src={user.image} className="p-2"></img> */}
                 <div className="mx-5 my-2">
                 
                   <Link
@@ -68,7 +68,7 @@ export async function getStaticProps() {
       TAVS: TAVS,
       ppm: userRes.ppm,
       publicString: userRes.publicString,
-      image: userRes.urlString
+      // image: userRes.urlString
     })
   })
   return { props: { allUsers: newAllUsers }, revalidate: 1 }
