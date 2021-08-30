@@ -95,7 +95,7 @@ define("./sw.js",['./workbox-202dc43a'], function (workbox) { 'use strict';
   * See https://goo.gl/2aRDsh
   */
 
-  importScripts("fallback-development.js", "worker-development.js");
+  importScripts("worker-development.js");
   self.skipWaiting();
   workbox.clientsClaim();
   workbox.registerRoute("/", new workbox.NetworkFirst({
@@ -117,19 +117,11 @@ define("./sw.js",['./workbox-202dc43a'], function (workbox) { 'use strict';
 
         return response;
       }
-    }, {
-      handlerDidError: async ({
-        request
-      }) => self.fallback(request)
     }]
   }), 'GET');
   workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
     "cacheName": "dev",
-    plugins: [{
-      handlerDidError: async ({
-        request
-      }) => self.fallback(request)
-    }]
+    plugins: []
   }), 'GET');
 
 });

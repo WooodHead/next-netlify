@@ -13,8 +13,6 @@ const Users = ({ allUsers }) => {
   }
   return (
     <>
-      <div className="flex flex-col min-h-screen">
-        {/* <NavbarComp /> */}
         <div className="flex-1">
           {allUsers.map((user) => {
             return (
@@ -23,7 +21,9 @@ const Users = ({ allUsers }) => {
                 onClick={() => clickUser(user.Username)} 
                 key={user.Username}
               >
+                <img src={user.image} className="p-2"></img>
                 <div className="mx-5 my-2">
+                
                   <Link
                     className=""
                     href={`/${encodeURIComponent(user.Username)}`}
@@ -46,8 +46,6 @@ const Users = ({ allUsers }) => {
             )
           })}
         </div>
-        {/* <Footer /> */}
-      </div>
     </>
   )
 }
@@ -70,6 +68,7 @@ export async function getStaticProps() {
       TAVS: TAVS,
       ppm: userRes.ppm,
       publicString: userRes.publicString,
+      image: userRes.urlString
     })
   })
   return { props: { allUsers: newAllUsers }, revalidate: 1 }

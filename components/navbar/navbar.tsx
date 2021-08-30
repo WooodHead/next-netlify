@@ -29,7 +29,7 @@ const NavbarComp = props => {
       </div>
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
         <Link href={usernameState ? "/account/edit" : "/about"}>
-          <a>{usernameState ? "Your page" : "What is talktree?"}</a>
+          <a>{usernameState ? "Your page" : "What is Talktree?"}</a>
         </Link>
       </div>
       {usernameState && <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">

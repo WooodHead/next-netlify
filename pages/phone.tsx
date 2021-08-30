@@ -167,7 +167,7 @@ const Phone = () => {
       <Head>
         <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
       </Head>
-      <div className="flex flex-col min-h-screen">
+      {/* <div className="flex flex-col min-h-screen"> */}
         <div className="flex-1">
           {/* <Navbar /> */}
           <div className="mx-5 my-5">
@@ -194,7 +194,7 @@ const Phone = () => {
         </div>
         {/* <Footer /> */}
 
-      </div>
+      {/* </div> */}
     </>
   )
 }

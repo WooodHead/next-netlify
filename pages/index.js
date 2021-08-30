@@ -15,13 +15,13 @@ export default function Home() {
         <meta property="og:image" content="https://talktree.me/1200x630.png"></meta>
       </Head>
 
-      <div className="flex flex-col min-h-screen">
+      {/* <div className="flex flex-col min-h-screen"> */}
         <div className="flex-1">
           {/* <NavbarComp /> */}
           <SplashComp />
         </div>
         {/* <FooterComp /> */}
-      </div>
+      {/* </div> */}
     </div>
   )
 }
