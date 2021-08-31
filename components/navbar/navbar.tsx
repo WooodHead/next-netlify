@@ -34,7 +34,7 @@ const NavbarComp = props => {
       </div>
       {usernameState && <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
         <Link href="/phone">
-          <a>Phone</a>
+          <a>Receive calls</a>
         </Link>
       </div>}
       {usernameState

@@ -137,7 +137,7 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>You can message me whenever</div>
+              <div>You can message whenever</div>
             </div>
           </div>
         </div>
