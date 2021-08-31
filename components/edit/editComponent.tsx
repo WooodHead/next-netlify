@@ -120,11 +120,11 @@ export default function Edit(props) {
                 {loadingImageState && <CustomSpinner />}
               </div>
               {userState.TAVS}
-              <EditTAVScomp
+              {/* <EditTAVScomp
                 userState={userState}
                 tavsState={tavsState}
                 setTavsState={setTavsState}
-                getUserData={getUserData} />
+                getUserData={getUserData} /> */}
             </div>
 
             <div className="flex-col hidden md:flex lg:flex xl:flex 2xl:flex">

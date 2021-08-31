@@ -1,107 +1,45 @@
 import React, { useEffect, useRef, useState } from 'react'
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
-import '../configureAmplify'
-import dynamic from "next/dynamic"
-import urlBase64ToUint8Array from '../components/custom/url64to8array'
-// import Footer from '../components/navbar/footer'
-// import Navbar from '../components/navbar/navbar'
-import Head from 'next/head'
-const MessageInitOT = dynamic(() => import('../components/receiver/messageOtReceiver'), { ssr: false })
 
-const Phone = () => {
-  const nullOTobj = {
+import dynamic from "next/dynamic"
+import Head from 'next/head'
+import checkForCalls from './active/checkForCall'
+import registerSubscription  from './active/registerSubscription'
+const MessageInitOT = dynamic(() => import('./active/messageOtReceiver'), { ssr: false })
+
+export default function Active() {
+
+  const [state, setState] = useState({
+    pageState: 'waiting',
     Receiver: null,
     apikey: null,
     caller: null,
     deviceInput: null,
     sessionId: null,
     token: null
-  }
-  const [state, setState] = useState({
-    pageState: 'waiting',
-    otToken: nullOTobj
   })
+  const modifyState = e => setState({...state, ...e})
   const prevMessageRef = useRef('')
-
-  const checkForCalls = async () => {
-    try {
-      const userSession = await Auth.currentSession()
-      const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
-
-      const registration = await navigator.serviceWorker.ready
-      if (Notification.permission !== "granted") {
-        Notification.requestPermission()
-      }
-      try {
-        /* get existing subscription */
-        const subscription = await registration.pushManager.getSubscription()
-        /* duplicated code in catch */
-        const subEndpoint = subscription.endpoint
-        const newSubscription = JSON.parse(JSON.stringify(subscription))
-        let myInit = {
-          headers: { Authorization: userSession.getIdToken().getJwtToken() },
-          body: {
-            endpoint: subEndpoint,
-            auth: newSubscription.keys.auth,
-            p256dh: newSubscription.keys.p256dh,
-            phoneToken: 'null'
-          }
-        }
-        await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", myInit)
-      } catch (err) {
-        /* if subscription doesn't exist */
-        const response = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", {
-          headers: { Authorization: userSession.getIdToken().getJwtToken() }
-        })
-        console.log('getVapid', response)
-        const vapidPublicKey2 = "" + response;
-        const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey2)
-        const subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: convertedVapidKey
-        })
-        /* duplicate code in try */
-        const subEndpoint = subscription.endpoint
-        const newSubscription = JSON.parse(JSON.stringify(subscription))
-        let myInit = {
-          headers: { Authorization: userSession.getIdToken().getJwtToken() },
-          body: {
-            endpoint: subEndpoint,
-            auth: newSubscription.keys.auth,
-            p256dh: newSubscription.keys.p256dh,
-            phoneToken: 'null'
-          }
-        }
-        await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/register", myInit)
-      }
-
-      const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSession", authHeader)
-      setState({...state, otToken: {...otSession } })
-      // audio.load()
-    } catch (err) {
-      err === 'No current user' ? setState({ ...state, pageState: 'no auth' }) : console.log("phoneErr", err)
-    }
-  }
 
   const messageListener = async () => {
     navigator.serviceWorker.addEventListener("message", async (event) => {
       if (event.data.message === "sessionCreated") {
         try {
           const userSession = await Auth.currentSession()
-          const authHeader = { headers: { Authorization: userSession.getIdToken().getJwtToken() } }
+          const idToken = userSession.getIdToken().getJwtToken()
+          const authHeader = { headers: { Authorization: idToken } }
           const otSession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSession", authHeader)
-          setState({...state, otToken: {...otSession } })
+          modifyState( otSession ) 
         } catch (err) {
           console.log(err)
         }
 
       } else if (event.data.message === "callDisconnected") {
         console.log('call disconnected from push')
-        setState({
-          ...state,
+        modifyState({
           pageState: 'disconnected',
-          otToken: nullOTobj
+          sessionId: null
         })
       } else {
         /* not using state refresh because that messes with accept/decline state */
@@ -118,10 +56,9 @@ const Phone = () => {
       const getOTsession = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getSession", authHeader)
       /* check to see if the caller didn't disconnect, if they didn't use the already existing OT state */
       if (getOTsession.sessionId === 'null') {
-        setState({
-          ...state,
+        modifyState({
           pageState: 'disconnected',
-          otToken: nullOTobj
+          sessionId: null
         })
       }
     } catch (err) {
@@ -137,15 +74,28 @@ const Phone = () => {
       "?receiver=" + authenticatedUser.username +
       "&sessionId=" + null
     )
-    setState({
-      ...state,
+    modifyState({
       pageState: 'waiting',
-      otToken: nullOTobj
+      sessionId: null
     })
   }
 
+  const loadAsync = async () => {
+    await registerSubscription()
+    const call = await checkForCalls()
+    if (call.sessionId) {
+      console.log('call found')
+      modifyState({
+        Receiver: call.Receiver,
+        apikey: call.apikey,
+        sessionId: call.sessionId,
+        token: call.token
+      })
+    }
+  }
+
   useEffect(() => {
-    checkForCalls()
+    loadAsync()
     messageListener()
   }, [])
 
@@ -171,12 +121,12 @@ const Phone = () => {
         <div className="flex-1">
           {/* <Navbar /> */}
           <div className="mx-5 my-5">
-            {state.pageState === 'waiting' && state.otToken.sessionId
+            {state.pageState === 'waiting' && state.sessionId
               ? <AcceptDecline />
               : state.pageState === 'accepted'
                 ? <div><MessageInitOT
                   prevMessages={prevMessageRef.current}
-                  tokenData={state.otToken}
+                  tokenData={state}
                 // allowedDevices={state.TAVS}
                 /></div>
                 : state.pageState === 'disconnected'
@@ -198,5 +148,3 @@ const Phone = () => {
     </>
   )
 }
-
-export default Phone

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useReducer } from 'react';
 import { useRouter } from 'next/router';
-import TextOnlyComponent from '../tavs/messenger/textOnly'
-import PhoneButtons from '../[id]/message/phoneButtons'
+import TextOnlyComponent from '../../tavs/messenger/textOnly'
+import PhoneButtons from '../../[id]/message/phoneButtons'
 
 declare var OT
 
@@ -31,7 +31,7 @@ const MessageReceiver = props => {
 
   const disconnectButton = async () => {
     session.disconnect()
-    router.push('/')
+    // router.reload()
   }
 
   const onSignalSend = signalInputRefProp => {

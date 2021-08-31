@@ -6,14 +6,12 @@ import CustomSpinner from "../custom/spinner"
 
 export default function PPM(props) {
   const state = props.state
-  const modifyState = e => props.modifyState()
+  const modifyState = e => props.modifyState(e)
 
   const [ppmLoading, setPPMloading] = useState(false)
   const [ppmDenied, setPPMdenied] = useState(false)
   const [noReciever, setNoReciever] = useState(false)
   const [valueTooSmall, setValueTooSmall] = useState(false)
-
-  const getUserData = () => props.getUserData()
 
   const setPPMfn = (eventNumber) => {
     if (eventNumber.currentTarget.value < 0.17 && eventNumber.currentTarget.value > 0.00) {
@@ -36,7 +34,9 @@ export default function PPM(props) {
         }
         setPPMloading(true)
         const PPMres = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/setPPM", myInit)
-        PPMres.statusCode === 500 ? setPPMdenied(true) : setPPMdenied(false), getUserData()
+        const ppmNum = Number(PPMres.body)
+        modifyState({ ppm: ppmNum })
+        PPMres.statusCode === 500 ? setPPMdenied(true) : setPPMdenied(false)
         setPPMloading(false)
       } else {
         setNoReciever(true)
@@ -54,7 +54,7 @@ export default function PPM(props) {
          type="number"
          step="0.01"
          min="0.00"
-         max="20"
+         max="5"
          onChange={setPPMfn}
          defaultValue={state.ppm}
        />
