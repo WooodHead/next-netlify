@@ -2,9 +2,11 @@ import { useEffect, useState } from "react"
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
 import '../configureAmplify'
-import ReceiverSettings from '../components/receiver/receiverSettings'
 import CustomSpinner from "../components/custom/spinner"
 import Active from "../components/receiver/active"
+import TAVS from '../components/receiver/tavs'
+import PPM from '../components/receiver/ppm'
+import ConnectStripe from '../components/receiver/connectStripe'
 
 export default function Receiver() {
   const [state, setState] = useState({
@@ -61,20 +63,43 @@ export default function Receiver() {
 
   return (
     <>
-      <div className="flex justify-center my-20">
-        {state.active === null ? <CustomSpinner />
-          : state.active
-            ? <div>
-              <div>To disable calls and/or change call settings</div>
-            <button onClick={() => goOnlineOffline(false)}>Go offline</button>
-            <Active />
-          </div>: <div>
-              <button onClick={() => goOnlineOffline(true)}>Go online</button>
-              <div>
-                <ReceiverSettings state={state} modifyState={modifyState} />
+      <div >
+        {
+          state.active === null
+            ? <div className="flex justify-center mt-32"><CustomSpinner /></div>
+            : state.active
+              ? <div>
+                <div className="m-20">
+                <div>To disable calls and/or change call settings</div>
+                <button onClick={() => goOnlineOffline(false)}>Go offline</button>
+                  </div>
+                
+                <Active />
               </div>
-            </div>
-            
+              : <div>
+                <div className="flex justify-center mt-20">
+                  <button onClick={() => goOnlineOffline(true)}>Go online</button>
+                </div>
+
+                <div className="flex flex-row flex-wrap">
+                  <div className="flex justify-center flex-grow">
+                    <div className="flex-col">
+                      <div className="mx-5 mt-20 mb-10">Set the permitted devices:</div>
+                      <TAVS state={state} modifyState={modifyState} />
+                    </div>
+                  </div>
+                  <div className="flex justify-center flex-grow" >
+                    <div className="flex flex-col">
+                      <div className="mx-5 mt-20 mb-10">Your price per minute:</div>
+                      <div className=""><PPM state={state} modifyState={modifyState} /></div>
+                      <div className="my-10">
+                      <ConnectStripe state={state} modifyState={modifyState} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
         }
       </div>
     </>

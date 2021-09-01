@@ -50,7 +50,7 @@ export default function PPM(props) {
     <div className="mt-1 ml-0 row" >
       <form onSubmit={submitPPM}>$ 
        <input
-         style={{width: "60px"}}
+         style={{width: "60px", borderStyle: "solid"}}
          type="number"
          step="0.01"
          min="0.00"
@@ -65,7 +65,7 @@ export default function PPM(props) {
       {ppmDenied ? 
         <div style={{color: "red"}}>{" "} go inactive to change price</div> :
         (noReciever) ?  <div style={{color: "red"}}>{" "} you must set up how you get paid  </div>
-        : valueTooSmall ? <div>{" "} minimum price is $0.17</div> : <div>{" "} your price per minute</div>}
+        : valueTooSmall ? <div>{" "} minimum price is $0.17</div> : <div></div>}
       </div>
     </div>
   )

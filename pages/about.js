@@ -72,6 +72,26 @@ export default function About() {
       </div>)
   }
 
+  const deviceInputs = ['text', 'audio', 'video', 'screen']
+  const CustomCheckbox = (CCprops) => (
+    <div
+      className="ml-3"
+      style={{ cursor: "pointer" }}
+      // onClick={() => handleCheckboxClick(CCprops)}
+    >
+      <input
+        className="mr-1"
+        // onChange={null}
+        style={{ cursor: "pointer" }}
+        type="checkbox"
+        // defaultChecked={state[CCprops.TAVS]}
+        name={CCprops.TAVS}
+        value="hello"
+      />
+      {CCprops.TAVS}
+    </div>
+  )
+
   return (
     <>
       <Head>
@@ -130,7 +150,7 @@ export default function About() {
 
       </div>
 
-      <div className="flex mt-20"> {/* 3rd row */}
+      <div className="flex mt-12"> {/* 3rd row */}
 
         <div className="flex-1"></div>
 
@@ -196,7 +216,7 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>And make blog posts to catch Google search traffic</div>
+              <div>And make blog posts to catch search traffic</div>
             </div>
           </div>
         </div>
@@ -219,7 +239,9 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>-------available-------TAVS-------------</div>
+              <div>    <div className="mb-5 "><button>Receive calls</button></div><div>
+      {deviceInputs.map((device) => <CustomCheckbox key={device} TAVS={device} />)}
+    </div></div>
             </div>
           </div>
         </div>
@@ -229,7 +251,7 @@ export default function About() {
         </div>
 
         <div>
-          <div >Set your availability, what devices you'll allow, and receive calls</div>
+          <div >Enable receiving calls and choose what device inputs to allow</div>
         </div>
 
         <div className="flex-1"></div>
@@ -246,22 +268,45 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>And make blog posts to catch Google search traffic</div>
+              <div>Charge a price per minute to talk with you</div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-1">
-
+          
         </div>
 
         <div>
-
+        <input type="number" defaultValue={40}/>
         </div>
 
         <div className="flex-1"></div>
 
       </div>
+      <div className="flex mt-20"> {/* SELL row 2 */}
+
+<div className="flex-1"></div>
+
+<div className="flex-col">
+  <div className="flex flex-row my-6">
+    <div className="flex flex-col justify-center px-4">
+      <div>------------------------tip--------------------</div>
+    </div>
+  </div>
+</div>
+
+<div className="flex flex-1">
+  
+</div>
+
+<div>
+Or just make money receiving tips
+</div>
+
+<div className="flex-1"></div>
+
+</div>
 
     </>
   )
