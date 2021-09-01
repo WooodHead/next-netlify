@@ -65,9 +65,9 @@ export default function Receiver() {
         {state.active === null ? <CustomSpinner />
           : state.active
             ? <div>
+              <div>To disable calls and/or change call settings</div>
             <button onClick={() => goOnlineOffline(false)}>Go offline</button>
             <Active />
-            <div className="mt-5">Changing your devices allowed or price per minute is not configureable while active</div>
           </div>: <div>
               <button onClick={() => goOnlineOffline(true)}>Go online</button>
               <div>

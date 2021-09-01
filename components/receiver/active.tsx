@@ -118,7 +118,7 @@ export default function Active() {
         <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
       </Head>
       {/* <div className="flex flex-col min-h-screen"> */}
-        <div className="flex-1">
+        <div className="flex-1 mt-20">
           {/* <Navbar /> */}
           <div className="mx-5 my-5">
             {state.pageState === 'waiting' && state.sessionId
@@ -135,8 +135,8 @@ export default function Active() {
                     ? <div>You need to be logged in</div>
                     : <div>
                       <div className="text-lg font-medium">Waiting on calls</div>
-                      <div className="mt-5 max-w-prose">You'll be e-mailed a link to open this phone when someone is trying to call you;
-                        you can receive notifications, and do not need this tab open; accept or decline the call after alerted</div>
+                      <div className="mt-5 max-w-prose">You will receive a push notification and prompt when called.
+                      You do not need this tab open.</div>
                       <div>
                       </div>
                     </div>}
