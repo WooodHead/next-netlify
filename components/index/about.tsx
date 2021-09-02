@@ -1,9 +1,8 @@
-import AboutComp from "../components/about/aboutComp"
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import AboutMessage from '../components/about/aboutMessage'
+import AboutMessage from '../about/aboutMessage'
 import Head from 'next/head'
-import AboutBlog from '../components/about/aboutBlog'
+import AboutBlog from '../about/aboutBlog'
 
 export default function About() {
   const router = useRouter()
@@ -22,25 +21,61 @@ export default function About() {
     )
   }
 
+  const topics = [{
+    topicId: 1,
+    title: "Retrieve images from S3",
+    titleURL: "Retrieve-images-from-S3-using-AWSs-serverless-image-handler",
+    firstImage: "https://d31kifv93uudih.cloudfront.net/eyJidWNrZXQiOiJ0dDMtczMtcHJvZC1pbWFnZXNidWNrZXQtODBncWJxbmMwNDJhIiwia2V5IjoicHVibGljL2FiMWU2NjUxLTA0ZWMtNGYwNi04YmJlLTg4MTAyMGY5YzhiMi5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEwMCwiaGVpZ2h0IjoxMDB9fX0=",
+    description: "Using AWS's serverless image handler Cloudformation to easily resize images",
+  },
+  {
+    topicId: 2,
+    title: "Prevent Next.js 500 errors",
+    titleURL: "Prevent-Nextjs-500-error-with-proper-404-page-configuration",
+    firstImage: "https://d31kifv93uudih.cloudfront.net/eyJidWNrZXQiOiJ0dDMtczMtcHJvZC1pbWFnZXNidWNrZXQtODBncWJxbmMwNDJhIiwia2V5IjoicHVibGljL2M5M2Q4NDA2LWRkMTUtNDllZi1iODY0LWIzZmM1ZjkwYzUwNy5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEwMCwiaGVpZ2h0IjoxMDB9fX0=",
+    description: "Are you using incremental static regeneration? Is your Google search console indexing 500 error pages?"
+  }]
+
   const DemoUser = () => {
     return (
-      <div className="">
-        <div onClick={goToUserPage} className="cursor-pointer">
-          <img width="100" height="100" src="https://d31kifv93uudih.cloudfront.net/eyJidWNrZXQiOiJ0dDMtczMtcHJvZC1pbWFnZXNidWNrZXQtODBncWJxbmMwNDJhIiwia2V5IjoicHVibGljLzk2YWI4ZDhkLWE3ZmQtNDI4NC05MzRhLWI4MzEzYmE3M2I4Ni5qcGciLCJlZGl0cyI6eyJzbWFydENyb3AiOnsicGFkZGluZyI6MjQwfSwicmVzaXplIjp7IndpZHRoIjoxMDAsImhlaWdodCI6MTAwLCJmaXQiOiJjb3ZlciJ9fX0=" ></img>
-          <h3 className='mx-5 mt-5 '>geoff-young</h3>
-          <div className='mx-5 mb-3'>📝📞📹💻</div>
-          <span className="p-2 text-xs">🟢   available</span>
+      <div className="flex flex-row">
+        <div className="">
+          <div onClick={goToUserPage} className="cursor-pointer">
+            <img width="100" height="100" src="https://d31kifv93uudih.cloudfront.net/eyJidWNrZXQiOiJ0dDMtczMtcHJvZC1pbWFnZXNidWNrZXQtODBncWJxbmMwNDJhIiwia2V5IjoicHVibGljLzk2YWI4ZDhkLWE3ZmQtNDI4NC05MzRhLWI4MzEzYmE3M2I4Ni5qcGciLCJlZGl0cyI6eyJzbWFydENyb3AiOnsicGFkZGluZyI6MjQwfSwicmVzaXplIjp7IndpZHRoIjoxMDAsImhlaWdodCI6MTAwLCJmaXQiOiJjb3ZlciJ9fX0=" ></img>
+            <h3 className='mx-5 mt-5 '>geoff-young</h3>
+            <div className='mx-5 mb-3'>📝📞📹💻</div>
+            <span className="p-2 text-xs">🟢   available</span>
+          </div>
+
+          <div className="justify-center ">
+            <button className="w-24" type="button" onClick={openMessagePhone}>message</button>
+          </div>
+          <div className="m-2 text-sm">$0 / minute</div>
         </div>
 
-        <div className="justify-center ">
-          <button className="w-24" type="button" onClick={openMessagePhone}>message</button>
-        </div>
-
-        <div className="m-2 text-sm">$0 / minute</div>
-
-        <div className="max-w-xs my-3 text-xs" >
-          {/* {user.publicString} */}
-          <div className="bg-gray-100" ></div>
+        <div className="max-w-xl">
+          {(topics).map((topicObj) => (
+            <div
+              key={topicObj.topicId}
+              className="max-w-3xl px-2 py-1 my-3 rounded shadow-md cursor-pointer mx-7 hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
+              onClick={() => router.push("/geoff-young/" + topicObj.titleURL)}
+            >
+              <div className="flex flex-row">
+                <div className="flex-shrink-0 overflow-auto">
+                  {topicObj.firstImage
+                    && <img width={100} height={100} src={topicObj.firstImage}></img>
+                  }
+                </div>
+                <div className="flex-col ml-3 ">
+                  <Link href={topicObj.titleURL
+                    ? "/geoff-young/" + topicObj.titleURL
+                    : "/geoff-young/" + topicObj.title}>
+                    <a className="font-semibold sm:text-2xl">{topicObj.title}</a>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     )
@@ -77,7 +112,7 @@ export default function About() {
     <div
       className="ml-3"
       style={{ cursor: "pointer" }}
-      // onClick={() => handleCheckboxClick(CCprops)}
+    // onClick={() => handleCheckboxClick(CCprops)}
     >
       <input
         className="mr-1"
@@ -94,10 +129,8 @@ export default function About() {
 
   return (
     <>
-      <Head>
-        <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
-      </Head>
-      <div className="flex justify-center mt-20 text-3xl" >Find, share, or sell knowledge</div>
+    <div className="flex justify-center mt-20 text-5xl" >What is Talktree?</div>
+      <div className="flex justify-center mt-5 text-3xl" >A place to find, share, or sell knowledge</div>
       <div className="flex mt-20">{/* 1st row */}
 
         <div className="flex-1"></div>
@@ -105,8 +138,8 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div className="flex">Find a user that is available.</div>
-              <div>There's only me right now.</div>
+              <div className="flex">Find an available user</div>
+              {/* <div>There's only me right now.</div> */}
             </div>
           </div>
         </div>
@@ -140,9 +173,9 @@ export default function About() {
         </div>
 
         <div>
-          <div>If you click my face or the button above, you'll find my blog posts and message button.</div>
+          <div>You can read their blog posts or message them for help</div>
 
-          <div>Notice the emojis - I'm available to text, voice and video chat, as well as screenshare.</div>
+          {/* <div>Notice the emojis - I'm available to text, voice and video chat, as well as screenshare.</div> */}
           <div></div>
         </div>
 
@@ -191,7 +224,7 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <textarea value="I think I'm an excellent bike mechanic; also decent at JavaScript and React"></textarea>
+              <textarea style={{height: 80}} value="I think I'm an excellent bike mechanic; also decent at JavaScript and React"></textarea>
 
             </div>
           </div>
@@ -240,8 +273,8 @@ export default function About() {
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
               <div>    <div className="mb-5 "><button>Receive calls</button></div><div>
-      {deviceInputs.map((device) => <CustomCheckbox key={device} TAVS={device} />)}
-    </div></div>
+                {deviceInputs.map((device) => <CustomCheckbox key={device} TAVS={device} />)}
+              </div></div>
             </div>
           </div>
         </div>
@@ -251,7 +284,7 @@ export default function About() {
         </div>
 
         <div>
-          <div >Enable receiving calls and choose what device inputs to allow</div>
+          <div >Receive calls through the browser and set device restrictions</div>
         </div>
 
         <div className="flex-1"></div>
@@ -274,11 +307,11 @@ export default function About() {
         </div>
 
         <div className="flex flex-1">
-          
+
         </div>
 
         <div>
-        <input type="number" defaultValue={40}/>
+          <input type="number" defaultValue={40} />
         </div>
 
         <div className="flex-1"></div>
@@ -286,27 +319,27 @@ export default function About() {
       </div>
       <div className="flex mt-20"> {/* SELL row 2 */}
 
-<div className="flex-1"></div>
+        <div className="flex-1"></div>
 
-<div className="flex-col">
-  <div className="flex flex-row my-6">
-    <div className="flex flex-col justify-center px-4">
-      <div>------------------------tip--------------------</div>
-    </div>
-  </div>
-</div>
+        <div className="flex-col">
+          <div className="flex flex-row my-6">
+            <div className="flex flex-col justify-center px-4">
+              <div>------------------------tip--------------------</div>
+            </div>
+          </div>
+        </div>
 
-<div className="flex flex-1">
-  
-</div>
+        <div className="flex flex-1">
 
-<div>
-Or just make money receiving tips
-</div>
+        </div>
 
-<div className="flex-1"></div>
+        <div>
+          Or just make money receiving tips
+        </div>
 
-</div>
+        <div className="flex-1"></div>
+
+      </div>
 
     </>
   )

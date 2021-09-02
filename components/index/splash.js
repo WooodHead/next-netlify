@@ -36,7 +36,7 @@ export default function SplashPage() {
         </div>
         <div className="flex-col flex-initial max-w-3xl mx-10 my-20">
           <div className="text-5xl ">Get unstuck now. 1:1 help, on demand.</div>
-          <button className="m-5" onClick={userButtonClick}>See a member</button>
+          {/* <button className="m-5" onClick={userButtonClick}>See a member</button> */}
           <div className="mt-20">Or become a member. Charge as little as $0.17/minute</div>
           <button className="m-5" onClick={signUpClick}>Sign Up</button>
         </div>

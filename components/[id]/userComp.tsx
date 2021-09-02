@@ -18,8 +18,9 @@ export default function UserCompId(props) {
   //   receiver: boolean,
   //   image: string
   // }}
-
+  
   const user = props.user
+  console.log(user)
   const router = useRouter()
   const topicClick = (urlProp) => {
     router.push("/" + user.Username + "/" + urlProp)

@@ -3,11 +3,12 @@ import Link from 'next/link'
 import '../../configureAmplify'
 import Auth from '@aws-amplify/auth'
 import Modal from './modal'
+import { useRouter } from 'next/router'
 
 const NavbarComp = props => {
+  const router = useRouter()
   const [usernameState, setUsernameState] = useState(null)
   const [modalState, setModalState] = useState(null)
-
   useEffect(() => {
     (async () => {
       try {
@@ -28,7 +29,7 @@ const NavbarComp = props => {
         </Link>
       </div>
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
-        <Link href={usernameState ? "/account/edit" : "/about"}>
+        <Link href={usernameState ? "/account/edit" : router.asPath === "/" ? "/#about" : "/" }>
           <a>{usernameState ? "Your page" : "What is Talktree?"}</a>
         </Link>
       </div>
