@@ -30,6 +30,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta property="og:image" content="https://talktree.me/1200x630.png"></meta>
+        <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css" />
         {/* <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script> */}
       </Head>
         <div className="flex-1">

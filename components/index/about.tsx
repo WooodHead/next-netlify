@@ -115,13 +115,14 @@ export default function About() {
     // onClick={() => handleCheckboxClick(CCprops)}
     >
       <input
+      
         className="mr-1"
         // onChange={null}
         style={{ cursor: "pointer" }}
         type="checkbox"
-        // defaultChecked={state[CCprops.TAVS]}
+        defaultChecked={CCprops.TAVS === 'video' ? false : true}
         name={CCprops.TAVS}
-        value="hello"
+        // value="hello"
       />
       {CCprops.TAVS}
     </div>
@@ -129,8 +130,8 @@ export default function About() {
 
   return (
     <>
-    <div className="flex justify-center mt-20 text-5xl" >What is Talktree?</div>
-      <div className="flex justify-center mt-5 text-3xl" >A place to find, share, or sell knowledge</div>
+    {/* <div className="flex justify-center mt-20 text-5xl" >What is Talktree?</div> */}
+      <div className="flex justify-center mt-20 text-4xl" >Find, share, or sell knowledge</div>
       <div className="flex mt-20">{/* 1st row */}
 
         <div className="flex-1"></div>
@@ -206,17 +207,19 @@ export default function About() {
         <div className="flex-1"></div>
 
       </div>
-
-      <div className="flex justify-center my-20 ">
+      <div className="bg-gray-100">
+      <div className="flex justify-center my-20">
         <div className="flex flex-col">
-          <div className="text-3xl">Share what you know by creating your own page</div>
-          <div className="flex flex-row justify-center mt-3">
-            <button>Signup</button>
-          </div>
+          <div className="mt-10 text-3xl">Share what you know by creating your own page</div>
+          {/* <div className="flex flex-row justify-center mt-3">
+            <button className="bg-white">Signup</button>
+          </div> */}
 
         </div>
       </div>
+      
 
+      
       <div className="flex mt-20"> {/* SHARE row 1 */}
 
         <div className="flex-1"></div>
@@ -272,7 +275,7 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>    <div className="mb-5 "><button>Receive calls</button></div><div>
+              <div>    <div className="mb-5 bg-white"><button>Receive calls</button></div><div>
                 {deviceInputs.map((device) => <CustomCheckbox key={device} TAVS={device} />)}
               </div></div>
             </div>
@@ -291,9 +294,11 @@ export default function About() {
 
       </div>
 
+
       <div>
         <div className="flex justify-center text-3xl">Sell your expertise by connecting with Stripe</div>
       </div>
+      
       <div className="flex mt-20"> {/* SELL row 1 */}
 
         <div className="flex-1"></div>
@@ -338,7 +343,7 @@ export default function About() {
         </div>
 
         <div className="flex-1"></div>
-
+        </div>
       </div>
 
     </>

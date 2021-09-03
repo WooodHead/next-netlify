@@ -158,9 +158,6 @@ export default function Edit(props) {
         </div>
         </div>
 
-
-
-
         <div className="my-5 bg-gray-100">
           <TopicComponent
             {...props}

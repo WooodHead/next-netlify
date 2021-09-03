@@ -26,9 +26,9 @@ export default function AboutBlog() {
   }
 
   return (
-    <div className="">
+    <div className="overflow-auto max-h-36">
           <ReactQuill
-            className="flex-1 max-w-5xl m-5 h-5/6 max-w-80"
+            className="flex-1 max-w-5xl m-5 bg-white h-5/6 max-w-80"
             forwardedRef={quillRef}
             modules={modules}
             value={quillDefaultText}
