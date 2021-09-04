@@ -306,7 +306,7 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>Charge a price per minute to talk with you</div>
+              <div>Charge money to talk with you</div>
             </div>
           </div>
         </div>
@@ -315,21 +315,35 @@ export default function About() {
 
         </div>
 
-        <div>
-          <input type="number" defaultValue={40} />
+        <div className="mt-5 text-xl" >
+          $ <input 
+          style={{width: "65px", borderStyle: "solid"}}
+         type="number"
+         step="0.01"
+         min="0.17"
+         max="5"
+          defaultValue={0.49} />
+           <span className="text-sm" > per minute</span>
         </div>
 
         <div className="flex-1"></div>
 
       </div>
-      <div className="flex mt-20"> {/* SELL row 2 */}
+      <div className="flex my-20 "> {/* SELL row 2 */}
 
         <div className="flex-1"></div>
 
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>------------------------tip--------------------</div>
+              <div>$ <input 
+                  className="text-xl"
+                  style={{width: "65px", borderStyle: "solid"}}
+                 type="number"
+                 step="0.01"
+                 min="0.17"
+                 max="5"
+                  defaultValue={5.25} /><button className="ml-3 bg-white">Leave tip</button></div>
             </div>
           </div>
         </div>
