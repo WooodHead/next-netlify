@@ -7,6 +7,8 @@ import CustomSpinner from '../../components/custom/spinner'
 // import MessageOtComponent from "../../components/[id]/message/messageComponent"
 import { useRouter } from 'next/router'
 import Error from 'next/error'
+import PaidCall from "../../components/[id]/message/paidCall"
+
 const DynamicMessageComponent = dynamic(
   () => import('../../components/[id]/message/messageOtCaller'),
   { ssr: false }
@@ -61,7 +63,9 @@ const Message = () => {
         <meta name="robots" content="noindex, nofollow" />
         <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
       </Head>
-      {state.username === '' 
+      {state.ppm 
+      ? <PaidCall username={state.username} ppm={state.ppm} />
+      : state.username === '' 
       ? <Error statusCode={404}></Error> 
       : state.username 
       ? <DynamicMessageComponent targetUser={state.username}/> 
