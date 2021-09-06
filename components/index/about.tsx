@@ -131,7 +131,7 @@ export default function About() {
   return (
     <>
     {/* <div className="flex justify-center mt-20 text-5xl" >What is Talktree?</div> */}
-      <div className="flex justify-center mt-20 text-4xl" >Find, share, or sell knowledge</div>
+      <div className="flex justify-center mx-5 mt-20 text-4xl" >Find, share, or sell knowledge</div>
       <div className="flex mt-20">{/* 1st row */}
 
         <div className="flex-1"></div>
@@ -174,7 +174,7 @@ export default function About() {
         </div>
 
         <div>
-          <div>You can read their blog posts or message them for help</div>
+          <div>Read their blog posts or message them for help</div>
 
           {/* <div>Notice the emojis - I'm available to text, voice and video chat, as well as screenshare.</div> */}
           <div></div>
@@ -191,7 +191,7 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>You can message whenever</div>
+              <div>Message whenever</div>
             </div>
           </div>
         </div>
@@ -207,10 +207,10 @@ export default function About() {
         <div className="flex-1"></div>
 
       </div>
-      <div className="bg-gray-100">
-      <div className="flex justify-center my-20">
+      <div className="bg-gray-100 ">
+      <div className="flex justify-center my-20 ">
         <div className="flex flex-col">
-          <div className="mt-10 text-3xl">Share what you know by creating your own page</div>
+          <div className="mx-5 mt-10 text-3xl">Share what you know by creating your own page</div>
           {/* <div className="flex flex-row justify-center mt-3">
             <button className="bg-white">Signup</button>
           </div> */}
@@ -238,7 +238,7 @@ export default function About() {
         </div>
 
         <div>
-          <div>You can write out your expertise</div>
+          <div>Write out your expertise</div>
         </div>
 
         <div className="flex-1"></div>
@@ -252,7 +252,7 @@ export default function About() {
         <div className="flex-col">
           <div className="flex flex-row my-6">
             <div className="flex flex-col justify-center px-4">
-              <div>And make blog posts to catch search traffic</div>
+              <div>Make blog posts to catch search traffic</div>
             </div>
           </div>
         </div>
@@ -296,7 +296,7 @@ export default function About() {
 
 
       <div>
-        <div className="flex justify-center text-3xl">Sell your expertise by connecting with Stripe</div>
+        <div className="flex justify-center mx-5 text-3xl">Sell your expertise by connecting with Stripe</div>
       </div>
       
       <div className="flex mt-20"> {/* SELL row 1 */}
