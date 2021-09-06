@@ -29,7 +29,6 @@ const Message = () => {
   useEffect(() => {
     const getUserFromURL = async () => {
       try {
-        console.log(router)
         const idMaybe = window.location.pathname.match(/\/(.+?)\//) || window.location.pathname.match(/\/(.+)/)
         const getUserInit = { body: { username: idMaybe[1] } }
         const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
