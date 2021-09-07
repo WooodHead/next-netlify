@@ -3,27 +3,28 @@ import dynamic from 'next/dynamic'
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
-
+import MessageCaller from '../messageCaller'
 import CustomSpinner from '../../../custom/spinner'
-
+declare var OT
 const CardComponent = (props) => {
-  const state = props.state
-  const modifyState = e => props.modifyState(e)
+  const targetUser = props.targetUser
+  const ppm = props.ppm
+  const [state, setState] = useState({
+    card: false,
+    intentKey: null,
+    submitting: false,
+    otSession: null,
+    busy: null,
+    apiHit: false
+  })
+  const modifyState = e => setState({ ...state, ...e })
+
   // @ts-ignore
   const stripe = useStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
   const elements = useElements()
 
-  const setupCard = async () => {
-
-    if (!stripe || !elements) { return }
-    //post an unauthed route, see what auth gets sent?
-    const intentKey = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/logIdentity', {})
-    console.log(intentKey)
-    modifyState({intentKey: intentKey })
-  }
-  
-
-  const submitCard = async () => {
+  const submitCard = async e => {
+    e.preventDefault()
     await stripe.confirmCardSetup("" + state.intentKey, {
       payment_method: {
         card: elements.getElement(CardElement),
@@ -33,19 +34,59 @@ const CardComponent = (props) => {
         },
       }
     })
+    console.log('after stripe, target user', targetUser)
+    const sessionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/verifyCardAdded', {
+      body: { name: targetUser }
+    })
+    console.log('sessionres', sessionRes)
+    // this acts like createSession
+    if (sessionRes.busy) {
+      modifyState({ busy: true, apiHit: true })
+    } else {
+      const otSession = OT.initSession(sessionRes.apikey, sessionRes.SessionId)
+      modifyState({ otSession: otSession, apiHit: true })
+      otSession.connect(sessionRes.token, function (err) {
+        if (err) { console.log(err) }
+      })
+    }
   }
 
   useEffect(() => {
+    const setupCard = async () => {
+      // if (!stripe || !elements) { console.log('returned'); return }
+      //post an unauthed route, see what auth gets sent?
+      const intentKey = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/logIdentity', {})
+      modifyState({ intentKey: intentKey })
+      console.log('intentkey', intentKey)
+    }
     setupCard()
-  }, [])
+  }, [stripe])
 
   return (
-    <form onSubmit={submitCard} >
-      Card details
-      <CardElement options={{ style: { base: { fontSize: "16px" } } }} />
-      <button>submit</button>{state.submitting && <CustomSpinner />}
-    </form>
+    state.otSession
+      ? <div>
+        <MessageCaller otSession={state.otSession} targetUser={targetUser} />
+      </div>
+      : stripe
+        ? <div className="mx-5 mt-20">
+          <div className="flex justify-center mb-20">
+            <div className="flex flex-col">
+              <div className="flex">User costs ${props.ppm} per minute </div>
+              <div className="flex">You will be charged after the conversation ends. Minimum charge is $.50</div>
+              {/* <a href="/pricing">Go here for more info on pricing</a> */}
+            </div>
+
+          </div>
+
+          <form onSubmit={submitCard} >
+            Card details
+            <CardElement options={{ style: { base: { fontSize: "16px" } } }} />
+            <button className="mt-5">submit and call</button>
+            {state.submitting && <CustomSpinner />}
+          </form></div>
+        : null
   )
 }
+
 
 export default CardComponent

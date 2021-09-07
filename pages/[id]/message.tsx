@@ -4,15 +4,19 @@ import '../../configureAmplify'
 import Head from 'next/head';
 import dynamic from 'next/dynamic'
 import CustomSpinner from '../../components/custom/spinner'
-// import MessageOtComponent from "../../components/[id]/message/messageComponent"
 import { useRouter } from 'next/router'
 import Error from 'next/error'
 import PaidCall from "../../components/[id]/message/paidCall"
+import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import CardComponent from "../../components/[id]/message/paidCall/cardComponent"
 
 const DynamicMessageComponent = dynamic(
   () => import('../../components/[id]/message/messageOtCaller'),
   { ssr: false }
 )
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
 
 const Message = () => {
 
@@ -25,7 +29,6 @@ const Message = () => {
 
   const router = useRouter()
   
-
   useEffect(() => {
     const getUserFromURL = async () => {
       try {
@@ -63,7 +66,7 @@ const Message = () => {
         <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
       </Head>
       {state.ppm 
-      ? <PaidCall username={state.username} ppm={state.ppm} />
+      ? <Elements stripe={stripePromise}><CardComponent ppm={state.ppm} targetUser={state.username} /></Elements>
       : state.username === '' 
       ? <Error statusCode={404}></Error> 
       : state.username 

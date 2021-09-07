@@ -37,8 +37,8 @@ self.addEventListener('push', function (event) {
 
 self.addEventListener('notificationclick', function (event) {
   
-  const devAddress = 'https://dev.talktree.me/phone'
-  const prodAddress = 'https://talktree.me/phone'
+  const devAddress = 'https://dev.talktree.me/receiver'
+  const prodAddress = 'https://talktree.me/receiver'
   let matchingClient = null
   clients.openWindow(prodAddress)
   event.notification.close()
