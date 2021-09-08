@@ -6,25 +6,22 @@ import dynamic from 'next/dynamic'
 import CustomSpinner from '../../components/custom/spinner'
 import { useRouter } from 'next/router'
 import Error from 'next/error'
+
 import PaidCall from "../../components/[id]/message/paidCall"
-import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
-import CardComponent from "../../components/[id]/message/paidCall/cardComponent"
-
-const DynamicMessageComponent = dynamic(
-  () => import('../../components/[id]/message/messageOtCaller'),
-  { ssr: false }
-)
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
+import UnpaidCall from "../../components/[id]/message/unpaidCall"
+// const DynamicMessageComponent = dynamic(
+//   () => import('../../components/[id]/message/unpaidCall'),
+//   { ssr: false }
+// )
 
 const Message = () => {
 
   const [state, setState] = useState({
     username: null,
-    active: false,
+    active: true,
     busy: false,
-    ppm: 0,
+    ppm: 0 as Number,
+    loading: true
   })
 
   const router = useRouter()
@@ -39,13 +36,15 @@ const Message = () => {
           username: getUser.username,
           active: getUser.active,
           busy: getUser.busy,
-          ppm: getUser.ppm
+          ppm: Number(getUser.ppm),
+          loading: false
         })
       } catch (err) {
         console.log(err)
         setState({ ...state, username: '' })
     }
   }
+  console.log(state.ppm)
 
     getUserFromURL()
     const date = new Date()
@@ -65,13 +64,18 @@ const Message = () => {
         <meta name="robots" content="noindex, nofollow" />
         <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script>
       </Head>
-      {state.ppm 
-      ? <Elements stripe={stripePromise}><CardComponent ppm={state.ppm} targetUser={state.username} /></Elements>
-      : state.username === '' 
+      {state.loading ? <div className="flex justify-center m-40"><CustomSpinner /></div> 
+      : state.busy 
+      ? <div className="flex mt-40 justify-cetner">User busy</div> 
+      : !state.active 
+      ? <div className="flex mt-40 justify-cetner">User offline</div> 
+      : state.ppm 
+      ? <PaidCall targetUser={state.username}/>
+      : state.username === ''
       ? <Error statusCode={404}></Error> 
       : state.username 
-      ? <DynamicMessageComponent targetUser={state.username}/> 
-      : <div className="flex justify-center m-40"><CustomSpinner /></div>}
+      ? <UnpaidCall targetUser={state.username}/> 
+      : null}
     </div>
   )
 }

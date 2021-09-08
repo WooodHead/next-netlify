@@ -54,7 +54,6 @@ export async function getStaticProps() {
   const newAllUsers = []
   // const allUsersInit = { body: { Authorization: "all" } }
   const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
-  console.log(getAllUsersRes)
   getAllUsersRes.forEach((userRes) => {
     const TAVS = []
     userRes.deviceInput.text && TAVS.push("📝")

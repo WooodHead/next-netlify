@@ -44,7 +44,6 @@ export async function getStaticPaths() {
     if (userObj.topics.length) {
       userObj.topics.forEach(topicObj => {
         const topicURL = topicObj.titleURL ? topicObj.titleURL : topicObj.title.replace(/ /g, '-')
-        console.log(topicURL)
         const params = { id: userObj.username, topic: topicURL }
         topicURL !== '' && paths.push({ params: params })
       })
