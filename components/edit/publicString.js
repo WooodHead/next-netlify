@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
 import '../../configureAmplify'
-import dynamic from 'next/dynamic'
 
 export default function PublicString(props) {
 

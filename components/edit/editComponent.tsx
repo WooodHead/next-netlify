@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
-import NavbarComp from '../navbar/navbar'
 import PublicString from './publicString'
 import TopicComponent from './topicComponent'
-import EditTAVScomp from './tavs'
 import { turnBracketsToAlt } from '../custom/keyToImage'
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
