@@ -8,32 +8,3 @@ describe('Make an unpaid call', () => {
 
   })
 })
-
-describe("Example test", () => {
-  before(() => {
-    cy.signIn();
-  });
-
-  after(() => {
-    cy.clearLocalStorageSnapshot();
-    cy.clearLocalStorage();
-  });
-
-  beforeEach(() => {
-    cy.restoreLocalStorage();
-  });
-
-  afterEach(() => {
-    cy.saveLocalStorage();
-  });
-
-  it("should be logged in", () => {
-    cy.visit("http://localhost:3000/");
-    // cy.get(".App-logo").should("be.visible");
-
-    it("Should talk about react", () => {
-      cy.visit("/receiver")
-      cy.contains("React")
-    })
-  });
-});

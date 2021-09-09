@@ -19,8 +19,6 @@
 import Auth from '@aws-amplify/auth'
 import "cypress-localstorage-commands"
 
-const username = "gefyoung+2@gmail.com"
-const password = "monkey11"
 const userPoolId = "us-east-1_E1rXwEwFG"
 const clientId = "4u5e0sjuv242pf7os0pho22rae"
 
@@ -30,7 +28,7 @@ const awsconfig = {
 }
 Auth.configure(awsconfig)
 
-Cypress.Commands.add("signIn", () => {
+Cypress.Commands.add("signIn", (username, password) => {
   cy.then(() => Auth.signIn(username, password)).then((cognitoUser) => {
     const idToken = cognitoUser.signInUserSession.idToken.jwtToken
     const accessToken = cognitoUser.signInUserSession.accessToken.jwtToken
