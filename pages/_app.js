@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 // import * as ga from '../lib/index'
 // import Router from 'next/router'
 import NavbarComp from "../components/navbar/navbar"
+import 'prismjs/themes/prism-tomorrow.css'
 
 function Application({ Component, pageProps }) {
   const router = useRouter()

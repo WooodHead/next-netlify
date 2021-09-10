@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import '../../configureAmplify'
 import "../../node_modules/react-quill/dist/quill.snow.css"
 import PublicString from './publicString'
@@ -23,6 +23,8 @@ export default function Edit(props) {
 
   const [errorState, setErrorState] = useState('')
   const [loadingImageState, setLoadingImageState] = useState(false)
+
+  const notionRef = useRef(null)
 
   const selectTopic = (topicProp) => {
     if (topicProp.topicId === selectedTopicState.topicId) {
@@ -103,6 +105,21 @@ export default function Edit(props) {
     }
   }
 
+  const saveNotionId = async () => {
+    const userSession = await Auth.currentSession()
+    console.log(notionRef.current.value)
+    const saveNotionInit = {
+      headers: { Authorization: userSession.getIdToken().getJwtToken() },
+      body: {
+        deleteTopic: false,
+        topicId: notionRef.current.value,
+        string: null,
+        topicObj: { notion: true }
+      }
+    }
+    await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/topics', saveNotionInit)
+  }
+
   return (
     <>
       {/* <NavbarComp /> */}
@@ -167,8 +184,7 @@ export default function Edit(props) {
             setErrorState={setErrorState} />
           {errorState}
         </div>
-
-
+            <input ref={notionRef} placeholder="notionPageId"></input><button onClick={saveNotionId}>upload notion page</button>
       </div>
     </>
   )

@@ -1,4 +1,4 @@
-define("./workbox-202dc43a.js",['exports'], function (exports) { 'use strict';
+define("./workbox-1ffba242.js",['exports'], function (exports) { 'use strict';
 
     try {
       self['workbox:core:6.2.4'] && _();
@@ -1825,6 +1825,13 @@ define("./workbox-202dc43a.js",['exports'], function (exports) { 'use strict';
               url: getFriendlyURL(effectiveRequest.url),
               method: effectiveRequest.method
             });
+          } // See https://github.com/GoogleChrome/workbox/issues/2818
+
+
+          const vary = response.headers.get('Vary');
+
+          if (vary) {
+            logger.debug(`The response for ${getFriendlyURL(effectiveRequest.url)} ` + `has a 'Vary: ${vary}' header. ` + `Consider setting the {ignoreVary: true} option on your strategy ` + `to ensure cache matching and deletion works as expected.`);
           }
         }
 
@@ -2722,4 +2729,4 @@ define("./workbox-202dc43a.js",['exports'], function (exports) { 'use strict';
     exports.registerRoute = registerRoute;
 
 });
-//# sourceMappingURL=workbox-202dc43a.js.map
+//# sourceMappingURL=workbox-1ffba242.js.map

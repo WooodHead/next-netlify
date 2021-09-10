@@ -2,22 +2,21 @@ import React from 'react'
 import API from '@aws-amplify/api'
 import Head from 'next/head'
 import '../../configureAmplify'
-import NavbarComp from '../../components/navbar/navbar'
 import TopicComp from '../../components/[id]/[topic]/topicComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
-import ErrorPage from 'next/error'
-import { useRouter } from 'next/router'
+import { NotionAPI } from 'notion-client'
+import NotionComp from '../../components/[id]/[topic]/notionComp'
+
+// core styles shared by all of react-notion-x (required)
+import 'prismjs/themes/prism-tomorrow.css'
 
 export default function Topic({ user, topic }) {
-  // const router = useRouter()
-  // if (router.isFallback) {
-  //   return <div>Loading...</div>
-  // }
 
   const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
-
+  const recordMap = topic.recordMap || null
+  console.dir(user.recordMap2)
   return (
     <>
       <Head>
@@ -29,12 +28,14 @@ export default function Topic({ user, topic }) {
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
         <meta property="og:image" content={firstImgAddress}></meta>z
       </Head>
-      {/* <NavbarComp /> */}
-      <TopicComp user={user} topic={topic} />
-
+      {recordMap 
+      ? <NotionComp recordMap={recordMap} /> 
+      : <TopicComp user={user} topic={topic} />
+      }
     </>
   )
 }
+
 
 export async function getStaticPaths() {
   const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
@@ -56,6 +57,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
+  const notion = new NotionAPI()
+  const recordMap2 = await notion.getPage('beb65813cfb84831855397d1b7bdede6')
   try {
     const getUserInit = { body: { username: params.id } }
     const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
@@ -74,9 +77,18 @@ export async function getStaticProps({ params }) {
       topics: getUser.topics,
       receiver: getUser.receiver,
       image: getUser.userImg,
+      recordMap2: recordMap2
     }
     let topic
     getUser.topics.forEach(async (topicObj) => {
+
+      let recordMap = null
+
+      if (topicObj.notion) {
+        recordMap = await notion.getPage(topicObj.topicId)
+        console.log(recordMap)
+        // topicURL????
+      }
       if (topicObj.title === params?.topic || topicObj.titleURL === params?.topic) {
         topic = {
           topicId: topicObj.topicId,
@@ -86,6 +98,7 @@ export async function getStaticProps({ params }) {
           description: topicObj.description,
           firstImage: topicObj.firstImage,
           lastSave: topicObj.lastSave,
+          recordMap: recordMap
         }
       }
     })
