@@ -16,7 +16,7 @@ export default function Topic({ user, topic }) {
   const description = topic.description
   const title = topic.title
   const recordMap = topic.recordMap || null
-  console.dir(user.recordMap2)
+  console.log(user.recordMap2)
   return (
     <>
       <Head>
@@ -28,8 +28,8 @@ export default function Topic({ user, topic }) {
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
         <meta property="og:image" content={firstImgAddress}></meta>z
       </Head>
-      {recordMap 
-      ? <NotionComp recordMap={recordMap} /> 
+      {!recordMap 
+      ? <NotionComp recordMap={user.recordMap2} /> 
       : <TopicComp user={user} topic={topic} />
       }
     </>
@@ -38,12 +38,21 @@ export default function Topic({ user, topic }) {
 
 
 export async function getStaticPaths() {
+  const notion = new NotionAPI()
   const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
   const paths = []
 
   getAllUsersRes.forEach(userObj => {
     if (userObj.topics.length) {
-      userObj.topics.forEach(topicObj => {
+      userObj.topics.forEach(async topicObj => {
+
+        if (topicObj.notion) {
+          let recordMap = await notion.getPage(topicObj.topicId)
+          console.log(recordMap)
+          //recordmap.item.spaceparent.
+          // topicURL????
+        }
+        
         const topicURL = topicObj.titleURL ? topicObj.titleURL : topicObj.title.replace(/ /g, '-')
         const params = { id: userObj.username, topic: topicURL }
         topicURL !== '' && paths.push({ params: params })
@@ -81,7 +90,7 @@ export async function getStaticProps({ params }) {
     }
     let topic
     getUser.topics.forEach(async (topicObj) => {
-
+      // if topic is a notiontopic, getpage, sort title and shit out
       let recordMap = null
 
       if (topicObj.notion) {

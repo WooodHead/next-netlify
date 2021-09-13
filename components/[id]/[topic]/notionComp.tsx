@@ -1,7 +1,7 @@
 import SideUserIsland from './sideUserIsland'
 import TopUserIsland from './topUserIsland'
 import CommentComp from './commentComp'
-import { NotionRenderer, Code } from 'react-notion-x'
+import { NotionRenderer, Code, Collection, CollectionRow, Modal, Pdf, Equation } from 'react-notion-x'
 
 export default function NotionComp(props) {
   const recordMap = props.recordMap
@@ -20,7 +20,12 @@ export default function NotionComp(props) {
         <NotionRenderer 
       className="prose" 
       recordMap={recordMap} 
-      components={{code: Code}}
+      components={{code: Code,
+        collection: Collection,
+        collectionRow: CollectionRow,
+        modal: Modal,
+        pdf: Pdf,
+        equation: Equation}}
       // fullPage={true} 
       darkMode={false} 
       />

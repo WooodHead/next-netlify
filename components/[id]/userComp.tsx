@@ -20,7 +20,7 @@ export default function UserCompId(props) {
   // }}
   
   const user = props.user
-  console.log(user)
+
   const router = useRouter()
   const topicClick = (urlProp) => {
     router.push("/" + user.Username + "/" + urlProp)
