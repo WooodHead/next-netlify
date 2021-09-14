@@ -11,12 +11,10 @@ import NotionComp from '../../components/[id]/[topic]/notionComp'
 import 'prismjs/themes/prism-tomorrow.css'
 
 export default function Topic({ user, topic }) {
-
   const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
   const recordMap = topic.recordMap || null
-  console.log(user.recordMap2)
   return (
     <>
       <Head>
@@ -28,46 +26,63 @@ export default function Topic({ user, topic }) {
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
         <meta property="og:image" content={firstImgAddress}></meta>z
       </Head>
-      {!recordMap 
-      ? <NotionComp recordMap={user.recordMap2} /> 
-      : <TopicComp user={user} topic={topic} />
+      {recordMap 
+      ? <NotionComp recordMap={recordMap} /> 
+      : 
+      <TopicComp user={user} topic={topic} />
       }
+      
     </>
   )
 }
 
-
-export async function getStaticPaths() {
+const getNotionTitle = async (topicProp) => {
   const notion = new NotionAPI()
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
-  const paths = []
-
-  getAllUsersRes.forEach(userObj => {
-    if (userObj.topics.length) {
-      userObj.topics.forEach(async topicObj => {
-
-        if (topicObj.notion) {
-          let recordMap = await notion.getPage(topicObj.topicId)
-          console.log(recordMap)
-          //recordmap.item.spaceparent.
-          // topicURL????
-        }
-        
-        const topicURL = topicObj.titleURL ? topicObj.titleURL : topicObj.title.replace(/ /g, '-')
-        const params = { id: userObj.username, topic: topicURL }
-        topicURL !== '' && paths.push({ params: params })
-      })
+  const recordMap = await notion.getPage(topicProp)
+  let titleUrl = null
+  let title = null
+  Object.values(recordMap.block).forEach((block) => {
+    //@ts-ignore
+    if (block.value.parent_table === "space") {
+      //@ts-ignore
+      title = block.value.properties.title[0][0]
+      const sanitized = title.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+      titleUrl = sanitized.replaceAll(' ', '-') || title
     }
   })
+  return { titleUrl: titleUrl, title: title, map: recordMap }
+}
+
+export async function getStaticPaths() {
+  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
+
+  const paths = await Promise.all(getAllUsersRes.map(async userObj => {
+    let params = null
+    if (userObj.topics.length) {
+      await Promise.all(userObj.topics.map(async topicObj => {
+        let title = topicObj.titleURL
+        if (topicObj.notion) {
+          let notionRes = await getNotionTitle(topicObj.title)
+          title = notionRes.titleUrl
+        }
+        const topicURL = title ? title : topicObj.title.replace(/ /g, '-')
+        params = { id: userObj.username, topic: topicURL }
+
+      }))
+    } 
+    return { params: params }
+  }))
+
+  let pathArray = []
+    //@ts-ignore
+  if (paths.params) { pathArray.push({params: params}) }
   return {
-    paths: paths,
+    paths: pathArray,
     fallback: "blocking"
   }
 }
 
 export async function getStaticProps({ params }) {
-  const notion = new NotionAPI()
-  const recordMap2 = await notion.getPage('beb65813cfb84831855397d1b7bdede6')
   try {
     const getUserInit = { body: { username: params.id } }
     const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
@@ -76,30 +91,18 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.audio && TAVS.push("📞")
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
-    const user = {
-      Username: getUser.username,
-      active: getUser.active,
-      busy: getUser.busy,
-      ppm: getUser.ppm,
-      TAVS: TAVS,
-      publicString: getUser.publicString,
-      topics: getUser.topics,
-      receiver: getUser.receiver,
-      image: getUser.userImg,
-      recordMap2: recordMap2
-    }
-    let topic
-    getUser.topics.forEach(async (topicObj) => {
-      // if topic is a notiontopic, getpage, sort title and shit out
-      let recordMap = null
-
+    const newTopics = await Promise.all(getUser.topics.map(async (topicObj) => {
+      let newTopicsArray = null
       if (topicObj.notion) {
-        recordMap = await notion.getPage(topicObj.topicId)
-        console.log(recordMap)
-        // topicURL????
-      }
-      if (topicObj.title === params?.topic || topicObj.titleURL === params?.topic) {
-        topic = {
+        let notionRes = await getNotionTitle(topicObj.topicId)
+        newTopicsArray = {
+          topicId: topicObj.topicId,
+          title: notionRes.title,
+          titleURL: notionRes.titleUrl,
+          recordMap: notionRes.map
+        }
+      } else {
+        newTopicsArray = {
           topicId: topicObj.topicId,
           title: topicObj.title,
           titleURL: topicObj.titleURL,
@@ -107,12 +110,59 @@ export async function getStaticProps({ params }) {
           description: topicObj.description,
           firstImage: topicObj.firstImage,
           lastSave: topicObj.lastSave,
-          recordMap: recordMap
-        }
+          recordMap: null
       }
-    })
-    return topic.topicId ? {
-      props: { user: user, topic: topic },
+      }
+      return newTopicsArray
+    }))
+    
+    const user = {
+      Username: getUser.username,
+      active: getUser.active,
+      busy: getUser.busy,
+      ppm: getUser.ppm,
+      TAVS: TAVS,
+      publicString: getUser.publicString,
+      topics: newTopics,
+      receiver: getUser.receiver,
+      image: getUser.userImg,
+    }
+    let selectedTopic = null
+    await Promise.all(newTopics.map(async (topicObj: any) => {
+      
+      if (topicObj.recordMap) {
+        if (topicObj.titleURL === params.topic) {
+          selectedTopic = {
+            topicId: topicObj.title,
+            title: topicObj.title,
+            titleURL: topicObj.titleURL,
+            recordMap: topicObj.recordMap
+          }
+          console.log("selected notiontopic", selectedTopic)
+        }
+      } else if (topicObj.title === params.topic || topicObj.titleURL === params.topic) {
+          selectedTopic = {
+            topicId: topicObj.topicId,
+            title: topicObj.title,
+            titleURL: topicObj.titleURL,
+            string: turnBracketsToAlt(topicObj.string),
+            description: topicObj.description,
+            firstImage: topicObj.firstImage,
+            lastSave: topicObj.lastSave,
+            recordMap: null
+        }
+        
+      }
+    }))
+    console.log('selected', selectedTopic)
+    let cleanedTopic = null
+    // topic.forEach(topic => {
+    //   if (topic) { cleanedTopic = topic }
+    // })
+    // console.log('cleanedTOpic', cleanedTopic)
+    //@ts-ignore
+    return selectedTopic.topicId ? {
+      props: { user: user, topic: selectedTopic },
       revalidate: 1
     }
       : { notFound: true }

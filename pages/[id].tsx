@@ -18,7 +18,7 @@ export interface User {
   [key: string]: any
 }
 export default function User({ user }: User) {
-  // console.log(user)
+  console.log(user)
   const description = user.publicString
   return (
     <>
@@ -46,7 +46,7 @@ export async function getStaticPaths() {
   }
 }
 export async function getStaticProps({ params }) {
-  console.log('getstatic props params', params) // why am i getting <no source> for username in get user
+  console.log('[id] getstatic props params', params) // why am i getting <no source> for username in get user
   try {
     const notion = new NotionAPI()
     const getUserInit = { body: { username: params.id } }
@@ -57,44 +57,34 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
 
-
-
-    const topics = await Promise.all(getUser.topics.map( async (topicObj) => {
-      
+    const topics = await Promise.all(getUser.topics.map(async (topicObj) => {
       let header = null
       let titleURL = null
       if (topicObj.notion) {
         let recordMap = await notion.getPage(topicObj.topicId)
-          Object.values(recordMap.block).forEach((block) => {
+        Object.values(recordMap.block).forEach((block) => {
+          //@ts-ignore
+          if (block.value.parent_table === "space") {
             //@ts-ignore
-            if (block.value.parent_table === "space") {
-              //@ts-ignore
-              header = block.value.properties.title[0][0]
-              console.log('notion hit, header:', header)
-              const sanitized = header.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-              titleURL = sanitized.replaceAll(' ', '-')
-            }
-          })
-          let topic = {
-            topicId: topicObj.topicId,
-            title: header,
-            titleURL: titleURL,
-            description: topicObj.description,
-            firstImage: topicObj.firstImage,
-            lastSave: topicObj.lastSave,
-            // recordMap: recordMap
+            header = block.value.properties.title[0][0]
+            const sanitized = header.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+            titleURL = sanitized.replaceAll(' ', '-')
           }
-          console.log("TOPI!!!!!!!!!!!!!!!,", topic)
-          // console.log(topic)
-          return topic
-        
+        })
+        let topic = {
+          topicId: topicObj.topicId,
+          title: header,
+          titleURL: titleURL,
+          description: topicObj.description,
+          firstImage: topicObj.firstImage,
+          lastSave: topicObj.lastSave,
+        }
+        return topic
       } else {
         return topicObj
       }
-      
     }))
 
-    console.log('topics', topics)
     const user = {
       Username: getUser.username,
       active: getUser.active,
