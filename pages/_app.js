@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import NavbarComp from "../components/navbar/navbar"
 // import 'prismjs/themes/prism-tomorrow.css'
 // import 'rc-dropdown/assets/index.css'
-import 'react-notion-x/src/styles.css'
 
 function Application({ Component, pageProps }) {
   const router = useRouter()

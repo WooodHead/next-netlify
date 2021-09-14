@@ -6,7 +6,7 @@ import TopicComp from '../../components/[id]/[topic]/topicComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 import { NotionAPI } from 'notion-client'
 import NotionComp from '../../components/[id]/[topic]/notionComp'
-
+// import 'react-notion-x/src/styles.css'
 // core styles shared by all of react-notion-x (required)
 import 'prismjs/themes/prism-tomorrow.css'
 
