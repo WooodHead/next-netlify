@@ -4,6 +4,8 @@ import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'
 import { NotionAPI } from 'notion-client'
+import getNotionTitle from '../components/[id]/getNotionRecord'
+
 export interface User {
   Username: string
   active: boolean
@@ -18,7 +20,7 @@ export interface User {
   [key: string]: any
 }
 export default function User({ user }: User) {
-  console.log(user)
+  console.log('[id] user:', user)
   const description = user.publicString
   return (
     <>
@@ -46,7 +48,6 @@ export async function getStaticPaths() {
   }
 }
 export async function getStaticProps({ params }) {
-  console.log('[id] getstatic props params', params) // why am i getting <no source> for username in get user
   try {
     const notion = new NotionAPI()
     const getUserInit = { body: { username: params.id } }
@@ -56,34 +57,12 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.audio && TAVS.push("📞")
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
-
-    const topics = await Promise.all(getUser.topics.map(async (topicObj) => {
-      let header = null
-      let titleURL = null
-      if (topicObj.notion) {
-        let recordMap = await notion.getPage(topicObj.topicId)
-        Object.values(recordMap.block).forEach((block) => {
-          //@ts-ignore
-          if (block.value.parent_table === "space") {
-            //@ts-ignore
-            header = block.value.properties.title[0][0]
-            const sanitized = header.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-            titleURL = sanitized.replaceAll(' ', '-')
-          }
-        })
-        let topic = {
-          topicId: topicObj.topicId,
-          title: header,
-          titleURL: titleURL,
-          description: topicObj.description,
-          firstImage: topicObj.firstImage,
-          lastSave: topicObj.lastSave,
-        }
-        return topic
-      } else {
-        return topicObj
-      }
+    if (!getUser.notionIds) return { notFound: true }
+    const topics = await Promise.all(getUser.notionIds.map(async (notionId) => {
+      return await getNotionTitle(notionId)
     }))
+  const removedTopicErr = []
+  topics.forEach((topic) => topic && removedTopicErr.push(topic))
 
     const user = {
       Username: getUser.username,
@@ -92,13 +71,13 @@ export async function getStaticProps({ params }) {
       ppm: getUser.ppm,
       TAVS: TAVS,
       publicString: getUser.publicString,
-      topics: topics,
+      topics: removedTopicErr,
       receiver: getUser.receiver,
       image: getUser.userImg,
     }
     return getUser.username ? { props: { user: user }, revalidate: 1 } : { notFound: true }
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     return { notFound: true }
   }
 }

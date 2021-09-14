@@ -110,14 +110,12 @@ export default function Edit(props) {
     console.log(notionRef.current.value)
     const saveNotionInit = {
       headers: { Authorization: userSession.getIdToken().getJwtToken() },
-      body: {
-        deleteTopic: false,
-        topicId: notionRef.current.value,
-        string: null,
-        topicObj: { notion: true }
+      body: { 
+        notionId: notionRef.current.value,
+        deleted: false 
       }
     }
-    await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/topics', saveNotionInit)
+    await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveDeleteNotion', saveNotionInit)
   }
 
   return (
@@ -184,7 +182,9 @@ export default function Edit(props) {
             setErrorState={setErrorState} />
           {errorState}
         </div>
-            <input ref={notionRef} placeholder="notionPageId"></input><button onClick={saveNotionId}>upload notion page</button>
+            <input ref={notionRef} placeholder="notionPageId">
+              </input>
+              <button onClick={saveNotionId}>upload notion page</button>
       </div>
     </>
   )
