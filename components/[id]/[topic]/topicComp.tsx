@@ -1,5 +1,5 @@
-import SideUserIsland from './sideUserIsland'
-import TopUserIsland from './topUserIsland'
+import SideUserIsland from '../sideUserIsland'
+import TopUserIsland from '../topUserIsland'
 import CommentComp from './commentComp'
 
 export default function TopicComp(props) {

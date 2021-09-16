@@ -1,5 +1,5 @@
 import { NotionAPI } from 'notion-client'
-import { getPageTitle } from 'notion-utils'
+import { getPageTitle, getBlockIcon } from 'notion-utils'
 
 export default async function getNotionTitle(topicProp) {
   try {
@@ -7,9 +7,16 @@ export default async function getNotionTitle(topicProp) {
     const recordMap = await notion.getPage(topicProp)
     let titleUrl = null
     const title = getPageTitle(recordMap)
-    console.log(
-      "TITLE", title
-    )
+
+    let pageBlock = null
+    for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
+      if (blockData.value.type === "page") {
+        pageBlock = blockData
+      }
+    }
+    console.log("pageBlock", pageBlock)
+    const icon = getBlockIcon(pageBlock.value, recordMap)
+    console.log('icon', icon)
     const sanitized = title.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
     titleUrl = sanitized.replaceAll(' ', '-') || title
     /* need to implement length restriction */
@@ -25,7 +32,8 @@ export default async function getNotionTitle(topicProp) {
       topicId: topicProp as string,
       titleURL: titleUrl || null, 
       title: title || null, 
-      recordMap: recordMap
+      recordMap: recordMap,
+      icon: icon
     }
   } catch (err) {
     console.log(err)

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-
+import ChangeUserImage from './changeUserImage'
 export default function UserIslandTopic(props) {
 
   const user = props.user
@@ -35,10 +35,12 @@ export default function UserIslandTopic(props) {
       <div >
         <div onClick={goToUserPage} className="cursor-pointer">
           { user.image && <img width="100" height="100" src={user.image} ></img>}
+          <ChangeUserImage user={user} />
           <h3 className='mx-5 mt-5 '>{user.Username}</h3>
           <div className='mx-5 mb-3'>{user.TAVS}</div>
           <span className="p-2 text-xs">🟢   available</span>
         </div>
+
 
         <div className="justify-center ">
           <button className="w-24" type="button" onClick={openMessagePhone}>message</button>

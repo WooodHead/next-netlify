@@ -16,6 +16,7 @@ export default function Topic({ user, topic }) {
   const description = topic.description
   const title = topic.title
   const recordMap = topic.recordMap || null
+  console.log(topic)
   return (
     <>
       <Head>
@@ -28,11 +29,11 @@ export default function Topic({ user, topic }) {
         <meta property="og:image" content={firstImgAddress}></meta>z
       </Head>
       {recordMap
-        ? <NotionComp recordMap={recordMap} />
+        ? <NotionComp recordMap={recordMap} title={title} user={user} />
         :
         <TopicComp user={user} topic={topic} />
       }
-
+      <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F4fb0ec04-3a2d-4ba0-bc5c-c00237458337%2FPXL_20210222_213622015.MP.jpg?table=block&id=9d8442f9-091f-4650-a3e5-5cf5d377b1d3&cache=v2" ></img>
     </>
   )
 }
@@ -69,7 +70,6 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
     if (!getUser.notionIds) return
-    console.log('getUser', getUser)
     const newTopics = await Promise.all(getUser.notionIds.map(async (notionId) => {
       return await getNotionTitle(notionId)
     }))
@@ -96,9 +96,9 @@ export async function getStaticProps({ params }) {
             topicId: topicObj.title,
             title: topicObj.title,
             titleURL: topicObj.titleURL,
-            recordMap: topicObj.recordMap
+            recordMap: topicObj.recordMap,
+            icon: topicObj.icon
           }
-          console.log("selected notiontopic", selectedTopic)
         }
       } else if (topicObj.title === params.topic || topicObj.titleURL === params.topic) {
         selectedTopic = {
@@ -114,7 +114,6 @@ export async function getStaticProps({ params }) {
 
       }
     }))
-    console.log('selected', selectedTopic)
     let cleanedTopic = null
     // topic.forEach(topic => {
     //   if (topic) { cleanedTopic = topic }
