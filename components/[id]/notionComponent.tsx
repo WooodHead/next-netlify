@@ -29,8 +29,18 @@ import dynamic from 'next/dynamic'
 export default function NotionComp(props) {
   const user = props.user
   const recordMap = props.recordMap
-  const title = props.title
-  console.log("recordMap:", recordMap)
+  // const title = props.title
+  // const titleUrl = props.titleUrl
+
+  const getUrl = (pageLinkObj) => {
+    console.log("pageLinkObj", pageLinkObj)
+    const title = pageLinkObj.children?.props?.block?.properties?.title ? pageLinkObj.children.props.block.properties.title[0] : ''
+    const title2 = Array.isArray(title) ? title[0] : title
+    console.log("title:", title2)
+    const sanitized = title2.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+    const withDashes = sanitized.replaceAll(' ', '-') || title
+    return user.Username + "/" + withDashes
+  }
 
   return (
     <div className="flex my-5 bg-gray-100">
@@ -54,7 +64,7 @@ export default function NotionComp(props) {
           ...props
         }) => (
           <Link
-            href={href}
+            href={getUrl(props)}
             as={as}
             passHref={passHref}
             prefetch={prefetch}

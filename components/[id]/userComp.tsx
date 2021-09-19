@@ -45,6 +45,7 @@ export default function UserCompId(props) {
           <TopUserIsland user={user} />
           <AddNotionComponent user={user}/>
           { user.notionDetails && <NotionComponent 
+            titleUrl={user.notionDetails.titleUrl}
             user={user}
             recordMap={user.notionDetails.recordMap}
           /> }

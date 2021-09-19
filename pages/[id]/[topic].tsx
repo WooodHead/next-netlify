@@ -5,7 +5,7 @@ import '../../configureAmplify'
 import TopicComp from '../../components/[id]/[topic]/topicComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 import { NotionAPI } from 'notion-client'
-import NotionComp from '../../components/[id]/[topic]/notionComp'
+import NotionComp from '../../components/[id]/notionComponent'
 // import 'react-notion-x/src/styles.css'
 // core styles shared by all of react-notion-x (required)
 import 'prismjs/themes/prism-tomorrow.css'
@@ -15,6 +15,7 @@ export default function Topic({ user, topic }) {
   const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
+  const titleUrl = topic.titleUrl
   const recordMap = topic.recordMap || null
   console.log("TOPIC", topic)
   return (
@@ -29,7 +30,7 @@ export default function Topic({ user, topic }) {
         <meta property="og:image" content={firstImgAddress}></meta>z
       </Head>
       {recordMap
-        ? <NotionComp recordMap={recordMap} title={title} user={user} />
+        ? <NotionComp recordMap={recordMap} titleUrl={titleUrl} title={title} user={user} />
         :
         <TopicComp user={user} topic={topic} />
       }
@@ -46,7 +47,7 @@ export async function getStaticPaths() {
     const notionRes = await getNotionPages(userObj.notionId)
     //@ts-ignore
     return notionRes.map(notionTopic => {
-      return { params: { id: userObj.username, topic: notionTopic.titleURL } }
+      return { params: { id: userObj.username, topic: notionTopic.titleUrl } }
     })
   }))
   const newArray = []
@@ -79,19 +80,17 @@ export async function getStaticProps({ params }) {
       busy: getUser.busy,
       ppm: getUser.ppm,
       TAVS: TAVS,
-      // publicString: getUser.publicString,
-      // topics: cleanedTopics,
       receiver: getUser.receiver,
       image: getUser.userImg,
     }
     console.log("CLEANEDTOPICS", cleanedTopics)
     let selectedTopic = null
     cleanedTopics.forEach((topicObj) => {
-      if (topicObj.titleURL === params.topic) {
+      if (topicObj.titleUrl === params.topic) {
         selectedTopic = {
           topicId: topicObj.topicId,
           title: topicObj.title,
-          titleURL: topicObj.titleURL,
+          titleUrl: topicObj.titleUrl,
           recordMap: topicObj.recordMap,
           // icon: topicObj.icon
         }

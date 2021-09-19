@@ -24,7 +24,7 @@ export async function getNotionPage(topicProp) {
 
     return { 
       topicId: topicProp as string,
-      titleURL: titleUrl || null, 
+      titleUrl: titleUrl || null, 
       title: title || null, 
       recordMap: recordMap,
       icon: icon
@@ -33,7 +33,7 @@ export async function getNotionPage(topicProp) {
     console.log(err)
     return { 
       topicId: null,
-      titleURL: null, 
+      titleUrl: null, 
       title: null, 
       recordMap: null
     }
@@ -61,7 +61,7 @@ export async function getNotionPages( notionId: string ) {
       notionTopics.push({
         topicId: page,
         title: title,
-        titleURL: titleUrl,
+        titleUrl: titleUrl,
         recordMap: recordMap
       })
     })
@@ -71,7 +71,7 @@ export async function getNotionPages( notionId: string ) {
     console.log(err)
     return [{ 
       topicId: null,
-      titleURL: null, 
+      titleUrl: null, 
       title: null, 
       recordMap: null
     }]

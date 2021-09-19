@@ -19,7 +19,7 @@ export default function NotionComp(props) {
       <div className="mx-5">
         <TopUserIsland user={user} />
         <div className="my-10">
-          <div className="mx-3 notion-title">{title}</div>
+          
         <NotionRenderer 
         
       className="prose" 
