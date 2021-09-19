@@ -24,10 +24,9 @@ const LogIn = props => {
       const authSignInRes = await Auth.signIn(
         emailInputRef.current.value,
         passInputRef.current.value
-      );
-      console.log(authSignInRes)
+      )
       setSubmitting(false)
-      await router.push("/account/edit")
+      await router.push("/" + authSignInRes.username)
       setModalState(false)
     } catch (err) {
       if (err.code === "UserNotFoundException") {

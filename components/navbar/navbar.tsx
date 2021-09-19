@@ -29,7 +29,7 @@ const NavbarComp = props => {
         </Link>
       </div>
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
-        <Link href={usernameState ? "/account/edit" : router.asPath === "/" ? "/#about" : "/" }>
+        <Link href={usernameState ? `/${usernameState}` : router.asPath === "/" ? "/#about" : "/" }>
           <a>{usernameState ? "Your page" : "What is Talktree?"}</a>
         </Link>
       </div>

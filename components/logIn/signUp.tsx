@@ -54,8 +54,8 @@ const SignUp = props => {
       await Auth.confirmSignUp(loginState.username, loginState.code)
       setSubmitConfirmation("accepted")
       setSubmitConfirmationState(false)
-      await Auth.signIn(loginState.email, loginState.password)
-      router.push('/account/edit')
+      const authSignInRes = await Auth.signIn(loginState.email, loginState.password)
+      router.push('/' + authSignInRes.username)
       setModalState(false)
     } catch (err) {
       console.log(err)

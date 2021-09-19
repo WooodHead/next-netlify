@@ -4,7 +4,7 @@ import Head from 'next/head'
 import NavbarComp from '../components/navbar/navbar'
 import UserComp from '../components/[id]/userComp'
 import { NotionAPI } from 'notion-client'
-import getNotionTitle from '../components/[id]/getNotionRecord'
+import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
 
 export interface User {
   Username: string
@@ -20,7 +20,6 @@ export interface User {
   [key: string]: any
 }
 export default function User({ user }: User) {
-  console.log('[id] user:', user)
   const description = user.publicString
   return (
     <>
@@ -32,7 +31,6 @@ export default function User({ user }: User) {
         <meta property="og:image" content="/favicon512"></meta>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      {/* <NavbarComp /> */}
       <UserComp user={user} />
     </>
   )
@@ -49,6 +47,7 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps({ params }) {
   try {
+
     const notion = new NotionAPI()
     const getUserInit = { body: { username: params.id } }
     const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
@@ -57,23 +56,17 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.audio && TAVS.push("📞")
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
-    if (!getUser.notionIds) return { notFound: true }
-    const topics = await Promise.all(getUser.notionIds.map(async (notionId) => {
-      return await getNotionTitle(notionId)
-    }))
-  const removedTopicErr = []
-  topics.forEach((topic) => topic && removedTopicErr.push(topic))
-
+    const notionDetails = getUser.notionId ? await getNotionPage(getUser.notionId) : null
+    // const deleteThis = getUser.notionId ? await getNotionPages(getUser.notionId) : null
     const user = {
       Username: getUser.username,
       active: getUser.active,
       busy: getUser.busy,
       ppm: getUser.ppm,
       TAVS: TAVS,
-      publicString: getUser.publicString,
-      topics: removedTopicErr,
       receiver: getUser.receiver,
       image: getUser.userImg,
+      notionDetails: notionDetails
     }
     return getUser.username ? { props: { user: user }, revalidate: 1 } : { notFound: true }
   } catch (err) {

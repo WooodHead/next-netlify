@@ -22,7 +22,6 @@ import { useEffect, useRef, useState } from 'react'
       try {
         const fileKey: string = uuidv4() + fileType
         const putS3: any = await Storage.put(fileKey, file)
-        console.log('@@', putS3)
         // const s3res = await putS3
         const jsonToUrl = {
           "bucket": process.env.NEXT_PUBLIC_STORAGE_BUCKET,
@@ -59,7 +58,6 @@ import { useEffect, useRef, useState } from 'react'
 
     const isOwnPage = async () => {
       const userAuth = await Auth.currentAuthenticatedUser()
-      console.log(userAuth)
       if (user.Username === userAuth.username) {
         setState({...state, isUser: userAuth.username})
       }

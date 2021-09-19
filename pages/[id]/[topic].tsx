@@ -9,14 +9,14 @@ import NotionComp from '../../components/[id]/[topic]/notionComp'
 // import 'react-notion-x/src/styles.css'
 // core styles shared by all of react-notion-x (required)
 import 'prismjs/themes/prism-tomorrow.css'
-import getNotionTitle from '../../components/[id]/getNotionRecord'
+import { getNotionPages } from '../../components/[id]/getNotionRecord'
 
 export default function Topic({ user, topic }) {
   const firstImgAddress = topic.firstImage
   const description = topic.description
   const title = topic.title
   const recordMap = topic.recordMap || null
-  console.log(topic)
+  console.log("TOPIC", topic)
   return (
     <>
       <Head>
@@ -40,26 +40,25 @@ export default function Topic({ user, topic }) {
 
 export async function getStaticPaths() {
   const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
-
-  const paths = await Promise.all(getAllUsersRes.map(async userObj => {
-    let params = null
-      await Promise.all(userObj.notionIds.map(async notionId => {
-        let notionRes = await getNotionTitle(notionId)
-        params = { id: userObj.username, topic: notionRes.titleURL }
-      }))
-    return { params: params }
+  const usersWithNotion = getAllUsersRes.filter(user => user.notionId)
+  const paths = await Promise.all(usersWithNotion.map(async userObj => {
+    // let params = null
+    const notionRes = await getNotionPages(userObj.notionId)
+    //@ts-ignore
+    return notionRes.map(notionTopic => {
+      return { params: { id: userObj.username, topic: notionTopic.titleURL } }
+    })
   }))
-
-  let pathArray = []
-  //@ts-ignore
-  if (paths.params) { pathArray.push({ params: params }) }
+  const newArray = []
+  /* TODO:: THIS WILL NOT WORK WHEN THERE ARE MORE USERS WITH NOTIONID I THINK */
   return {
-    paths: pathArray,
+    paths: paths[0],
     fallback: "blocking"
   }
 }
 
 export async function getStaticProps({ params }) {
+  console.log("PARAMS", params)
   const notion = new NotionAPI()
   try {
     const getUserInit = { body: { username: params.id } }
@@ -69,58 +68,37 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.audio && TAVS.push("📞")
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
-    if (!getUser.notionIds) return
-    const newTopics = await Promise.all(getUser.notionIds.map(async (notionId) => {
-      return await getNotionTitle(notionId)
-    }))
-    const cleanedTopics = []
-    newTopics.forEach((topic) => topic && cleanedTopics.push(topic))
 
+      const notionPages = await getNotionPages(getUser.notionId)
+    console.log('notionpages', notionPages)
+    const cleanedTopics = []
+    notionPages.forEach((topic) => topic && cleanedTopics.push(topic))
     const user = {
       Username: getUser.username,
       active: getUser.active,
       busy: getUser.busy,
       ppm: getUser.ppm,
       TAVS: TAVS,
-      publicString: getUser.publicString,
-      topics: cleanedTopics,
+      // publicString: getUser.publicString,
+      // topics: cleanedTopics,
       receiver: getUser.receiver,
       image: getUser.userImg,
     }
+    console.log("CLEANEDTOPICS", cleanedTopics)
     let selectedTopic = null
-    await Promise.all(newTopics.map(async (topicObj: any) => {
-
-      if (topicObj.recordMap) {
-        if (topicObj.titleURL === params.topic) {
-          selectedTopic = {
-            topicId: topicObj.title,
-            title: topicObj.title,
-            titleURL: topicObj.titleURL,
-            recordMap: topicObj.recordMap,
-            icon: topicObj.icon
-          }
-        }
-      } else if (topicObj.title === params.topic || topicObj.titleURL === params.topic) {
+    cleanedTopics.forEach((topicObj) => {
+      if (topicObj.titleURL === params.topic) {
         selectedTopic = {
           topicId: topicObj.topicId,
           title: topicObj.title,
           titleURL: topicObj.titleURL,
-          string: turnBracketsToAlt(topicObj.string),
-          description: topicObj.description,
-          firstImage: topicObj.firstImage,
-          lastSave: topicObj.lastSave,
-          recordMap: null
+          recordMap: topicObj.recordMap,
+          // icon: topicObj.icon
         }
-
       }
-    }))
-    let cleanedTopic = null
-    // topic.forEach(topic => {
-    //   if (topic) { cleanedTopic = topic }
-    // })
-    // console.log('cleanedTOpic', cleanedTopic)
+    })
     //@ts-ignore
-    return selectedTopic.topicId ? {
+    return selectedTopic ? {
       props: { user: user, topic: selectedTopic },
       revalidate: 1
     }

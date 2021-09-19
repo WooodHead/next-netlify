@@ -6,6 +6,7 @@ import SideUserIsland from './sideUserIsland'
 import TopUserIsland from './topUserIsland'
 import { User } from '../../pages/[id]'
 import AddNotionComponent from './userComp/addNotionComponent'
+import NotionComponent from './notionComponent'
 
 export default function UserCompId(props) {
   // : { user: {
@@ -43,7 +44,11 @@ export default function UserCompId(props) {
         <div className="bg-gray-100">
           <TopUserIsland user={user} />
           <AddNotionComponent user={user}/>
-          {(user.topics).map((topicObj) => (
+          { user.notionDetails && <NotionComponent 
+            user={user}
+            recordMap={user.notionDetails.recordMap}
+          /> }
+          {/* {(user.topics).map((topicObj) => (
             <div
               key={topicObj.topicId}
               className="max-w-3xl px-2 py-1 my-3 rounded shadow-md cursor-pointer mx-7 hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75"
@@ -65,12 +70,12 @@ export default function UserCompId(props) {
                   <div>{topicObj.description}</div>
                 </div>
               </div>
-              {/* <a className="px-2 py-1 mx-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
+              <a className="px-2 py-1 mx-2 font-semibold rounded shadow-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-75">
                   <div>{topicObj.title}</div>
                   {topicObj.description}
-                </a> */}
+                </a>
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
       <div className="flex-1"></div>
