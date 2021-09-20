@@ -54,15 +54,16 @@ export async function getNotionPages( notionId: string ) {
     }
     const notionTopics = []
     const allPages = await getAllPagesInSpace(notionId, null, notion.getPage.bind(notion))
-    Object.values(allPages).forEach(page => { 
+    Object.values(allPages).forEach(page => {
+
       const title = getPageTitle(page)
       const sanitized = title.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
       const titleUrl = sanitized.replaceAll(' ', '-') || title
-      notionTopics.push({
+      title && notionTopics.push({
         topicId: page,
         title: title,
         titleUrl: titleUrl,
-        recordMap: recordMap
+        recordMap: page
       })
     })
 

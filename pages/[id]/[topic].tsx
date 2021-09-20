@@ -5,7 +5,7 @@ import '../../configureAmplify'
 import TopicComp from '../../components/[id]/[topic]/topicComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 import { NotionAPI } from 'notion-client'
-import NotionComp from '../../components/[id]/notionComponent'
+import NotionComp from '../../components/[id]/[topic]/notionComp'
 // import 'react-notion-x/src/styles.css'
 // core styles shared by all of react-notion-x (required)
 import 'prismjs/themes/prism-tomorrow.css'
@@ -29,12 +29,7 @@ export default function Topic({ user, topic }) {
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
         <meta property="og:image" content={firstImgAddress}></meta>z
       </Head>
-      {recordMap
-        ? <NotionComp recordMap={recordMap} titleUrl={titleUrl} title={title} user={user} />
-        :
-        <TopicComp user={user} topic={topic} />
-      }
-      <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F4fb0ec04-3a2d-4ba0-bc5c-c00237458337%2FPXL_20210222_213622015.MP.jpg?table=block&id=9d8442f9-091f-4650-a3e5-5cf5d377b1d3&cache=v2" ></img>
+      <NotionComp recordMap={recordMap} titleUrl={titleUrl} title={title} user={user} />
     </>
   )
 }
@@ -59,7 +54,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  console.log("PARAMS", params)
+  // console.log("PARAMS", params) { id: 'gt2', topic: 'Keystone-Colorado-to-Austin-Texas-by-bicycle' }
   const notion = new NotionAPI()
   try {
     const getUserInit = { body: { username: params.id } }
@@ -71,9 +66,10 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.screen && TAVS.push("💻")
 
       const notionPages = await getNotionPages(getUser.notionId)
-    console.log('notionpages', notionPages)
-    const cleanedTopics = []
-    notionPages.forEach((topic) => topic && cleanedTopics.push(topic))
+    // console.log('notionpages', notionPages)
+    // const cleanedTopics = []
+    // notionPages.forEach((topic) => topic && cleanedTopics.push(topic))
+
     const user = {
       Username: getUser.username,
       active: getUser.active,
@@ -83,9 +79,9 @@ export async function getStaticProps({ params }) {
       receiver: getUser.receiver,
       image: getUser.userImg,
     }
-    console.log("CLEANEDTOPICS", cleanedTopics)
+    // console.log("CLEANEDTOPICS", cleanedTopics)
     let selectedTopic = null
-    cleanedTopics.forEach((topicObj) => {
+    notionPages.forEach((topicObj) => {
       if (topicObj.titleUrl === params.topic) {
         selectedTopic = {
           topicId: topicObj.topicId,
@@ -106,5 +102,4 @@ export async function getStaticProps({ params }) {
     console.log(err)
     return { notFound: true }
   }
-
 }
