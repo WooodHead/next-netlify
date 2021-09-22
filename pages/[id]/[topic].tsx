@@ -46,15 +46,14 @@ export async function getStaticPaths() {
     }))
     const cleanArray = []
     /* this is because each seperate user is an array within the main array */
-    paths.forEach((userArray) => Array.isArray(userArray) && userArray.forEach((userTopics) => cleanArray.push(userTopics)))
+    // paths.forEach((userArray) => Array.isArray(userArray) && userArray.forEach((userTopics) => cleanArray.push(userTopics)))
     return {
-      paths: cleanArray,
+      paths: paths[0],
       fallback: "blocking"
     }
   } catch (err) {
     console.log(err)
   }
-
 }
 
 export async function getStaticProps({ params }) {
