@@ -36,14 +36,19 @@ export default function User({ user }: User) {
   )
 }
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
-  const paths = getAllUsersRes.map(user => {
-    return { params: { id: user.username } }
-  })
-  return {
-    paths,
-    fallback: "blocking"
+  try {
+    const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
+    const paths = getAllUsersRes.map(user => {
+      return { params: { id: user.username } }
+    })
+    return {
+      paths,
+      fallback: "blocking"
+    }
+  } catch (err) {
+    console.log(err)
   }
+
 }
 export async function getStaticProps({ params }) {
   try {
@@ -57,6 +62,7 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
     const notionDetails = getUser.notionId ? await getNotionPage(getUser.notionId) : null
+    console.log('notionDetails', notionDetails)
     // const deleteThis = getUser.notionId ? await getNotionPages(getUser.notionId) : null
     const user = {
       Username: getUser.username,

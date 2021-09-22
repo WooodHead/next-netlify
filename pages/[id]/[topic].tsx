@@ -5,7 +5,7 @@ import '../../configureAmplify'
 import TopicComp from '../../components/[id]/[topic]/topicComp'
 import { turnBracketsToAlt } from '../../components/custom/keyToImage'
 import { NotionAPI } from 'notion-client'
-import NotionComp from '../../components/[id]/[topic]/notionComp'
+import NotionComp from '../../components/[id]/[topic]/topicNotionComp'
 // import 'react-notion-x/src/styles.css'
 // core styles shared by all of react-notion-x (required)
 import 'prismjs/themes/prism-tomorrow.css'
@@ -35,22 +35,27 @@ export default function Topic({ user, topic }) {
 }
 
 export async function getStaticPaths() {
-  const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
-  const usersWithNotion = getAllUsersRes.filter(user => user.notionId)
-  const paths = await Promise.all(usersWithNotion.map(async userObj => {
-    // let params = null
-    const notionRes = await getNotionPages(userObj.notionId)
-    //@ts-ignore
-    return notionRes.map(notionTopic => {
-      return { params: { id: userObj.username, topic: notionTopic.titleUrl } }
-    })
-  }))
-  const newArray = []
-  /* TODO:: THIS WILL NOT WORK WHEN THERE ARE MORE USERS WITH NOTIONID I THINK */
-  return {
-    paths: paths[0],
-    fallback: "blocking"
+  try {
+    const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
+    const usersWithNotion = getAllUsersRes.filter(user => user.notionId)
+    const paths = await Promise.all(usersWithNotion.map(async userObj => {
+      // let params = null
+      const notionRes = await getNotionPages(userObj.notionId)
+      //@ts-ignore
+      return notionRes.map(notionTopic => {
+        return { params: { id: userObj.username, topic: notionTopic.titleUrl } }
+      })
+    }))
+    const newArray = []
+    /* TODO:: THIS WILL NOT WORK WHEN THERE ARE MORE USERS WITH NOTIONID I THINK */
+    return {
+      paths: paths[0],
+      fallback: "blocking"
+    }
+  } catch (err) {
+    console.log(err)
   }
+
 }
 
 export async function getStaticProps({ params }) {

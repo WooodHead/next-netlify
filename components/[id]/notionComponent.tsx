@@ -3,6 +3,7 @@ import TopUserIsland from './topUserIsland'
 import { NotionRenderer, Code, Collection, CollectionRow, Modal, Pdf, Equation } from 'react-notion-x'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { getPageTitle } from 'notion-utils'
 
 // const NotionRenderer = dynamic(() =>
 //   import('react-notion-x').then((notion) => notion.NotionRenderer))
@@ -26,30 +27,41 @@ import dynamic from 'next/dynamic'
 //   { ssr: false }
 // )
 
-export default function NotionComp(props) {
-  const user = props.user
-  const recordMap = props.recordMap
+export default function NotionComp({ user, recordMap}) {
+  // const user = props.user
+  // const recordMap = props.recordMap
   // const title = props.title
   // const titleUrl = props.titleUrl
 
   const getUrl = (pageLinkObj) => {
-    console.log("pageLinkObj", pageLinkObj)
-    const title = pageLinkObj.children?.props?.block?.properties?.title ? pageLinkObj.children.props.block.properties.title[0] : ''
+    const cards = pageLinkObj.children
+    const cardBodyParent = Array.isArray(cards) 
+    ? cards.filter(
+        card => card.props.className === "notion-collection-card-body")
+    : cards
+    const cardBody = cardBodyParent[0].props.children
+    const cardPropertyParent = Array.isArray(cardBody)
+    ? cardBody.filter(
+      card => card.props?.className === "notion-collection-card-property")
+    : cardBody
+    const cardProperty = cardPropertyParent[0].props?.children?.props?.data
+    /* probably going to crash if wrong inputs here */
+
+    const title = cardProperty ? cardProperty[0] : ''
     const title2 = Array.isArray(title) ? title[0] : title
-    console.log("title:", title2)
     const sanitized = title2.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
     const withDashes = sanitized.replaceAll(' ', '-') || title
     return user.Username + "/" + withDashes
   }
 
   return (
-    <div className="flex my-5 bg-gray-100">
+    <div className="flex my-5">
 
       <div className="mx-5">
         <div className="my-10">
-        <NotionRenderer 
+        { recordMap && <NotionRenderer 
         
-      className="prose" 
+      // className="prose" 
       recordMap={recordMap} 
       components={{
         pageLink: ({
@@ -81,9 +93,10 @@ export default function NotionComp(props) {
         collectionRow: CollectionRow,
         modal: Modal,
       }}
+      showCollectionViewDropdown={false}
       fullPage={false} 
       darkMode={false} 
-      />
+      />}
 
         </div>
       </div>
