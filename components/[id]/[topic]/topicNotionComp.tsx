@@ -22,9 +22,8 @@ export default function NotionComp(props) {
       <div className="mx-5">
         <TopUserIsland user={user} />
         <div className="my-10">
-          
+
       { recordMap && <NotionRenderer 
-        
         // className="prose" 
         recordMap={recordMap} 
         components={{
@@ -36,18 +35,14 @@ export default function NotionComp(props) {
         // pageHeader={<div>WTFFFFFF</div>}
         hideBlockId={true}
         defaultPageCoverPosition={0}
-        fullPage={false} 
-        darkMode={false} 
+        fullPage={false}
+        darkMode={false}
         pageHeader={<CustomHeader />}
-        />}  
-
+        />}
         </div>
       </div>
-
       <div className="flex-1">
       </div>
-
-
     </div>
   )
 }

@@ -17,7 +17,6 @@ export default function Topic({ user, topic }) {
   const title = topic.title
   const titleUrl = topic.titleUrl
   const recordMap = topic.recordMap || null
-  console.log("TOPIC", topic)
   return (
     <>
       <Head>
@@ -41,15 +40,15 @@ export async function getStaticPaths() {
     const paths = await Promise.all(usersWithNotion.map(async userObj => {
       // let params = null
       const notionRes = await getNotionPages(userObj.notionId)
-      //@ts-ignore
       return notionRes.map(notionTopic => {
         return { params: { id: userObj.username, topic: notionTopic.titleUrl } }
       })
     }))
-    const newArray = []
-    /* TODO:: THIS WILL NOT WORK WHEN THERE ARE MORE USERS WITH NOTIONID I THINK */
+    const cleanArray = []
+    /* this is because each seperate user is an array within the main array */
+    paths.forEach((userArray) => Array.isArray(userArray) && userArray.forEach((userTopics) => cleanArray.push(userTopics)))
     return {
-      paths: paths[0],
+      paths: cleanArray,
       fallback: "blocking"
     }
   } catch (err) {
@@ -59,7 +58,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  // console.log("PARAMS", params) { id: 'gt2', topic: 'Keystone-Colorado-to-Austin-Texas-by-bicycle' }
+  // { id: 'gt2', topic: 'Keystone-Colorado-to-Austin-Texas-by-bicycle' }
   const notion = new NotionAPI()
   try {
     const getUserInit = { body: { username: params.id } }
@@ -71,9 +70,6 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.screen && TAVS.push("💻")
 
       const notionPages = await getNotionPages(getUser.notionId)
-    // console.log('notionpages', notionPages)
-    // const cleanedTopics = []
-    // notionPages.forEach((topic) => topic && cleanedTopics.push(topic))
 
     const user = {
       Username: getUser.username,
@@ -84,7 +80,6 @@ export async function getStaticProps({ params }) {
       receiver: getUser.receiver,
       image: getUser.userImg,
     }
-    // console.log("CLEANEDTOPICS", cleanedTopics)
     let selectedTopic = null
     notionPages.forEach((topicObj) => {
       if (topicObj.titleUrl === params.topic) {
