@@ -50,7 +50,8 @@ export default function NotionComp({ user, recordMap}) {
     const title = cardProperty ? cardProperty[0] : ''
     const title2 = Array.isArray(title) ? title[0] : title
     const sanitized = title2.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-    const withDashes = sanitized.replaceAll(' ', '-') || title
+    const withDashes = sanitized?.replaceAll(' ', '-') || title
+    console.log('WITHDASHES', withDashes)
     return user.Username + "/" + withDashes
   }
 

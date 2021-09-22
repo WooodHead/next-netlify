@@ -5,12 +5,12 @@ export async function getNotionPage(topicProp) {
   console.log('hello')
   try {
     const notion = new NotionAPI()
-    console.log("topicProp", topicProp)
+    // console.log("topicProp", topicProp)
     const recordMap = await notion.getPage(topicProp)
-    console.log('redocrdMap', recordMap)
+    // console.log('redocrdMap', recordMap)
     let titleUrl = null
     const title = getPageTitle(recordMap) || null
-    
+
     // let pageBlock = null
     // for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
     //   if (blockData.value.type === "page") {
@@ -19,7 +19,7 @@ export async function getNotionPage(topicProp) {
     // }
     // const icon = getBlockIcon(pageBlock.value, recordMap)
     const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-    titleUrl = sanitized.replaceAll(' ', '-') || title
+    titleUrl = sanitized?.replaceAll(' ', '-') || title
 
     // const allPages = await getAllPagesInSpace(topicProp, null, notion.getPage.bind(notion))
     // Object.values(allPages).forEach(page => { console.log(getPageTitle(page))} )
@@ -59,8 +59,8 @@ export async function getNotionPages( notionId: string ) {
     Object.values(allPages).forEach(page => {
 
       const title = getPageTitle(page)
-      const sanitized = title.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-      const titleUrl = sanitized.replaceAll(' ', '-') || title
+      const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+      const titleUrl = sanitized?.replaceAll(' ', '-') || title
       title && notionTopics.push({
         topicId: page,
         title: title,
