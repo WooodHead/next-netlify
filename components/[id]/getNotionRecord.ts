@@ -9,7 +9,7 @@ export async function getNotionPage(topicProp) {
     const recordMap = await notion.getPage(topicProp)
     console.log('redocrdMap', recordMap)
     let titleUrl = null
-    const title = getPageTitle(recordMap)
+    const title = getPageTitle(recordMap) || null
     
     // let pageBlock = null
     // for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
@@ -18,7 +18,7 @@ export async function getNotionPage(topicProp) {
     //   }
     // }
     // const icon = getBlockIcon(pageBlock.value, recordMap)
-    const sanitized = title.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+    const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
     titleUrl = sanitized.replaceAll(' ', '-') || title
 
     // const allPages = await getAllPagesInSpace(topicProp, null, notion.getPage.bind(notion))

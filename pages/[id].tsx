@@ -48,11 +48,9 @@ export async function getStaticPaths() {
   } catch (err) {
     console.log(err)
   }
-
 }
 export async function getStaticProps({ params }) {
   try {
-
     const notion = new NotionAPI()
     const getUserInit = { body: { username: params.id } }
     const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
@@ -62,7 +60,6 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
     const notionDetails = getUser.notionId ? await getNotionPage(getUser.notionId) : null
-    console.log('notionDetails', notionDetails)
     // const deleteThis = getUser.notionId ? await getNotionPages(getUser.notionId) : null
     const user = {
       Username: getUser.username,
