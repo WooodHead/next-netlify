@@ -67,11 +67,6 @@ export async function getNotionPages( notionId: string ) {
     return notionTopics
   } catch (err) {
     console.log(err)
-    return [{ 
-      topicId: null,
-      titleUrl: null, 
-      title: null, 
-      recordMap: null
-    }]
+    return null
   }
 }
