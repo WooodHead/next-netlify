@@ -16,7 +16,7 @@ export async function getNotionPage(topicProp) {
     // }
     // const icon = getBlockIcon(pageBlock.value, recordMap)
     const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-    titleUrl = sanitized?.replaceAll(' ', '-') || title
+    titleUrl = sanitized?.replace(/ /g, '-') || title
     // const allPages = await getAllPagesInSpace(topicProp, null, notion.getPage.bind(notion))
     // Object.values(allPages).forEach(page => { console.log(getPageTitle(page))} )
     return { 
@@ -50,12 +50,13 @@ export async function getNotionPages( notionId: string ) {
     const notionTopics = []
     const allPages = await getAllPagesInSpace(notionId, null, notion.getPage.bind(notion))
     /* i think allPages is null in prod */
+
     Object.values(allPages).forEach(page => {
       console.log("PAGE", page)
 
       const title = getPageTitle(page)
       const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-      const titleUrl = sanitized ? sanitized.replaceAll(' ', '-') : title
+      const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
       title && notionTopics.push({
         topicId: page,
         title: title,
