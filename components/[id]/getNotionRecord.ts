@@ -41,8 +41,6 @@ export async function getNotionPages( notionId: string ) {
   try {
     const notion = new NotionAPI()
     const recordMap = await notion.getPage(notionId)
-    let titleUrl = null
-
     let pageBlock = null
     for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
       if (blockData.value.type === "page") {
@@ -51,11 +49,13 @@ export async function getNotionPages( notionId: string ) {
     }
     const notionTopics = []
     const allPages = await getAllPagesInSpace(notionId, null, notion.getPage.bind(notion))
+    /* i think allPages is null in prod */
     Object.values(allPages).forEach(page => {
+      console.log("PAGE", page)
 
       const title = getPageTitle(page)
       const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-      const titleUrl = sanitized?.replaceAll(' ', '-') || title
+      const titleUrl = sanitized ? sanitized.replaceAll(' ', '-') : title
       title && notionTopics.push({
         topicId: page,
         title: title,

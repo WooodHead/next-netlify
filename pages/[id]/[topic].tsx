@@ -68,7 +68,7 @@ export async function getStaticProps({ params }) {
     getUser.deviceInput.video && TAVS.push("📹")
     getUser.deviceInput.screen && TAVS.push("💻")
 
-      const notionPages = await getNotionPages(getUser.notionId)
+    const notionPages = await getNotionPages(getUser.notionId)
 
     const user = {
       Username: getUser.username,
