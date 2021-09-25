@@ -7,7 +7,6 @@ export default function NotionComp(props) {
   const user = props.user
   const recordMap = props.recordMap
   const title = props.title
-  console.log(recordMap)
   const CustomHeader = () => {
     return <div className="text-4xl font-bold" >{title}</div>
   }
@@ -35,7 +34,7 @@ export default function NotionComp(props) {
         // pageHeader={<div>WTFFFFFF</div>}
         hideBlockId={true}
         defaultPageCoverPosition={0}
-        fullPage={false}
+        fullPage={true}
         darkMode={false}
         pageHeader={<CustomHeader />}
         />}

@@ -52,7 +52,6 @@ export async function getNotionPages( notionId: string ) {
     /* i think allPages is null in prod */
 
     Object.values(allPages).forEach(page => {
-      console.log("PAGE", page)
 
       const title = getPageTitle(page)
       const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
