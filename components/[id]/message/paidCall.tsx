@@ -11,7 +11,6 @@ declare var OT
 // loadStripe.setLoadParameters({advancedFraudSignals: false})
 
 const PaidCallContainer = (props) => {
-  console.log('pcc', props)
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
   const targetUser = props.targetUser
   return (
@@ -20,7 +19,6 @@ const PaidCallContainer = (props) => {
 }
 
 const PaidCall = (props) => {
-  console.log('paidcall', props)
   const targetUser = props.targetUser
   const [state, setState] = useState({
     card: false,
@@ -52,7 +50,6 @@ const PaidCall = (props) => {
       const sessionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/createPaidSession', {
         body: { name: targetUser }
       })
-      console.log('sessionres', sessionRes)
       // this acts like createSession
       if (sessionRes.busy) {
         modifyState({ busy: true, apiHit: true })
@@ -74,7 +71,6 @@ const PaidCall = (props) => {
       //post an unauthed route, see what auth gets sent?
       const intentKey = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/logIdentity', {})
       modifyState({ intentKey: intentKey })
-      console.log('intentkey', intentKey)
     }
     setupCard()
   }, [stripe])

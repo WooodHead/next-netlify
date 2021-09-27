@@ -51,7 +51,6 @@ const CardTip = props => {
           setPaymentState('Csucceeded')
           return
         }
-        console.log('clientSecret', clientSecret)
         if (!stripe || !elements) {
           return //stripe hasn't loaded yet
         }
