@@ -29,7 +29,7 @@ export default function Receiver() {
       // const getUserInit = { headers: { Authorization: idToken } }
       // const gotSelf = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getSelfUser', getUserInit)
       const getUserInit = { body: { username: userAuth.username } }
-      const gotSelf = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY, '/getUser', getUserInit)
+      const gotSelf = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getUser', getUserInit)
       const deviceInputRes = gotSelf.deviceInput
       modifyState({
         active: gotSelf.active,
