@@ -66,7 +66,7 @@ export async function getStaticProps() {
       busy: userRes.busy,
       TAVS: TAVS,
       ppm: userRes.ppm,
-      publicString: userRes.publicString,
+      // publicString: userRes.publicString,
       // image: userRes.urlString
     })
   })

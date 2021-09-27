@@ -66,7 +66,6 @@ const PaidCall = (props) => {
     } catch (err) {
       console.log(err)
     }
-    
   }
 
   useEffect(() => {

@@ -26,24 +26,32 @@ export default function FourOhFour() {
         const badTopic = router.asPath.match(/\/.+\/(.+)/) || [null, null]
         const getUserInit = { body: { username: idMaybe[1] } }
         const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
+        const notionId = getUser.notionId
         const topicTitlesList = []
         let recommendedTopic
-        const topicList = Object.values(getUser.topics)
 
-        topicList.forEach((topicObj => {
-          topicTitlesList.push(topicObj.title)
-        }))
+        // const notionPages = getNotionPages(notionId)
+
+        // notionPages.forEach((topicObj) => {
+        //   topicTitlesList.push(topicObj.title)
+        // })
+        
+        // const topicList = Object.values(getUser.topics)
+        // // get array of notion titles
+        // topicList.forEach((topicObj => {
+        //   topicTitlesList.push(topicObj.title)
+        // }))
 
         const bestMatch = badTopic ? stringSimilarity.findBestMatch(badTopic[1], topicTitlesList) : null
         
-        getUser.topics.forEach((topicObj) => {
+        notionPages.forEach((topicObj) => {
           if (topicObj.title === bestMatch.bestMatch.target) {
             recommendedTopic = {
               topicId: topicObj.topicId,
               title: topicObj.title,
               titleURL: topicObj.titleURL,
-              firstImage: topicObj.firstImage,
-              description: topicObj.description
+              // firstImage: topicObj.firstImage,
+              // description: topicObj.description
             }
           }
         })
@@ -51,7 +59,7 @@ export default function FourOhFour() {
         setState({...state,
           username: getUser.username,
           recommendedTopic: recommendedTopic,
-          topics: getUser.topics,
+          topics: notionPages,
           loading: false
         })
       } catch (err) {

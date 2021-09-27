@@ -8,7 +8,8 @@ import { useEffect, useRef, useState } from 'react'
     const notionRef = useRef(null)
 
     const [state, setState] = useState({
-      isUser: null
+      isUser: null,
+      returnUri: null
     })
 
     const saveNotionId = async () => {
@@ -35,14 +36,21 @@ import { useEffect, useRef, useState } from 'react'
         console.log(err)
       }
     }
+    const talktreeReturnUrl = process.env.NEXT_PUBLIC_STAGE === "dev" 
+      ? "http://localhost:3000/" + state.isUser
+      : "https://talktree.me/" + state.isUser
 
     useEffect(() => {
       isOwnPage()
     }, [])
 
+    const notionURL = `https://api.notion.com/v1/oauth/authorize?owner=user&client_id=${process.env.NEXT_PUBLIC_NOTION_CLIENT_ID}&response_type=code&state=${talktreeReturnUrl}`
+    console.log(notionURL)
+
     return (
       state.isUser 
       ? <div className="m-8">
+        <a href={notionURL}>Add to Notion</a>
         <input ref={notionRef} placeholder="notionPageId">
         </input>
         <button onClick={saveNotionId}>add notion page</button>
