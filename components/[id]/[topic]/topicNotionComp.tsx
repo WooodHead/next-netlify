@@ -31,10 +31,9 @@ export default function NotionComp(props) {
           collectionRow: CollectionRow,
           modal: Modal,
         }}
-        // pageHeader={<div>WTFFFFFF</div>}
         hideBlockId={true}
         defaultPageCoverPosition={0}
-        fullPage={true}
+        fullPage={false}
         darkMode={false}
         pageHeader={<CustomHeader />}
         />}
