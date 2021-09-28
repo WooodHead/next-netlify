@@ -23,7 +23,7 @@ export default function NotionComp(props) {
         <div className="my-10">
 
       { recordMap && <NotionRenderer 
-        // className="prose" 
+        // className="prose-sm prose sm:prose"
         recordMap={recordMap} 
         components={{
           code: Code,
@@ -32,7 +32,7 @@ export default function NotionComp(props) {
           modal: Modal,
         }}
         hideBlockId={true}
-        defaultPageCoverPosition={0}
+        // defaultPageCoverPosition={0}
         fullPage={false}
         darkMode={false}
         pageHeader={<CustomHeader />}

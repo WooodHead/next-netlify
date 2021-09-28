@@ -31,8 +31,6 @@ export default function UserCompId(props) {
   }
 
 
-
-
   return (
     <div className="flex my-5">
 

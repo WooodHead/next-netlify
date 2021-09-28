@@ -82,7 +82,6 @@ const AccountSettings = props => {
          
           <input 
             type={ hiddenOldState ? "password" : "text" } 
-            
             ref={oldPassRef}/>
           <div 
             className="ml-1" 
