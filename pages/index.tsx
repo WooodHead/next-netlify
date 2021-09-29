@@ -5,7 +5,7 @@ import Link from 'next/link'
 // import NavbarComp from '../components/navbar/navbar'
 import SplashComp from '../components/index/splash'
 // import FooterComp from '../components/navbar/footer'
-import About from '../components/index/about'
+// import About from '../components/index/about'
 
 export default function Home() {
 //   const router = useRouter()
@@ -33,10 +33,10 @@ export default function Home() {
         <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css" />
         {/* <script src="https://static.opentok.com/v2.20.1/js/opentok.min.js"></script> */}
       </Head>
-        <div className="flex-1">
+        <div className="flex-1 bg-gray-100">
           <SplashComp />
           <div id="about" >
-          <About />
+          {/* <About /> */}
           </div>
           
         </div>

@@ -25,7 +25,7 @@ const NavbarComp = props => {
     <nav className="flex flex-row">
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
         <Link href="/users">
-          <a>Browse members</a>
+          <a>Browse</a>
         </Link>
       </div>
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">

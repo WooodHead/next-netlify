@@ -5,7 +5,7 @@ import API from '@aws-amplify/api'
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Modal from '../navbar/modal'
-
+import About from './about'
 export default function SplashPage() {
   const emailRef = useRef()
   const router = useRouter()
@@ -20,7 +20,7 @@ export default function SplashPage() {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>Talktree</title>
         <meta name="description" content="Ask an expert on demand" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -29,20 +29,15 @@ export default function SplashPage() {
         <meta name="twitter:title" content="Talktree" />
         <meta name="twitter:description" content="Ask an expert on demand" />
         <meta name="twitter:image" content="https://talktree.me/1200x630.png" />
-      </Head>
+      </Head> */}
       <div className="flex flex-row">
         <div className="flex-1">
 
         </div>
         <div className="flex-col flex-initial max-w-3xl mx-10 my-20">
-          <div className="text-5xl ">Get unstuck now. 1:1 discussion, on demand.</div>
-          {/* <button className="m-5" onClick={userButtonClick}>See a member</button> */}
-          {/* <div className="mt-20">Or become a member. Charge as little as $0.17/minute</div>
-          <button className="m-5" onClick={signUpClick}>Sign Up</button> */}
+          <div className="text-5xl ">On demand discussion</div>
+          <div className="mt-5 ml-1 text-2xl">Creating the opportunity for meaningful collisions since 2021</div>
         </div>
-        {/* <div className="flex-1 hidden md:flex lg:flex xl:flex 2xl:flex">
-
-        </div> */}
         <div className="hidden my-20 text-5xl md:flex-1 lg:grid xl:grid 2xl:grid">
           <div className="max-w-sm"><img src="/favicon512.png"></img></div>
         </div>
@@ -50,6 +45,7 @@ export default function SplashPage() {
 
         </div>
       </div>
+      <About signUp={signUpClick} seeExample={userButtonClick}/>
       {modalState ? <Modal setModalState={setModalState} modalState={modalState} /> : null}
     </>
   )

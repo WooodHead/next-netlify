@@ -9,7 +9,11 @@
   textarea {
     @apply bg-opacity-100 shadow-md;
   };
+
 };
+/* input {
+  @apply px-3 border shadow;
+} */
 /* pre {
   @apply bg-green-900
 } */
