@@ -45,6 +45,7 @@ const Users = ({ allUsers }) => {
               </div>
             )
           })}
+          <div className="m-10">Browse page currently under development</div>
         </div>
     </>
   )

@@ -107,14 +107,15 @@ export default function About({
 
       </div>
 
-      <div className="flex mt-20"> {/* 3rd row */}
+      <div className="flex px-4 mt-20"> {/* 3rd row */}
 
         <div className="flex-1"></div>
 
         <div className="flex flex-col justify-center ">
           <div className="hidden my-6 md:flex">
             <div className="flex flex-col justify-center text-xl">
-              <div className="">Your page and all the child pages are rendered as static HTML optimized for search engines.</div>
+              <div className="pr-10">Your page and all the child pages are rendered as static HTML optimized for search engines.</div>
+              <Link href="/geoff-young"><a className="mt-3 text-blue-400 underline">Example</a></Link>
               <div className="mt-5">Talktree automatically updates your page when it gets changed in Notion.</div>
             </div>
           </div>
@@ -122,11 +123,12 @@ export default function About({
 
         <div className="flex flex-1"></div>
 
-        <div className="px-4">
+        <div className="">
           <img className="border" src="/renderedNotion.png"></img>
           <div className="flex flex-row my-6 md:hidden">
             <div className="flex flex-col justify-center text-xl">
               <div className="">Your page and all the child pages are rendered as static HTML optimized for search engines.</div>
+              <Link href="/geoff-young"><a className="mt-3 text-blue-400 underline">Example</a></Link>
               <div className="mt-5">Talktree automatically updates your page when it gets changed in Notion.</div>
             </div>
           </div>
