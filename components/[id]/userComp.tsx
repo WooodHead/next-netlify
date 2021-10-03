@@ -32,24 +32,24 @@ export default function UserCompId(props) {
 
 
   return (
-    <div className="flex my-5">
+    // <div className="flex my-5">
 
-      <div className="flex justify-center flex-1 mt-10">
-        <SideUserIsland user={user} />
-      </div>
+    //   <div className="flex justify-center flex-1 mt-10">
+    //     <SideUserIsland user={user} />
+    //   </div>
 
-      <div className="flex my-3" >
-        <div className="">
-          <TopUserIsland user={user} />
-          <AddNotionComponent user={user}/>
-          { user.notionDetails && <NotionComponent 
+    //   <div className="flex my-3" >
+    //     <div className="">
+    //       <TopUserIsland user={user} />
+    //       <AddNotionComponent user={user}/>
+          user.notionDetails && <NotionComponent 
             // titleUrl={user.notionDetails.titleUrl}
             user={user}
             recordMap={user.notionDetails.recordMap}
-          /> }
-        </div>
-      </div>
-      <div className="flex-1"></div>
-    </div>
+          /> 
+    //     </div>
+    //   </div>
+    //   <div className="flex-1"></div>
+    // </div>
   )
 }

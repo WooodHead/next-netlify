@@ -19,29 +19,29 @@ module.exports = {
       width: {
         screen: '88vw'
       },
-      typography: {
-        DEFAULT: {
-          css: {
-            maxWidth: '85ch',
-            /* this removes backticks added in to my prose code */
-            'code::before': {
-              content: '""'
-            },
-            'code::after': {
-              content: '""'
-            },
-            // pre: {
-            //   backgroundColor: '#3182ce'
-            // }
-            // a: {
-            //   color: '#3182ce',
-            //   '&:hover': {
-            //     color: '#2c5282',
-            //   },
-            // },
-          },
-        },
-      }
+      // typography: {
+      //   DEFAULT: {
+      //     css: {
+      //       maxWidth: '85ch',
+      //       /* this removes backticks added in to my prose code */
+      //       'code::before': {
+      //         content: '""'
+      //       },
+      //       'code::after': {
+      //         content: '""'
+      //       },
+      //       // pre: {
+      //       //   backgroundColor: '#3182ce'
+      //       // }
+      //       // a: {
+      //       //   color: '#3182ce',
+      //       //   '&:hover': {
+      //       //     color: '#2c5282',
+      //       //   },
+      //       // },
+      //     },
+      //   },
+      // }
     },
   },
   variants: {
@@ -49,7 +49,7 @@ module.exports = {
       backgroundImage: ['hover', 'focus']
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  // plugins: [
+  //   require('@tailwindcss/typography'),
+  // ],
 }

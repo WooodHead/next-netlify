@@ -37,7 +37,7 @@ export default function NotionComp({ user, recordMap}) {
     const cards = pageLinkObj.children
     const cardBodyParent = Array.isArray(cards) 
     ? cards.filter(
-        card => card.props.className === "notion-collection-card-body")
+        card => card.props?.className === "notion-collection-card-body")
     : cards
     const cardBody = cardBodyParent[0].props.children
     const cardPropertyParent = Array.isArray(cardBody)
@@ -55,11 +55,11 @@ export default function NotionComp({ user, recordMap}) {
   }
 
   return (
-    <div className="flex my-5">
+    // <div className="flex my-5">
 
-      <div className="mx-5">
-        <div className="my-10">
-        { recordMap && <NotionRenderer 
+    //   <div className="mx-5">
+    //     <div className="my-10">
+         recordMap && <NotionRenderer 
         
       // className="prose" 
       recordMap={recordMap} 
@@ -96,16 +96,16 @@ export default function NotionComp({ user, recordMap}) {
       showCollectionViewDropdown={false}
       fullPage={false} 
       darkMode={false} 
-      />}
+      />
 
-        </div>
-      </div>
+    //     </div>
+    //   </div>
 
-      <div className="flex-1">
-      </div>
+    //   <div className="flex-1">
+    //   </div>
 
 
-    </div>
+    // </div>
   )
 }
 
