@@ -1,9 +1,9 @@
-import SideUserIsland from './sideUserIsland'
+// import SideUserIsland from './sideUserIsland'
 import TopUserIsland from './topUserIsland'
 import { NotionRenderer, Code, Collection, CollectionRow, Modal, Pdf, Equation } from 'react-notion-x'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { getPageTitle } from 'notion-utils'
+// import dynamic from 'next/dynamic'
+// import { getPageTitle } from 'notion-utils'
 
 // const NotionRenderer = dynamic(() =>
 //   import('react-notion-x').then((notion) => notion.NotionRenderer))
