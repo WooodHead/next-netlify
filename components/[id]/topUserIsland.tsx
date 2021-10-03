@@ -16,7 +16,7 @@ const UserComponentTop = (props) => {
   const user = props.user
   return (
     <>
-    <div className="flex m-5 mb-10 md:hidden">
+    <div className="flex m-5 mb-10">
       <div className="flex-shrink-0">
         { user.image && <img src={user.image} ></img>}
         <ChangeUserImage user={user}/>
@@ -33,9 +33,6 @@ const UserComponentTop = (props) => {
       </div>
 
     </div>
-          {/* <div>
-          {user.publicString}
-        </div> */}
         </>
   )
 }

@@ -2,26 +2,17 @@ import SideUserIsland from '../sideUserIsland'
 import TopUserIsland from '../topUserIsland'
 import { NotionRenderer, Code, Collection, CollectionRow, Modal, Pdf, Equation } from 'react-notion-x'
 
-export default function NotionComp(props) {
-  const user = props.user
-  const recordMap = props.recordMap
-  const title = props.title
+export default function NotionComp({ user, recordMap, title}) {
   const CustomHeader = () => {
     return <div className="text-4xl font-bold" >{title}</div>
   }
 
   return (
-    // <div className="flex my-5">
+    <>
 
-    //   <div className="flex justify-center flex-1 mt-10">
-    //     <SideUserIsland user={user} />
-    //   </div>
+<div className="flex justify-center"><TopUserIsland user={user} /></div>
 
-    //   <div className="mx-5">
-    //     <TopUserIsland user={user} />
-    //     <div className="my-10">
-
-       recordMap && <NotionRenderer 
+        <NotionRenderer 
         // className="prose-sm prose sm:prose"
         recordMap={recordMap} 
         components={{
@@ -36,11 +27,6 @@ export default function NotionComp(props) {
         darkMode={false}
         pageHeader={<CustomHeader />}
         />
-    //     </div>
-    //   </div>
-    //   <div className="flex-1">
-    //   </div>
-    // </div>
+        </>
   )
 }
-

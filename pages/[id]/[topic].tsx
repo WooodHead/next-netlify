@@ -3,7 +3,7 @@ import API from '@aws-amplify/api'
 import Head from 'next/head'
 import '../../configureAmplify'
 import { NotionAPI } from 'notion-client'
-import NotionComp from '../../components/[id]/[topic]/topicNotionComp'
+import NotionComp from '../../components/[id]/[topic]/topicNotion'
 // import 'react-notion-x/src/styles.css'
 // core styles shared by all of react-notion-x (required)
 import 'prismjs/themes/prism-tomorrow.css'
@@ -26,7 +26,7 @@ export default function Topic({ user, topic }) {
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script> */}
         <meta property="og:image" content={firstImgAddress}></meta>
       </Head>
-      <NotionComp recordMap={recordMap} titleUrl={titleUrl} title={title} user={user} />
+      <NotionComp recordMap={recordMap} title={title} user={user} />
     </>
   )
 }

@@ -1,12 +1,11 @@
 import API from '@aws-amplify/api'
 import '../configureAmplify'
 import Head from 'next/head'
-import NavbarComp from '../components/navbar/navbar'
-import UserComp from '../components/[id]/userComp'
+import IdNotion from '../components/[id]/idNotion'
 import { NotionAPI } from 'notion-client'
 import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
 
-export interface User {
+export default function User({ user }: {
   Username: string
   active: boolean
   busy: boolean
@@ -18,8 +17,7 @@ export interface User {
   receiver: boolean
   image: string
   [key: string]: any
-}
-export default function User({ user }: User) {
+}) {
   const description = user.publicString
   return (
     <>
@@ -31,7 +29,10 @@ export default function User({ user }: User) {
         <meta property="og:image" content="/favicon512"></meta>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <UserComp user={user} />
+      {user.notionDetails && <IdNotion 
+            user={user}
+            recordMap={user.notionDetails.recordMap}
+      /> }
     </>
   )
 }

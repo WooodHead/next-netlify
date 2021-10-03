@@ -28,10 +28,6 @@ import { getPageTitle } from 'notion-utils'
 // )
 
 export default function NotionComp({ user, recordMap}) {
-  // const user = props.user
-  // const recordMap = props.recordMap
-  // const title = props.title
-  // const titleUrl = props.titleUrl
 
   const getUrl = (pageLinkObj) => {
     const cards = pageLinkObj.children
@@ -55,12 +51,9 @@ export default function NotionComp({ user, recordMap}) {
   }
 
   return (
-    // <div className="flex my-5">
-
-    //   <div className="mx-5">
-    //     <div className="my-10">
-         recordMap && <NotionRenderer 
-        
+<> 
+<div className="flex justify-center"><TopUserIsland user={user} /></div>
+    <NotionRenderer 
       // className="prose" 
       recordMap={recordMap} 
       components={{
@@ -97,15 +90,7 @@ export default function NotionComp({ user, recordMap}) {
       fullPage={false} 
       darkMode={false} 
       />
-
-    //     </div>
-    //   </div>
-
-    //   <div className="flex-1">
-    //   </div>
-
-
-    // </div>
+</>
   )
 }
 
