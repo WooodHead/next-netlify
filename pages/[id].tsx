@@ -5,7 +5,7 @@ import IdNotion from '../components/[id]/idNotion'
 import { NotionAPI } from 'notion-client'
 import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
 
-export default function User({ user }: {
+export interface User {
   Username: string
   active: boolean
   busy: boolean
@@ -17,7 +17,8 @@ export default function User({ user }: {
   receiver: boolean
   image: string
   [key: string]: any
-}) {
+}
+export default function User({ user }: User) {
   const description = user.publicString
   return (
     <>

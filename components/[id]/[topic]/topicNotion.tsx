@@ -9,7 +9,7 @@ export default function NotionComp({ user, recordMap, title}) {
 
   return (
     <>
-
+<div className="mb-20">
 <div className="flex justify-center"><TopUserIsland user={user} /></div>
 
         <NotionRenderer 
@@ -27,6 +27,7 @@ export default function NotionComp({ user, recordMap, title}) {
         darkMode={false}
         pageHeader={<CustomHeader />}
         />
+        </div>
         </>
   )
 }

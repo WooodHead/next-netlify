@@ -6,7 +6,7 @@ import API from '@aws-amplify/api'
 
 declare var OT
 
-const MessageComponent = (props) => {
+const MessageComponent = ({ targetUser, otSession }) => {
   const [state, setState] = useState({
     audio: true,
     video: false,
@@ -25,8 +25,7 @@ const MessageComponent = (props) => {
   const [textState, dispatchTextState] = useReducer(reducer, initialState)
   const publisherRef = useRef()
   const micPublisherRef = useRef()
-  const currentUser = props.targetUser
-  const session = props.otSession
+  const session = otSession
   
   const sessionId = session.id
 
@@ -37,14 +36,14 @@ const MessageComponent = (props) => {
       navigator.sendBeacon(
         process.env.NEXT_PUBLIC_APIGATEWAY_URL +
         "/disconnectCall" +
-        "?receiver=" + currentUser +
+        "?receiver=" + targetUser +
         "&sessionId=" + sessionId
       )
     } catch (err) {
       console.log(err)
     }
     session.disconnect()
-    router.replace(`/${currentUser}/review`)
+    router.replace(`/${targetUser}/review`)
   }
 
   const onSignalSend = async signalInputRefProp => {
@@ -63,7 +62,7 @@ const MessageComponent = (props) => {
         // headers: {},
         body: {
           message: txtMessage,
-          receiver: currentUser
+          receiver: targetUser
         }
       }
       await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/textMessage', myInit)
@@ -76,7 +75,7 @@ const MessageComponent = (props) => {
     navigator.sendBeacon(
       process.env.NEXT_PUBLIC_APIGATEWAY_URL +
       "/disconnectCall" +
-      "?receiver=" + currentUser +
+      "?receiver=" + targetUser +
       "&sessionId=" + sessionId
     )
   }
@@ -141,12 +140,12 @@ const MessageComponent = (props) => {
           navigator.sendBeacon(
             process.env.NEXT_PUBLIC_APIGATEWAY_URL +
               "/disconnectCall" +
-              "?receiver=" + currentUser +
+              "?receiver=" + targetUser +
               "&sessionId=" + session.id
           )
         }
         setState({...state, otherUser: true})
-        dispatchTextState({ data: `${currentUser} connected`})
+        dispatchTextState({ data: `${targetUser} connected`})
       }
     })
     session.on('streamCreated', ({ stream }) => {
@@ -169,11 +168,11 @@ const MessageComponent = (props) => {
     session.on('connectionDestroyed', () => {
       console.log('connectionDestroyed')
       session.disconnect()
-      router.replace(`/${currentUser}/review`)
+      router.replace(`/${targetUser}/review`)
       navigator.sendBeacon(
         process.env.NEXT_PUBLIC_APIGATEWAY_URL +
           "/disconnectCall" +
-          "?receiver=" + currentUser +
+          "?receiver=" + targetUser +
           "&sessionId=" + session.id
       )
     })
