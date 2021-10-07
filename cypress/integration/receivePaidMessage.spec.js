@@ -9,11 +9,20 @@ describe("ReceivePaidMessage", () => {
   })
 
   beforeEach(() => {
+    // persists login state
     cy.restoreLocalStorage()
   })
 
   afterEach(() => {
     cy.saveLocalStorage()
+  })
+
+  it("triggers the creation of a session", () => {
+    cy.request('POST', 'https://dev-api.talktree.me/createPaidSession', {
+      
+    }).as('createSession')
+    cy.intercept('POST', 'https://dev-api.talktree.me/createPaidSession').as('createSession')
+    cy.wait('@createSession').get('response')
   })
 
   it("should be logged in", () => {

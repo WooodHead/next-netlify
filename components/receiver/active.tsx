@@ -103,7 +103,7 @@ export default function Active() {
     return (
       <div className="container">
         <div className="mt-5 row justify-content-center">
-          <button onClick={() => acceptCall()}>Accept Call</button>
+          <button data-cy="accept" onClick={() => acceptCall()}>Accept Call</button>
         </div>
         <div className="mt-5 row justify-content-center">
           <button onClick={() => declineCall()}>Decline Call</button>

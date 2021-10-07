@@ -16,6 +16,12 @@ describe("ReceiveUnpaidMessage", () => {
     cy.saveLocalStorage()
   })
 
+  it("triggers the creation of a session", () => {
+    cy.request('POST', 'https://dev-api.talktree.me/createUnpaidSession', {
+      name: 'geoff-young'
+    })
+  })
+
   it("should be logged in", () => {
     cy.visit("http://localhost:3000/receiver", {
       onBeforeLoad (win) {
@@ -25,11 +31,12 @@ describe("ReceiveUnpaidMessage", () => {
       }
     })
     cy.window().should('have.property', 'Notification').should('be.a', 'function')
-    cy
     // cy.intercept('POST', 'https://dev-api.talktree.me/register').as('register')
     // cy.wait('@register')
-    cy.intercept('https://dev-api.talktree.me/getSession').as('getSession')
-    cy.wait('@getSession')
-    // get getsessionRes
+    cy.intercept('https://dev-api.talktree.me/getSession').then(() => {
+      cy.get('[data-cy=accept]').contains('Accept Call')
+    })
+    
+    
   })
 })

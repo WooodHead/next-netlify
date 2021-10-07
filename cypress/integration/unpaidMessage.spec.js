@@ -5,6 +5,5 @@ describe('Make an unpaid call', () => {
     cy.intercept('POST', 'https://dev-api.talktree.me/createUnpaidSession').as('createUnpaidSession')
     cy.wait('@createUnpaidSession').its('response.statusCode').should('eql', 201)
     cy.get('textarea')
-
   })
 })
