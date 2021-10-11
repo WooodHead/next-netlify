@@ -1,9 +1,11 @@
 import { NotionAPI } from 'notion-client'
-import { getPageTitle, getBlockIcon, getAllPagesInSpace } from 'notion-utils'
+import { getPageTitle, getBlockIcon, getAllPagesInSpace, getBlockParentPage } from 'notion-utils'
+
+const notion = new NotionAPI()
 
 export async function getNotionPage(topicProp) {
   try {
-    const notion = new NotionAPI()
+    // const notion = new NotionAPI()
     const recordMap = await notion.getPage(topicProp)
     // console.log('redocrdMap', recordMap)
     let titleUrl = null
@@ -39,7 +41,7 @@ export async function getNotionPage(topicProp) {
 
 export async function getNotionPages( notionId: string ) {
   try {
-    const notion = new NotionAPI()
+    // const notion = new NotionAPI()
     const recordMap = await notion.getPage(notionId)
     let pageBlock = null
     for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
@@ -52,12 +54,46 @@ export async function getNotionPages( notionId: string ) {
     /* i think allPages is null in prod */
 
     Object.values(allPages).forEach(page => {
-
       const title = getPageTitle(page)
       const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
       const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
       title && notionTopics.push({
         topicId: page,
+        title: title,
+        titleUrl: titleUrl,
+        recordMap: page
+      })
+    })
+    return notionTopics
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getBrowseTopics( notionId: string, username: string ) {
+  try {
+    // const notion = new NotionAPI()
+    const recordMap = await notion.getPage(notionId)
+    let pageBlock = null
+    for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
+      if (blockData.value.type === "page") {
+        pageBlock = blockData
+      }
+    }
+    const notionTopics = []
+    const allPages = await getAllPagesInSpace(notionId, null, notion.getPage.bind(notion))
+
+    /* i think allPages is null in prod */
+
+    Object.values(allPages).forEach(page => {
+
+      const title = getPageTitle(page)
+      const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+      const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
+
+      title && notionTopics.push({
+        username: username,
         title: title,
         titleUrl: titleUrl,
         recordMap: page

@@ -34,7 +34,8 @@ export async function getStaticPaths() {
     const usersWithNotion = getAllUsersRes.filter(user => user.notionId)
     const paths = await Promise.all(usersWithNotion.map(async userObj => {
       // let params = null
-      const notionRes = await getNotionPages(userObj.notionId)
+      const notionRes: any = await getNotionPages(userObj.notionId)
+    
       return notionRes.map(notionTopic => {
         return { params: { id: userObj.username, topic: notionTopic.titleUrl } }
       })

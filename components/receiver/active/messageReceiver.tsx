@@ -147,7 +147,7 @@ const MessageReceiver = props => {
       publishMic={publishMic} 
       unPublishMic={unPublishMic}
       />
-      <button className="mt-5" id="disconnect" onClick={() => disconnectButton()}>Disconnect</button>
+      <button data-cy="disconnect" className="mt-5" id="disconnect" onClick={() => disconnectButton()}>Disconnect</button>
       <div id="micSubscriber" ></div>
       <div id="micPublisher" ></div>
       </>

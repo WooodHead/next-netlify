@@ -3,7 +3,7 @@ import '../configureAmplify'
 import Head from 'next/head'
 import IdNotion from '../components/[id]/idNotion'
 import { NotionAPI } from 'notion-client'
-import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
+import { getNotionPage, getNotionPages, getAllPagesFromId } from '../components/[id]/getNotionRecord'
 
 export interface User {
   Username: string
@@ -30,10 +30,10 @@ export default function User({ user }: User) {
         <meta property="og:image" content="/favicon512"></meta>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      {user.notionDetails && <IdNotion 
-            user={user}
-            recordMap={user.notionDetails.recordMap}
-      /> }
+      <IdNotion 
+        user={user}
+        recordMap={user.notionDetails?.recordMap}
+      /> 
     </>
   )
 }
@@ -51,7 +51,9 @@ export async function getStaticPaths() {
     console.log(err)
   }
 }
+
 export async function getStaticProps({ params }) {
+
   try {
     const notion = new NotionAPI()
     const getUserInit = { body: { username: params.id } }
@@ -73,6 +75,20 @@ export async function getStaticProps({ params }) {
       image: getUser.userImg,
       notionDetails: notionDetails
     }
+
+    // try {
+    //   const pages = await getAllPagesFromId(getUser.notionId)
+    //   console.log(pages)
+    //   const saveNotionInit = {
+    //     // headers: { Authorization: userSession.getIdToken().getJwtToken() },
+    //     body: {
+    //       pages: JSON.stringify(pages),
+    //       username: getUser.username
+    //     }
+    //   }
+    //   const saved = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveAllNotionPages', saveNotionInit)
+    // } catch {}
+
     return getUser.username ? { props: { user: user }, revalidate: 1 } : { notFound: true }
   } catch (err) {
     console.log(err)

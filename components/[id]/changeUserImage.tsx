@@ -57,10 +57,12 @@ import { useEffect, useRef, useState } from 'react'
     }
 
     const isOwnPage = async () => {
-      const userAuth = await Auth.currentAuthenticatedUser()
-      if (user.Username === userAuth.username) {
-        setState({...state, isUser: userAuth.username})
-      }
+      try {
+        const userAuth = await Auth.currentAuthenticatedUser()
+        if (user.Username === userAuth.username) {
+          setState({...state, isUser: userAuth.username})
+        }
+      } catch {}
     }
 
     useEffect(() => {

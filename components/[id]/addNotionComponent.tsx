@@ -2,11 +2,10 @@ import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
 import { useEffect, useRef, useState } from 'react'
 import { parsePageId } from 'notion-utils'
-import CustomSpinner from '../../custom/spinner'
+import CustomSpinner from '../custom/spinner'
 import { useRouter } from 'next/router'
-// import "../../../public/howToAddNotionPage"
-const AddNotionComponent = (props) => {
-  const user = props.user
+
+const AddNotionComponent = ({ user }) => {
   const notionExists = user.notionDetails?.recordMap
 
   const notionRef = useRef(null)
@@ -22,31 +21,27 @@ const AddNotionComponent = (props) => {
   const saveNotionId = async () => {
     setState({...state, loading: true})
     const parsedId = notionRef.current.value ? parsePageId(notionRef.current.value) : null
-    console.log("prasedId", parsedId)
-    const userSession = await Auth.currentSession()
-    console.log(notionRef.current.value)
-    const saveNotionInit = {
-      headers: { Authorization: userSession.getIdToken().getJwtToken() },
-      body: {
-        notionId: notionRef.current.value,
-        deleted: false
+    try {
+      const userSession = await Auth.currentSession()
+      const saveNotionInit = {
+        headers: { Authorization: userSession.getIdToken().getJwtToken() },
+        body: {
+          notionId: notionRef.current.value,
+          deleted: false
+        }
       }
-    }
-    const notionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveDeleteNotion', saveNotionInit)
-    // setState({...state, loading: false})
+      const notionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveDeleteNotion', saveNotionInit)
+    } catch {}
     router.reload()
   }
 
   const isOwnPage = async () => {
     try {
       const userAuth = await Auth.currentAuthenticatedUser()
-      console.log(userAuth)
       if (user.Username === userAuth.username) {
         setState({ ...state, isUser: userAuth.username })
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch {}
   }
   const talktreeReturnUrl = process.env.NEXT_PUBLIC_STAGE === "dev"
     ? "http://localhost:3000/" + state.isUser
@@ -78,9 +73,6 @@ const AddNotionComponent = (props) => {
             </div>
           }
         </div>
-
-
-
       </div> : null
   )
 }
