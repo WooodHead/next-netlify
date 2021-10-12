@@ -3,7 +3,7 @@ import '../configureAmplify'
 import Head from 'next/head'
 import IdNotion from '../components/[id]/idNotion'
 import { NotionAPI } from 'notion-client'
-import { getNotionPage, getNotionPages, getAllPagesFromId } from '../components/[id]/getNotionRecord'
+import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
 
 export interface User {
   Username: string
