@@ -57,10 +57,11 @@ export async function getNotionPages( notionId: string ) {
       const title = getPageTitle(page)
       const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
       const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
+      // turn title to url
       title && notionTopics.push({
         topicId: page,
         title: title,
-        titleUrl: titleUrl,
+        titleUrl: titleUrl.toLowerCase(),
         recordMap: page
       })
     })
@@ -95,7 +96,7 @@ export async function getBrowseTopics( notionId: string, username: string ) {
       title && notionTopics.push({
         username: username,
         title: title,
-        titleUrl: titleUrl,
+        titleUrl: titleUrl.toLowerCase(),
         recordMap: page
       })
     })

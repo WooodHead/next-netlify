@@ -7,10 +7,6 @@ import { getBrowseTopics } from '../components/[id]/getNotionRecord'
 const Users = ({ allTopics }) => {
   const router = useRouter()
 
-
-  const clickTopic = (usernameProp) => {
-    router.push(usernameProp)
-  }
   return (
     <>
       <div className="flex-1">
@@ -18,14 +14,15 @@ const Users = ({ allTopics }) => {
           return (
             <div
               className="flex mx-5 my-5 bg-gray-100 cursor-pointer hover:bg-gray-200"
-              onClick={() => clickTopic(topic.username + '/' + topic.titleUrl)}
+              onClick={() => router.push(`${topic.username}/${topic.titleUrl}`)}
+              
               key={topic.titleUrl}
             >
               {/* <img src={user.image} className="p-2"></img> */}
               <div className="mx-5 my-2">
 
                 <Link
-                  href={`/${encodeURIComponent(topic.username + '/' + topic.titleUrl)}`}
+                  href={`/${topic.username + '/' + topic.titleUrl}`}
                 >
                   <a>{topic.title}</a>
                 </Link>

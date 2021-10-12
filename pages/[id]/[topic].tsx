@@ -32,17 +32,14 @@ export async function getStaticPaths() {
   try {
     const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
     const usersWithNotion = getAllUsersRes.filter(user => user.notionId)
+
     const paths = await Promise.all(usersWithNotion.map(async userObj => {
-      // let params = null
       const notionRes: any = await getNotionPages(userObj.notionId)
-    
       return notionRes.map(notionTopic => {
         return { params: { id: userObj.username, topic: notionTopic.titleUrl } }
       })
     }))
-    const cleanArray = []
     /* this is because each seperate user is an array within the main array */
-    // paths.forEach((userArray) => Array.isArray(userArray) && userArray.forEach((userTopics) => cleanArray.push(userTopics)))
     return {
       paths: paths[0],
       fallback: "blocking"
