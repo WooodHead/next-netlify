@@ -10,10 +10,10 @@ Amplify.configure({
   API: {
     endpoints: [{ name: process.env.NEXT_PUBLIC_APIGATEWAY_NAME, endpoint: process.env.NEXT_PUBLIC_APIGATEWAY_URL }]
   },
-  Storage: {
-    AWSS3: {
-      bucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-      region: process.env.NEXT_PUBLIC_STORAGE_REGION
-    }
-  }
+  // Storage: {
+  //   AWSS3: {
+  //     bucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  //     region: process.env.NEXT_PUBLIC_STORAGE_REGION
+  //   }
+  // }
 })
