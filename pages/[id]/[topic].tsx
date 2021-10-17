@@ -55,10 +55,6 @@ export async function getStaticProps({ params }) {
     const getUserInit = { body: { username: params.id } }
     const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
     const TAVS = []
-    getUser.deviceInput.text && TAVS.push("📝")
-    getUser.deviceInput.audio && TAVS.push("📞")
-    getUser.deviceInput.video && TAVS.push("📹")
-    getUser.deviceInput.screen && TAVS.push("💻")
 
     const notionPages = await getNotionPages(getUser.notionId)
 
@@ -67,9 +63,7 @@ export async function getStaticProps({ params }) {
       active: getUser.active,
       busy: getUser.busy,
       ppm: getUser.ppm,
-      TAVS: TAVS,
       receiver: getUser.receiver,
-      image: getUser.userImg,
     }
     let selectedTopic = null
     notionPages.forEach((topicObj) => {

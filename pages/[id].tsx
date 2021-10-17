@@ -10,12 +10,12 @@ export interface User {
   active: boolean
   busy: boolean
   ppm: number
-  TAVS: string[]
-  publicString: string
-  topicString: string
-  topics: any[]
+  TAVS?: string[]
+  publicString?: string
+  topicString?: string
+  topics?: any[]
   receiver: boolean
-  image: string
+  image?: string
   [key: string]: any
 }
 export default function User({ user }: User) {
@@ -57,21 +57,13 @@ export async function getStaticProps({ params }) {
     const notion = new NotionAPI()
     const getUserInit = { body: { username: params.id } }
     const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
-    const TAVS = []
-    getUser.deviceInput.text && TAVS.push("📝")
-    getUser.deviceInput.audio && TAVS.push("📞")
-    getUser.deviceInput.video && TAVS.push("📹")
-    getUser.deviceInput.screen && TAVS.push("💻")
     const notionDetails = getUser.notionId ? await getNotionPage(getUser.notionId) : null
-    // const deleteThis = getUser.notionId ? await getNotionPages(getUser.notionId) : null
     const user = {
       Username: getUser.username,
       active: getUser.active,
       busy: getUser.busy,
       ppm: getUser.ppm,
-      TAVS: TAVS,
       receiver: getUser.receiver,
-      image: getUser.userImg,
       notionDetails: notionDetails
     }
 
