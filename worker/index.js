@@ -1,5 +1,4 @@
-/******/ (() => { // webpackBootstrap
-var __webpack_exports__ = {};
+
 // function messageToClient(client, data) {
 //   return new Promise(function (resolve, reject) {
 //     const channel = new MessageChannel()
@@ -13,6 +12,7 @@ var __webpack_exports__ = {};
 //     client.postMessage(data, [channel.port2])
 //   })
 // }
+
 // self.addEventListener('push', function (event) {
 //   const webPushData = event.data.text()
 //   if (webPushData !== 'callDisconnected') {
@@ -23,6 +23,7 @@ var __webpack_exports__ = {};
 //     }
 //     self.registration.showNotification(title, options)
 //   }
+
 //   clients.matchAll().then(function (clientList) {
 //     clientList.forEach((client) => {
 //       messageToClient(client, {
@@ -33,7 +34,9 @@ var __webpack_exports__ = {};
 //     })
 //   })
 // })
+
 // self.addEventListener('notificationclick', function (event) {
+  
 //   const devAddress = 'https://dev.talktree.me/receiver'
 //   const prodAddress = 'https://talktree.me/receiver'
 //   let matchingClient = null
@@ -51,6 +54,5 @@ var __webpack_exports__ = {};
 //   // })
 //   event.waitUntil(promiseChain)
 // })
-self.__WB_DISABLE_DEV_LOGS = true;
-/******/ })()
-;
+
+self.__WB_DISABLE_DEV_LOGS = true
