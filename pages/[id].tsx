@@ -19,12 +19,11 @@ export interface User {
   [key: string]: any
 }
 export default function User({ user }: User) {
-  const description = user.publicString
   return (
     <>
       <Head>
         <title>{user.Username}</title>
-        <meta name="description" content={description} />
+        {/* <meta name="description" content={} /> */}
         <link rel="icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta property="og:image" content="/favicon512"></meta>

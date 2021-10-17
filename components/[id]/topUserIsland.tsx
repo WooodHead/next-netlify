@@ -1,5 +1,3 @@
-import ChangeUserImage from "./changeUserImage"
-
 const UserComponentTop = (props) => {
 
   const openMessagePhone = () => {
@@ -18,13 +16,13 @@ const UserComponentTop = (props) => {
     <>
       <div className="flex m-5 mb-10">
         <div className="flex-shrink-0">
-          {user.image && <img src={user.image} ></img>}
-          <ChangeUserImage user={user} />
+          {/* {user.image && <img src={user.image} ></img>} */}
+          {/* <ChangeUserImage user={user} /> */}
         </div>
 
         <div className="flex flex-col">
           <h3 className='mx-5 mt-5'>{user.Username}</h3>
-          <div className='mx-5 mb-3'>{user.TAVS}</div>
+          {/* <div className='mx-5 mb-3'>{user.TAVS}</div> */}
           {user.ppm > 0 && <div className='mx-5 mb-3'>{'$' + user.ppm}</div>}
           <button type="button" onClick={openMessagePhone}>message</button>
 
