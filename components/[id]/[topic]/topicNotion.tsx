@@ -24,7 +24,6 @@ export default function NotionComp({ user, recordMap, title}) {
   ): string | null {
       const displayFriendly = getCanonicalPageId(pageId, recordMap, { uuid: false })
       /* this makes the title-ID url */
-      console.log("dispplay", displayFriendly)
       return displayFriendly
     // }
   }

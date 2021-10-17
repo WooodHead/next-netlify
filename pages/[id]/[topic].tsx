@@ -32,9 +32,8 @@ export async function getStaticPaths() {
   try {
     const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
     const usersWithNotion = getAllUsersRes.filter(user => user.notionId)
-
     const paths = await Promise.all(usersWithNotion.map(async userObj => {
-      const notionRes: any = await getNotionPages(userObj.notionId)
+      const notionRes = await getNotionPages(userObj.notionId)
       return notionRes.map(notionTopic => {
         return { params: { id: userObj.username, topic: notionTopic.titleUrl } }
       })
@@ -76,7 +75,7 @@ export async function getStaticProps({ params }) {
     notionPages.forEach((topicObj) => {
       if (topicObj.titleUrl === params.topic) {
         selectedTopic = {
-          topicId: topicObj.topicId,
+          // topicId: topicObj.topicId,
           title: topicObj.title,
           titleUrl: topicObj.titleUrl,
           recordMap: topicObj.recordMap,

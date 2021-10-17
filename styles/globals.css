@@ -777,7 +777,7 @@ svg.notion-page-icon {
   display: block;
   box-sizing: border-box;
   overflow: auto;
-  background: var(--bg-color-1);
+  background: @apply bg-gray-800;
   font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
 }

@@ -1,5 +1,6 @@
 import { NotionAPI } from 'notion-client'
 import { getPageTitle, getBlockIcon, getAllPagesInSpace, getBlockParentPage } from 'notion-utils'
+import { Block } from 'notion-types'
 
 const notion = new NotionAPI()
 
@@ -39,9 +40,12 @@ export async function getNotionPage(topicProp) {
   }
 }
 
-export async function getNotionPages( notionId: string ) {
+export const getNotionPages = async ( notionId: string ): Promise<{
+  title: string
+  titleUrl: string
+  recordMap: Block
+}[]> => {
   try {
-    // const notion = new NotionAPI()
     const recordMap = await notion.getPage(notionId)
     let pageBlock = null
     for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
@@ -59,7 +63,7 @@ export async function getNotionPages( notionId: string ) {
       const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
       // turn title to url
       title && notionTopics.push({
-        topicId: page,
+        // topicId: page,
         title: title,
         titleUrl: titleUrl.toLowerCase(),
         recordMap: page
@@ -67,12 +71,20 @@ export async function getNotionPages( notionId: string ) {
     })
     return notionTopics
   } catch (err) {
-    console.log(err)
-    return null
+    console.log("notion not found")
+    return []
   }
 }
 
-export async function getBrowseTopics( notionId: string, username: string ) {
+type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+export type TopicObjs = {
+  username: string
+  title: string
+  titleUrl: string
+  recordMap: Block
+}
+
+export const getBrowseTopics = async ( notionId: string, username: string ): Promise<Expand<TopicObjs>[]> => {
   try {
     // const notion = new NotionAPI()
     const recordMap = await notion.getPage(notionId)
@@ -87,9 +99,9 @@ export async function getBrowseTopics( notionId: string, username: string ) {
 
     /* i think allPages is null in prod */
 
-    Object.values(allPages).forEach(page => {
+    Object.values(allPages).forEach(pageRecordMap => {
 
-      const title = getPageTitle(page)
+      const title = getPageTitle(pageRecordMap)
       const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
       const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
 
@@ -97,13 +109,13 @@ export async function getBrowseTopics( notionId: string, username: string ) {
         username: username,
         title: title,
         titleUrl: titleUrl.toLowerCase(),
-        recordMap: page
+        recordMap: pageRecordMap
       })
     })
 
     return notionTopics
   } catch (err) {
-    console.log(err)
+    console.log("getBrowseTopics notionErr")
     return null
   }
 }
