@@ -5,6 +5,9 @@ import Auth from '@aws-amplify/auth'
 import { useRouter } from 'next/router'
 import CustomSpinner from "../components/custom/spinner"
 import '../configureAmplify'
+import UploadNotionComponent from '../components/account/uploadNotionComponent'
+import { AmplifyAuthenticator, AmplifySignUp, AmplifyAuthContainer } from '@aws-amplify/ui-react';
+
 // import Navbar from '../components/navbar/navbar'
 // import Footer from '../components/navbar/footer'
 const AccountSettings = props => {
@@ -12,7 +15,7 @@ const AccountSettings = props => {
   const oldPassRef = useRef(null)
 
   const newPassRef = useRef(null)
-
+  const [isVisible, setIsVisible] = useState(false)
   const [hiddenOldState, setHiddenOldState] = useState(true)
   const [hiddenNewState, setHiddenNewState] = useState(true)
   const [newPassState, setNewPassState] = useState(null)
@@ -59,22 +62,34 @@ const AccountSettings = props => {
     await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/disableUserSelf", disableAccountInit)
     signOut()
   }
+  const federated = { googleClientId: "723855649980-nq03cgnfjikgm8hpl5ug9kgvb919s5pd.apps.googleusercontent.com" }
 
   return (
-    // <div className="flex flex-col min-h-screen">
       <div className="flex-1">
-      {/* <Navbar /> */}
+        < UploadNotionComponent />
+    <AmplifyAuthContainer>
+    < AmplifyAuthenticator federated={federated}>
+    <AmplifySignUp
+          slot="sign-up"
+          formFields={[
+            { type: "username", label: "Username *", placeholder: "Enter a username, this will be public" },
+            { type: "email" },
+            { type: "password" },
+          ]}
+        />
+        </AmplifyAuthenticator>
+        </AmplifyAuthContainer>
+      
         <div className="ml-3 container-fluid">
         <div className="row">
-        {/* <div className="ml-3 mr-3">
-          <Link to="/account/billing">Billing</Link>
-        </div> */}
         <div >
-          <Link href="/account">
+          <button onClick={() => setIsVisible(!isVisible)}>
             <a>Account settings</a>
-            </Link>
+            </button>
         </div>
       </div>
+      { isVisible &&
+      <>
         <h5 className="mt-3">Change Password</h5>
         <div className="mt-2">
         Old Password
@@ -135,11 +150,8 @@ const AccountSettings = props => {
             <button onClick={() => setYesDisable(!yesDisable)}>no</button>
           </div>
         </div>}
+      </div></>}
       </div>
-      </div>
-      {/* </div> */}
-      {/* <Footer /> */}
-      
     </div>
   )
 }

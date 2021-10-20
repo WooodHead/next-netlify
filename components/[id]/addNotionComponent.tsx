@@ -30,9 +30,10 @@ const AddNotionComponent = ({ user }) => {
           deleted: false
         }
       }
-      const notionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveDeleteNotion', saveNotionInit)
+      const notionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveNotionId', saveNotionInit)
+
     } catch {}
-    router.reload()
+
   }
 
   const isOwnPage = async () => {

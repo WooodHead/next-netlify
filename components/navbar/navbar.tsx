@@ -13,6 +13,8 @@ const NavbarComp = props => {
     (async () => {
       try {
         const userAccount = await Auth.currentAuthenticatedUser()
+        const isAuth = await Auth.currentCredentials()
+        console.log(isAuth)
         setUsernameState(userAccount.username)
       } catch (err) {
         console.log(err)

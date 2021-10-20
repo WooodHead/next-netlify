@@ -10,12 +10,8 @@ export interface User {
   active: boolean
   busy: boolean
   ppm: number
-  TAVS?: string[]
-  publicString?: string
-  topicString?: string
-  topics?: any[]
   receiver: boolean
-  image?: string
+  notionId: string
   [key: string]: any
 }
 export default function User({ user }: User) {
@@ -37,24 +33,25 @@ export default function User({ user }: User) {
   )
 }
 export async function getStaticPaths() {
+  const paths = []
   try {
     const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
-    const paths = getAllUsersRes.map(user => {
-      return { params: { id: user.username } }
+    getAllUsersRes.forEach(user => {
+      paths.push({ params: { id: user.username } }) 
     })
+  } catch (err) {
+  }
+
     return {
       paths,
       fallback: "blocking"
     }
-  } catch (err) {
-    console.log(err)
-  }
+
 }
 
 export async function getStaticProps({ params }) {
 
   try {
-    const notion = new NotionAPI()
     const getUserInit = { body: { username: params.id } }
     const getUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUser", getUserInit)
     const notionDetails = getUser.notionId ? await getNotionPage(getUser.notionId) : null
@@ -67,22 +64,9 @@ export async function getStaticProps({ params }) {
       notionDetails: notionDetails
     }
 
-    // try {
-    //   const pages = await getAllPagesFromId(getUser.notionId)
-    //   console.log(pages)
-    //   const saveNotionInit = {
-    //     // headers: { Authorization: userSession.getIdToken().getJwtToken() },
-    //     body: {
-    //       pages: JSON.stringify(pages),
-    //       username: getUser.username
-    //     }
-    //   }
-    //   const saved = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveAllNotionPages', saveNotionInit)
-    // } catch {}
-
     return getUser.username ? { props: { user: user }, revalidate: 1 } : { notFound: true }
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     return { notFound: true }
   }
 }

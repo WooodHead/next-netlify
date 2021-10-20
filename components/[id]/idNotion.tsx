@@ -1,9 +1,7 @@
-// import SideUserIsland from './sideUserIsland'
 import TopUserIsland from './topUserIsland'
 import { NotionRenderer, Code, Collection, CollectionRow, Modal, Pdf, Equation } from 'react-notion-x'
 import Link from 'next/link'
-import AddNotionComponent from './addNotionComponent'
-import { getPageTitle, getBlockTitle, uuidToId, parsePageId, getCanonicalPageId } from 'notion-utils'
+import { getCanonicalPageId } from 'notion-utils'
 
 export default function NotionComp({ user, recordMap }) {
   
@@ -31,7 +29,7 @@ export default function NotionComp({ user, recordMap }) {
     <>
       <div className="mb-20">
         <div className="flex justify-center"><TopUserIsland user={user} /></div>
-        < AddNotionComponent user={user} />
+        
         <NotionRenderer
           recordMap={recordMap}
           components={{

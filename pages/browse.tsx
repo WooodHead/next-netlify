@@ -7,6 +7,9 @@ import { Block, ImageBlock } from 'notion-types'
 
 const Users = ({ allTopics }) => {
   const router = useRouter()
+  console.log(allTopics)
+
+  if (allTopics.length === 0) { return <div className="m-10 italic" >error, no topics!</div> } 
 
   const defaultMapImageUrl = (url: string) => {
     if (!url) {
@@ -42,9 +45,7 @@ const Users = ({ allTopics }) => {
         })
         // console.log(image)
         const url = image?.value?.properties?.source[0]?.[0]
-        console.log(url)
         const shit = defaultMapImageUrl(url)
-        console.log("SHIT", shit)
         
         // console.log("topic recordMAP::", topic.recordMap)
         // const contentBlock = topic.recordMap?.value as ImageBlock
@@ -91,16 +92,20 @@ const Users = ({ allTopics }) => {
 }
 
 export async function getStaticProps() {
-  // topic array should be of type.. toppic array needs to have recordmaps with them, do they?
-
-  // const allUsersInit = { body: { Authorization: "all" } }
-  const allUsers = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
+try {
+  const allUsers = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", null)
+  console.log("allUsers", allUsers)
   const topicArray = []
   for (const user of allUsers) {
     const notionPages = await getBrowseTopics(user.notionId, user.username)
     notionPages && topicArray.push(...notionPages)
   }
   return { props: { allTopics: topicArray }, revalidate: 1 }
+} catch (err) {
+  console.log(err)
+  return { props: { allTopics: [] } }
+}
+
 }
 
 export default Users
