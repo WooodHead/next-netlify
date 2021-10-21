@@ -60,10 +60,10 @@ export async function getStaticProps({ params }) {
 
     const user = {
       Username: getUser.username,
-      active: getUser.active,
-      busy: getUser.busy,
-      ppm: getUser.ppm,
-      receiver: getUser.receiver,
+      active: true,
+      busy: false,
+      ppm: 0,
+      receiver: true,
     }
     let selectedTopic = null
     notionPages.forEach((topicObj) => {

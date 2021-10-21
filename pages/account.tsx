@@ -42,7 +42,7 @@ const AccountSettings = props => {
       // setServerMessageState(err.message)
     }
   }
-  
+
   const signOut = () => {
     Auth.signOut()
     router.push("/browse")
@@ -65,92 +65,94 @@ const AccountSettings = props => {
   const federated = { googleClientId: "723855649980-nq03cgnfjikgm8hpl5ug9kgvb919s5pd.apps.googleusercontent.com" }
 
   return (
-      <div className="flex-1">
-        < UploadNotionComponent />
-    <AmplifyAuthContainer>
-    < AmplifyAuthenticator federated={federated}>
-    <AmplifySignUp
-          slot="sign-up"
-          formFields={[
-            { type: "username", label: "Username *", placeholder: "Enter a username, this will be public" },
-            { type: "email" },
-            { type: "password" },
-          ]}
-        />
+    <div className="flex-1">
+      < UploadNotionComponent />
+      <AmplifyAuthContainer>
+        < AmplifyAuthenticator
+          usernameAlias="email"
+          federated={federated}>
+          <AmplifySignUp
+          usernameAlias="email"
+            slot="sign-up"
+            formFields={[
+              { type: "email", inputProps: { required: true, autocomplete: "username" } },
+              { type: "password" },
+            ]}
+          />
         </AmplifyAuthenticator>
-        </AmplifyAuthContainer>
-      
-        <div className="ml-3 container-fluid">
+      </AmplifyAuthContainer>
+
+      <div className="ml-3 container-fluid">
         <div className="row">
-        <div >
-          <button onClick={() => setIsVisible(!isVisible)}>
-            <a>Account settings</a>
+          <div >
+            <button onClick={() => setIsVisible(!isVisible)}>
+              <a>Account settings</a>
             </button>
-        </div>
-      </div>
-      { isVisible &&
-      <>
-        <h5 className="mt-3">Change Password</h5>
-        <div className="mt-2">
-        Old Password
-        <div className="row container-fluid">
-         
-          <input 
-            type={ hiddenOldState ? "password" : "text" } 
-            ref={oldPassRef}/>
-          <div 
-            className="ml-1" 
-            style={{cursor: "pointer"}} 
-            onClick={() => setHiddenOldState(!hiddenOldState)}>
-            {(hiddenOldState) ? 'show' : 'hide' }
           </div>
         </div>
-        </div>
-        <div className="mt-3">
-        New Password
-        <div className="row container-fluid">
-          
-          <input 
-            type={ hiddenNewState ? "password" : "text" } 
-            
-            ref={newPassRef}/>
-          <div 
-            className="ml-1" 
-            style={{cursor: "pointer"}} 
-            onClick={() => setHiddenNewState(!hiddenNewState)}>
-           {(hiddenNewState) ? 'show' : 'hide' }
-          </div>
-        </div>
-        </div>
+        {isVisible &&
+          <>
+            <h5 className="mt-3">Change Password</h5>
+            <div className="mt-2">
+              Old Password
+              <div className="row container-fluid">
 
-        <div className="mt-2 row container-fluid">
-          <button onClick={submitNewPass} >submit</button>
-          {newPassState === "submitting" ? <CustomSpinner /> : 
-            newPassState === "accepted" ? ' ✔️' : 
-            newPassState === "denied" ? ' ❌' : false}    
-        </div>
+                <input
+                  type={hiddenOldState ? "password" : "text"}
+                  ref={oldPassRef} />
+                <div
+                  className="ml-1"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setHiddenOldState(!hiddenOldState)}>
+                  {(hiddenOldState) ? 'show' : 'hide'}
+                </div>
+              </div>
+            </div>
+            <div className="mt-3">
+              New Password
+              <div className="row container-fluid">
 
-      <div className="mt-5">
-        <h5>Sign Out</h5>
-        <button
-          type="button"
-          onClick={signOut}
-        >Sign Out
-        </button>
-      </div>
-      <div>
-      <div className="mt-5">
-        <h5>Disable Account</h5>
-        </div>
-      <button onClick={() => setYesDisable(!yesDisable)} >Disable Account</button>
-      {yesDisable && 
-        <div>Are you sure? To re-enable, email geoff@talktree.me
-          <div>
-            <button className="mr-3" onClick={disableAccount}>yes</button>
-            <button onClick={() => setYesDisable(!yesDisable)}>no</button>
-          </div>
-        </div>}
-      </div></>}
+                <input
+                  type={hiddenNewState ? "password" : "text"}
+
+                  ref={newPassRef} />
+                <div
+                  className="ml-1"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setHiddenNewState(!hiddenNewState)}>
+                  {(hiddenNewState) ? 'show' : 'hide'}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-2 row container-fluid">
+              <button onClick={submitNewPass} >submit</button>
+              {newPassState === "submitting" ? <CustomSpinner /> :
+                newPassState === "accepted" ? ' ✔️' :
+                  newPassState === "denied" ? ' ❌' : false}
+            </div>
+
+            <div className="mt-5">
+              <h5>Sign Out</h5>
+              <button
+                type="button"
+                onClick={signOut}
+              >Sign Out
+              </button>
+            </div>
+            <div>
+              <div className="mt-5">
+                <h5>Disable Account</h5>
+              </div>
+              <button onClick={() => setYesDisable(!yesDisable)} >Disable Account</button>
+              {yesDisable &&
+                <div>Are you sure? To re-enable, email geoff@talktree.me
+                  <div>
+                    <button className="mr-3" onClick={disableAccount}>yes</button>
+                    <button onClick={() => setYesDisable(!yesDisable)}>no</button>
+                  </div>
+                </div>}
+            </div></>}
       </div>
     </div>
   )

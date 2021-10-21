@@ -6,7 +6,8 @@ import { useRouter } from 'next/router'
 export default function YourPage() {
   const [state, setState] = useState({
     hasUsername: false,
-    hasNotion: false
+    hasNotion: false,
+    username: null
   })
   const [usernameInputState, setUsernameInputState] = useState(null)
   const notionInputRef = useRef(null)
@@ -34,8 +35,9 @@ export default function YourPage() {
       body: { username: usernameInputState }
     }
     try {
-      const saveUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveUsername', usernameInit)
-      console.log(saveUser)
+      const savedUser = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveUsername', usernameInit)
+      console.log(savedUser)
+      setState({...state, hasUsername: true, username: savedUser.username })
     } catch (err) {
       console.log(err)
     }
@@ -48,7 +50,7 @@ export default function YourPage() {
     try {
       const saveNotion = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveNotionId', notionInit)
       console.log(saveNotion)
-      router.push('')
+      router.push(`/${state.username}`)
     } catch (err) {
       console.log(err)
     }

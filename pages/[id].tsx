@@ -5,7 +5,6 @@ import Head from 'next/head'
 import IdNotion from '../components/[id]/idNotion'
 import { NotionAPI } from 'notion-client'
 import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
-import Amplify from '@aws-amplify/core'
 
 export interface User {
   Username: string

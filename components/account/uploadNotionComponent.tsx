@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { parsePageId } from 'notion-utils'
 import CustomSpinner from '../custom/spinner'
 import { useRouter } from 'next/router'
+// import '../../configureAmplify'
 
 const UploadNotionComponent = () => {
 
@@ -22,18 +23,22 @@ const UploadNotionComponent = () => {
     const parsedId = notionRef.current.value ? parsePageId(notionRef.current.value) : null
     let username = ''
     try {
-      const userSession = await Auth.currentSession()
-      const userAuth = await Auth.currentAuthenticatedUser()
-      username = userAuth.username
+      // const userSession = await Auth.currentSession()
+      // console.log(userSession)
+      // const userAuth = await Auth.currentAuthenticatedUser()
+      // console.log(userAuth)
+      // username = userAuth.username
       const saveNotionInit = {
         // headers: { Authorization: userSession.getIdToken().getJwtToken() },
         body: {
-          notionId: notionRef.current.value,
+          notionId: parsedId,
         }
       }
       const notionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveNotionId', saveNotionInit)
+      console.log(notionRes)
       router.push(username)
-    } catch {}
+
+    } catch (err) { console.log(err) }
     
   }
 
