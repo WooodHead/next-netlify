@@ -94,7 +94,6 @@ const Users = ({ allTopics }) => {
 export async function getStaticProps() {
 try {
   const allUsers = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", null)
-  console.log("allUsers", allUsers)
   const topicArray = []
   for (const user of allUsers) {
     const notionPages = await getBrowseTopics(user.notionId, user.username)
@@ -102,7 +101,6 @@ try {
   }
   return { props: { allTopics: topicArray }, revalidate: 1 }
 } catch (err) {
-  console.log(err)
   return { props: { allTopics: [] } }
 }
 

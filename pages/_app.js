@@ -1,42 +1,47 @@
+import API from '@aws-amplify/api'
 import "tailwindcss/tailwind.css"
 import '../styles/globals.css'
-// import { useEffect } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-// import * as ga from '../lib/index'
-// import Router from 'next/router'
+import Auth from '@aws-amplify/auth'
 import NavbarComp from "../components/navbar/navbar"
-// import 'prismjs/themes/prism-tomorrow.css'
-// import 'rc-dropdown/assets/index.css'
+
+// export const Context = createContext(state)
 
 function Application({ Component, pageProps }) {
   const router = useRouter()
 
-  // useEffect(() => {
-  //   const handleRouteChange = (url) => {
-  //     ga.pageview(url)
-  //   }
-  //   //When the component is mounted, subscribe to router changes
-  //   //and log those page views
-  //   router.events.on('routeChangeComplete', handleRouteChange)
+  const [state, setState] = useState({
+    auth: false,
+    username: null
+  })
 
-  //   // If the component is unmounted, unsubscribe
-  //   // from the event with the `off` method
-  //   return () => {
-  //     router.events.off('routeChangeComplete', handleRouteChange)
-  //   }
-  // }, [router.events])
 
-//   useEffect(() => {
-//     const handleRouteChange = (url) => GTMPageView(url);
-//     router.events.on('routeChangeComplete', handleRouteChange);
-//     return () => {
-//         router.events.off('routeChangeComplete', handleRouteChange);
-//     };
-// }, []);
 
-  return (router.pathname === "/[id]/review" || router.pathname ==="/[id]/message")
-  ? <Component {...pageProps} />
-    : <>< NavbarComp /><Component {...pageProps} /></> 
+  useEffect(() => {
+    (async () => {
+      try {
+        const isAuth = await Auth.currentCredentials()
+        if (isAuth.authenticated) {
+          try {
+            const self = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getSelf', {})
+            setState({ ...state, auth: true, username: self.username })
+          } catch {
+            setState({ ...state, auth: true})
+          }
+        }
+      } catch {  }
+    })()
+  }, [])
+
+  return (router.pathname === "/[id]/review" || router.pathname === "/[id]/message")
+    ? <Component {...pageProps} />
+    : <>
+    {/* <Context.Provider value={Context}> */}
+      <NavbarComp {...state} />
+      <Component {...pageProps} />
+      {/* </Context.Provider> */}
+    </>
 }
 
 export default Application

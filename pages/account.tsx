@@ -45,8 +45,8 @@ const AccountSettings = props => {
   
   const signOut = () => {
     Auth.signOut()
-    router.push("/users")
-    router.reload()
+    router.push("/browse")
+    // router.reload()
   }
 
   const disableAccount = async () => {
