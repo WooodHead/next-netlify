@@ -7,7 +7,6 @@ import { Block, ImageBlock } from 'notion-types'
 
 const Users = ({ allTopics }) => {
   const router = useRouter()
-  console.log(allTopics)
 
   if (allTopics.length === 0) { return <div className="m-10 italic" >error, no topics!</div> } 
 

@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import Link from 'next/link'
 import '../../configureAmplify'
-import Auth from '@aws-amplify/auth'
-import Modal from './modal'
 import { useRouter } from 'next/router'
-// import Context from '../../pages/_app'
+import { AuthContext } from "../../utils/context";
 
-const NavbarComp = ({ auth, username }) => {
+const NavbarComp = () => {
   const router = useRouter()
-  // const shit = useContext(Context)
+  const context = useContext(AuthContext)
+  const auth = context.auth
+  console.log('ait', auth)
+  console.log(typeof(auth))
 
   // const [modalState, setModalState] = useState(null)
 
@@ -21,8 +22,8 @@ const NavbarComp = ({ auth, username }) => {
       </div>
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
         <Link href={
-          username
-            ? `/${username}`
+          typeof(auth) === 'string'
+            ? `/${auth}`
             : auth
               ? `/yourPage`
               : router.asPath === "/"

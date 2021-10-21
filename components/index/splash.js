@@ -4,12 +4,12 @@ import Head from 'next/head'
 import API from '@aws-amplify/api'
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
-import Modal from '../navbar/modal'
+// import Modal from '../navbar/modal'
 import About from './about'
 export default function SplashPage() {
   const emailRef = useRef()
   const router = useRouter()
-  const [modalState, setModalState] = useState(null)
+  // const [modalState, setModalState] = useState(null)
 
   const userButtonClick = () => {
     router.push('/geoff-young')
@@ -46,7 +46,7 @@ export default function SplashPage() {
         </div>
       </div>
       <About signUp={signUpClick} seeExample={userButtonClick}/>
-      {modalState ? <Modal setModalState={setModalState} modalState={modalState} /> : null}
+      {/* {modalState ? <Modal setModalState={setModalState} modalState={modalState} /> : null} */}
     </>
   )
 }

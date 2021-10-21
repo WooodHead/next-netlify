@@ -23,7 +23,8 @@ export default function YourPage() {
     try {
       const self = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getSelf', {})
       setState({ ...state, hasUsername: self.username, hasNotion: self.notionId })
-      self.username && self.notionId && router.push(`/${self.username}`)
+      // self.username && self.notionId && router.push(`/${self.username}`)
+      // this should essentially just be a fail safe..
       console.log('self', self)
     } catch {
       console.log('no self')
