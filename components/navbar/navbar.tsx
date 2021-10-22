@@ -8,8 +8,6 @@ const NavbarComp = () => {
   const router = useRouter()
   const context = useContext(AuthContext)
   const auth = context.auth
-  console.log('ait', auth)
-  console.log(typeof(auth))
 
   // const [modalState, setModalState] = useState(null)
 

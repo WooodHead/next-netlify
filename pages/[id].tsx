@@ -5,17 +5,19 @@ import Head from 'next/head'
 import IdNotion from '../components/[id]/idNotion'
 import { NotionAPI } from 'notion-client'
 import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
+import UploadNotionComponent from '../components/account/uploadNotionComponent'
 
 export interface User {
   Username: string
-  active: boolean
-  busy: boolean
-  ppm: number
-  receiver: boolean
+  // active: boolean
+  // busy: boolean
+  // ppm: number
+  // receiver: boolean
   notionId: string
   [key: string]: any
 }
 export default function User({ user }: User) {
+  console.log(user)
   return (
     <>
       <Head>
@@ -26,10 +28,13 @@ export default function User({ user }: User) {
         <meta property="og:image" content="/favicon512"></meta>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <IdNotion 
+      {user.notionDetails 
+      ? <IdNotion 
         user={user}
-        recordMap={user.notionDetails?.recordMap}
+        recordMap={user.notionDetails.recordMap}
       /> 
+      : <UploadNotionComponent />
+      }
     </>
   )
 }

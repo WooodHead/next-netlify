@@ -1,8 +1,9 @@
 
 import { ConsoleLogger } from '@aws-amplify/core';
 import { AmplifyAuthenticator, AmplifySignUp, AmplifySignIn, AmplifyAuthContainer } from '@aws-amplify/ui-react';
-import { AuthContext, UsernameContext } from '../../utils/context';
+import { AuthContext } from '../../utils/context';
 import { useContext, useEffect } from 'react'
+import API from '@aws-amplify/api'
 
 export default function LoginComponent() {
 
@@ -10,9 +11,9 @@ export default function LoginComponent() {
 
   const federated = { googleClientId: process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT }
 
-  const authHandler = (authEvent) => {
+  const authHandler = async (authEvent) => {
     if (authEvent === "signedin") {
-      context.setAuthState(true)
+        context.setAuthState(true)
     }
   }
 

@@ -11,8 +11,6 @@ const UploadNotionComponent = () => {
   const notionRef = useRef(null)
 
   const [state, setState] = useState({
-    isUser: null,
-    returnUri: null,
     loading: false
   })
 
@@ -23,22 +21,19 @@ const UploadNotionComponent = () => {
     const parsedId = notionRef.current.value ? parsePageId(notionRef.current.value) : null
     let username = ''
     try {
-      // const userSession = await Auth.currentSession()
-      // console.log(userSession)
-      // const userAuth = await Auth.currentAuthenticatedUser()
-      // console.log(userAuth)
-      // username = userAuth.username
       const saveNotionInit = {
-        // headers: { Authorization: userSession.getIdToken().getJwtToken() },
         body: {
           notionId: parsedId,
         }
       }
       const notionRes = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/saveNotionId', saveNotionInit)
-      console.log(notionRes)
-      router.push(username)
-
-    } catch (err) { console.log(err) }
+      console.log('notionres', notionRes)
+      router.push(`/${notionRes.username}`)
+      setState({...state, loading: false})
+    } catch (err) { 
+      setState({...state, loading: false})
+      console.log(err)
+     }
     
   }
 
