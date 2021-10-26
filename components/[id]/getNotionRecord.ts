@@ -120,7 +120,7 @@ export const getBrowseTopics = async ( notionId: string, username: string ): Pro
             const topicObj = {
               username: username,
               title: title,
-              titleUrl: titleUrl,
+              titleUrl: block.parent_table === "space" ? "" : titleUrl,
               recordMap: pageValue
             }
       

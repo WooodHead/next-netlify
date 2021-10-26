@@ -8,7 +8,7 @@ import { Block, ImageBlock } from 'notion-types'
 const Users = ({ allTopics }) => {
   const router = useRouter()
 
-  if (allTopics.length === 0) { return <div className="m-10 italic" >error, no topics!</div> } 
+  if (allTopics.length === 0) { return <div className="m-10 italic" >error, no topics!</div> }
 
   const defaultMapImageUrl = (url: string) => {
     if (!url) {
@@ -48,27 +48,27 @@ const Users = ({ allTopics }) => {
         return (
           <div className="flex">
             <div className="flex-1"></div>
-          <div
-            className="flex-1 max-w-4xl mx-5 my-5 bg-gray-100 cursor-pointer hover:bg-gray-200"
-            onClick={() => router.push(`${topic.username}/${topic.titleUrl}`)}
 
-            key={topic.titleUrl}
-          >
-            <img height={100} width={100} src={shit} />
-            <div className="mx-5 my-2">
 
-              <Link
-                href={`/${topic.username + '/' + topic.titleUrl}`}
-              >
-                <a>{topic.title}</a>
-              </Link>
+            <Link passHref
+              href={`/${topic.username + '/' + topic.titleUrl}`}
+            >
               <div
-                className="flex flex-row overflow-auto"
+                className="flex-1 max-w-4xl mx-5 my-5 bg-gray-100 cursor-pointer hover:bg-gray-200"
+                key={topic.titleUrl}
               >
+                <img height={100} width={100} src={shit} />
+                <div className="mx-5 my-2">
+                  <a>{topic.title}</a>
+                </div>
               </div>
+            </Link>
+            <div
+              className="flex flex-row overflow-auto"
+            >
+
             </div>
-          </div>
-          <div className="flex-1"></div>
+            <div className="flex-1"></div>
           </div>
         )
       })}
@@ -86,17 +86,17 @@ const Users = ({ allTopics }) => {
 }
 
 export async function getStaticProps() {
-try {
-  const allUsers = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", null)
-  const topicArray = []
-  for (const user of allUsers) {
-    const notionPages = await getBrowseTopics(user.notionId, user.username)
-    notionPages && topicArray.push(...notionPages)
+  try {
+    const allUsers = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", null)
+    const topicArray = []
+    for (const user of allUsers) {
+      const notionPages = await getBrowseTopics(user.notionId, user.username)
+      notionPages && topicArray.push(...notionPages)
+    }
+    return { props: { allTopics: topicArray }, revalidate: 1 }
+  } catch (err) {
+    return { props: { allTopics: [] } }
   }
-  return { props: { allTopics: topicArray }, revalidate: 1 }
-} catch (err) {
-  return { props: { allTopics: [] } }
-}
 
 }
 
