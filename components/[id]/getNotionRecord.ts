@@ -1,5 +1,5 @@
 import { NotionAPI } from 'notion-client'
-import { getPageTitle, getBlockIcon, getAllPagesInSpace, getBlockParentPage } from 'notion-utils'
+import { getPageTitle, getBlockIcon, getPageProperty, getAllPagesInSpace, getBlockParentPage } from 'notion-utils'
 import { Block } from 'notion-types'
 
 const notion = new NotionAPI()
@@ -84,14 +84,21 @@ export type TopicObjs = {
   recordMap: Block
 }
 
+const makeUrl = (title: string) => {
+  const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
+  const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
+  return titleUrl.toLowerCase()
+}
+
 export const getBrowseTopics = async ( notionId: string, username: string ): Promise<Expand<TopicObjs>[]> => {
   try {
-    // const notion = new NotionAPI()
+
     const recordMap = await notion.getPage(notionId)
-    let pageBlock = null
+    let parentBlockKey = null
     for (const [blockKey, blockData] of Object.entries(recordMap.block)) {
-      if (blockData.value.type === "page") {
-        pageBlock = blockData
+      if (blockData.value.parent_table === "space") {
+        // tons of type pages in a page
+        parentBlockKey = blockKey
       }
     }
     const notionTopics = []
@@ -99,19 +106,32 @@ export const getBrowseTopics = async ( notionId: string, username: string ): Pro
 
     /* i think allPages is null in prod */
 
-    Object.values(allPages).forEach(pageRecordMap => {
+    for (const [pageKey, pageValue] of Object.entries(allPages)) {
+      for (const [key, value] of Object.entries(pageValue.block)) {
+        if (key === pageKey) {
+          const block = value.value
+        
+          const pageProperty = getPageProperty('Property', block, recordMap)
+  
+          if (pageProperty === 'blog' || block.parent_table === "space") {
+            
+            const title = getPageTitle(pageValue)
+            const titleUrl = makeUrl(title)
+            const topicObj = {
+              username: username,
+              title: title,
+              titleUrl: titleUrl,
+              recordMap: pageValue
+            }
+      
+            title && notionTopics.push(topicObj)
+        }
 
-      const title = getPageTitle(pageRecordMap)
-      const sanitized = title?.replace(/[_$&+,:;=?[\]@#|{}'<>.^*()%!/\\]/g, "")
-      const titleUrl = sanitized ? sanitized.replace(/ /g, '-') : title
+        } 
+      }
 
-      title && notionTopics.push({
-        username: username,
-        title: title,
-        titleUrl: titleUrl.toLowerCase(),
-        recordMap: pageRecordMap
-      })
-    })
+    // }
+  }
 
     return notionTopics
   } catch (err) {

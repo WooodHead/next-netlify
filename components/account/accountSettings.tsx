@@ -15,7 +15,7 @@ const AccountSettings = () => {
   const oldPassRef = useRef(null)
 
   const newPassRef = useRef(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [hiddenOldState, setHiddenOldState] = useState(true)
   const [hiddenNewState, setHiddenNewState] = useState(true)
   const [newPassState, setNewPassState] = useState(null)

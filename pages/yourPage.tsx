@@ -22,7 +22,7 @@ export default function YourPage() {
   const getUser = async () => {
     try {
       const self = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getSelf', {})
-      setState({ ...state, hasUsername: self.username, hasNotion: self.notionId })
+      setState({ ...state, hasUsername: true, hasNotion: self.notionId, username: self.username })
       self.username && self.notionId && router.push(`/${self.username}`)
       // this should essentially just be a fail safe..
       console.log('self', self)
@@ -43,6 +43,7 @@ export default function YourPage() {
       console.log(err)
     }
   }
+  
   const submitNotion = async () => {
     
     const notionInit = {
@@ -74,7 +75,7 @@ export default function YourPage() {
           </div>
           : !state.hasNotion && <div>
             <div className="m-5">Connect your Notion Page</div>
-            <input className="outline-black" ref={notionInputRef} onSubmit={submitNotion} >
+            <input className="outline-black" ref={notionInputRef} onSubmit={submitNotion} placeholder=''>
             </input>
             <button onClick={submitNotion}>Submit</button>
           </div>}

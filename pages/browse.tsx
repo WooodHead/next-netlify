@@ -42,26 +42,19 @@ const Users = ({ allTopics }) => {
         const image: any = Object.values(topic.recordMap.block).find((block: any) => {
           return block.value?.type === "image"
         })
-        // console.log(image)
         const url = image?.value?.properties?.source[0]?.[0]
         const shit = defaultMapImageUrl(url)
-        
-        // console.log("topic recordMAP::", topic.recordMap)
-        // const contentBlock = topic.recordMap?.value as ImageBlock
-
-        // const source = contentBlock.properties?.source?.[0]?.[0] ?? contentBlock.format?.display_source
-        // const src = defaultMapImageUrl(source, contentBlock)
-        // console.log(src)
 
         return (
+          <div className="flex">
+            <div className="flex-1"></div>
           <div
-            className="flex mx-5 my-5 bg-gray-100 cursor-pointer hover:bg-gray-200"
+            className="flex-1 max-w-4xl mx-5 my-5 bg-gray-100 cursor-pointer hover:bg-gray-200"
             onClick={() => router.push(`${topic.username}/${topic.titleUrl}`)}
 
             key={topic.titleUrl}
           >
             <img height={100} width={100} src={shit} />
-            {/* <img src={user.image} className="p-2"></img> */}
             <div className="mx-5 my-2">
 
               <Link
@@ -75,6 +68,8 @@ const Users = ({ allTopics }) => {
               </div>
             </div>
           </div>
+          <div className="flex-1"></div>
+          </div>
         )
       })}
     </>
@@ -82,7 +77,7 @@ const Users = ({ allTopics }) => {
 
   return (
     <>
-      <div className="flex-1">
+      <div className="">
         <Card />
         <div className="m-10">Browse page currently under development</div>
       </div>

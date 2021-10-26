@@ -12,6 +12,8 @@ const NavbarComp = () => {
   // const [modalState, setModalState] = useState(null)
 
   return (
+    // <div className="flex">
+    //   <div className="flex-1"></div>
     <nav className="flex flex-row">
       <div className="px-2 py-1 mx-5 my-1 rounded hover:bg-gray-200 ">
         <Link href="/browse">
@@ -39,6 +41,8 @@ const NavbarComp = () => {
 
 
     </nav>
+    // <div className="flex-1"></div>
+    // </div>
   )
 }
 
