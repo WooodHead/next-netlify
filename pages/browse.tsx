@@ -3,7 +3,6 @@ import API from '@aws-amplify/api'
 import { useRouter } from 'next/router'
 import '../configureAmplify'
 import { getBrowseTopics } from '../components/[id]/getNotionRecord'
-import { Block, ImageBlock } from 'notion-types'
 
 const Users = ({ allTopics }) => {
   const router = useRouter()

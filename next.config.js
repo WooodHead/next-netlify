@@ -7,5 +7,8 @@ module.exports = () => {
 
   return withPWA({
     pwa: { dest: 'public' },
+    // images: {
+    //   domains: ['*']
+    // }
   })
 }

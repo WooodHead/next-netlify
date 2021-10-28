@@ -69,7 +69,6 @@ const AccountSettings = () => {
   
   return (
     <div className="flex-1">
-      < UploadNotionComponent />
 
       <div className="ml-3 container-fluid">
         <div className="row">
