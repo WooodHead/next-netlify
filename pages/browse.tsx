@@ -94,6 +94,7 @@ export async function getStaticProps() {
     }
     return { props: { allTopics: topicArray }, revalidate: 1 }
   } catch (err) {
+    console.log(err)
     return { props: { allTopics: [] } }
   }
 
