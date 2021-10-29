@@ -8,9 +8,9 @@ import CustomSpinner from "../custom/spinner"
 import UploadNotionComponent from './uploadNotionComponent'
 import { AuthContext } from '../../utils/context'
 
-const AccountSettings = () => {
+const AccountSettings = ({ auth, updateAuth }) => {
 
-  const context = useContext(AuthContext)
+  // const context = useContext(AuthContext)
 
   const oldPassRef = useRef(null)
 
@@ -43,10 +43,10 @@ const AccountSettings = () => {
     }
   }
 
-  const signOut = () => {
+  const signOut = async () => {
     try {
-      Auth.signOut()
-      context.setAuthState(false)
+      await Auth.signOut()
+      updateAuth()
       // router.push("/browse")
     } catch { console.log('failed to signout?')}
 

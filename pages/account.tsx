@@ -8,13 +8,11 @@ import Settings from '../components/account/settings'
 import { AuthContext } from '../utils/context'
 import Auth from '@aws-amplify/auth'
 
-const Account = () => {
-
-  const context = useContext(AuthContext)
+const Account = ({ auth, updateAuth }) => {
 
   return (
     <>
-    { context.auth ? <Settings /> : <LoginComponent /> }
+    { auth ? <Settings auth={auth} updateAuth={updateAuth}/> : <LoginComponent auth={auth} updateAuth={updateAuth}/> }
     </>
   )
 }

@@ -10,9 +10,7 @@ import { AuthContext } from '../../utils/context'
 import AccountSettings from './accountSettings'
 import MessengerSettings from './messengerSettings'
 
-const Settings = () => {
-
-  const context = useContext(AuthContext)
+const Settings = ({ auth, updateAuth }) => {
 
   const [state, setState] = useState({
     page: 'account',
@@ -26,8 +24,11 @@ const Settings = () => {
 
   useEffect(() => {
     (async () => {
-      const self = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getSelf', null)
-      setState({ ...state, username: self.username, notionId: self.notionId })
+      try {
+        const self = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, '/getSelf', null)
+        setState({ ...state, username: self.username, notionId: self.notionId })
+      } catch {}
+
     })
 
   }, [])
@@ -44,7 +45,7 @@ const Settings = () => {
       state.page === 'messenger' 
       ? <MessengerSettings modifyState={modifyState} {...state} />
       : state.page === 'account' 
-      ? <AccountSettings/> 
+      ? <AccountSettings auth={auth} updateAuth={updateAuth} /> 
       : <UploadNotionComponent />  }
     </div>
     </>

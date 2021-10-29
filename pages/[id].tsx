@@ -4,7 +4,7 @@ import '../configureAmplify'
 import Head from 'next/head'
 import IdNotion from '../components/[id]/idNotion'
 import { NotionAPI } from 'notion-client'
-import { getNotionPage, getNotionPages } from '../components/[id]/getNotionRecord'
+import { getNotionPage, getNotionPages } from '../utils/node/getNotionRecord'
 import UploadNotionComponent from '../components/account/uploadNotionComponent'
 
 export interface User {
@@ -17,7 +17,7 @@ export interface User {
   [key: string]: any
 }
 export default function User({ user }: User) {
-  console.log(user)
+
   return (
     <>
       <Head>

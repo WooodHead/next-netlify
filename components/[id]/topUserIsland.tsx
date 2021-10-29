@@ -1,4 +1,8 @@
-const UserComponentTop = (props) => {
+
+import { getPageTitle, getBlockIcon, getPageProperty, getAllPagesInSpace, getBlockParentPage } from 'notion-utils'
+import { BaseBlock, Block, NotionMap } from 'notion-types'
+
+const UserComponentTop = ({ user }) => {
 
   const openMessagePhone = () => {
     const devSite = `/${user.Username}/message`
@@ -11,7 +15,15 @@ const UserComponentTop = (props) => {
     )
   }
 
-  const user = props.user
+  const getImage = () => {
+    Object.values(user.notionDetails.recordMap.block).forEach((block: any) => {
+      if (block?.value?.parent_table === "space") {
+        console.log(block.value.format.page_icon)
+      }
+    })
+  }
+  getImage()
+  // console.log(user)
   return (
     <>
       <div className="flex m-5 mb-10">

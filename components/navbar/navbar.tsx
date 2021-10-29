@@ -3,11 +3,24 @@ import Link from 'next/link'
 import '../../configureAmplify'
 import { useRouter } from 'next/router'
 import { AuthContext } from "../../utils/context";
+import Auth from '@aws-amplify/auth'
 
-const NavbarComp = () => {
+const NavbarComp = ({ auth }) => {
   const router = useRouter()
-  const context = useContext(AuthContext)
-  const auth = context.auth
+  // const context = useContext(AuthContext)
+  // const auth = context.auth
+
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const userAccount = await Auth.currentAuthenticatedUser()
+  //       // console.log(userAccount)
+  //       // setUsernameState(userAccount.username)
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //   })()
+  // }, [])
 
   // const [modalState, setModalState] = useState(null)
 

@@ -5,7 +5,7 @@ import '../../configureAmplify'
 import { NotionAPI } from 'notion-client'
 import TopicNotion from '../../components/[id]/[topic]/topicNotion'
 import 'prismjs/themes/prism-tomorrow.css'
-import { getNotionPages } from '../../components/[id]/getNotionRecord'
+import { getNotionPages } from '../../utils/node/getNotionRecord'
 
 export default function Topic({ user, topic }) {
   const firstImgAddress = topic.firstImage
