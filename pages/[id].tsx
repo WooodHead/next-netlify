@@ -1,9 +1,8 @@
 import API from '@aws-amplify/api'
-import { withSSRContext } from 'aws-amplify'
+// import { withSSRContext } from 'aws-amplify'
 import '../configureAmplify'
 import Head from 'next/head'
 import IdNotion from '../components/[id]/idNotion'
-import { NotionAPI } from 'notion-client'
 import { getNotionPage, getNotionPages } from '../utils/node/getNotionRecord'
 import UploadNotionComponent from '../components/account/uploadNotionComponent'
 
@@ -41,7 +40,7 @@ export default function User({ user }: User) {
 export async function getStaticPaths() {
   const paths = []
   try {
-    const SSR = withSSRContext()
+    // const SSR = withSSRContext()
     const getAllUsersRes = await API.get(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/getUsers", {})
     getAllUsersRes.forEach(user => {
       paths.push({ params: { id: user.username } }) 
