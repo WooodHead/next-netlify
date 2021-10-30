@@ -15,6 +15,7 @@
     "@aws-amplify/api": "^3.2.29",
     "@aws-amplify/auth": "^3.4.29",
     "@aws-amplify/core": "^3.8.21",
+    "@aws-amplify/interactions": "^4.0.22",
     "@aws-amplify/storage": "^3.4.0",
     "@aws-amplify/ui-react": "^1.2.20",
     "@stripe/react-stripe-js": "^1.4.0",
