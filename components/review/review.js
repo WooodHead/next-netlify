@@ -2,9 +2,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import API from '@aws-amplify/api'
 import Auth from '@aws-amplify/auth'
-import Rating from '../../components/review/rating'
-import PaymentNavbar from '../../components/review/paymentNavbar'
-import CardTip from '../../components/review/cardTip'
+import Rating from './rating'
+import PaymentNavbar from './paymentNavbar'
+import CardTip from './cardTip'
 // import PRTip from '../../components/review/prTip'
 import { loadStripe } from '@stripe/stripe-js';
 import '../../configureAmplify'
@@ -14,6 +14,7 @@ import Head from 'next/head'
 //   () => import('../../components/review/callComponent'),
 //   { ssr: false }
 // )
+// this is supposed to be a page, not in components, just removing for the time being
 
 const ReviewParent = props => {
   const [cardOnFile, setCardOnFile] = useState(null)
@@ -167,7 +168,7 @@ const ReviewParent = props => {
         <div className="mt-3">User is unable to receive tips</div> 
       }
       {(paymentState === 'amountLow') && 
-        <div className="mt-3">Tips can't be less than $0.50</div> 
+        <div className="mt-3">Tips can&apos;t be less than $0.50</div> 
       }
       {(paymentState === 'amountHigh') && 
         <div className="mt-3">The max is $500</div> 

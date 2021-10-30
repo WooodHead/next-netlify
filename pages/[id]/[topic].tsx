@@ -40,7 +40,7 @@ export async function getStaticPaths() {
     }))
     /* this is because each seperate user is an array within the main array */
     return {
-      paths: paths[0],
+      paths: paths.length > 0 ? paths[0] : [], 
       fallback: "blocking"
     }
   } catch (err) {

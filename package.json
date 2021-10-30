@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "export": "next export",
     "cypress": "cypress open",
@@ -20,7 +21,6 @@
     "@stripe/stripe-js": "^1.13.2",
     "@tailwindcss/typography": "^0.4.0",
     "autoprefixer": "^10.2.4",
-    "aws-amplify": "^4.3.4",
     "clsx": "^1.1.1",
     "dompurify": "^2.2.6",
     "next": "^12.0.1",

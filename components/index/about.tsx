@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import AboutMessage from '../about/aboutMessage'
 import Head from 'next/head'
-import AboutBlog from '../about/aboutBlog'
 
 export default function About({
   seeExample,

@@ -4,7 +4,7 @@ import Auth from '@aws-amplify/auth'
 import '../configureAmplify'
 import CustomSpinner from "../components/custom/spinner"
 import Active from "../components/receiver/active"
-import TAVS from '../components/receiver/tavs'
+// import TAVS from '../components/receiver/tavs'
 import PPM from '../components/receiver/ppm'
 import ConnectStripe from '../components/receiver/connectStripe'
 
@@ -89,7 +89,6 @@ export default function Receiver() {
                   <div className="flex justify-center flex-grow">
                     <div className="flex-col">
                       <div className="mx-5 mt-20 mb-10">Set the permitted devices:</div>
-                      <TAVS state={state} modifyState={modifyState} />
                     </div>
                   </div>
                   <div className="flex justify-center flex-grow" >

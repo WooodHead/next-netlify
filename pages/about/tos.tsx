@@ -23,7 +23,7 @@ export default function Tos() {
       <div className="mt-3 text-lg">User Submissions</div>
       <div>Talktree does not claim ownership of any information provided by you whatsoever. ALL INFORMATION PROVIDED BY USERS
       IS FOR THE PURPOSE OF GENERAL DISCUSSION AND CONSULTING. The content provided is not verified; reliance on such content is to be used 
-      at your own risk. ANY PAID COMMUNICATION IS SUBJECT TO STRIPE'S RESTRICTED BUSINESSES, https://stripe.com/restricted-businesses.
+      at your own risk. ANY PAID COMMUNICATION IS SUBJECT TO STRIPE&apos;S RESTRICTED BUSINESSES, https://stripe.com/restricted-businesses.
       Failure to comply with these rules will result in suspension or deactivation of the user account.
       </div>
       <div className="mt-3 text-lg">Topics / Posts</div>
@@ -44,7 +44,7 @@ export default function Tos() {
         can be due to payments declining, or Talktree LLC voiding the transaction due to a breach of Terms of Service. The received money can be less than the asked
          compensation, this is usually about $0.01 every $20.00.
         Minimum compensation is $0.17 per minute, the maximum is $20 per minute. Consultants are responsible for paying any and all taxes which may apply.
-        ANY TRANSACTION THAT FAILS TO MEET STRIPE'S RESTRICTED BUSINESSES POLICY WILL BE VOIDED, see https://stripe.com/restricted-businesses.
+        ANY TRANSACTION THAT FAILS TO MEET STRIPE&apos;S RESTRICTED BUSINESSES POLICY WILL BE VOIDED, see https://stripe.com/restricted-businesses.
       </div>
       <div className="mt-3 text-lg">Consultants</div>
       <div>CONSULTANTS MAY NOT BE IN THE BUSINESS OF ADVERTISING REGARDLESS OF COMPENSATION. </div>
@@ -52,18 +52,18 @@ export default function Tos() {
       <div>
         Users have the ability to rate sellers/consultants. This rating is reflected from a number 1, bad, through 9, good. This rating
         is to be treated with great skepticism as the number may not accurately reflect the quality of the consulting. DO NOT MAKE ANY PAID CALL
-        WITH THE EXPECTATION OF ADEQUATE CONSULTING OR ACCURATE INFORMATION. While it is in Talktree's best interest for the ratings to be accurate, 
+        WITH THE EXPECTATION OF ADEQUATE CONSULTING OR ACCURATE INFORMATION. While it is in Talktree&apos;s best interest for the ratings to be accurate, 
         the ratings are still susceptible to manipulation.
       </div>
       <div className="mt-3 text-lg">Copyright Infringement</div>
-      <div>Any violation of copyright law will result in the offending user's account to be suspended. If you believe a user is in 
+      <div>Any violation of copyright law will result in the offending user&apos;s account to be suspended. If you believe a user is in 
         violation of copyright law, please provide written notice to geoff@talktree.me
       </div>
       <div className="mt-3 text-lg">Disclaimer of Liability</div>
       <div>Talktree LLC will not be liable for any loss caused as a result of using the website nor is any warranty of any kind provided.
         This includes any loss caused by a deficiency, error, or interruption in the website. It is up to the user to ensure their device 
         works harmoniously with the browser, i.e. make sure audio/video/screensharing/text works in the browser. Talktree will not be 
-        liable for any inability of the user's device to use the requested input (audio/video/screensharing/text).  </div>
+        liable for any inability of the user&apos;s device to use the requested input (audio/video/screensharing/text).  </div>
       <div className="mt-3 text-lg">Intellectual Property Rights</div>
       {/* <div>You may access the material on this site for your own personal, non-commercial use. You may not reproduce, distribute, modify, download
         or store any of the material on this site.

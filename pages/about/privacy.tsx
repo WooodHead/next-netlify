@@ -36,7 +36,7 @@ export default function Privacy() {
       </div>
       <div>
         The only cookies used on this site are used for processing payments via Stripe. The processing of cards is governed
-        by Stripe's conditions https://stripe.com/ie/privacy. Talktree LLC does not collect or process your your credit or debit card. 
+        by Stripe&apos;s conditions https://stripe.com/ie/privacy. Talktree LLC does not collect or process your your credit or debit card. 
       </div>
       <div className="mt-3 text-lg" >
       Data
@@ -44,7 +44,7 @@ export default function Privacy() {
       <div>
         Talktree LLC has no access to any data transmitted between users via the in-website phone; this includes text, audio, video,
         and screensharing conversations. Talktree does has access to data such as call time, duration, users involved, topic, and selected
-        device. Tokbox, a Vonage company, is our data processor, which has no knowledge of the customer's end users; they process all in-website
+        device. Tokbox, a Vonage company, is our data processor, which has no knowledge of the customer&apos;s end users; they process all in-website
          phone conversations: text, video, audio, and screenshare. See their privacy statement here https://www.vonage.com/legal/privacy-policy/.
       </div>
       <div className="mt-3 text-lg">

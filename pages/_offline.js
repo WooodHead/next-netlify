@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-export default () => {
+export default function offline() {
   return (
     <>
     <Head><title>Talktree</title></Head>

@@ -45,7 +45,7 @@ const Users = ({ allTopics }) => {
         const shit = defaultMapImageUrl(url)
 
         return (
-          <div className="flex">
+          <div key={topic.titleUrl} className="flex">
             <div className="flex-1"></div>
 
 

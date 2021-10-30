@@ -10,13 +10,6 @@ Amplify.configure({
   API: {
     endpoints: [{ name: process.env.NEXT_PUBLIC_APIGATEWAY_NAME, endpoint: process.env.NEXT_PUBLIC_APIGATEWAY_URL }]
   },
-  // ssr: true
-  // Storage: {
-  //   AWSS3: {
-  //     bucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-  //     region: process.env.NEXT_PUBLIC_STORAGE_REGION
-  //   }
-  // }
 })
 
 // why did i have // identityPoolId: typeof window === 'undefined' ? null : ...

@@ -33,8 +33,7 @@ const UserComponentTop = ({ user }) => {
         </div>
 
         <div className="flex flex-col">
-          <h3 className='mx-5 mt-5'>{user.Username}</h3>
-          {/* <div className='mx-5 mb-3'>{user.TAVS}</div> */}
+          <h3 className='mx-5 mt-5'>{user.Username}</h3> 
           {user.ppm > 0 && <div className='mx-5 mb-3'>{'$' + user.ppm}</div>}
           <button type="button" onClick={openMessagePhone}>message</button>
 
