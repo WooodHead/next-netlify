@@ -1,6 +1,4 @@
 
-import { getPageTitle, getBlockIcon, getPageProperty, getAllPagesInSpace, getBlockParentPage } from 'notion-utils'
-import { BaseBlock, Block, NotionMap } from 'notion-types'
 
 const UserComponentTop = ({ user }) => {
 
